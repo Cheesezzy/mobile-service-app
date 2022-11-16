@@ -1,6 +1,17 @@
 import { View, Text, SafeAreaView, Platform, StyleSheet } from "react-native";
 import React from "react";
 import { Avatar, Icon } from "@rneui/themed";
+import { SvgXml } from "react-native-svg";
+import {
+  aboutIcon,
+  adIcon,
+  businessIcon,
+  homeIcon,
+  negotiateIcon,
+  notifIcon,
+  settingsIcon,
+  supportIcon,
+} from "../../assets/icons/icons";
 
 const SideNav = () => {
   return (
@@ -24,10 +35,10 @@ const SideNav = () => {
           <Text
             style={{
               fontSize: 15,
-              fontWeight: "bold",
+              fontFamily: "Lato",
             }}
           >
-            Lorem ipsum
+            Rete Tech
           </Text>
         </View>
         <View
@@ -38,7 +49,8 @@ const SideNav = () => {
         >
           <Text
             style={{
-              fontSize: 11,
+              fontSize: 10.5,
+              fontFamily: "LatoRegular",
               color: "grey",
             }}
           >
@@ -48,27 +60,52 @@ const SideNav = () => {
       </View>
 
       <View style={styles.itemContainer}>
-        <Icon name="business" type="material" style={styles.icon} size={20} />
+        <SvgXml
+          style={styles.icon}
+          xml={businessIcon("", "Hustle")}
+          width="22"
+          height="22"
+        />
         <Text style={styles.menuItem}>Your Hustle</Text>
       </View>
 
       <View style={styles.itemContainer}>
-        <Icon name="settings" type="material" style={styles.icon} size={20} />
+        <SvgXml
+          style={styles.icon}
+          xml={settingsIcon("", "")}
+          width="22"
+          height="22"
+        />
         <Text style={styles.menuItem}>Settings</Text>
       </View>
 
       <View style={styles.itemContainer}>
-        <Icon name="support" type="material" style={styles.icon} size={20} />
+        <SvgXml
+          style={styles.icon}
+          xml={supportIcon("", "")}
+          width="22"
+          height="19"
+        />
         <Text style={styles.menuItem}>Support</Text>
       </View>
 
       <View style={styles.itemContainer}>
-        <Icon name="info" type="material" style={styles.icon} size={20} />
+        <SvgXml
+          style={styles.icon}
+          xml={aboutIcon("", "")}
+          width="21"
+          height="21"
+        />
         <Text style={styles.menuItem}>About</Text>
       </View>
 
       <View style={styles.itemContainer}>
-        <Icon name="tv" type="material" style={styles.icon} size={20} />
+        <SvgXml
+          style={styles.icon}
+          xml={adIcon("", "")}
+          width="22"
+          height="22"
+        />
         <Text style={styles.menuItem}>Advertisements</Text>
       </View>
 
@@ -97,12 +134,12 @@ const styles = StyleSheet.create({
   },
   menuItem: {
     fontSize: 14.5,
-    fontWeight: "500",
+    fontFamily: "Lato",
     marginBottom: 30,
   },
   icon: {
     position: "relative",
-    bottom: 1.5,
+    bottom: 2.5,
     marginRight: 10,
   },
 });

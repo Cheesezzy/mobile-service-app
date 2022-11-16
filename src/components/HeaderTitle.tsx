@@ -8,6 +8,8 @@ import {
 import { Avatar, Icon } from "@rneui/themed";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import colors from "../config/colors";
+import { SvgXml } from "react-native-svg";
+import { settingsIcon } from "../../assets/icons/icons";
 
 type Props = {
   title: string;
@@ -31,7 +33,7 @@ function HeaderTitle({ title }: Props) {
       {route.name === "Home" ? (
         <>
           <TextInput
-            placeholder="Search Services"
+            placeholder="Search the network"
             style={{
               width: "87%",
               color: colors.black,
@@ -76,12 +78,11 @@ function HeaderTitle({ title }: Props) {
             }}
           />
 
-          <Icon
-            name="settings"
-            type="material"
-            style={{
-              marginLeft: 13,
-            }}
+          <SvgXml
+            style={{ marginLeft: 13 }}
+            xml={settingsIcon(route && route.name, "Settings")}
+            width="23"
+            height="23"
           />
         </>
       ) : (

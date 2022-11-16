@@ -3,12 +3,19 @@ import { useRoute } from "@react-navigation/native";
 import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
 import { Icon } from "@rneui/themed";
 import colors from "../config/colors";
+import { SvgXml } from "react-native-svg";
+import {
+  businessIcon,
+  homeIcon,
+  negotiateIcon,
+  notifIcon,
+} from "../../assets/icons/icons";
 
 const Navigation = ({ navigation }: any) => {
   const route = useRoute();
 
   const checkActive = (routeName: string) => {
-    if (route.name === routeName) return colors.primary;
+    if (route && route.name === routeName) return colors.primary;
     return "";
   };
 
@@ -21,7 +28,12 @@ const Navigation = ({ navigation }: any) => {
         onPress={() => navigation.navigate("Home")}
       >
         <View style={styles.btns}>
-          <Icon name="home" type="octicon" color={checkActive("Home")} />
+          {/* <Icon name="home" type="octicon" color={checkActive("Home")} /> */}
+          <SvgXml
+            xml={homeIcon(route && route.name, "Home")}
+            width="23"
+            height="23"
+          />
         </View>
       </TouchableHighlight>
 
@@ -32,7 +44,11 @@ const Navigation = ({ navigation }: any) => {
         onPress={() => navigation.navigate("Hustle")}
       >
         <View style={styles.btns}>
-          <Icon name="business" type="material" color={checkActive("Hustle")} />
+          <SvgXml
+            xml={businessIcon(route && route.name, "Hustle")}
+            width="24"
+            height="24"
+          />
         </View>
       </TouchableHighlight>
 
@@ -43,10 +59,10 @@ const Navigation = ({ navigation }: any) => {
         onPress={() => navigation.navigate("Notifications")}
       >
         <View style={styles.btns}>
-          <Icon
-            name="bell"
-            type="octicon"
-            color={checkActive("Notifications")}
+          <SvgXml
+            xml={notifIcon(route && route.name, "Notifications")}
+            width="24"
+            height="24"
           />
         </View>
       </TouchableHighlight>
@@ -58,10 +74,10 @@ const Navigation = ({ navigation }: any) => {
         onPress={() => navigation.navigate("Negotiations")}
       >
         <View style={styles.btns}>
-          <Icon
-            name="handshake-outline"
-            type="material-community"
-            color={checkActive("Negotiations")}
+          <SvgXml
+            xml={negotiateIcon(route && route.name, "Negotiations")}
+            width="24"
+            height="24"
           />
         </View>
       </TouchableHighlight>

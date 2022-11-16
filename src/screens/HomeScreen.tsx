@@ -104,6 +104,7 @@ const HomeScreen = ({ navigation }: any) => {
         <Text
           style={{
             fontSize: 20,
+            fontFamily: "Lato",
             marginTop: 25,
             marginLeft: 5,
           }}
@@ -154,6 +155,7 @@ const styles = StyleSheet.create({
   },
   bigTxt: {
     fontSize: 15,
+    fontFamily: "LatoRegular",
     textAlign: "center",
   },
   smCon: {
@@ -172,6 +174,7 @@ const styles = StyleSheet.create({
   },
   smTxt: {
     fontSize: 12,
+    fontFamily: "LatoRegular",
     textAlign: "center",
   },
   categoryLarge: {
