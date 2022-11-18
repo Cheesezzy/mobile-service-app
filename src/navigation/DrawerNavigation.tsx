@@ -8,6 +8,10 @@ import NotifScreen from "../screens/NotifScreen";
 import NegoScreen from "../screens/NegoScreen";
 import HustleScreen from "../screens/HustleScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
+import AboutScreen from "../screens/AboutScreen";
+import AdScreen from "../screens/AdScreen";
+import SettingsScreen from "../screens/SettingsScreen";
+import SupportScreen from "../screens/SupportScreen";
 import { DrawerActions } from "@react-navigation/native";
 import { View } from "react-native";
 import { Avatar } from "@rneui/themed";
@@ -98,6 +102,102 @@ const DrawerNavigator = ({}: any) => {
         }}
       />
       <Drawer.Screen name="Welcome" component={WelcomeScreen} />
+      <Drawer.Screen
+        name="About"
+        component={AboutScreen}
+        options={{
+          title: "Negotiations",
+          headerTitle: (props) => (
+            <HeaderTitle {...props} title="Negotiations" />
+          ),
+          headerLeft: () => (
+            <View
+              style={{
+                marginLeft: 18,
+              }}
+            >
+              <Avatar
+                size={32}
+                rounded
+                source={require("../../assets/tfp.png")}
+                onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+              />
+            </View>
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Ad"
+        component={AdScreen}
+        options={{
+          title: "Negotiations",
+          headerTitle: (props) => (
+            <HeaderTitle {...props} title="Negotiations" />
+          ),
+          headerLeft: () => (
+            <View
+              style={{
+                marginLeft: 18,
+              }}
+            >
+              <Avatar
+                size={32}
+                rounded
+                source={require("../../assets/tfp.png")}
+                onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+              />
+            </View>
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          title: "Negotiations",
+          headerTitle: (props) => (
+            <HeaderTitle {...props} title="Negotiations" />
+          ),
+          headerLeft: () => (
+            <View
+              style={{
+                marginLeft: 18,
+              }}
+            >
+              <Avatar
+                size={32}
+                rounded
+                source={require("../../assets/tfp.png")}
+                onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+              />
+            </View>
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Support"
+        component={SupportScreen}
+        options={{
+          title: "Negotiations",
+          headerTitle: (props) => (
+            <HeaderTitle {...props} title="Negotiations" />
+          ),
+          headerLeft: () => (
+            <View
+              style={{
+                marginLeft: 18,
+              }}
+            >
+              <Avatar
+                size={32}
+                rounded
+                source={require("../../assets/tfp.png")}
+                onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+              />
+            </View>
+          ),
+        }}
+      />
     </Drawer.Navigator>
   );
 };

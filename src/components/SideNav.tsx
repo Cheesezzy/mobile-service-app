@@ -12,102 +12,142 @@ import {
   settingsIcon,
   supportIcon,
 } from "../../assets/icons/icons";
+import { useNavigation, DrawerActions } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const SideNav = () => {
+  const navigation = useNavigation();
+
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Avatar
-          size={40}
-          rounded
-          source={require("../../assets/tfp.png")}
-          containerStyle={{
-            borderColor: "lightgrey",
-            borderStyle: "solid",
-            borderWidth: 1,
-          }}
-        />
-        <View
-          style={{
-            marginTop: 10,
-          }}
-        >
-          <Text
+      <TouchableOpacity
+        activeOpacity={0.6}
+        // @ts-ignore
+        onPress={() => navigation.navigate("Hustle")}
+      >
+        <View>
+          <Avatar
+            size={40}
+            rounded
+            source={require("../../assets/tfp.png")}
+            containerStyle={{
+              borderColor: "lightgrey",
+              borderStyle: "solid",
+              borderWidth: 1,
+            }}
+          />
+          <View
             style={{
-              fontSize: 15,
-              fontFamily: "Lato",
+              marginTop: 10,
             }}
           >
-            Rete Tech
-          </Text>
-        </View>
-        <View
-          style={{
-            marginTop: 2,
-            marginBottom: 50,
-          }}
-        >
-          <Text
+            <Text
+              style={{
+                fontSize: 15,
+                fontFamily: "Lato",
+              }}
+            >
+              Rete Tech
+            </Text>
+          </View>
+          <View
             style={{
-              fontSize: 10.5,
-              fontFamily: "LatoRegular",
-              color: "grey",
+              marginTop: 2,
+              marginBottom: 50,
             }}
           >
-            #7GF345
-          </Text>
+            <Text
+              style={{
+                fontSize: 10.5,
+                fontFamily: "LatoRegular",
+                color: "grey",
+              }}
+            >
+              #7GF345
+            </Text>
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
 
-      <View style={styles.itemContainer}>
-        <SvgXml
-          style={styles.icon}
-          xml={businessIcon("", "Hustle")}
-          width="22"
-          height="22"
-        />
-        <Text style={styles.menuItem}>Your Hustle</Text>
-      </View>
+      <TouchableOpacity
+        activeOpacity={0.6}
+        // @ts-ignore
+        onPress={() => navigation.navigate("Hustle")}
+      >
+        <View style={styles.itemContainer}>
+          <SvgXml
+            style={styles.icon}
+            xml={businessIcon("", "Hustle")}
+            width="21"
+            height="21"
+          />
+          <Text style={styles.menuItem}>Your Hustle</Text>
+        </View>
+      </TouchableOpacity>
 
-      <View style={styles.itemContainer}>
-        <SvgXml
-          style={styles.icon}
-          xml={settingsIcon("", "")}
-          width="22"
-          height="22"
-        />
-        <Text style={styles.menuItem}>Settings</Text>
-      </View>
+      <TouchableOpacity
+        activeOpacity={0.6}
+        // @ts-ignore
+        onPress={() => navigation.navigate("Settings")}
+      >
+        <View style={styles.itemContainer}>
+          <SvgXml
+            style={styles.icon}
+            xml={settingsIcon("", "")}
+            width="21"
+            height="21"
+          />
+          <Text style={styles.menuItem}>Settings</Text>
+        </View>
+      </TouchableOpacity>
 
-      <View style={styles.itemContainer}>
-        <SvgXml
-          style={styles.icon}
-          xml={supportIcon("", "")}
-          width="22"
-          height="19"
-        />
-        <Text style={styles.menuItem}>Support</Text>
-      </View>
+      <TouchableOpacity
+        activeOpacity={0.6}
+        // @ts-ignore
+        onPress={() => navigation.navigate("Support")}
+      >
+        <View style={styles.itemContainer}>
+          <SvgXml
+            style={styles.icon}
+            xml={supportIcon("", "")}
+            width="21"
+            height="18"
+          />
+          <Text style={styles.menuItem}>Support</Text>
+        </View>
+      </TouchableOpacity>
 
-      <View style={styles.itemContainer}>
-        <SvgXml
-          style={styles.icon}
-          xml={aboutIcon("", "")}
-          width="21"
-          height="21"
-        />
-        <Text style={styles.menuItem}>About</Text>
-      </View>
+      <TouchableOpacity
+        activeOpacity={0.6}
+        // @ts-ignore
+        onPress={() => navigation.navigate("About")}
+      >
+        <View style={styles.itemContainer}>
+          <SvgXml
+            style={styles.icon}
+            xml={aboutIcon("", "")}
+            width="20"
+            height="20"
+          />
+          <Text style={styles.menuItem}>About</Text>
+        </View>
+      </TouchableOpacity>
 
-      <View style={styles.itemContainer}>
-        <SvgXml
-          style={styles.icon}
-          xml={adIcon("", "")}
-          width="22"
-          height="22"
-        />
-        <Text style={styles.menuItem}>Advertisements</Text>
-      </View>
+      <TouchableOpacity
+        activeOpacity={0.6}
+        // @ts-ignore
+        onPress={() => navigation.navigate("Ad")}
+      >
+        <View style={styles.itemContainer}>
+          <SvgXml
+            style={styles.icon}
+            xml={adIcon("", "")}
+            width="21"
+            height="21"
+          />
+          <Text style={styles.menuItem}>Advertisements</Text>
+        </View>
+      </TouchableOpacity>
 
       <View
         style={{
@@ -133,13 +173,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   menuItem: {
-    fontSize: 14.5,
+    position: "relative",
+    top: 4,
+    fontSize: 14,
     fontFamily: "Lato",
     marginBottom: 30,
   },
   icon: {
     position: "relative",
-    bottom: 2.5,
+    top: 1.5,
     marginRight: 10,
   },
 });
