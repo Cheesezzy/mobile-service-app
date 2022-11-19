@@ -1,9 +1,14 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import store, { persistor } from "./provider/store";
 import "react-native-gesture-handler";
 import DrawerNavigator from "./src/navigation/DrawerNavigation";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import { db } from "./firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -22,11 +27,27 @@ export default function App() {
     return null;
   }
 
+  {
+    /* 
+  const writeUserData = () => {
+    const userRef = doc(db, "users", "alovelace");
+    setDoc(userRef, {
+      first: "Ada",
+      last: "Lovelace",
+      born: 1815,
+    });
+  */
+  }
+
   return (
     <>
-      <NavigationContainer>
-        <DrawerNavigator />
-      </NavigationContainer>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <NavigationContainer>
+            <DrawerNavigator />
+          </NavigationContainer>
+        </PersistGate>
+      </Provider>
     </>
   );
 }

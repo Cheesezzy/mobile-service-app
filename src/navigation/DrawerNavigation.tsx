@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import HeaderTitle from "../components/HeaderTitle";
 import SideNav from "../components/SideNav";
@@ -15,14 +16,19 @@ import SupportScreen from "../screens/SupportScreen";
 import { DrawerActions } from "@react-navigation/native";
 import { View } from "react-native";
 import { Avatar } from "@rneui/themed";
+import { auth } from "../../firebaseConfig";
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = ({}: any) => {
   const navigation = useNavigation();
+  const [user] = useAuthState(auth);
 
   return (
-    <Drawer.Navigator initialRouteName="Home" drawerContent={SideNav}>
+    <Drawer.Navigator
+      initialRouteName={!user ? "Home" : "Welcome"}
+      drawerContent={SideNav}
+    >
       <Drawer.Screen
         name="Home"
         component={HomeScreen}
@@ -101,7 +107,13 @@ const DrawerNavigator = ({}: any) => {
           header: () => null,
         }}
       />
-      <Drawer.Screen name="Welcome" component={WelcomeScreen} />
+      <Drawer.Screen
+        name="Welcome"
+        component={WelcomeScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Drawer.Screen
         name="About"
         component={AboutScreen}

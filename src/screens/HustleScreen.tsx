@@ -99,7 +99,6 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingLeft: 15,
     paddingRight: 15,
-    borderRadius: 30,
   },
   statsItem: {
     flexDirection: "row",
