@@ -13,10 +13,13 @@ import AboutScreen from "../screens/AboutScreen";
 import AdScreen from "../screens/AdScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import SupportScreen from "../screens/SupportScreen";
+import SearchScreen from "../screens/SearchScreen";
 import { DrawerActions } from "@react-navigation/native";
 import { View } from "react-native";
 import { Avatar } from "@rneui/themed";
 import { auth } from "../../firebaseConfig";
+import { backIcon } from "../../assets/icons/icons";
+import { SvgXml } from "react-native-svg";
 
 const Drawer = createDrawerNavigator();
 
@@ -128,11 +131,11 @@ const DrawerNavigator = ({}: any) => {
                 marginLeft: 18,
               }}
             >
-              <Avatar
-                size={32}
-                rounded
-                source={require("../../assets/tfp.png")}
-                onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+              <SvgXml
+                xml={backIcon()}
+                width="24"
+                height="24"
+                onPress={() => navigation.goBack()}
               />
             </View>
           ),
@@ -152,11 +155,11 @@ const DrawerNavigator = ({}: any) => {
                 marginLeft: 18,
               }}
             >
-              <Avatar
-                size={32}
-                rounded
-                source={require("../../assets/tfp.png")}
-                onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+              <SvgXml
+                xml={backIcon()}
+                width="24"
+                height="24"
+                onPress={() => navigation.goBack()}
               />
             </View>
           ),
@@ -176,11 +179,11 @@ const DrawerNavigator = ({}: any) => {
                 marginLeft: 18,
               }}
             >
-              <Avatar
-                size={32}
-                rounded
-                source={require("../../assets/tfp.png")}
-                onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+              <SvgXml
+                xml={backIcon()}
+                width="24"
+                height="24"
+                onPress={() => navigation.goBack()}
               />
             </View>
           ),
@@ -200,11 +203,33 @@ const DrawerNavigator = ({}: any) => {
                 marginLeft: 18,
               }}
             >
-              <Avatar
-                size={32}
-                rounded
-                source={require("../../assets/tfp.png")}
-                onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+              <SvgXml
+                xml={backIcon()}
+                width="24"
+                height="24"
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          title: "Negotiations",
+          headerTitle: (props) => <HeaderTitle {...props} title="Search" />,
+          headerLeft: () => (
+            <View
+              style={{
+                marginLeft: 18,
+              }}
+            >
+              <SvgXml
+                xml={backIcon()}
+                width="24"
+                height="24"
+                onPress={() => navigation.goBack()}
               />
             </View>
           ),

@@ -15,11 +15,11 @@ const WelcomeScreen = ({ navigation }: any) => {
         <Text style={styles.or}>OR</Text>
         <View style={styles.line} />
       </View>
-      <View style={styles.thirdParty}>
-        <Text style={styles.thirdPartyTxt}>Sign in with Google</Text>
+      <View style={styles.getStarted}>
+        <Text style={styles.getStartedTxt}>Get Started</Text>
       </View>
       <View style={styles.thirdParty}>
-        <Text style={styles.thirdPartyTxt}>Sign in as Guest</Text>
+        <Text style={styles.thirdPartyTxt}>Sign In</Text>
       </View>
     </View>
   );
@@ -67,6 +67,22 @@ const styles = StyleSheet.create({
     width: "40%",
     position: "relative",
     top: 5,
+  },
+  getStarted: {
+    width: "100%",
+    height: 50,
+    borderColor: "lightgrey",
+    borderWidth: 1,
+    borderRadius: 30,
+    padding: 14,
+    marginTop: 20,
+  },
+  getStartedTxt: {
+    color: colors.grey,
+    fontFamily: "LatoRegular",
+    fontSize: 18,
+    justifyContent: "center",
+    textAlign: "center",
   },
   thirdParty: {
     width: "100%",
