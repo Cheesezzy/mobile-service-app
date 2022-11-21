@@ -66,7 +66,7 @@ const MainSearch = () => {
   return (
     <GestureHandlerRootView>
       <View style={styles.container}>
-        <MapView style={styles.map} />
+        <MapView style={styles.map} mapType="satellite" />
         <GestureDetector gesture={gesture}>
           <Animated.View style={[rSearchConStyle, styles.searchCon]}>
             <View style={styles.line}></View>

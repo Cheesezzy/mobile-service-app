@@ -76,6 +76,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     padding: 14,
     marginTop: 20,
+    color: colors.secondary,
+    backgroundColor: colors.primary,
   },
   getStartedTxt: {
     color: colors.grey,
