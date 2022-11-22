@@ -9,6 +9,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { db } from "./firebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
