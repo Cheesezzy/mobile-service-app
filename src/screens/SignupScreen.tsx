@@ -9,19 +9,115 @@ import {
 import colors from "../config/colors";
 import { facebookicon, googleIcon } from "../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
+import { useEffect, useState } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
+import { AuthErrorCodes } from "firebase/auth";
+import { createUser } from "../../api/database";
 
 const SignupScreen = ({ navigation }: any) => {
+  const [error, setError] = useState("");
+  const [userData, setUserData] = useState({
+    name: "",
+    mobOrEmail: "",
+    password: "",
+  });
+  const [name, setName] = useState("");
+  const [mobOrEmail, setMobOrEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    console.log(name);
+  }, [name]);
+
+  const createAccount = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        mobOrEmail,
+        password
+      );
+
+      createUser(
+        userCredential.user.uid,
+        name,
+        "",
+        mobOrEmail,
+        password,
+        "",
+        "",
+        ""
+      );
+    } catch (error: any) {
+      // check for error codes
+      if (error.code === AuthErrorCodes.EMAIL_EXISTS) {
+        setError("Email already in use");
+        console.log(error);
+      }
+      if (error.code === AuthErrorCodes.INVALID_EMAIL) {
+        setError("Invalid email");
+        console.log(error);
+      }
+      if (error.code === AuthErrorCodes.WEAK_PASSWORD) {
+        setError("Weak password");
+        console.log(error);
+      } else {
+        setError("Check your email and password");
+      }
+    }
+  };
+
+  const handleUserData = (name: string, value: string) => {
+    setUserData({
+      ...userData,
+      [name]: "gg",
+    });
+
+    console.log(userData);
+  };
+
+  const handleSignup = (e: any) => {
+    e.preventDefault();
+
+    // check if all fields are filled in
+    if (name === "" || mobOrEmail === "") {
+      setError("Please fill in all fields");
+      console.log(error);
+      return;
+    }
+
+    setError("");
+    createAccount();
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
         <Text style={styles.title}>Sign Up</Text>
       </View>
 
-      <TextInput style={styles.inputBox} placeholder="Name" />
-      <TextInput style={styles.inputBox} placeholder="Email" />
-      <TextInput style={styles.inputBox} placeholder="Password" />
+      <TextInput
+        onChangeText={(newName) => setName(newName)}
+        style={styles.inputBox}
+        placeholder="Full Name"
+        defaultValue={name}
+      />
+      <TextInput
+        onChangeText={(newMoA) => setMobOrEmail(newMoA)}
+        style={styles.inputBox}
+        placeholder="Email"
+        defaultValue={mobOrEmail}
+      />
+      <TextInput
+        onChangeText={(newPass) => setPassword(newPass)}
+        style={styles.inputBox}
+        placeholder="Password"
+        defaultValue={password}
+      />
 
-      <TouchableOpacity style={styles.inputBtn}>
+      <Text style={styles.err}>{error}</Text>
+
+      <TouchableOpacity style={styles.inputBtn} onPress={handleSignup}>
         <Text style={styles.inputBtnTxt}>Sign up</Text>
       </TouchableOpacity>
 
@@ -100,6 +196,12 @@ const styles = StyleSheet.create({
     color: colors.secondary,
     fontSize: 15,
     fontFamily: "LatoRegular",
+  },
+  err: {
+    color: "#ff3333",
+    fontSize: 12,
+    textAlign: "center",
+    margin: 4,
   },
   dividerCon: {
     width: "100%",

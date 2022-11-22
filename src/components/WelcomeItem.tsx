@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     fontFamily: "LatoRegular",
     fontSize: 14,
     marginTop: 10,
+    letterSpacing: 1,
     textAlign: "center",
   },
 });

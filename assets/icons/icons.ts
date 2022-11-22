@@ -4,7 +4,7 @@ export const homeIcon = (route: any, name: string) => {
   if (route === name) {
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke=${colors.primary} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`;
   }
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke=${colors.lightGrey} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`;
 };
 
 export const businessIcon = (route: any, name: string) => {
@@ -23,7 +23,7 @@ export const businessIcon = (route: any, name: string) => {
   }
   return `<?xml version="1.0" encoding="utf-8"?>
   <svg version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve" fill="none" stroke="#000" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
+     viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve" fill="none" stroke=${colors.lightGrey} stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
   <path class="st0" d="M28,20.6V25c0,1.1-0.9,2-2,2H6c-1.1,0-2-0.9-2-2v-4.4"/>
   <path class="st0" d="M16,24L16,24c-1.1,0-2-0.9-2-2v-3h4v3C18,23.1,17.1,24,16,24z"/>
   <path class="st0" d="M14,22H7c-2.2,0-4-1.8-4-4v-8c0-1.1,0.9-2,2-2h22c1.1,0,2,0.9,2,2v8c0,2.2-1.8,4-4,4h-7"/>
@@ -131,7 +131,7 @@ export const negotiateIcon = (route: any, name: string) => {
   }
   return `<?xml version="1.0" encoding="iso-8859-1"?>
   <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     viewBox="0 0 511.996 511.996" style="enable-background:new 0 0 511.996 511.996;" xml:space="preserve" fill="#000" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
+     viewBox="0 0 511.996 511.996" style="enable-background:new 0 0 511.996 511.996;" xml:space="preserve" fill=${colors.lightGrey} stroke=${colors.lightGrey} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
   <g>
     <g>
       <path d="M452.499,149.389c-3.9-3.91-10.23-3.91-14.14,0c-3.9,3.9-3.9,10.23,0,14.14c3.91,3.9,10.24,3.9,14.14,0
@@ -243,7 +243,7 @@ export const notifIcon = (route: any, name: string) => {
   }
   return `<?xml version="1.0" encoding="utf-8"?>
     <svg version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-       viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
+       viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve" fill="none" stroke=${colors.lightGrey} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
     <style type="text/css">
       .st0{fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
       .st1{fill:none;stroke:#000000;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:10;}

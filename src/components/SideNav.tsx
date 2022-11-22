@@ -149,15 +149,21 @@ const SideNav = () => {
         </View>
       </TouchableOpacity>
 
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "flex-end",
-          alignItems: "flex-start",
-        }}
+      <TouchableOpacity
+        activeOpacity={0.6}
+        // @ts-ignore
+        onPress={() => navigation.navigate("Signin")}
       >
-        <Icon name="logout" type="material" size={28} />
-      </View>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "flex-end",
+            alignItems: "flex-start",
+          }}
+        >
+          <Icon name="logout" type="material" size={28} />
+        </View>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
