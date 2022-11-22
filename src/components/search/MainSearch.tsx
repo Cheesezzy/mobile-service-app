@@ -6,7 +6,7 @@ import {
   Dimensions,
   Button,
 } from "react-native";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { useEffect } from "react";
 import {
   Gesture,
@@ -66,7 +66,28 @@ const MainSearch = () => {
   return (
     <GestureHandlerRootView>
       <View style={styles.container}>
-        <MapView style={styles.map} mapType="satellite" />
+        <MapView
+          style={styles.map}
+          customMapStyle={mapStyle}
+          initialRegion={{
+            latitude: 5.704,
+            longitude: 5.9339,
+            latitudeDelta: 0.1,
+            longitudeDelta: 0.05,
+          }}
+          showsUserLocation={true}
+        >
+          <Marker
+            draggable
+            coordinate={{
+              latitude: 5.704,
+              longitude: 5.9339,
+            }}
+            onDragEnd={(e) => alert(JSON.stringify(e.nativeEvent.coordinate))}
+            title={"Location"}
+            description={"This is the location"}
+          />
+        </MapView>
         <GestureDetector gesture={gesture}>
           <Animated.View style={[rSearchConStyle, styles.searchCon]}>
             <View style={styles.line}></View>
@@ -80,6 +101,28 @@ const MainSearch = () => {
     </GestureHandlerRootView>
   );
 };
+
+const mapStyle = [
+  {
+    elementType: "geometry.stroke",
+    stylers: [
+      {
+        color: "#2776ea",
+      },
+      {
+        lightness: -40,
+      },
+    ],
+  },
+  {
+    elementType: "labels.text.fill",
+    stylers: [
+      {
+        color: "#2776ea",
+      },
+    ],
+  },
+];
 
 const styles = StyleSheet.create({
   container: {
@@ -98,9 +141,9 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   line: {
-    width: 75,
-    height: 4,
-    backgroundColor: colors.lightBlack,
+    width: 60,
+    height: 5,
+    backgroundColor: "#d7e0f085",
     alignSelf: "center",
     marginVertical: 15,
     borderRadius: 2,

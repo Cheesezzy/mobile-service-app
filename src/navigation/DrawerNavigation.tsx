@@ -14,12 +14,16 @@ import AdScreen from "../screens/AdScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import SupportScreen from "../screens/SupportScreen";
 import SearchScreen from "../screens/SearchScreen";
+import SigninScreen from "../screens/SigninScreen";
+import SignupScreen from "../screens/SignupScreen";
 import { DrawerActions } from "@react-navigation/native";
 import { View } from "react-native";
 import { Avatar } from "@rneui/themed";
 import { auth } from "../../firebaseConfig";
 import { backIcon } from "../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 
 const Drawer = createDrawerNavigator();
 
@@ -27,9 +31,27 @@ const DrawerNavigator = ({}: any) => {
   const navigation = useNavigation();
   const [user] = useAuthState(auth);
 
+  const [viewedOnboarding, setViewedOnboarding] = useState(false);
+
+  const checkOnboarding = async () => {
+    try {
+      const value = await AsyncStorage.getItem("@viewedOnboarding");
+
+      if (value !== null) {
+        setViewedOnboarding(true);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    checkOnboarding();
+  }, []);
+
   return (
     <Drawer.Navigator
-      initialRouteName={!user ? "Home" : "Welcome"}
+      initialRouteName={viewedOnboarding ? "Home" : "Welcome"}
       drawerContent={SideNav}
     >
       <Drawer.Screen
@@ -145,10 +167,8 @@ const DrawerNavigator = ({}: any) => {
         name="Ad"
         component={AdScreen}
         options={{
-          title: "Negotiations",
-          headerTitle: (props) => (
-            <HeaderTitle {...props} title="Negotiations" />
-          ),
+          title: "Ad",
+          headerTitle: (props) => <HeaderTitle {...props} title="Ad" />,
           headerLeft: () => (
             <View
               style={{
@@ -233,6 +253,22 @@ const DrawerNavigator = ({}: any) => {
               />
             </View>
           ),
+        }}
+      />
+      <Drawer.Screen
+        name="Signin"
+        component={SigninScreen}
+        options={{
+          title: "Signin",
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="Signup"
+        component={SignupScreen}
+        options={{
+          title: "Signup",
+          headerShown: false,
         }}
       />
     </Drawer.Navigator>
