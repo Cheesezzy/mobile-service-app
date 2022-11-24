@@ -19,41 +19,35 @@ import SignupScreen from "../screens/SignupScreen";
 import { DrawerActions } from "@react-navigation/native";
 import { View } from "react-native";
 import { Avatar } from "@rneui/themed";
-import { auth } from "../../firebaseConfig";
+import { auth, db } from "../../firebaseConfig";
 import { backIcon } from "../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { handleAllUsers } from "../../provider/allUsersSlice";
 
 const Drawer = createDrawerNavigator();
 
-const DrawerNavigator = ({}: any) => {
+const DrawerNavigator = () => {
   const navigation = useNavigation();
   const [user] = useAuthState(auth);
+  const dispatch = useDispatch();
+  const selector = useSelector(handleAllUsers);
+  const usersRef = collection(db, "users");
 
-  const [viewedOnboarding, setViewedOnboarding] = useState(false);
-
-  const checkOnboarding = async () => {
-    try {
-      const value = await AsyncStorage.getItem("@viewedOnboarding");
-
-      if (value !== null) {
-        setViewedOnboarding(true);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const allUsers = selector.payload.users.value;
 
   useEffect(() => {
-    checkOnboarding();
+    getDocs(usersRef).then((snapshot) => {
+      snapshot.forEach((doc) => dispatch(handleAllUsers(doc.data())));
+      console.log(allUsers);
+    });
   }, []);
 
   return (
-    <Drawer.Navigator
-      initialRouteName={viewedOnboarding ? "Home" : "Welcome"}
-      drawerContent={SideNav}
-    >
+    <Drawer.Navigator initialRouteName={"Home"} drawerContent={SideNav}>
       <Drawer.Screen
         name="Home"
         component={HomeScreen}
@@ -130,13 +124,6 @@ const DrawerNavigator = ({}: any) => {
           headerTitle: (props) => null,
           headerLeft: () => null,
           header: () => null,
-        }}
-      />
-      <Drawer.Screen
-        name="Welcome"
-        component={WelcomeScreen}
-        options={{
-          headerShown: false,
         }}
       />
       <Drawer.Screen
@@ -238,36 +225,6 @@ const DrawerNavigator = ({}: any) => {
         component={SearchScreen}
         options={{
           title: "Negotiations",
-          headerTitle: (props) => <HeaderTitle {...props} title="Search" />,
-          headerLeft: () => (
-            <View
-              style={{
-                marginLeft: 18,
-              }}
-            >
-              <SvgXml
-                xml={backIcon()}
-                width="24"
-                height="24"
-                onPress={() => navigation.goBack()}
-              />
-            </View>
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Signin"
-        component={SigninScreen}
-        options={{
-          title: "Signin",
-          headerShown: false,
-        }}
-      />
-      <Drawer.Screen
-        name="Signup"
-        component={SignupScreen}
-        options={{
-          title: "Signup",
           headerShown: false,
         }}
       />

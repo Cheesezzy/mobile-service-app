@@ -15,35 +15,23 @@ const HustleScreen = ({ navigation }: any) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={{}}>
-          <View style={styles.name}>
-            <Text style={{ fontSize: 38, fontFamily: "Lato" }}>Rete Tech</Text>
+          <View style={styles.bal}>
+            <Text style={styles.balTxt}>Balance:</Text>
           </View>
           <View>
-            <Text style={{ fontSize: 15, fontFamily: "LatoRegular" }}>
-              Balance: $0
-            </Text>
+            <Text style={styles.balValue}>$1000</Text>
           </View>
         </View>
         <View style={{}}>
           <Avatar
-            size="large"
+            size="small"
             rounded
             source={{ uri: "https://picsum.photos/200" }}
           />
         </View>
       </View>
-      <View style={styles.statsSec}>
-        <Text
-          style={{
-            color: colors.secondary,
-            fontFamily: "Lato",
-            fontSize: 18,
-            marginBottom: 10,
-          }}
-        >
-          How your business is doing
-        </Text>
-        <View style={styles.statsItem}>
+      {/*<View style={styles.statsSec}>
+        <View style={[styles.statsItem, styles.firstStat]}>
           <Text style={styles.statsItemTxtA}>Business Level</Text>
 
           <Text style={styles.statsItemTxtB}>Start-up</Text>
@@ -62,14 +50,15 @@ const HustleScreen = ({ navigation }: any) => {
               fractions={1}
               startingValue={4}
               readonly
-              imageSize={14}
+              imageSize={13}
               ratingCount={5}
               ratingColor={colors.primary}
-              tintColor={colors.grey}
+              tintColor={colors.secondary}
+              ratingBackgroundColor={colors.grey}
             />
           </View>
         </View>
-      </View>
+  </View>*/}
       <Navigation navigation={navigation} />
     </View>
   );
@@ -86,19 +75,26 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 20,
-    paddingLeft: 15,
-    paddingRight: 15,
+    paddingHorizontal: 15,
   },
-  name: {
+  bal: {
     marginBottom: 5,
+  },
+  balTxt: {
+    fontSize: 12,
+    fontFamily: "LatoRegular",
+  },
+  balValue: {
+    fontSize: 28,
+    fontFamily: "Lato",
+    fontWeight: "100",
   },
   statsSec: {
     height: 170,
     width: "100%",
-    backgroundColor: colors.grey,
     padding: 20,
-    paddingLeft: 15,
-    paddingRight: 15,
+    paddingHorizontal: 15,
+    paddingTop: 0,
   },
   statsItem: {
     flexDirection: "row",
@@ -106,15 +102,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: 15,
   },
+  firstStat: {
+    marginTop: 0,
+  },
   statsItemTxtA: {
     fontSize: 12.5,
     fontFamily: "LatoRegular",
-    color: colors.secondary,
   },
   statsItemTxtB: {
     fontSize: 12,
-    fontFamily: "Lato",
-    color: colors.secondary,
+    fontFamily: "LatoRegular",
   },
 });
 

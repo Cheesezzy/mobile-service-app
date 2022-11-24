@@ -10,12 +10,17 @@ import colors from "../config/colors";
 import { facebookicon, googleIcon } from "../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
 import { useEffect, useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 import { AuthErrorCodes } from "firebase/auth";
 import { createUser } from "../../api/database";
 
 const SignupScreen = ({ navigation }: any) => {
+  const googleProvider = new GoogleAuthProvider();
   const [error, setError] = useState("");
   const [userData, setUserData] = useState({
     name: "",
@@ -30,7 +35,26 @@ const SignupScreen = ({ navigation }: any) => {
     console.log(name);
   }, [name]);
 
-  const createAccount = async () => {
+  const createAcctWithGoogle = async () => {
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential?.accessToken;
+        const user = result.user;
+
+        createUser(user.uid, user.displayName, "", user.email, "", "", "", "");
+      })
+      .catch((error) => {
+        //const errorCode = error.code;
+        const errorMessage = error.message;
+        //const email = error.customData.email;
+        //const credential = GoogleAuthProvider.credentialFromError(error);
+
+        setError(errorMessage);
+      });
+  };
+
+  const createAcctWithEandP = async () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -67,15 +91,6 @@ const SignupScreen = ({ navigation }: any) => {
     }
   };
 
-  const handleUserData = (name: string, value: string) => {
-    setUserData({
-      ...userData,
-      [name]: "gg",
-    });
-
-    console.log(userData);
-  };
-
   const handleSignup = (e: any) => {
     e.preventDefault();
 
@@ -87,7 +102,7 @@ const SignupScreen = ({ navigation }: any) => {
     }
 
     setError("");
-    createAccount();
+    createAcctWithEandP();
   };
 
   return (
@@ -127,7 +142,10 @@ const SignupScreen = ({ navigation }: any) => {
         <View style={styles.line} />
       </View>
 
-      <TouchableOpacity style={styles.thirdParty}>
+      <TouchableOpacity
+        style={styles.thirdParty}
+        onPress={createAcctWithGoogle}
+      >
         <SvgXml
           style={{
             marginRight: 10,

@@ -10,6 +10,8 @@ import {
   negotiateIcon,
   notifIcon,
 } from "../../assets/icons/icons";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
 
 const Navigation = ({ navigation }: any) => {
   const route = useRoute();
@@ -28,7 +30,6 @@ const Navigation = ({ navigation }: any) => {
         onPress={() => navigation.navigate("Home")}
       >
         <View style={styles.btns}>
-          {/* <Icon name="home" type="octicon" color={checkActive("Home")} /> */}
           <SvgXml
             xml={homeIcon(route && route.name, "Home")}
             width="23"
@@ -71,7 +72,8 @@ const Navigation = ({ navigation }: any) => {
         activeOpacity={0.6}
         underlayColor="#DDDDDD"
         style={{ borderRadius: 10 }}
-        onPress={() => navigation.navigate("Negotiations")}
+        //onPress={() => navigation.navigate("Negotiations")}
+        onPress={() => signOut(auth)}
       >
         <View style={styles.btns}>
           <SvgXml

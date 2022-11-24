@@ -12,6 +12,8 @@ import {
 import colors from "../config/colors";
 import Navigation from "../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
+import { useDispatch, useSelector } from "react-redux";
+import { handleAllUsers, refreshAllUsers } from "../../provider/allUsersSlice";
 
 const images = {
   professional: {
@@ -20,6 +22,11 @@ const images = {
 };
 
 const HomeScreen = ({ navigation }: any) => {
+  const dispatch = useDispatch();
+  const selector = useSelector(handleAllUsers);
+
+  const user = selector.payload.user.value;
+
   return (
     <View style={styles.container}>
       <ScrollView style={{ padding: 5, paddingBottom: 20 }}>

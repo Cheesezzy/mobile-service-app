@@ -10,8 +10,13 @@ import * as SplashScreen from "expo-splash-screen";
 import { db } from "./firebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./firebaseConfig";
+import AuthNavigator from "./src/navigation/AuthStack";
 
 export default function App() {
+  const [user] = useAuthState(auth);
+
   const [fontsLoaded] = useFonts({
     Lato: require("./assets/fonts/Lato/Lato-Black.ttf"),
     LatoRegular: require("./assets/fonts/Lato/Lato-Regular.ttf"),
@@ -45,7 +50,7 @@ export default function App() {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <NavigationContainer>
-            <DrawerNavigator />
+            {user ? <DrawerNavigator /> : <AuthNavigator />}
           </NavigationContainer>
         </PersistGate>
       </Provider>

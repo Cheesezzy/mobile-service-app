@@ -14,6 +14,8 @@ import {
 } from "../../assets/icons/icons";
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
 
 const SideNav = () => {
   const navigation = useNavigation();
@@ -66,22 +68,6 @@ const SideNav = () => {
               #7GF345
             </Text>
           </View>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        activeOpacity={0.6}
-        // @ts-ignore
-        onPress={() => navigation.navigate("Hustle")}
-      >
-        <View style={styles.itemContainer}>
-          <SvgXml
-            style={styles.icon}
-            xml={businessIcon("", "Hustle")}
-            width="21"
-            height="21"
-          />
-          <Text style={styles.menuItem}>Your Hustle</Text>
         </View>
       </TouchableOpacity>
 
@@ -152,7 +138,7 @@ const SideNav = () => {
       <TouchableOpacity
         activeOpacity={0.6}
         // @ts-ignore
-        onPress={() => navigation.navigate("Signin")}
+        onPress={() => signOut(auth)}
       >
         <View
           style={{

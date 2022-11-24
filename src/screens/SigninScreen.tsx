@@ -9,23 +9,130 @@ import {
 import colors from "../config/colors";
 import { SvgXml } from "react-native-svg";
 import { facebookicon, googleIcon } from "../../assets/icons/icons";
-
-const facebook = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 31.81" role="img"><defs><style>.fb-btn-cls-1,.fb-btn-cls-2{fill:#1877f2;}.fb-btn-cls-1{clip-rule:evenodd;}.fb-btn-cls-2{fill-rule:evenodd;}.fb-btn-cls-3{clip-path:url(#fb-clip-path);}</style><clipPath id="fb-clip-path" fill="#1877f2"><path fill="#1877f2" class="fb-btn-cls-1" d="M32,16A16,16,0,1,0,13.5,31.81V20.63H9.44V16H13.5V12.48c0-4,2.39-6.23,6-6.23a24.77,24.77,0,0,1,3.58.31V10.5h-2A2.31,2.31,0,0,0,18.5,13v3h4.44l-.71,4.63H18.5V31.81A16,16,0,0,0,32,16"></path></clipPath></defs><g data-name="Layer 2"><g data-name="Layer 1"><path class="fb-btn-cls-2" d="M32,16A16,16,0,1,0,13.5,31.81V20.63H9.44V16H13.5V12.48c0-4,2.39-6.23,6-6.23a24.77,24.77,0,0,1,3.58.31V10.5h-2A2.31,2.31,0,0,0,18.5,13v3h4.44l-.71,4.63H18.5V31.81A16,16,0,0,0,32,16"></path></g></g></svg>`;
+import { useDispatch, useSelector } from "react-redux";
+import { handleAllUsers, refreshAllUsers } from "../../provider/allUsersSlice";
+import { useEffect, useState } from "react";
+import {
+  AuthErrorCodes,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  getRedirectResult,
+} from "firebase/auth";
+import { auth, db } from "../../firebaseConfig";
+import { handleUser } from "../../provider/userSlice";
+import { collection, getDocs } from "firebase/firestore";
 
 const SigninScreen = ({ navigation }: any) => {
+  const dispatch = useDispatch();
+  const selector = useSelector(handleAllUsers);
+  const googleProvider = new GoogleAuthProvider();
+
+  const usersRef = collection(db, "users");
+
+  const users = selector.payload.users.value;
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    dispatch(refreshAllUsers());
+    getDocs(usersRef).then((snapshot) => {
+      const Users: any = [];
+      snapshot.forEach((doc) => {
+        Users.push({ ...doc.data(), id: doc.id });
+      });
+      dispatch(handleAllUsers(Users));
+    });
+  }, []);
+
+  const loginWithGoogle = async () => {
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential?.accessToken;
+        const User = result.user;
+
+        for (const user of users) {
+          if (User.email === user.email) {
+            setError("");
+            dispatch(handleUser(user));
+            console.log(user.name, "signed in successfully");
+          }
+        }
+      })
+      .catch((error) => {
+        //const errorCode = error.code;
+        const errorMessage = error.message;
+        //const email = error.customData.email;
+        //const credential = GoogleAuthProvider.credentialFromError(error);
+
+        setError(errorMessage);
+      });
+  };
+
+  const loginEmailPassword = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error: any) {
+      switch (error.code) {
+        case AuthErrorCodes.INVALID_EMAIL:
+          setError("Invalid email");
+          break;
+        case AuthErrorCodes.USER_DELETED:
+          setError("User not found");
+          break;
+        case AuthErrorCodes.INVALID_PASSWORD:
+          setError("Wrong password");
+          break;
+        default:
+          setError("Something went wrong");
+      }
+    }
+  };
+
+  const handleLogin = (e: any) => {
+    e.preventDefault();
+
+    for (const user of users) {
+      if (user.email === email && user.password === password) {
+        setError("");
+        dispatch(handleUser(user));
+        console.log(user.name, "signed in successfully");
+        loginEmailPassword();
+      } else if (user.password === password && user.email !== email) {
+        setError("Your email does not seem to be correct");
+        console.log(error);
+      } else if (user.email === email && user.password !== password) {
+        setError("Wrong password, please try again");
+        console.log("wrong password");
+      }
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
         <Text style={styles.title}>Sign In</Text>
       </View>
 
-      <TextInput style={styles.inputBox} placeholder="Email or username" />
-      <TextInput style={styles.inputBox} placeholder="Password" />
+      <TextInput
+        onChangeText={(newEmail) => setEmail(newEmail)}
+        style={styles.inputBox}
+        placeholder="Email or username"
+        defaultValue={email}
+      />
+      <TextInput
+        onChangeText={(newPass) => setPassword(newPass)}
+        style={styles.inputBox}
+        placeholder="Password"
+        defaultValue={password}
+      />
 
-      <TouchableOpacity
-        style={styles.inputBtn}
-        onPress={() => navigation.navigate("Home")}
-      >
+      <Text>{error}</Text>
+
+      <TouchableOpacity style={styles.inputBtn} onPress={handleLogin}>
         <Text style={styles.inputBtnTxt}>Sign in</Text>
       </TouchableOpacity>
 
@@ -39,7 +146,7 @@ const SigninScreen = ({ navigation }: any) => {
         <View style={styles.line} />
       </View>
 
-      <TouchableOpacity style={styles.thirdParty}>
+      <TouchableOpacity style={styles.thirdParty} onPress={loginWithGoogle}>
         <SvgXml
           style={{
             marginRight: 10,
