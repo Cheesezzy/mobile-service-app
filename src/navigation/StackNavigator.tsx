@@ -27,10 +27,14 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { handleAllUsers } from "../../provider/allUsersSlice";
+import BusinessEnroll from "../components/BusinessEnroll";
+import { NegoDisplay } from "../components/NegoDisplay";
+import { createStackNavigator } from "@react-navigation/stack";
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
-const DrawerNavigator = () => {
+const StackNavigator = () => {
   const navigation = useNavigation();
   const [user] = useAuthState(auth);
   const dispatch = useDispatch();
@@ -47,8 +51,8 @@ const DrawerNavigator = () => {
   }, []);
 
   return (
-    <Drawer.Navigator initialRouteName={"Home"} drawerContent={SideNav}>
-      <Drawer.Screen
+    <Stack.Navigator initialRouteName={"Home"}>
+      <Stack.Screen
         name="Home"
         component={HomeScreen}
         options={{
@@ -64,14 +68,13 @@ const DrawerNavigator = () => {
                 size={32}
                 rounded
                 source={require("../../assets/tfp.png")}
-                onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+                //onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
               />
             </View>
           ),
         }}
       />
-      <Drawer.Screen name="Explore" component={ExploreScreen} />
-      <Drawer.Screen
+      <Stack.Screen
         name="Notifications"
         component={NotifScreen}
         options={{
@@ -92,7 +95,7 @@ const DrawerNavigator = () => {
           ),
         }}
       />
-      <Drawer.Screen
+      <Stack.Screen
         name="Negotiations"
         component={NegoScreen}
         options={{
@@ -116,7 +119,7 @@ const DrawerNavigator = () => {
           ),
         }}
       />
-      <Drawer.Screen
+      <Stack.Screen
         name="Hustle"
         component={HustleScreen}
         options={{
@@ -126,14 +129,12 @@ const DrawerNavigator = () => {
           header: () => null,
         }}
       />
-      <Drawer.Screen
+      <Stack.Screen
         name="About"
         component={AboutScreen}
         options={{
-          title: "Negotiations",
-          headerTitle: (props) => (
-            <HeaderTitle {...props} title="Negotiations" />
-          ),
+          title: "About",
+          headerTitle: (props) => <HeaderTitle {...props} title="About" />,
           headerLeft: () => (
             <View
               style={{
@@ -150,7 +151,7 @@ const DrawerNavigator = () => {
           ),
         }}
       />
-      <Drawer.Screen
+      <Stack.Screen
         name="Ad"
         component={AdScreen}
         options={{
@@ -172,14 +173,12 @@ const DrawerNavigator = () => {
           ),
         }}
       />
-      <Drawer.Screen
+      <Stack.Screen
         name="Settings"
         component={SettingsScreen}
         options={{
-          title: "Negotiations",
-          headerTitle: (props) => (
-            <HeaderTitle {...props} title="Negotiations" />
-          ),
+          title: "Settings",
+          headerTitle: (props) => <HeaderTitle {...props} title="Settings" />,
           headerLeft: () => (
             <View
               style={{
@@ -196,14 +195,12 @@ const DrawerNavigator = () => {
           ),
         }}
       />
-      <Drawer.Screen
+      <Stack.Screen
         name="Support"
         component={SupportScreen}
         options={{
-          title: "Negotiations",
-          headerTitle: (props) => (
-            <HeaderTitle {...props} title="Negotiations" />
-          ),
+          title: "Support",
+          headerTitle: (props) => <HeaderTitle {...props} title="Support" />,
           headerLeft: () => (
             <View
               style={{
@@ -220,7 +217,7 @@ const DrawerNavigator = () => {
           ),
         }}
       />
-      <Drawer.Screen
+      <Stack.Screen
         name="Search"
         component={SearchScreen}
         options={{
@@ -228,8 +225,32 @@ const DrawerNavigator = () => {
           headerShown: false,
         }}
       />
-    </Drawer.Navigator>
+      <Stack.Screen
+        name="NegoDisplay"
+        component={NegoDisplay}
+        options={{
+          title: "NegoDisplay",
+          headerTitle: (props) => (
+            <HeaderTitle {...props} title="NegoDisplay" />
+          ),
+          headerLeft: () => (
+            <View
+              style={{
+                marginLeft: 18,
+              }}
+            >
+              <SvgXml
+                xml={backIcon()}
+                width="24"
+                height="24"
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        }}
+      />
+    </Stack.Navigator>
   );
 };
 
-export default DrawerNavigator;
+export default StackNavigator;

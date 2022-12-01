@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import store, { persistor } from "./provider/store";
 import "react-native-gesture-handler";
-import DrawerNavigator from "./src/navigation/DrawerNavigation";
+import StackNavigator from "./src/navigation/StackNavigator";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -50,7 +50,7 @@ export default function App() {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <NavigationContainer>
-            {user ? <DrawerNavigator /> : <AuthNavigator />}
+            {user ? <StackNavigator /> : <AuthNavigator />}
           </NavigationContainer>
         </PersistGate>
       </Provider>

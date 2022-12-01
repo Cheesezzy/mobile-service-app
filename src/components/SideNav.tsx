@@ -1,4 +1,11 @@
-import { View, Text, SafeAreaView, Platform, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Platform,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
 import React from "react";
 import { Avatar, Icon } from "@rneui/themed";
 import { SvgXml } from "react-native-svg";
@@ -6,6 +13,7 @@ import {
   aboutIcon,
   adIcon,
   businessIcon,
+  exitIcon,
   homeIcon,
   negotiateIcon,
   notifIcon,
@@ -135,21 +143,13 @@ const SideNav = () => {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        activeOpacity={0.6}
-        // @ts-ignore
+      <SvgXml
         onPress={() => signOut(auth)}
-      >
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "flex-end",
-            alignItems: "flex-start",
-          }}
-        >
-          <Icon name="logout" type="material" size={28} />
-        </View>
-      </TouchableOpacity>
+        style={styles.exit}
+        xml={exitIcon()}
+        width="30"
+        height="30"
+      />
     </SafeAreaView>
   );
 };
@@ -175,6 +175,14 @@ const styles = StyleSheet.create({
     position: "relative",
     top: 1.5,
     marginRight: 10,
+  },
+  exit: {
+    justifyContent: "flex-end",
+    position: "absolute",
+    bottom: 50,
+    left: 40,
+
+    zIndex: 100,
   },
 });
 

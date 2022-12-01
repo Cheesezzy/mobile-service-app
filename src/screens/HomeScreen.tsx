@@ -14,6 +14,8 @@ import Navigation from "../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { handleAllUsers, refreshAllUsers } from "../../provider/allUsersSlice";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
 
 const images = {
   professional: {
@@ -88,8 +90,6 @@ const HomeScreen = ({ navigation }: any) => {
               style={{
                 flex: 1,
                 borderRadius: 5,
-                borderColor: "#d7e0f0",
-                borderWidth: 1,
                 padding: 5,
                 justifyContent: "center",
                 alignItems: "center",
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: colors.secondary,
+    backgroundColor: "whitesmoke",
   },
   categorySecs: {
     flexDirection: "row",
@@ -156,8 +156,7 @@ const styles = StyleSheet.create({
     height: 70,
     margin: 4,
     borderRadius: 5,
-    borderColor: "#d7e0f0",
-    borderWidth: 1,
+    backgroundColor: colors.secondary,
     padding: 5,
   },
   bigTxt: {
@@ -166,11 +165,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   smCon: {
-    backgroundColor: "white",
     flex: 1,
     borderRadius: 5,
-    borderColor: "#d7e0f0",
-    borderWidth: 1,
+    backgroundColor: colors.secondary,
     padding: 5,
   },
   categorySm: {
@@ -183,17 +180,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: "LatoRegular",
     textAlign: "center",
+    marginTop: 2,
   },
   categoryLarge: {
     flex: 1,
     height: 110,
     width: "100%",
-    backgroundColor: "white",
     margin: 4,
     marginTop: 15,
     borderRadius: 5,
-    borderColor: "#d7e0f0",
-    borderWidth: 1,
+    backgroundColor: colors.secondary,
   },
   img: {
     flex: 1,

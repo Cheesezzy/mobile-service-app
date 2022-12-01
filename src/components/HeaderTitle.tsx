@@ -64,6 +64,23 @@ function HeaderTitle({ title }: Props) {
         ""
       )}
       {route.name === "Hustle" ? <></> : ""}
+      {route.name === "NegoDisplay" ? (
+        <>
+          <Text
+            style={{
+              fontFamily: "Lato",
+              fontSize: 18,
+            }}
+          >
+            {
+              // @ts-ignore
+              route?.params?.name
+            }
+          </Text>
+        </>
+      ) : (
+        ""
+      )}
       {route.name === "Notifications" ? <></> : ""}
       {route.name === "Negotiations" ? (
         <>

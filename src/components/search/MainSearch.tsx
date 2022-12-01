@@ -5,9 +5,10 @@ import {
   TextInput,
   Dimensions,
   Button,
+  ViewProps,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Gesture,
   GestureDetector,
@@ -21,11 +22,30 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import colors from "../../config/colors";
+import * as Location from "expo-location";
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
 
 const MainSearch = () => {
+  const [userLocation, setUserLocation] = useState<any>(null);
+  const [errMsg, setErrorMsg] = useState<any>(null);
+  const [initialRegion, setInitialRegion] = useState<any>(null);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync();
+      setUserLocation(location);
+      console.log(userLocation);
+    })();
+  }, []);
+
   useEffect(() => {
     translateY.value = withSpring(-SCREEN_HEIGHT / 3, { damping: 50 });
   }, []);
@@ -70,24 +90,19 @@ const MainSearch = () => {
         <MapView
           style={styles.map}
           customMapStyle={mapStyle}
-          initialRegion={{
-            latitude: 5.704,
-            longitude: 5.9339,
-            latitudeDelta: 0.1,
-            longitudeDelta: 0.05,
-          }}
+          initialRegion={
+            userLocation && {
+              latitude: parseFloat(userLocation?.coords.latitude),
+              longitude: parseFloat(userLocation?.coords.longitude),
+              latitudeDelta: 5,
+              longitudeDelta: 5,
+            }
+          }
           showsUserLocation={true}
+          followsUserLocation={true}
+          region={userLocation && userLocation}
         >
-          <Marker
-            draggable
-            coordinate={{
-              latitude: 5.704,
-              longitude: 5.9339,
-            }}
-            onDragEnd={(e) => alert(JSON.stringify(e.nativeEvent.coordinate))}
-            title={"Location"}
-            description={"This is the location"}
-          />
+          {userLocation && <Marker coordinate={userLocation.coords} />}
         </MapView>
         <GestureDetector gesture={gesture}>
           <Animated.View style={[rSearchConStyle, styles.searchCon]}>

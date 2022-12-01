@@ -70,6 +70,7 @@ const SignupScreen = ({ navigation }: any) => {
         password,
         "",
         "",
+        "",
         ""
       );
     } catch (error: any) {
@@ -185,7 +186,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    paddingTop: 60,
+    justifyContent: "center",
   },
   title: {
     fontSize: 22,

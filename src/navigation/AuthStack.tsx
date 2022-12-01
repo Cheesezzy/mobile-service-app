@@ -15,8 +15,10 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { handleAllUsers } from "../../provider/allUsersSlice";
+import { createStackNavigator } from "@react-navigation/stack";
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
 const AuthNavigator = () => {
   const navigation = useNavigation();
@@ -35,8 +37,8 @@ const AuthNavigator = () => {
   }, []);
 
   return (
-    <Drawer.Navigator initialRouteName={"Signin"} drawerContent={() => null}>
-      <Drawer.Screen
+    <Stack.Navigator initialRouteName={"Signin"}>
+      <Stack.Screen
         name="Welcome"
         component={WelcomeScreen}
         options={{
@@ -44,7 +46,7 @@ const AuthNavigator = () => {
         }}
       />
 
-      <Drawer.Screen
+      <Stack.Screen
         name="Signin"
         component={SigninScreen}
         options={{
@@ -52,7 +54,7 @@ const AuthNavigator = () => {
           headerShown: false,
         }}
       />
-      <Drawer.Screen
+      <Stack.Screen
         name="Signup"
         component={SignupScreen}
         options={{
@@ -60,7 +62,7 @@ const AuthNavigator = () => {
           headerShown: false,
         }}
       />
-    </Drawer.Navigator>
+    </Stack.Navigator>
   );
 };
 

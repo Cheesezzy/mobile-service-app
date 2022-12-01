@@ -35,6 +35,17 @@ const Navigation = ({ navigation }: any) => {
             width="23"
             height="23"
           />
+          <Text
+            style={[
+              styles.btnLabel,
+              {
+                color:
+                  route.name === "Home" ? colors.primary : colors.lightGrey,
+              },
+            ]}
+          >
+            Home
+          </Text>
         </View>
       </TouchableHighlight>
 
@@ -50,6 +61,17 @@ const Navigation = ({ navigation }: any) => {
             width="24"
             height="24"
           />
+          <Text
+            style={[
+              styles.btnLabel,
+              {
+                color:
+                  route.name === "Hustle" ? colors.primary : colors.lightGrey,
+              },
+            ]}
+          >
+            Your Hustle
+          </Text>
         </View>
       </TouchableHighlight>
 
@@ -65,6 +87,19 @@ const Navigation = ({ navigation }: any) => {
             width="24"
             height="24"
           />
+          <Text
+            style={[
+              styles.btnLabel,
+              {
+                color:
+                  route.name === "Notifications"
+                    ? colors.primary
+                    : colors.lightGrey,
+              },
+            ]}
+          >
+            Notifications
+          </Text>
         </View>
       </TouchableHighlight>
 
@@ -72,8 +107,7 @@ const Navigation = ({ navigation }: any) => {
         activeOpacity={0.6}
         underlayColor="#DDDDDD"
         style={{ borderRadius: 10 }}
-        //onPress={() => navigation.navigate("Negotiations")}
-        onPress={() => signOut(auth)}
+        onPress={() => navigation.navigate("Negotiations")}
       >
         <View style={styles.btns}>
           <SvgXml
@@ -81,6 +115,19 @@ const Navigation = ({ navigation }: any) => {
             width="24"
             height="24"
           />
+          <Text
+            style={[
+              styles.btnLabel,
+              {
+                color:
+                  route.name === "Negotiations"
+                    ? colors.primary
+                    : colors.lightGrey,
+              },
+            ]}
+          >
+            Negotiations
+          </Text>
         </View>
       </TouchableHighlight>
     </View>
@@ -103,10 +150,15 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   btns: {
+    width: 60,
     borderRadius: 10,
-    padding: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
+    alignItems: "center",
+    padding: 2,
+  },
+  btnLabel: {
+    fontFamily: "LatoRegular",
+    fontSize: 10,
+    textAlign: "center",
   },
 });
 
