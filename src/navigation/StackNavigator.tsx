@@ -30,6 +30,10 @@ import { handleAllUsers } from "../../provider/allUsersSlice";
 import BusinessEnroll from "../components/BusinessEnroll";
 import { NegoDisplay } from "../components/NegoDisplay";
 import { createStackNavigator } from "@react-navigation/stack";
+import AnalyticsScreen from "../screens/AnalyticsScreen";
+import PaymentsScreen from "../screens/PaymentsScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import EarningsScreen from "../screens/EarningsScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -217,11 +221,104 @@ const StackNavigator = () => {
           ),
         }}
       />
+
+      <Stack.Screen
+        name="Analytics"
+        component={AnalyticsScreen}
+        options={{
+          title: "Analytics",
+          headerTitle: (props) => <HeaderTitle {...props} title="Analytics" />,
+          headerLeft: () => (
+            <View
+              style={{
+                marginLeft: 18,
+              }}
+            >
+              <SvgXml
+                xml={backIcon()}
+                width="24"
+                height="24"
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        }}
+      />
+
+      <Stack.Screen
+        name="Payments"
+        component={PaymentsScreen}
+        options={{
+          title: "Payments",
+          headerTitle: (props) => <HeaderTitle {...props} title="Payments" />,
+          headerLeft: () => (
+            <View
+              style={{
+                marginLeft: 18,
+              }}
+            >
+              <SvgXml
+                xml={backIcon()}
+                width="24"
+                height="24"
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        }}
+      />
+
+      <Stack.Screen
+        name="Earnings"
+        component={EarningsScreen}
+        options={{
+          title: "Earnings",
+          headerTitle: (props) => <HeaderTitle {...props} title="Earnings" />,
+          headerLeft: () => (
+            <View
+              style={{
+                marginLeft: 18,
+              }}
+            >
+              <SvgXml
+                xml={backIcon()}
+                width="24"
+                height="24"
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        }}
+      />
+
+      <Stack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          title: "Profile",
+          headerTitle: (props) => <HeaderTitle {...props} title="Profile" />,
+          headerLeft: () => (
+            <View
+              style={{
+                marginLeft: 18,
+              }}
+            >
+              <SvgXml
+                xml={backIcon()}
+                width="24"
+                height="24"
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        }}
+      />
+
       <Stack.Screen
         name="Search"
         component={SearchScreen}
         options={{
-          title: "Negotiations",
+          title: "Search",
           headerShown: false,
         }}
       />

@@ -13,9 +13,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebaseConfig";
 import AuthNavigator from "./src/navigation/AuthStack";
+import { ActivityIndicator, View } from "react-native";
+import colors from "./src/config/colors";
 
 export default function App() {
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
 
   const [fontsLoaded] = useFonts({
     Lato: require("./assets/fonts/Lato/Lato-Black.ttf"),
@@ -50,7 +52,15 @@ export default function App() {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <NavigationContainer>
-            {user ? <StackNavigator /> : <AuthNavigator />}
+            {loading ? (
+              <View style={{ backgroundColor: colors.secondary, flex: 1 }}>
+                <ActivityIndicator />
+              </View>
+            ) : user ? (
+              <StackNavigator />
+            ) : (
+              <AuthNavigator />
+            )}
           </NavigationContainer>
         </PersistGate>
       </Provider>

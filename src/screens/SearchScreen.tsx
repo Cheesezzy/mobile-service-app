@@ -1,14 +1,25 @@
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { SvgXml } from "react-native-svg";
-import { searchIcon } from "../../assets/icons/icons";
+import { backIcon, searchIcon } from "../../assets/icons/icons";
 import MainSearch from "../components/search/MainSearch";
 import colors from "../config/colors";
 
-const SearchScreen = () => {
+const SearchScreen = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
       <MainSearch />
       <View style={styles.searchCon}>
+        <SvgXml
+          xml={backIcon()}
+          width="16"
+          height="16"
+          onPress={() => navigation.goBack()}
+          style={{
+            position: "relative",
+            top: 6,
+            marginRight: 10,
+          }}
+        />
         <SvgXml
           style={{
             position: "relative",
@@ -39,7 +50,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary,
     borderRadius: 20,
     padding: 5,
-    paddingHorizontal: 18,
+    paddingHorizontal: 10,
     alignSelf: "center",
   },
   search: {

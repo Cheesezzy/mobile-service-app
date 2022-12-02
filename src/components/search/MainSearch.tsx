@@ -23,6 +23,37 @@ import Animated, {
 } from "react-native-reanimated";
 import colors from "../../config/colors";
 import * as Location from "expo-location";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+
+const markers = [
+  {
+    accuracy: 300,
+    altitude: 0,
+    altitudeAccuracy: 0,
+    heading: 0,
+    latitude: 4.9760008,
+    longitude: 8.3305643,
+    speed: 0,
+  },
+  {
+    accuracy: 300,
+    altitude: 0,
+    altitudeAccuracy: 0,
+    heading: 0,
+    latitude: 4.9757894,
+    longitude: 8.3309179,
+    speed: 0,
+  },
+  {
+    accuracy: 300,
+    altitude: 0,
+    altitudeAccuracy: 0,
+    heading: 0,
+    latitude: 4.9744057,
+    longitude: 8.3306784,
+    speed: 0,
+  },
+];
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
@@ -40,7 +71,9 @@ const MainSearch = () => {
         return;
       }
 
-      const location = await Location.getCurrentPositionAsync();
+      const location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.BestForNavigation,
+      });
       setUserLocation(location);
       console.log(userLocation);
     })();
@@ -94,19 +127,51 @@ const MainSearch = () => {
             userLocation && {
               latitude: parseFloat(userLocation?.coords.latitude),
               longitude: parseFloat(userLocation?.coords.longitude),
-              latitudeDelta: 5,
-              longitudeDelta: 5,
+              latitudeDelta: 0.02,
+              longitudeDelta: 0.02,
             }
           }
           showsUserLocation={true}
           followsUserLocation={true}
           region={userLocation && userLocation}
+          loadingEnabled
+          loadingIndicatorColor={colors.primary}
         >
-          {userLocation && <Marker coordinate={userLocation.coords} />}
+          {userLocation && (
+            <Marker
+              coordinate={userLocation.coords}
+              image={require("../../.././assets/map/user.png")}
+              title="You"
+            />
+          )}
+          {markers.map((marker) => {
+            return (
+              userLocation && (
+                <Marker
+                  key={Math.random() + marker.latitude}
+                  coordinate={marker}
+                  pinColor={colors.primary}
+                  image={require("../../.././assets/map/business.png")}
+                />
+              )
+            );
+          })}
         </MapView>
         <GestureDetector gesture={gesture}>
           <Animated.View style={[rSearchConStyle, styles.searchCon]}>
             <View style={styles.line}></View>
+            <GooglePlacesAutocomplete
+              placeholder="Search"
+              onPress={(data, details = null) => {
+                // 'details' is provided when fetchDetails = true
+                console.log(data, details);
+              }}
+              query={{
+                key: "AIzaSyDwzW1q7R5P65DD3lVDrvG5Q1gMAWFQFVo",
+                language: "en",
+              }}
+              styles={{ borderWidth: 1, borderColor: "red" }}
+            />
           </Animated.View>
         </GestureDetector>
       </View>

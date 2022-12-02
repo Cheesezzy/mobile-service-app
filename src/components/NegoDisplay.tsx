@@ -9,6 +9,7 @@ import {
   ScrollView,
   TextInput,
   useWindowDimensions,
+  ActivityIndicator,
 } from "react-native";
 import colors from "../config/colors";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -61,7 +62,7 @@ export const NegoDisplay = ({ route }: any) => {
     "chats"
   );
   const q = query(messagesRef, orderBy("createdAt"), limit(25));
-  const [messages] = useCollectionData(q);
+  const [messages, loading] = useCollectionData(q);
 
   const handleSendMessage = () => {
     sendMessage(
@@ -77,18 +78,25 @@ export const NegoDisplay = ({ route }: any) => {
   };
 
   const dummy = useAnimatedRef<any>();
-  const scroll = useSharedValue(0);
   const { height } = useWindowDimensions();
 
-  useDerivedValue(() => {
-    scrollTo(dummy, 0, scroll.value * height, true);
-  });
+  useEffect(() => {
+    if (!loading)
+      dummy.current.scrollTo({ x: 0, y: height + 70, animated: true });
+  }, [loading]);
 
-  {
-    /*useEffect(() => {
-    scroll.value = scroll.value + height;
-    if (scroll.value > height) scroll.value = 0;
-  }, [scroll.value]);*/
+  if (loading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: colors.secondary,
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
   }
 
   return (

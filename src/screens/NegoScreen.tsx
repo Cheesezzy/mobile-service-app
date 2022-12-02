@@ -18,6 +18,7 @@ import {
   Text,
   Dimensions,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { auth, db } from "../../firebaseConfig";
 import Navigation from "../components/Navigation";
@@ -41,7 +42,7 @@ const NegoScreen = ({ navigation }: any) => {
   const User = selector.payload.user.value;
   const negotiatingRef = collection(db, "users", user?.uid!, "negotiating");
 
-  const [negotiating] = useCollectionData(negotiatingRef);
+  const [negotiating, loading] = useCollectionData(negotiatingRef);
 
   const checkingPerson = (msg: any) => {
     if (msg?.type === "sent") {
@@ -49,6 +50,20 @@ const NegoScreen = ({ navigation }: any) => {
     }
     return msg?.sentBy;
   };
+
+  if (loading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: colors.secondary,
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
