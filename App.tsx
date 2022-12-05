@@ -53,8 +53,15 @@ export default function App() {
         <PersistGate loading={null} persistor={persistor}>
           <NavigationContainer>
             {loading ? (
-              <View style={{ backgroundColor: colors.secondary, flex: 1 }}>
-                <ActivityIndicator />
+              <View
+                style={{
+                  backgroundColor: colors.secondary,
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <ActivityIndicator color={colors.primary} size="large" />
               </View>
             ) : user ? (
               <StackNavigator />

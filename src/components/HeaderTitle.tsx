@@ -82,6 +82,7 @@ function HeaderTitle({ title }: Props) {
         ""
       )}
       {route.name === "Notifications" ? <></> : ""}
+      {route.name === "Settings" ? <></> : ""}
       {route.name === "Negotiations" ? (
         <>
           <TouchableOpacity

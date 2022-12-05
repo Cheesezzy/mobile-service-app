@@ -182,7 +182,6 @@ const StackNavigator = () => {
         component={SettingsScreen}
         options={{
           title: "Settings",
-          headerTitle: (props) => <HeaderTitle {...props} title="Settings" />,
           headerLeft: () => (
             <View
               style={{

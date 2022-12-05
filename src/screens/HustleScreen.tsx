@@ -83,7 +83,7 @@ const HustleScreen = ({ navigation }: any) => {
                 ratingCount={5}
                 ratingColor={colors.primary}
                 tintColor={colors.secondary}
-                ratingBackgroundColor={colors.grey}
+                ratingBackgroundColor="grey"
               />
             </View>
           </View>
@@ -385,7 +385,7 @@ const styles = StyleSheet.create({
   statsSec: {
     width: "100%",
     padding: 0,
-    borderBottomColor: colors.lightBlack,
+    borderBottomColor: colors.grey,
     borderBottomWidth: 1,
     paddingBottom: 15,
     marginBottom: 25,
