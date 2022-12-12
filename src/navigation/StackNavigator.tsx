@@ -17,7 +17,7 @@ import SearchScreen from "../screens/SearchScreen";
 import SigninScreen from "../screens/SigninScreen";
 import SignupScreen from "../screens/SignupScreen";
 import { DrawerActions } from "@react-navigation/native";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { Avatar } from "@rneui/themed";
 import { auth, db } from "../../firebaseConfig";
 import { backIcon } from "../../assets/icons/icons";
@@ -34,6 +34,8 @@ import AnalyticsScreen from "../screens/AnalyticsScreen";
 import PaymentsScreen from "../screens/PaymentsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import EarningsScreen from "../screens/EarningsScreen";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import colors from "../config/colors";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -44,38 +46,32 @@ const StackNavigator = () => {
   const dispatch = useDispatch();
   const selector = useSelector(handleAllUsers);
   const usersRef = collection(db, "users");
+  const userbizInformedRef = doc(db, "users", user?.uid!);
 
   const allUsers = selector.payload.users.value;
+
+  const [bizData, loading] = useDocumentData(userbizInformedRef);
 
   useEffect(() => {
     getDocs(usersRef).then((snapshot) => {
       snapshot.forEach((doc) => dispatch(handleAllUsers(doc.data())));
       console.log(allUsers);
     });
+    console.log(bizData?.bizInformed, "biz stat");
   }, []);
 
   return (
-    <Stack.Navigator initialRouteName={"Home"}>
+    <Stack.Navigator
+      initialRouteName={
+        !loading && bizData?.bizInformed === true ? "Home" : "BusinessEnroll"
+      }
+    >
       <Stack.Screen
         name="Home"
         component={HomeScreen}
         options={{
           title: "Home",
-          headerTitle: (props) => <HeaderTitle {...props} title="Home" />,
-          headerLeft: () => (
-            <View
-              style={{
-                marginLeft: 18,
-              }}
-            >
-              <Avatar
-                size={32}
-                rounded
-                source={require("../../assets/tfp.png")}
-                //onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-              />
-            </View>
-          ),
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -83,20 +79,7 @@ const StackNavigator = () => {
         component={NotifScreen}
         options={{
           title: "Notifications",
-          headerLeft: () => (
-            <View
-              style={{
-                marginLeft: 18,
-              }}
-            >
-              <Avatar
-                size={32}
-                rounded
-                source={require("../../assets/tfp.png")}
-                onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-              />
-            </View>
-          ),
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -104,23 +87,7 @@ const StackNavigator = () => {
         component={NegoScreen}
         options={{
           title: "Negotiations",
-          headerTitle: (props) => (
-            <HeaderTitle {...props} title="Negotiations" />
-          ),
-          headerLeft: () => (
-            <View
-              style={{
-                marginLeft: 18,
-              }}
-            >
-              <Avatar
-                size={32}
-                rounded
-                source={require("../../assets/tfp.png")}
-                onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-              />
-            </View>
-          ),
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -128,9 +95,7 @@ const StackNavigator = () => {
         component={HustleScreen}
         options={{
           title: "Hustle",
-          headerTitle: (props) => null,
-          headerLeft: () => null,
-          header: () => null,
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -138,21 +103,7 @@ const StackNavigator = () => {
         component={AboutScreen}
         options={{
           title: "About",
-          headerTitle: (props) => <HeaderTitle {...props} title="About" />,
-          headerLeft: () => (
-            <View
-              style={{
-                marginLeft: 18,
-              }}
-            >
-              <SvgXml
-                xml={backIcon()}
-                width="24"
-                height="24"
-                onPress={() => navigation.goBack()}
-              />
-            </View>
-          ),
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -160,21 +111,7 @@ const StackNavigator = () => {
         component={AdScreen}
         options={{
           title: "Ad",
-          headerTitle: (props) => <HeaderTitle {...props} title="Ad" />,
-          headerLeft: () => (
-            <View
-              style={{
-                marginLeft: 18,
-              }}
-            >
-              <SvgXml
-                xml={backIcon()}
-                width="24"
-                height="24"
-                onPress={() => navigation.goBack()}
-              />
-            </View>
-          ),
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -182,20 +119,7 @@ const StackNavigator = () => {
         component={SettingsScreen}
         options={{
           title: "Settings",
-          headerLeft: () => (
-            <View
-              style={{
-                marginLeft: 18,
-              }}
-            >
-              <SvgXml
-                xml={backIcon()}
-                width="24"
-                height="24"
-                onPress={() => navigation.goBack()}
-              />
-            </View>
-          ),
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -203,21 +127,7 @@ const StackNavigator = () => {
         component={SupportScreen}
         options={{
           title: "Support",
-          headerTitle: (props) => <HeaderTitle {...props} title="Support" />,
-          headerLeft: () => (
-            <View
-              style={{
-                marginLeft: 18,
-              }}
-            >
-              <SvgXml
-                xml={backIcon()}
-                width="24"
-                height="24"
-                onPress={() => navigation.goBack()}
-              />
-            </View>
-          ),
+          headerShown: false,
         }}
       />
 
@@ -226,21 +136,7 @@ const StackNavigator = () => {
         component={AnalyticsScreen}
         options={{
           title: "Analytics",
-          headerTitle: (props) => <HeaderTitle {...props} title="Analytics" />,
-          headerLeft: () => (
-            <View
-              style={{
-                marginLeft: 18,
-              }}
-            >
-              <SvgXml
-                xml={backIcon()}
-                width="24"
-                height="24"
-                onPress={() => navigation.goBack()}
-              />
-            </View>
-          ),
+          headerShown: false,
         }}
       />
 
@@ -249,21 +145,7 @@ const StackNavigator = () => {
         component={PaymentsScreen}
         options={{
           title: "Payments",
-          headerTitle: (props) => <HeaderTitle {...props} title="Payments" />,
-          headerLeft: () => (
-            <View
-              style={{
-                marginLeft: 18,
-              }}
-            >
-              <SvgXml
-                xml={backIcon()}
-                width="24"
-                height="24"
-                onPress={() => navigation.goBack()}
-              />
-            </View>
-          ),
+          headerShown: false,
         }}
       />
 
@@ -272,21 +154,7 @@ const StackNavigator = () => {
         component={EarningsScreen}
         options={{
           title: "Earnings",
-          headerTitle: (props) => <HeaderTitle {...props} title="Earnings" />,
-          headerLeft: () => (
-            <View
-              style={{
-                marginLeft: 18,
-              }}
-            >
-              <SvgXml
-                xml={backIcon()}
-                width="24"
-                height="24"
-                onPress={() => navigation.goBack()}
-              />
-            </View>
-          ),
+          headerShown: false,
         }}
       />
 
@@ -295,21 +163,7 @@ const StackNavigator = () => {
         component={ProfileScreen}
         options={{
           title: "Profile",
-          headerTitle: (props) => <HeaderTitle {...props} title="Profile" />,
-          headerLeft: () => (
-            <View
-              style={{
-                marginLeft: 18,
-              }}
-            >
-              <SvgXml
-                xml={backIcon()}
-                width="24"
-                height="24"
-                onPress={() => navigation.goBack()}
-              />
-            </View>
-          ),
+          headerShown: false,
         }}
       />
 
@@ -326,23 +180,15 @@ const StackNavigator = () => {
         component={NegoDisplay}
         options={{
           title: "NegoDisplay",
-          headerTitle: (props) => (
-            <HeaderTitle {...props} title="NegoDisplay" />
-          ),
-          headerLeft: () => (
-            <View
-              style={{
-                marginLeft: 18,
-              }}
-            >
-              <SvgXml
-                xml={backIcon()}
-                width="24"
-                height="24"
-                onPress={() => navigation.goBack()}
-              />
-            </View>
-          ),
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="BusinessEnroll"
+        component={BusinessEnroll}
+        options={{
+          title: "BusinessEnroll",
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

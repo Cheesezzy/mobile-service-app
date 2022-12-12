@@ -1,14 +1,203 @@
-import { StyleSheet, Text, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import React from "react";
+import colors from "../config/colors";
+import { SvgXml } from "react-native-svg";
+import { backIcon, locationIcon, profileIcon } from "../../assets/icons/icons";
+import { Avatar } from "@rneui/themed";
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }: any) => {
   return (
-    <View>
-      <Text>ProfileScreen</Text>
+    <View style={styles.container}>
+      <ScrollView style={styles.body}>
+        <View style={styles.flexHeader}>
+          <TouchableOpacity style={styles.goBack}>
+            <SvgXml
+              xml={backIcon()}
+              width="22"
+              height="22"
+              onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>
+
+          <View>
+            <Avatar
+              size="medium"
+              rounded
+              source={{ uri: "https://picsum.photos/200" }}
+              containerStyle={styles.avatar}
+            />
+            <Text style={styles.profileName}>Rete Technologies</Text>
+          </View>
+        </View>
+
+        <View style={styles.businessInfoCon}>
+          <Text style={styles.businessInfoConTxt}>Business Information</Text>
+
+          <View style={styles.bio}>
+            <Text>
+              Rete Technologies is a fast-growing online platform that connects
+              people looking for services with service providers. Our platform
+              uses the searcher's location to suggest service providers who are
+              close to them, making it easy for people to find the services they
+              need quickly and efficiently. Our platform is similar to Fiverr,
+              but with a greater focus on hard skills such as painting and
+              barbering.
+            </Text>
+          </View>
+          <View style={styles.about}>
+            <View style={styles.aboutItem}>
+              <View style={styles.aboutItemIcon}>
+                <SvgXml
+                  xml={profileIcon(colors.primary)}
+                  width="22"
+                  height="22"
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+              <View>
+                <Text style={styles.aboutInfoLabel}>Manager</Text>
+                <Text style={styles.aboutInfoVal}>Jeoffrey Duke</Text>
+              </View>
+            </View>
+
+            <View style={styles.aboutItem}>
+              <View style={styles.aboutItemIcon}>
+                <SvgXml
+                  xml={locationIcon(colors.primary)}
+                  width="22"
+                  height="22"
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+              <View>
+                <Text style={styles.aboutInfoLabel}>Location</Text>
+                <Text style={styles.aboutInfoVal}>Nigeria</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.galleryCon}>
+          <Text style={styles.galleryConTxt}>Gallery</Text>
+
+          <View style={styles.gallery}>
+            <View style={styles.galleryImg}></View>
+            <View style={styles.galleryImg}></View>
+            <View style={styles.galleryImg}></View>
+            <View style={styles.galleryImg}></View>
+          </View>
+        </View>
+
+        <View style={styles.reviewsCon}>
+          <Text style={styles.reviewsConTxt}>Reviews</Text>
+
+          <View style={styles.reviews}></View>
+        </View>
+
+        <View style={{ height: 100, width: "100%" }} />
+      </ScrollView>
     </View>
   );
 };
 
 export default ProfileScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.secondary,
+  },
+  body: {
+    flex: 1,
+    padding: 15,
+    paddingTop: 35,
+  },
+  flexHeader: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  goBack: {
+    position: "absolute",
+    left: 0,
+  },
+  avatar: {
+    alignSelf: "center",
+  },
+  profileName: {
+    fontFamily: "Lato",
+    fontSize: 18,
+    marginTop: 10,
+  },
+  businessInfoCon: {
+    marginTop: 25,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: colors.grey,
+  },
+  businessInfoConTxt: {
+    fontFamily: "Lato",
+    fontSize: 16,
+  },
+  bio: {
+    marginTop: 15,
+  },
+  about: {
+    marginTop: 20,
+  },
+  aboutItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  aboutItemIcon: {
+    marginRight: 12,
+  },
+  aboutInfoLabel: {
+    fontFamily: "LatoRegular",
+    fontSize: 11,
+    color: colors.primary,
+  },
+  aboutInfoVal: {
+    fontFamily: "Lato",
+    marginTop: 5,
+  },
+  galleryCon: {
+    marginTop: 25,
+  },
+  galleryConTxt: {
+    fontFamily: "Lato",
+    fontSize: 16,
+  },
+  gallery: {
+    height: 95,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    padding: 10,
+    overflow: "hidden",
+  },
+  galleryImg: {
+    height: 80,
+    width: 80,
+    borderColor: "lightgrey",
+    borderWidth: 1,
+    margin: 5,
+  },
+  reviewsCon: {
+    marginTop: 25,
+  },
+  reviewsConTxt: {
+    fontFamily: "Lato",
+    fontSize: 16,
+  },
+  reviews: {
+    flexDirection: "row",
+  },
+});

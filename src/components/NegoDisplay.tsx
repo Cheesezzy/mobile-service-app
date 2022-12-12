@@ -75,6 +75,7 @@ export const NegoDisplay = ({ route }: any) => {
     );
 
     setTypedMessage("");
+    dummy.current.scrollTo({ x: 0, y: height * 2, animated: true });
   };
 
   const dummy = useAnimatedRef<any>();
@@ -82,7 +83,7 @@ export const NegoDisplay = ({ route }: any) => {
 
   useEffect(() => {
     if (!loading)
-      dummy.current.scrollTo({ x: 0, y: height + 70, animated: true });
+      dummy.current.scrollTo({ x: 0, y: height * 2, animated: true });
   }, [loading]);
 
   if (loading) {

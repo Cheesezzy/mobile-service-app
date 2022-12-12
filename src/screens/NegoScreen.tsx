@@ -33,6 +33,8 @@ import {
 } from "../../provider/userSlice";
 import { useEffect, useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import HeaderTitle from "../components/HeaderTitle";
+import { StatusBar } from "expo-status-bar";
 
 const NegoScreen = ({ navigation }: any) => {
   const dispatch = useDispatch();
@@ -66,57 +68,63 @@ const NegoScreen = ({ navigation }: any) => {
   }
 
   return (
-    <View style={styles.container}>
-      <View
-        style={{
-          width: "100%",
-          paddingVertical: 10,
-          paddingHorizontal: 15,
-        }}
-      >
-        {negotiating &&
-          negotiating.map((msg: any) => {
-            return (
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("NegoDisplay", {
-                    personId: checkingPerson(msg)?.id,
-                    name: checkingPerson(msg)?.name,
-                  })
-                }
-                key={
-                  msg?.sentBy?.id + Math.floor(Math.random() * 100) + msg?.text
-                }
-              >
-                <View style={styles.displayBox}>
-                  <View style={styles.avatar}>
-                    <Avatar
-                      size={40}
-                      rounded
-                      source={{ uri: "https://picsum.photos/200" }}
-                    />
-                  </View>
-                  <View style={styles.displayInfo}>
-                    <View style={styles.nameAndTimeCon}>
-                      <Text style={styles.displayName}>
-                        {checkingPerson(msg)?.name}
-                      </Text>
-                      <Text style={styles.displayTime}>19 NOV</Text>
+    <>
+      <HeaderTitle title="Negotiations" />
+      <View style={styles.container}>
+        <View
+          style={{
+            width: "100%",
+            paddingVertical: 10,
+            paddingHorizontal: 15,
+          }}
+        >
+          {negotiating &&
+            negotiating.map((msg: any) => {
+              return (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("NegoDisplay", {
+                      personId: checkingPerson(msg)?.id,
+                      name: checkingPerson(msg)?.name,
+                    })
+                  }
+                  key={
+                    msg?.sentBy?.id +
+                    Math.floor(Math.random() * 100) +
+                    msg?.text
+                  }
+                >
+                  <View style={styles.displayBox}>
+                    <View style={styles.avatar}>
+                      <Avatar
+                        size={40}
+                        rounded
+                        source={{ uri: "https://picsum.photos/200" }}
+                      />
                     </View>
-                    <View style={styles.msgAndStatus}>
-                      <Text style={styles.displayMsg}>{msg?.text}</Text>
-                      <View style={styles.displayStatus}>
-                        <Text style={styles.displayStatusTxt}>1</Text>
+                    <View style={styles.displayInfo}>
+                      <View style={styles.nameAndTimeCon}>
+                        <Text style={styles.displayName}>
+                          {checkingPerson(msg)?.name}
+                        </Text>
+                        <Text style={styles.displayTime}>19 NOV</Text>
+                      </View>
+                      <View style={styles.msgAndStatus}>
+                        <Text style={styles.displayMsg}>{msg?.text}</Text>
+                        <View style={styles.displayStatus}>
+                          <Text style={styles.displayStatusTxt}>1</Text>
+                        </View>
                       </View>
                     </View>
                   </View>
-                </View>
-              </TouchableOpacity>
-            );
-          })}
+                </TouchableOpacity>
+              );
+            })}
+        </View>
+        <Navigation navigation={navigation} />
+        <StatusBar style="auto" />
       </View>
-      <Navigation navigation={navigation} />
-    </View>
+    </>
   );
 };
 
@@ -124,6 +132,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.secondary,
+    paddingTop: 20,
   },
   displayBox: {
     width: "100%",

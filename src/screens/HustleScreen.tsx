@@ -25,6 +25,7 @@ import {
   supportIcon,
 } from "../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
+import { StatusBar } from "expo-status-bar";
 
 const HustleScreen = ({ navigation }: any) => {
   const [fontsLoaded] = useFonts({
@@ -36,40 +37,36 @@ const HustleScreen = ({ navigation }: any) => {
       <View style={styles.header}>
         <View style={styles.avatar}>
           <Avatar
-            size="small"
+            size={100}
             rounded
             source={{ uri: "https://picsum.photos/200" }}
           />
         </View>
-        <View style={styles.bal}>
-          <Text style={styles.balTxt}>Balance</Text>
-        </View>
+
         <View>
-          <Text style={styles.balValue}>NGN 150,000</Text>
+          <Text style={styles.businessName}>Rete Technologies</Text>
         </View>
       </View>
 
       <ScrollView style={styles.body} showsVerticalScrollIndicator={false}>
         <View style={styles.statsSec}>
-          <Text
-            style={[
-              styles.secHeader,
-              { alignSelf: "center", marginTop: 5, fontSize: 21 },
-            ]}
-          >
-            Rete Technologies
-          </Text>
-
           <View style={[styles.statsItem, styles.firstStat]}>
             <Text style={styles.statsItemTxtA}>Business Level</Text>
 
             <Text style={styles.statsItemTxtB}>Start-up</Text>
           </View>
           <View style={styles.statsItem}>
+            <Text style={styles.statsItemTxtA}>Balance</Text>
+
+            <Text style={styles.statsItemTxtB}>₦150,000</Text>
+          </View>
+
+          <View style={styles.statsItem}>
             <Text style={styles.statsItemTxtA}>Total Earnings</Text>
 
-            <Text style={styles.statsItemTxtB}>$1000</Text>
+            <Text style={styles.statsItemTxtB}>₦1000000</Text>
           </View>
+
           <View style={styles.statsItem}>
             <Text style={styles.statsItemTxtA}>Business Rating</Text>
 
@@ -183,7 +180,7 @@ const HustleScreen = ({ navigation }: any) => {
                   width="21"
                   height="21"
                 />
-                <Text style={styles.menuItem}>Advertisements</Text>
+                <Text style={styles.menuItem}>Rete Ads</Text>
               </View>
               <View style={styles.goTo}>
                 <SvgXml
@@ -320,25 +317,11 @@ const HustleScreen = ({ navigation }: any) => {
               </View>
             </View>
           </TouchableOpacity>
-
-          <TouchableOpacity
-            activeOpacity={0.6}
-            // @ts-ignore
-            onPress={() => navigation.navigate("About")}
-          >
-            <View style={styles.itemContainer}>
-              <SvgXml
-                style={styles.icon}
-                xml={aboutIcon("", "")}
-                width="20"
-                height="20"
-              />
-              <Text style={styles.menuItem}>About</Text>
-            </View>
-          </TouchableOpacity>
         </View>
+        <View style={{ height: 50, width: "100%" }} />
       </ScrollView>
       <Navigation navigation={navigation} />
+      <StatusBar style="auto" />
     </View>
   );
 };
@@ -367,7 +350,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: colors.secondary,
   },
-  balValue: {
+  businessName: {
     fontSize: 28,
     fontFamily: "Lato",
     fontWeight: "100",
@@ -385,7 +368,7 @@ const styles = StyleSheet.create({
   statsSec: {
     width: "100%",
     padding: 0,
-    borderBottomColor: colors.grey,
+    borderBottomColor: colors.deeperSmoke,
     borderBottomWidth: 1,
     paddingBottom: 15,
     marginBottom: 25,

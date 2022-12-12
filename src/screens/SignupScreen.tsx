@@ -65,13 +65,15 @@ const SignupScreen = ({ navigation }: any) => {
       createUser(
         userCredential.user.uid,
         name,
-        "",
+        {},
         mobOrEmail,
         password,
         "",
         "",
         "",
-        ""
+        "",
+        false,
+        false
       );
     } catch (error: any) {
       // check for error codes

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   ActivityIndicator,
@@ -18,6 +18,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleAllUsers, refreshAllUsers } from "../../provider/allUsersSlice";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
+import { updateBizInformedStat } from "../../api/database";
+import { useAuthState } from "react-firebase-hooks/auth";
+import HeaderTitle from "../components/HeaderTitle";
+import { SvgXml } from "react-native-svg";
+import {
+  creative,
+  health,
+  knowledge,
+  professional,
+  social,
+} from "../../assets/svgs/svgs";
 
 const image = require("../../assets/welcome/find.png");
 
@@ -26,109 +37,96 @@ const HomeScreen = ({ navigation }: any) => {
   const selector = useSelector(handleAllUsers);
 
   const user = selector.payload.user.value;
+  const [User] = useAuthState(auth);
+
+  useEffect(() => {
+    updateBizInformedStat(User?.uid);
+  }, []);
 
   return (
-    <View style={styles.container}>
-      <ScrollView style={{ padding: 5, paddingBottom: 20 }}>
-        <View>
-          <View style={styles.categorySecs}>
-            <View style={[styles.categoryBig, styles.boxShadow]}>
-              <ImageBackground
-                source={require("../../assets/categories/professional.png")}
-                style={styles.img}
-                resizeMode="contain"
-              />
-              <Text style={styles.bigTxt}>Professional</Text>
+    <>
+      <HeaderTitle title="Home" />
+      <View style={styles.container}>
+        <ScrollView style={{ padding: 5, paddingBottom: 20 }}>
+          <View>
+            <View style={styles.categorySecs}>
+              <View style={styles.categoryBig}>
+                <SvgXml xml={professional()} width="60%" height="60%" />
+                <Text style={styles.bigTxt}>Professional</Text>
+              </View>
+              <View style={styles.categoryBig}>
+                <SvgXml xml={creative()} width="60%" height="60%" />
+                <Text style={styles.bigTxt}>Creative</Text>
+              </View>
             </View>
-            <View style={[styles.categoryBig, styles.boxShadow]}>
-              <ImageBackground
-                source={require("../../assets/categories/creative.png")}
-                style={styles.img}
-                resizeMode="contain"
-              />
-              <Text style={styles.bigTxt}>Creative</Text>
+
+            <View style={styles.categorySecs}>
+              <View style={styles.categorySm}>
+                <View style={styles.smCon}>
+                  <SvgXml xml={social()} width="70%" height="70%" />
+                </View>
+                <Text style={styles.smTxt}>Social</Text>
+              </View>
+
+              <View style={styles.categorySm}>
+                <View style={styles.smCon}>
+                  <SvgXml xml={health()} width="70%" height="70%" />
+                </View>
+                <Text style={styles.smTxt}>Health Care</Text>
+              </View>
+
+              <View style={styles.categorySm}>
+                <View style={styles.smCon}>
+                  <SvgXml xml={knowledge()} width="70%" height="70%" />
+                </View>
+                <Text style={styles.smTxt}>Knowledge</Text>
+              </View>
+
+              <View style={styles.categorySm}>
+                <View
+                  style={[
+                    styles.smCon,
+                    {
+                      flex: 1,
+                      padding: 5,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    },
+                  ]}
+                >
+                  <Image
+                    source={require("../../assets/menu.png")}
+                    style={{
+                      width: 22,
+                      height: 22,
+                    }}
+                  />
+                </View>
+                <Text style={styles.smTxt}>See all</Text>
+              </View>
             </View>
           </View>
 
           <View style={styles.categorySecs}>
-            <View style={styles.categorySm}>
-              <View style={[styles.smCon, styles.boxShadow]}>
-                <ImageBackground
-                  source={require("../../assets/categories/social.png")}
-                  style={styles.img}
-                  resizeMode="contain"
-                />
-              </View>
-              <Text style={styles.smTxt}>Social</Text>
-            </View>
-
-            <View style={styles.categorySm}>
-              <View style={[styles.smCon, styles.boxShadow]}>
-                <ImageBackground
-                  source={require("../../assets/categories/health.png")}
-                  style={styles.img}
-                  resizeMode="contain"
-                />
-              </View>
-              <Text style={styles.smTxt}>Health Care</Text>
-            </View>
-
-            <View style={styles.categorySm}>
-              <View style={[styles.smCon, styles.boxShadow]}>
-                <ImageBackground
-                  source={require("../../assets/categories/knowledge.png")}
-                  style={styles.img}
-                  resizeMode="contain"
-                />
-              </View>
-              <Text style={styles.smTxt}>Knowledge</Text>
-            </View>
-
-            <View style={styles.categorySm}>
-              <View
-                style={[
-                  styles.smCon,
-                  styles.boxShadow,
-                  {
-                    flex: 1,
-                    padding: 5,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  },
-                ]}
-              >
-                <Image
-                  source={require("../../assets/menu.png")}
-                  style={{
-                    width: 22,
-                    height: 22,
-                  }}
-                />
-              </View>
-              <Text style={styles.smTxt}>See all</Text>
+            <View style={styles.categoryLarge}>
+              <Image
+                source={require("../../assets/jfy.png")}
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  borderRadius: 15,
+                }}
+              />
             </View>
           </View>
-        </View>
 
-        <View style={styles.categorySecs}>
-          <View style={styles.categoryLarge}>
-            <Image
-              source={require("../../assets/jfy.png")}
-              style={{
-                height: "100%",
-                width: "100%",
-                borderRadius: 15,
-              }}
-            />
-          </View>
-        </View>
+          <View style={{ height: 100, width: "100%" }} />
+        </ScrollView>
 
-        <View style={{ height: 100, width: "100%" }} />
-      </ScrollView>
-
-      <Navigation navigation={navigation} />
-      <StatusBar style="auto" />
-    </View>
+        <Navigation navigation={navigation} />
+        <StatusBar style="auto" />
+      </View>
+    </>
   );
 };
 
@@ -144,12 +142,13 @@ const styles = StyleSheet.create({
   },
   categoryBig: {
     flex: 1,
-    justifyContent: "flex-end",
     height: 70,
     margin: 4,
     borderRadius: 5,
     backgroundColor: colors.secondary,
     padding: 5,
+    justifyContent: "center",
+    alignItems: "center",
   },
   bigTxt: {
     fontSize: 15,
@@ -161,6 +160,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: colors.secondary,
     padding: 5,
+    justifyContent: "center",
+    alignItems: "center",
   },
   categorySm: {
     flex: 1,
@@ -186,33 +187,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-  boxShadow: {},
 });
-
-const generateBoxShadowStyle = (
-  xOffset: any,
-  yOffset: any,
-  shadowColorIos: any,
-  shadowOpacity: any,
-  shadowRadius: any,
-  elevation: any,
-  shadowColorAndroid: any
-) => {
-  if (Platform.OS === "ios") {
-    styles.boxShadow = {
-      shadowColor: shadowColorIos,
-      shadowOffset: { width: xOffset, height: yOffset },
-      shadowOpacity,
-      shadowRadius,
-    };
-  } else if (Platform.OS === "android") {
-    styles.boxShadow = {
-      elevation,
-      shadowColor: shadowColorAndroid,
-    };
-  }
-};
-
-generateBoxShadowStyle(-2, 4, "#171717", 0.2, 3, 4, "#171717");
 
 export default HomeScreen;

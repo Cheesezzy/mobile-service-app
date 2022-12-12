@@ -22,7 +22,9 @@ export function createUser(
   description,
   favorites,
   joined,
-  messages
+  messages,
+  onBoard,
+  bizInformed
 ) {
   const userRef = doc(db, "users", userId);
   setDoc(userRef, {
@@ -34,6 +36,26 @@ export function createUser(
     favorites,
     joined,
     messages,
+    onBoard,
+    bizInformed,
+  });
+}
+
+// for changing onBoard status
+export function updateOnBoardStat(userId) {
+  const userOnBoardRef = doc(db, "users", userId);
+
+  updateDoc(userOnBoardRef, {
+    onBoard: true,
+  });
+}
+
+// for changing onBoard status
+export function updateBizInformedStat(userId) {
+  const userbizInformedRef = doc(db, "users", userId);
+
+  updateDoc(userbizInformedRef, {
+    bizInformed: true,
   });
 }
 

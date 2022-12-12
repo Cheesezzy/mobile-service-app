@@ -13,8 +13,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebaseConfig";
 import AuthNavigator from "./src/navigation/AuthStack";
-import { ActivityIndicator, View } from "react-native";
+import {
+  ActivityIndicator,
+  ImageBackground,
+  View,
+  Text,
+  Image,
+} from "react-native";
 import colors from "./src/config/colors";
+import BusinessEnroll from "./src/components/BusinessEnroll";
 
 export default function App() {
   const [user, loading] = useAuthState(auth);
@@ -61,7 +68,14 @@ export default function App() {
                   alignItems: "center",
                 }}
               >
-                <ActivityIndicator color={colors.primary} size="large" />
+                <ImageBackground
+                  source={require("./assets/splash.png")}
+                  resizeMode="contain"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                  }}
+                />
               </View>
             ) : user ? (
               <StackNavigator />

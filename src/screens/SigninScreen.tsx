@@ -103,15 +103,15 @@ const SigninScreen = ({ navigation }: any) => {
 
     if (users) {
       for (const user of users) {
-        if (user.email === email && user.password === password) {
+        if (user?.email === email && user?.password === password) {
           setError("");
           dispatch(handleUser(user));
           console.log(user.name, "signed in successfully");
           loginEmailPassword();
-        } else if (user.password === password && user.email !== email) {
+        } else if (user?.password === password && user.email !== email) {
           setError("Your email does not seem to be correct");
           console.log(error);
-        } else if (user.email === email && user.password !== password) {
+        } else if (user?.email === email && user?.password !== password) {
           setError("Wrong password, please try again");
           console.log("wrong password");
         }

@@ -125,8 +125,8 @@ const MainSearch = () => {
           customMapStyle={mapStyle}
           initialRegion={
             userLocation && {
-              latitude: parseFloat(userLocation?.coords.latitude),
-              longitude: parseFloat(userLocation?.coords.longitude),
+              latitude: parseFloat(userLocation?.coords?.latitude),
+              longitude: parseFloat(userLocation?.coords?.longitude),
               latitudeDelta: 0.02,
               longitudeDelta: 0.02,
             }
@@ -160,7 +160,7 @@ const MainSearch = () => {
         <GestureDetector gesture={gesture}>
           <Animated.View style={[rSearchConStyle, styles.searchCon]}>
             <View style={styles.line}></View>
-            <GooglePlacesAutocomplete
+            {/*<GooglePlacesAutocomplete
               placeholder="Search"
               onPress={(data, details = null) => {
                 // 'details' is provided when fetchDetails = true
@@ -171,7 +171,7 @@ const MainSearch = () => {
                 language: "en",
               }}
               styles={{ borderWidth: 1, borderColor: "red" }}
-            />
+            />*/}
           </Animated.View>
         </GestureDetector>
       </View>

@@ -399,8 +399,8 @@ export const inviteIcon = () => {
   `;
 };
 
-export const profileIcon = () => {
-  return `<?xml version="1.0" ?><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill=${colors.lightGrey} stroke=${colors.lightGrey} stroke-width="0.2"><title/><g id="User"><path d="M41.2452,33.0349a16,16,0,1,0-18.49,0A26.0412,26.0412,0,0,0,4,58a2,2,0,0,0,2,2H58a2,2,0,0,0,2-2A26.0412,26.0412,0,0,0,41.2452,33.0349ZM20,20A12,12,0,1,1,32,32,12.0137,12.0137,0,0,1,20,20ZM8.09,56A22.0293,22.0293,0,0,1,30,36h4A22.0293,22.0293,0,0,1,55.91,56Z"/></g></svg>`;
+export const profileIcon = (color = colors.lightGrey) => {
+  return `<?xml version="1.0" ?><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill=${color} stroke=${color} stroke-width="0.2"><title/><g id="User"><path d="M41.2452,33.0349a16,16,0,1,0-18.49,0A26.0412,26.0412,0,0,0,4,58a2,2,0,0,0,2,2H58a2,2,0,0,0,2-2A26.0412,26.0412,0,0,0,41.2452,33.0349ZM20,20A12,12,0,1,1,32,32,12.0137,12.0137,0,0,1,20,20ZM8.09,56A22.0293,22.0293,0,0,1,30,36h4A22.0293,22.0293,0,0,1,55.91,56Z"/></g></svg>`;
 };
 
 export const frontIcon = () => {
@@ -420,4 +420,23 @@ export const frontIcon = () => {
           </g>
       </g>
   </svg>`;
+};
+
+export const locationIcon = (color = colors.lightGrey) => {
+  return `
+  
+  <?xml version="1.0" encoding="iso-8859-1"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve" fill=${color} stroke=${color} stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
+<g id="Layer_1">
+	<path d="M8,20c0,12.981,15.643,28.086,16.309,28.723L25,49.383l0.691-0.661C26.357,48.086,42,32.981,42,20c0-8.765-4.452-19-17-19
+		S8,11.235,8,20z M40,20c0,10.642-11.966,23.5-15,26.588C21.966,43.5,10,30.642,10,20C10,7.466,17.749,3,25,3S40,7.466,40,20z"/>
+	<path d="M15,17c0,5.514,4.486,10,10,10s10-4.486,10-10S30.514,7,25,7S15,11.486,15,17z M33,17c0,4.411-3.589,8-8,8s-8-3.589-8-8
+		s3.589-8,8-8S33,12.589,33,17z"/>
+</g>
+<g>
+</g>
+</svg>
+
+  `;
 };
