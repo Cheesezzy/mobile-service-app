@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import colors from "../config/colors";
 import { SvgXml } from "react-native-svg";
@@ -22,15 +23,21 @@ import {
 import { auth, db } from "../../firebaseConfig";
 import { handleUser } from "../../provider/userSlice";
 import { collection, getDocs } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const SigninScreen = ({ navigation }: any) => {
   const dispatch = useDispatch();
   const selector = useSelector(handleAllUsers);
   const googleProvider = new GoogleAuthProvider();
+  const [authLoading, setAuthLoading] = useState(false);
 
   const usersRef = collection(db, "users");
+  const [Users, loading] = useCollectionData(usersRef);
+  dispatch(handleAllUsers(Users));
 
   const users = selector.payload.users.value;
+  console.log(users);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -38,19 +45,6 @@ const SigninScreen = ({ navigation }: any) => {
 
   useEffect(() => {
     //dispatch(refreshAllUsers());
-    getDocs(usersRef).then((snapshot) => {
-      const Users: any = [];
-      snapshot.forEach((doc) => {
-        Users.push({
-          ...doc.data(),
-          id: doc.id,
-          messages: "",
-          negotiating: "",
-        });
-      });
-      dispatch(handleAllUsers(Users));
-      console.log(users);
-    });
   }, []);
 
   const loginWithGoogle = async () => {
@@ -80,19 +74,25 @@ const SigninScreen = ({ navigation }: any) => {
 
   const loginEmailPassword = async () => {
     try {
+      setAuthLoading(true);
       await signInWithEmailAndPassword(auth, email, password);
+      setAuthLoading(false);
     } catch (error: any) {
       switch (error.code) {
         case AuthErrorCodes.INVALID_EMAIL:
+          setAuthLoading(false);
           setError("Invalid email");
           break;
         case AuthErrorCodes.USER_DELETED:
+          setAuthLoading(false);
           setError("User not found");
           break;
         case AuthErrorCodes.INVALID_PASSWORD:
+          setAuthLoading(false);
           setError("Wrong password");
           break;
         default:
+          setAuthLoading(false);
           setError("Something went wrong");
       }
     }
@@ -140,8 +140,14 @@ const SigninScreen = ({ navigation }: any) => {
 
       <Text style={styles.err}>{error}</Text>
 
-      <TouchableOpacity style={styles.inputBtn} onPress={handleLogin}>
-        <Text style={styles.inputBtnTxt}>Sign in</Text>
+      <TouchableOpacity
+        style={styles.inputBtn}
+        onPress={handleLogin}
+        disabled={authLoading}
+      >
+        <Text style={styles.inputBtnTxt}>
+          {authLoading ? <ActivityIndicator color="#fff" /> : "Sign in"}
+        </Text>
       </TouchableOpacity>
 
       <View>
@@ -151,6 +157,7 @@ const SigninScreen = ({ navigation }: any) => {
       <View style={styles.dividerCon}>
         <View style={styles.line} />
         <Text style={styles.or}>OR</Text>
+
         <View style={styles.line} />
       </View>
 
