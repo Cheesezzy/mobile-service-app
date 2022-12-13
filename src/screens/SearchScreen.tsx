@@ -1,3 +1,4 @@
+import { StatusBar } from "expo-status-bar";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { backIcon, searchIcon } from "../../assets/icons/icons";
@@ -31,6 +32,7 @@ const SearchScreen = ({ navigation }: any) => {
         />
         <TextInput style={styles.search} placeholder="Search the network" />
       </View>
+      <StatusBar style="auto" />
     </View>
   );
 };

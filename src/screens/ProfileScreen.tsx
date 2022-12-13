@@ -40,7 +40,7 @@ const ProfileScreen = ({ navigation }: any) => {
           <Text style={styles.businessInfoConTxt}>Business Information</Text>
 
           <View style={styles.bio}>
-            <Text>
+            <Text style={styles.bioTxt}>
               Rete Technologies is a fast-growing online platform that connects
               people looking for services with service providers. Our platform
               uses the searcher's location to suggest service providers who are
@@ -148,6 +148,9 @@ const styles = StyleSheet.create({
   },
   bio: {
     marginTop: 15,
+  },
+  bioTxt: {
+    fontFamily: "LatoRegular",
   },
   about: {
     marginTop: 20,

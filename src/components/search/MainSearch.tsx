@@ -24,6 +24,7 @@ import Animated, {
 import colors from "../../config/colors";
 import * as Location from "expo-location";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { StatusBar } from "expo-status-bar";
 
 const markers = [
   {

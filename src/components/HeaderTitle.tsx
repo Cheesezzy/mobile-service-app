@@ -31,7 +31,7 @@ function HeaderTitle({ title }: Props) {
         position: "relative",
         paddingVertical: 10,
         paddingHorizontal: 18,
-        paddingTop: 35,
+        paddingTop: 42,
         zIndex: 200,
         backgroundColor: colors.secondary,
       }}
@@ -171,6 +171,31 @@ function HeaderTitle({ title }: Props) {
       )}
       {route.name === "Negotiations" ? (
         <>
+          <TouchableOpacity
+            style={{
+              position: "absolute",
+              right: 18,
+              top: 42,
+            }}
+            // @ts-ignore
+            onPress={() => navigation.navigate("Search")}
+          >
+            <SvgXml xml={searchIcon()} width="21" height="21" />
+          </TouchableOpacity>
+        </>
+      ) : (
+        <></>
+      )}
+      {title === "categoryItem" ? (
+        <>
+          <TouchableOpacity>
+            <SvgXml
+              xml={backIcon()}
+              width="22"
+              height="22"
+              onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>
           <TouchableOpacity
             style={{
               position: "absolute",

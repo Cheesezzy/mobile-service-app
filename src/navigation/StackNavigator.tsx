@@ -36,6 +36,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import EarningsScreen from "../screens/EarningsScreen";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import colors from "../config/colors";
+import CategoryScreen from "../screens/CategoryScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -188,6 +189,14 @@ const StackNavigator = () => {
         component={BusinessEnroll}
         options={{
           title: "BusinessEnroll",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Category"
+        component={CategoryScreen}
+        options={{
+          title: "Category",
           headerShown: false,
         }}
       />

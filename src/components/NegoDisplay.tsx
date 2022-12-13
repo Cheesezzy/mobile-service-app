@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
     width: 200,
     fontFamily: "LatoRegular",
     marginBottom: 10,
-    color: colors.grey,
+    color: colors.lightBlack,
     textAlign: "center",
   },
   joined: {

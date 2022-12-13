@@ -10,6 +10,7 @@ import {
   ImageBackground,
   Platform,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
 import colors from "../config/colors";
 import Navigation from "../components/Navigation";
@@ -50,37 +51,78 @@ const HomeScreen = ({ navigation }: any) => {
         <ScrollView style={{ padding: 5, paddingBottom: 20 }}>
           <View>
             <View style={styles.categorySecs}>
-              <View style={styles.categoryBig}>
+              <TouchableOpacity
+                style={styles.categoryBig}
+                onPress={() => {
+                  navigation.navigate("Category", {
+                    categoryName: "Professional",
+                    desc: "Hire a certified professional from our wide range of skilled experts in various fields. These experts have been carefully ranked by their expertise and ability to deliver high-quality results. Trust them to provide exceptional service and get the results you're looking for.",
+                  });
+                }}
+              >
                 <SvgXml xml={professional()} width="60%" height="60%" />
                 <Text style={styles.bigTxt}>Professional</Text>
-              </View>
-              <View style={styles.categoryBig}>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.categoryBig}
+                onPress={() => {
+                  navigation.navigate("Category", {
+                    categoryName: "Creative",
+                    desc: "Hire a creative professional from our wide range of talented and innovative experts in fields such as art, design, and writing. These experts have been carefully ranked by their unique vision and ability to bring fresh perspectives to their work. Trust them to inspire and elevate your project, and bring your ideas to life.",
+                  });
+                }}
+              >
                 <SvgXml xml={creative()} width="60%" height="60%" />
                 <Text style={styles.bigTxt}>Creative</Text>
-              </View>
+              </TouchableOpacity>
             </View>
 
             <View style={styles.categorySecs}>
-              <View style={styles.categorySm}>
+              <TouchableOpacity
+                style={styles.categorySm}
+                onPress={() => {
+                  navigation.navigate("Category", {
+                    categoryName: "Social",
+                    desc: "Hire a social professional from our wide range of friendly experts in various fields. These experts have been carefully ranked by their interpersonal skills and ability to connect with people from all walks of life. Trust them to provide personalized and attentive service, and make your social interactions a success.",
+                  });
+                }}
+              >
                 <View style={styles.smCon}>
                   <SvgXml xml={social()} width="70%" height="70%" />
                 </View>
                 <Text style={styles.smTxt}>Social</Text>
-              </View>
+              </TouchableOpacity>
 
-              <View style={styles.categorySm}>
+              <TouchableOpacity
+                style={styles.categorySm}
+                onPress={() => {
+                  navigation.navigate("Category", {
+                    categoryName: "Health Care",
+                    desc: "Hire a healthcare professional from our wide range of skilled experts in various fields. These experts have been carefully ranked by their knowledge and expertise in the healthcare industry. Trust them to provide high-quality care and attention to your health needs.",
+                  });
+                }}
+              >
                 <View style={styles.smCon}>
                   <SvgXml xml={health()} width="70%" height="70%" />
                 </View>
                 <Text style={styles.smTxt}>Health Care</Text>
-              </View>
+              </TouchableOpacity>
 
-              <View style={styles.categorySm}>
+              <TouchableOpacity
+                style={styles.categorySm}
+                onPress={() => {
+                  navigation.navigate("Category", {
+                    categoryName: "Knowledge",
+                    desc: "Hire an instructor from our wide range of skilled experts in various fields. These experts have been carefully ranked by their knowledge and expertise in teaching and are able to provide high-quality instruction to students of all ages and skill levels. Trust them to provide you or your child with the education you need to succeed.",
+                  });
+                }}
+              >
                 <View style={styles.smCon}>
                   <SvgXml xml={knowledge()} width="70%" height="70%" />
                 </View>
                 <Text style={styles.smTxt}>Knowledge</Text>
-              </View>
+              </TouchableOpacity>
 
               <View style={styles.categorySm}>
                 <View

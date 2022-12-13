@@ -56,7 +56,7 @@ const HustleScreen = ({ navigation }: any) => {
             <Text style={styles.statsItemTxtB}>Start-up</Text>
           </View>
           <View style={styles.statsItem}>
-            <Text style={styles.statsItemTxtA}>Balance</Text>
+            <Text style={styles.statsItemTxtA}>Withdrawable</Text>
 
             <Text style={styles.statsItemTxtB}>₦150,000</Text>
           </View>
@@ -64,7 +64,7 @@ const HustleScreen = ({ navigation }: any) => {
           <View style={styles.statsItem}>
             <Text style={styles.statsItemTxtA}>Total Earnings</Text>
 
-            <Text style={styles.statsItemTxtB}>₦1000000</Text>
+            <Text style={styles.statsItemTxtB}>₦1,000,000</Text>
           </View>
 
           <View style={styles.statsItem}>
@@ -409,6 +409,7 @@ const styles = StyleSheet.create({
   menuItem: {
     position: "relative",
     top: 4,
+    fontFamily: "LatoRegular",
     fontSize: 14,
     fontWeight: "600",
     marginBottom: 30,
