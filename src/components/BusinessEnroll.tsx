@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   useWindowDimensions,
   Image,
+  Button,
+  KeyboardAvoidingView,
 } from "react-native";
 import React, { useEffect, useRef } from "react";
 import colors from "../config/colors";
@@ -16,11 +18,124 @@ import Animated, {
   withTiming,
   Easing,
 } from "react-native-reanimated";
-import { TextInput } from "react-native-gesture-handler";
+import {
+  TextInput,
+  TouchableWithoutFeedback,
+} from "react-native-gesture-handler";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Paginator from "./Paginator";
 import { useNavigation } from "@react-navigation/native";
+import { SvgXml } from "react-native-svg";
+import { backIcon, locationIcon, searchIcon } from "../../assets/icons/icons";
+
+export const GoogleSearch = () => {
+  const [showBtn, setShowBtn] = useState(false);
+
+  const handleBtn = () => {
+    setShowBtn(false);
+    console.log(showBtn);
+  };
+
+  return (
+    <KeyboardAvoidingView
+      style={{
+        flex: 1,
+        paddingTop: 50,
+        paddingVertical: 15,
+      }}
+    >
+      <View style={styles.searchCon}>
+        <SvgXml
+          xml={backIcon()}
+          width="16"
+          height="16"
+          // @ts-ignore
+          onPress={() => navigation.goBack()}
+          style={{
+            position: "relative",
+            top: 6,
+            marginRight: 10,
+          }}
+        />
+        <SvgXml
+          style={{
+            position: "relative",
+            top: 7,
+          }}
+          xml={searchIcon()}
+          width="14"
+          height="14"
+        />
+        <View style={styles.search}>
+          <GooglePlacesAutocomplete
+            suppressDefaultStyles
+            styles={{
+              poweredContainer: {
+                borderTopWidth: 0,
+              },
+              powered: {
+                width: "50%",
+              },
+            }}
+            placeholder="Search destination"
+            listViewDisplayed="auto"
+            minLength={2}
+            onPress={(data, details = null) => {
+              // 'details' is provided when fetchDetails = true
+              console.log(data, details);
+              setShowBtn(true);
+            }}
+            fetchDetails
+            query={{
+              key: "AIzaSyATG5qhpd-R_W7Dv0oUMatTSbRru2EbYcI",
+              language: "en",
+            }}
+            nearbyPlacesAPI="GooglePlacesSearch"
+            debounce={200}
+            disableScroll={false}
+            renderRow={(rowData) => {
+              setShowBtn(false);
+              const title = rowData.structured_formatting.main_text;
+              const address = rowData.structured_formatting.secondary_text;
+              return (
+                <View style={styles.resultItem}>
+                  <View
+                    style={{
+                      marginRight: 5,
+                      justifyContent: "center",
+                    }}
+                  >
+                    <SvgXml
+                      xml={locationIcon(colors.lightGrey)}
+                      width="15"
+                      height="15"
+                    />
+                  </View>
+                  <View>
+                    <Text style={styles.resultTitle}>{title}</Text>
+                    <Text style={styles.resultAddr}>{address}</Text>
+                  </View>
+                </View>
+              );
+            }}
+          />
+        </View>
+      </View>
+
+      {showBtn ? (
+        <TouchableOpacity
+          style={[
+            styles.choiceBtn,
+            { marginTop: 80, position: "absolute", bottom: 30 },
+          ]}
+        >
+          <Text style={styles.choiceBtnTxt}>Done</Text>
+        </TouchableOpacity>
+      ) : null}
+    </KeyboardAvoidingView>
+  );
+};
 
 const FirstSlide = () => {
   const offset = useSharedValue(0);
@@ -63,6 +178,7 @@ const FirstSlide = () => {
 const Slide = ({ item }: any) => {
   const { width } = useWindowDimensions();
   const navigation = useNavigation();
+  const [openSearch, setOpenSearch] = useState(false);
 
   return (
     <View style={[styles.container, { width }]}>
@@ -77,6 +193,14 @@ const Slide = ({ item }: any) => {
       {item.btnOne && item.btnOne}
       {item.btnTwo && item.btnTwo}
       {item.input && item.input}
+
+      {
+        // @ts-ignore
+        <TouchableOpacity onPress={() => navigation.navigate("GoogleSearch")}>
+          {item.inputSearch && item.inputSearch}
+        </TouchableOpacity>
+      }
+
       {item.doneBtn && item.doneBtn}
       {item.welcomeText && item.welcomeText}
       {item.beginBtn && (
@@ -232,6 +356,44 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingHorizontal: 10,
   },
+  searchCon: {
+    flexDirection: "row",
+    width: "80%",
+    fontFamily: "LatoRegular",
+    fontSize: 12,
+    color: colors.black,
+    backgroundColor: colors.secondary,
+    borderRadius: 20,
+    padding: 5,
+    paddingHorizontal: 10,
+    alignSelf: "center",
+  },
+  search: {
+    width: "75%",
+    fontFamily: "LatoRegular",
+    fontSize: 12,
+    color: colors.black,
+    backgroundColor: colors.secondary,
+    alignSelf: "center",
+    marginLeft: 10,
+  },
+  resultItem: {
+    flexDirection: "row",
+    paddingVertical: 8,
+    marginBottom: 10,
+    borderBottomColor: colors.deeperSmoke,
+    borderBottomWidth: 1,
+  },
+  resultTitle: {
+    fontFamily: "LatoRegular",
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  resultAddr: {
+    fontFamily: "LatoRegular",
+    fontSize: 11,
+    color: colors.lightGrey,
+  },
 });
 
 const images = [
@@ -276,6 +438,20 @@ const images = [
   },
   {
     id: 3,
+    title: "Where is your business located?",
+    desc: "Tell us where your business' predominant location. You can change this later.",
+    image: require("../../assets/businessEnroll/space.png"),
+    inputSearch: <Text style={styles.inputBox}>Search destination</Text>,
+    doneBtn: (
+      <TouchableOpacity>
+        <View style={styles.choiceBtn}>
+          <Text style={styles.choiceBtnTxt}>Done</Text>
+        </View>
+      </TouchableOpacity>
+    ),
+  },
+  {
+    id: 4,
     image: require("../../assets/businessEnroll/welcome.png"),
     welcomeText: (
       <Text
