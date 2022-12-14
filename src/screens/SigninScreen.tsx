@@ -120,7 +120,7 @@ const SigninScreen = ({ navigation }: any) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View>
         <Text style={styles.title}>Sign In</Text>
       </View>
@@ -193,7 +193,7 @@ const SigninScreen = ({ navigation }: any) => {
           Sign up now
         </Text>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

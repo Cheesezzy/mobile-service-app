@@ -1,7 +1,7 @@
 export default {
   primary: "#2776EA",
   secondary: "#fff",
-  secondarySmoke: "rgb(247, 247, 247)",
+  secondarySmoke: "rgb(245, 245, 245)",
   black: "#000",
   grey: "rgb(205, 205, 205)",
   deeperSmoke: "rgb(235, 235, 235)",

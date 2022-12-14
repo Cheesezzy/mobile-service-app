@@ -27,7 +27,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { handleAllUsers } from "../../provider/allUsersSlice";
-import BusinessEnroll from "../components/BusinessEnroll";
+import BusinessEnroll, { GoogleSearch } from "../components/BusinessEnroll";
 import { NegoDisplay } from "../components/NegoDisplay";
 import { createStackNavigator } from "@react-navigation/stack";
 import AnalyticsScreen from "../screens/AnalyticsScreen";
@@ -197,6 +197,14 @@ const StackNavigator = () => {
         component={CategoryScreen}
         options={{
           title: "Category",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="GoogleSearch"
+        component={GoogleSearch}
+        options={{
+          title: "GoogleSearch",
           headerShown: false,
         }}
       />

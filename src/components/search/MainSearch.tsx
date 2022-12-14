@@ -6,6 +6,7 @@ import {
   Dimensions,
   Button,
   ViewProps,
+  ScrollView,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useEffect, useRef, useState } from "react";
@@ -63,6 +64,7 @@ const MainSearch = () => {
   const [userLocation, setUserLocation] = useState<any>(null);
   const [errMsg, setErrorMsg] = useState<any>(null);
   const [initialRegion, setInitialRegion] = useState<any>(null);
+  const gpa = useRef<any>(null);
 
   useEffect(() => {
     (async () => {
@@ -82,6 +84,7 @@ const MainSearch = () => {
 
   useEffect(() => {
     translateY.value = withSpring(-SCREEN_HEIGHT / 3, { damping: 50 });
+    gpa.current?.setAddressText("Some Text");
   }, []);
 
   const translateY = useSharedValue(0);
@@ -161,18 +164,26 @@ const MainSearch = () => {
         <GestureDetector gesture={gesture}>
           <Animated.View style={[rSearchConStyle, styles.searchCon]}>
             <View style={styles.line}></View>
-            {/*<GooglePlacesAutocomplete
-              placeholder="Search"
-              onPress={(data, details = null) => {
-                // 'details' is provided when fetchDetails = true
-                console.log(data, details);
+            <View
+              style={{
+                height: "100%",
+                width: "100%",
               }}
-              query={{
-                key: "AIzaSyDwzW1q7R5P65DD3lVDrvG5Q1gMAWFQFVo",
-                language: "en",
-              }}
-              styles={{ borderWidth: 1, borderColor: "red" }}
-            />*/}
+            >
+              <GooglePlacesAutocomplete
+                placeholder="Search destination"
+                minLength={2}
+                onPress={(data, details = null) => {
+                  // 'details' is provided when fetchDetails = true
+                  console.log(data, details);
+                }}
+                fetchDetails
+                query={{
+                  key: "AIzaSyATG5qhpd-R_W7Dv0oUMatTSbRru2EbYcI",
+                  language: "en",
+                }}
+              />
+            </View>
           </Animated.View>
         </GestureDetector>
       </View>

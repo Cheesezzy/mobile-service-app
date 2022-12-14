@@ -22,8 +22,9 @@ function HeaderTitle({ title }: Props) {
   const route = useRoute();
 
   return (
-    <SafeAreaView
+    <View
       style={{
+        padding: 30,
         width: Dimensions.get("window").width,
         flexDirection: "row",
         alignItems: "center",
@@ -211,7 +212,7 @@ function HeaderTitle({ title }: Props) {
       ) : (
         <></>
       )}
-    </SafeAreaView>
+    </View>
   );
 }
 

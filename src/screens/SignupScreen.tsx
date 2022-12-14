@@ -42,7 +42,19 @@ const SignupScreen = ({ navigation }: any) => {
         const token = credential?.accessToken;
         const user = result.user;
 
-        createUser(user.uid, user.displayName, "", user.email, "", "", "", "");
+        createUser(
+          user.uid,
+          name,
+          {},
+          mobOrEmail,
+          password,
+          "",
+          "",
+          "",
+          "",
+          false,
+          false
+        );
       })
       .catch((error) => {
         //const errorCode = error.code;
@@ -109,7 +121,7 @@ const SignupScreen = ({ navigation }: any) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View>
         <Text style={styles.title}>Sign Up</Text>
       </View>
@@ -180,7 +192,7 @@ const SignupScreen = ({ navigation }: any) => {
           Have an account? Sign in
         </Text>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
