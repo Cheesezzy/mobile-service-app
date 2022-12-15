@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import colors from "../config/colors";
 import { facebookicon, googleIcon } from "../../assets/icons/icons";
@@ -30,6 +31,7 @@ const SignupScreen = ({ navigation }: any) => {
   const [name, setName] = useState("");
   const [mobOrEmail, setMobOrEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [authLoading, setAuthLoading] = useState(false);
 
   useEffect(() => {
     console.log(name);
@@ -45,6 +47,7 @@ const SignupScreen = ({ navigation }: any) => {
         createUser(
           user.uid,
           name,
+          "Provider",
           {},
           mobOrEmail,
           password,
@@ -68,6 +71,7 @@ const SignupScreen = ({ navigation }: any) => {
 
   const createAcctWithEandP = async () => {
     try {
+      setAuthLoading(true);
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         mobOrEmail,
@@ -77,30 +81,36 @@ const SignupScreen = ({ navigation }: any) => {
       createUser(
         userCredential.user.uid,
         name,
+        "Provider",
         {},
         mobOrEmail,
         password,
-        "",
-        "",
-        "",
-        "",
+        null,
+        null,
+        null,
+        null,
         false,
         false
       );
+      setAuthLoading(false);
     } catch (error: any) {
       // check for error codes
       if (error.code === AuthErrorCodes.EMAIL_EXISTS) {
+        setAuthLoading(false);
         setError("Email already in use");
         console.log(error);
       }
       if (error.code === AuthErrorCodes.INVALID_EMAIL) {
+        setAuthLoading(false);
         setError("Invalid email");
         console.log(error);
       }
       if (error.code === AuthErrorCodes.WEAK_PASSWORD) {
+        setAuthLoading(false);
         setError("Weak password");
         console.log(error);
       } else {
+        setAuthLoading(false);
         setError("Check your email and password");
       }
     }
@@ -147,8 +157,14 @@ const SignupScreen = ({ navigation }: any) => {
 
       <Text style={styles.err}>{error}</Text>
 
-      <TouchableOpacity style={styles.inputBtn} onPress={handleSignup}>
-        <Text style={styles.inputBtnTxt}>Sign up</Text>
+      <TouchableOpacity
+        style={styles.inputBtn}
+        onPress={handleSignup}
+        disabled={authLoading}
+      >
+        <Text style={styles.inputBtnTxt}>
+          {authLoading ? <ActivityIndicator color="#fff" /> : "Sign in"}
+        </Text>
       </TouchableOpacity>
 
       <View style={styles.dividerCon}>
