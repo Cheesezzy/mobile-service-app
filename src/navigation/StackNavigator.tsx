@@ -27,7 +27,6 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { handleAllUsers } from "../../provider/allUsersSlice";
-import BusinessEnroll, { GoogleSearch } from "../components/BusinessEnroll";
 import { NegoDisplay } from "../components/NegoDisplay";
 import { createStackNavigator } from "@react-navigation/stack";
 import AnalyticsScreen from "../screens/AnalyticsScreen";
@@ -37,6 +36,9 @@ import EarningsScreen from "../screens/EarningsScreen";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import colors from "../config/colors";
 import CategoryScreen from "../screens/CategoryScreen";
+import { GoogleSearch } from "../components/GoogleSearch";
+import SlidesContainer from "../components/SlidesContainer";
+import BusinessEnroll from "../components/BusinessEnroll";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -62,14 +64,16 @@ const StackNavigator = () => {
   }, []);
 
   return (
-    <Stack.Navigator
-      initialRouteName={
-        !loading && bizData?.bizInformed === true ? "Home" : "BusinessEnroll"
-      }
-    >
+    <Stack.Navigator initialRouteName={"Home"}>
       <Stack.Screen
-        name="Home"
-        component={HomeScreen}
+        name={"Home"}
+        component={
+          loading
+            ? HomeScreen
+            : bizData?.bizInformed
+            ? HomeScreen
+            : BusinessEnroll
+        }
         options={{
           title: "Home",
           headerShown: false,
@@ -192,6 +196,7 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
+
       <Stack.Screen
         name="Category"
         component={CategoryScreen}
@@ -205,6 +210,14 @@ const StackNavigator = () => {
         component={GoogleSearch}
         options={{
           title: "GoogleSearch",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="SlidesContainer"
+        component={SlidesContainer}
+        options={{
+          title: "SlidesContainer",
           headerShown: false,
         }}
       />

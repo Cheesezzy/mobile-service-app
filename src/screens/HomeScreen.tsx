@@ -18,7 +18,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { handleAllUsers, refreshAllUsers } from "../../provider/allUsersSlice";
 import { signOut } from "firebase/auth";
-import { auth } from "../../firebaseConfig";
+import { auth, db } from "../../firebaseConfig";
 import { updateBizInformedStat } from "../../api/database";
 import { useAuthState } from "react-firebase-hooks/auth";
 import HeaderTitle from "../components/HeaderTitle";
@@ -30,6 +30,8 @@ import {
   professional,
   social,
 } from "../../assets/svgs/svgs";
+import { doc } from "firebase/firestore";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 
 const image = require("../../assets/welcome/find.png");
 
@@ -40,13 +42,18 @@ const HomeScreen = ({ navigation }: any) => {
   const user = selector.payload.user.value;
   const [User] = useAuthState(auth);
 
-  useEffect(() => {
-    updateBizInformedStat(User?.uid);
-  }, []);
+  const userbizInformedRef = doc(db, "users", User?.uid!);
+
+  const allUsers = selector.payload.users.value;
+
+  const [bizData, loading] = useDocumentData(userbizInformedRef);
+
+  useEffect(() => {}, []);
 
   return (
     <>
       <HeaderTitle title="Home" />
+
       <View style={styles.container}>
         <ScrollView style={{ padding: 5, paddingBottom: 20 }}>
           <View>

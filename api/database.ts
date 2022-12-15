@@ -22,11 +22,12 @@ export function deleteUser(uid: any) {
 
 export function createUser(
   userId: any,
-  name: string,
+  name: string | null,
+  role: string | null,
   business: {},
-  email: string,
-  password: string,
-  description: string,
+  email: string | null,
+  password: string | null,
+  description: string | null,
   favorites: any,
   joined: any,
   messages: any,
@@ -36,6 +37,7 @@ export function createUser(
   const userRef = doc(db, "users", userId);
   setDoc(userRef, {
     name,
+    role,
     business,
     email,
     password,
@@ -156,6 +158,36 @@ export async function sendMessage(
     createdAt,
     seen: false,
   });
+}
+
+// update user role
+export function updateUserRole(userId: any, role: string) {
+  const userRoleRef = doc(db, "users", userId);
+
+  updateDoc(userRoleRef, {
+    role,
+  });
+}
+
+// info about business
+export function updateBusinessName(userId: any, name: string) {
+  const businessNameRef = doc(db, "users", userId, "business", "name");
+
+  setDoc(businessNameRef, {
+    name,
+  });
+}
+
+export function updateBusinessDesc(userId: any, desc: any) {
+  const businessDescRef = doc(db, "users", userId, "business", "desc");
+
+  setDoc(businessDescRef, desc);
+}
+
+export function updateLocation(userId: any, location: any) {
+  const businessLocationRef = doc(db, "users", userId, "business", "location");
+
+  setDoc(businessLocationRef, location);
 }
 
 // add notification into the notification array
