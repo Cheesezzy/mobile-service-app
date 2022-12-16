@@ -39,13 +39,15 @@ function HeaderTitle({ title }: Props) {
     >
       {route.name === "Home" ? (
         <>
-          <View>
+          <TouchableOpacity // @ts-ignore
+            onPress={() => navigation.navigate("Profile")}
+          >
             <Avatar
               size={28}
               rounded
               source={require("../../assets/tfp.png")}
             />
-          </View>
+          </TouchableOpacity>
 
           <TouchableOpacity
             // @ts-ignore

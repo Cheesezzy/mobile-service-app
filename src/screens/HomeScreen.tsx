@@ -31,7 +31,11 @@ import {
   social,
 } from "../../assets/svgs/svgs";
 import { doc } from "firebase/firestore";
-import { useDocumentData } from "react-firebase-hooks/firestore";
+import {
+  useCollectionData,
+  useDocumentData,
+} from "react-firebase-hooks/firestore";
+import SetLocationPopup from "../components/SetLocationPopup";
 
 const image = require("../../assets/welcome/find.png");
 
@@ -42,11 +46,17 @@ const HomeScreen = ({ navigation }: any) => {
   const user = selector.payload.user.value;
   const [User] = useAuthState(auth);
 
-  const userbizInformedRef = doc(db, "users", User?.uid!);
+  const businessLocationRef = doc(
+    db,
+    "users",
+    User?.uid!,
+    "business",
+    "location"
+  );
 
   const allUsers = selector.payload.users.value;
 
-  const [bizData, loading] = useDocumentData(userbizInformedRef);
+  const [location, loading] = useDocumentData(businessLocationRef);
 
   useEffect(() => {}, []);
 
@@ -55,6 +65,7 @@ const HomeScreen = ({ navigation }: any) => {
       <HeaderTitle title="Home" />
 
       <View style={styles.container}>
+        {loading ? null : location ? null : <SetLocationPopup />}
         <ScrollView style={{ padding: 5, paddingBottom: 20 }}>
           <View>
             <View style={styles.categorySecs}>

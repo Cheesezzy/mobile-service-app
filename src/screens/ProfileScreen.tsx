@@ -10,6 +10,7 @@ import colors from "../config/colors";
 import { SvgXml } from "react-native-svg";
 import { backIcon, locationIcon, profileIcon } from "../../assets/icons/icons";
 import { Avatar } from "@rneui/themed";
+import { StatusBar } from "expo-status-bar";
 
 const ProfileScreen = ({ navigation }: any) => {
   return (
@@ -27,7 +28,7 @@ const ProfileScreen = ({ navigation }: any) => {
 
           <View>
             <Avatar
-              size="medium"
+              size={90}
               rounded
               source={{ uri: "https://picsum.photos/200" }}
               containerStyle={styles.avatar}
@@ -100,8 +101,15 @@ const ProfileScreen = ({ navigation }: any) => {
           <View style={styles.reviews}></View>
         </View>
 
-        <View style={{ height: 100, width: "100%" }} />
+        <View
+          style={{
+            height: 100,
+            width: "100%",
+            backgroundColor: colors.secondary,
+          }}
+        />
       </ScrollView>
+      <StatusBar style="auto" backgroundColor={colors.secondary} />
     </View>
   );
 };
@@ -111,36 +119,37 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.secondarySmoke,
   },
   body: {
     flex: 1,
-    padding: 15,
-    paddingTop: 35,
   },
   flexHeader: {
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: colors.secondary,
+    padding: 15,
+    paddingTop: 35,
   },
   goBack: {
     position: "absolute",
-    left: 0,
+    left: 15,
   },
   avatar: {
     alignSelf: "center",
   },
   profileName: {
     fontFamily: "Lato",
-    fontSize: 18,
+    fontSize: 20,
     marginTop: 10,
   },
   businessInfoCon: {
-    marginTop: 25,
+    backgroundColor: colors.secondary,
     paddingTop: 10,
-    borderTopWidth: 1,
-    borderTopColor: colors.grey,
+    padding: 15,
+    marginTop: 10,
   },
   businessInfoConTxt: {
     fontFamily: "Lato",
@@ -173,7 +182,9 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   galleryCon: {
-    marginTop: 25,
+    backgroundColor: colors.secondary,
+    padding: 15,
+    marginTop: 10,
   },
   galleryConTxt: {
     fontFamily: "Lato",
@@ -194,7 +205,9 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   reviewsCon: {
-    marginTop: 25,
+    backgroundColor: colors.secondary,
+    padding: 15,
+    marginTop: 10,
   },
   reviewsConTxt: {
     fontFamily: "Lato",

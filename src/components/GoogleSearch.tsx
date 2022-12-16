@@ -40,7 +40,8 @@ export const GoogleSearch = () => {
   const [location, setLocation] = useState<any>(null);
 
   const handleSubmit = () => {
-    updateLocation(user?.uid, location);
+    if (location.lat && location.lng)
+      updateLocation(user?.uid, location?.lat, location?.lng);
     console.log(location);
     navigation.goBack();
   };
@@ -91,10 +92,7 @@ export const GoogleSearch = () => {
             minLength={2}
             onPress={(data, details = null) => {
               // 'details' is provided when fetchDetails = true
-              console.log(data, "data");
-              console.log(location, "details");
               setLocation(details?.geometry.location);
-              console.log(location, "details");
               setShowBtn(true);
             }}
             fetchDetails

@@ -184,10 +184,21 @@ export function updateBusinessDesc(userId: any, desc: any) {
   setDoc(businessDescRef, desc);
 }
 
-export function updateLocation(userId: any, location: any) {
+export function updateLocation(userId: any, lat: any, lng: any) {
   const businessLocationRef = doc(db, "users", userId, "business", "location");
 
-  setDoc(businessLocationRef, location);
+  setDoc(businessLocationRef, {
+    lat,
+    lng,
+  });
+}
+
+export function updateRating(userId: any, rating: any) {
+  const businessRatingRef = doc(db, "users", userId, "business", "rating");
+
+  setDoc(businessRatingRef, {
+    rating,
+  });
 }
 
 // add notification into the notification array

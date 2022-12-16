@@ -26,6 +26,8 @@ import colors from "../../config/colors";
 import * as Location from "expo-location";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { StatusBar } from "expo-status-bar";
+import { businesses } from "../../../assets/placeholdersForBiz/placeholdersForBiz";
+import { searchAndRank } from "../../../api/searchAlgo";
 
 const markers = [
   {
@@ -60,10 +62,13 @@ const markers = [
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
 
-const MainSearch = () => {
+interface Props {
+  query: string;
+}
+
+const MainSearch = ({ query }: Props) => {
   const [userLocation, setUserLocation] = useState<any>(null);
   const [errMsg, setErrorMsg] = useState<any>(null);
-  const [initialRegion, setInitialRegion] = useState<any>(null);
   const gpa = useRef<any>(null);
 
   useEffect(() => {
@@ -78,7 +83,7 @@ const MainSearch = () => {
         accuracy: Location.Accuracy.BestForNavigation,
       });
       setUserLocation(location);
-      console.log(userLocation);
+      //console.log(userLocation);
     })();
   }, []);
 
@@ -120,10 +125,23 @@ const MainSearch = () => {
     };
   });
 
+  //businesses.map((location) => {});
+
+  //console.log(businesses[0][0].location, "here");
+
+  let results =
+    query.length > 0
+      ? searchAndRank(query, businesses, {
+          lat: parseFloat(userLocation?.coords.latitude),
+          lng: parseFloat(userLocation?.coords.longitude),
+        })
+      : null;
+
+  console.log("wrong");
+
   return (
     <GestureHandlerRootView>
       <View style={styles.container}>
-        <View style={styles.search}></View>
         <MapView
           style={styles.map}
           customMapStyle={mapStyle}
@@ -170,19 +188,14 @@ const MainSearch = () => {
                 width: "100%",
               }}
             >
-              <GooglePlacesAutocomplete
-                placeholder="Search destination"
-                minLength={2}
-                onPress={(data, details = null) => {
-                  // 'details' is provided when fetchDetails = true
-                  console.log(data, details);
-                }}
-                fetchDetails
-                query={{
-                  key: "AIzaSyATG5qhpd-R_W7Dv0oUMatTSbRru2EbYcI",
-                  language: "en",
-                }}
-              />
+              {results &&
+                results.map((business: any) => {
+                  return (
+                    <>
+                      <Text>{business[0].name.name}</Text>
+                    </>
+                  );
+                })}
             </View>
           </Animated.View>
         </GestureDetector>
@@ -236,20 +249,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginVertical: 15,
     borderRadius: 2,
-  },
-  search: {
-    fontFamily: "LatoRegular",
-    fontSize: 12,
-    width: "87%",
-    color: colors.black,
-    backgroundColor: "#d7e0f059",
-    borderRadius: 20,
-    borderColor: "#d7e0f0",
-    borderWidth: 1,
-    padding: 5,
-    paddingLeft: 10,
-    paddingRight: 10,
-    alignSelf: "center",
   },
 });
 

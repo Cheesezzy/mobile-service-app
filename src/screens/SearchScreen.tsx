@@ -1,4 +1,5 @@
 import { StatusBar } from "expo-status-bar";
+import { useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { backIcon, searchIcon } from "../../assets/icons/icons";
@@ -6,9 +7,11 @@ import MainSearch from "../components/search/MainSearch";
 import colors from "../config/colors";
 
 const SearchScreen = ({ navigation }: any) => {
+  const [query, setQuery] = useState("");
+
   return (
     <View style={styles.container}>
-      <MainSearch />
+      <MainSearch query={query.toLowerCase()} />
       <View style={styles.searchCon}>
         <SvgXml
           xml={backIcon()}
@@ -30,7 +33,13 @@ const SearchScreen = ({ navigation }: any) => {
           width="14"
           height="14"
         />
-        <TextInput style={styles.search} placeholder="Search the network" />
+
+        <TextInput
+          style={styles.search}
+          placeholder="Search the network"
+          onChangeText={(newQuery) => setQuery(newQuery)}
+          defaultValue={query}
+        />
       </View>
       <StatusBar style="auto" />
     </View>

@@ -14,7 +14,11 @@ import Paginator from "./Paginator";
 import Animated from "react-native-reanimated";
 import { TextInput } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import { updateBizInformedStat, updateBusinessName } from "../../api/database";
+import {
+  updateBizInformedStat,
+  updateBusinessName,
+  updateRating,
+} from "../../api/database";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../../firebaseConfig";
 import { doc } from "firebase/firestore";
@@ -31,6 +35,7 @@ const Slide = ({ item, scrollX, navigation }: any) => {
 
   const handleUpdateBizInformed = () => {
     setLoading(true);
+    updateRating(user?.uid, 0);
     updateBizInformedStat(user?.uid);
   };
 
