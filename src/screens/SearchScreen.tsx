@@ -7,11 +7,16 @@ import MainSearch from "../components/search/MainSearch";
 import colors from "../config/colors";
 
 const SearchScreen = ({ navigation }: any) => {
-  const [query, setQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFilled, setSearchFilled] = useState(false);
 
   return (
     <View style={styles.container}>
-      <MainSearch query={query.toLowerCase()} />
+      <MainSearch
+        searchQuery={searchQuery.toLowerCase()}
+        searchFilled={searchFilled}
+        setSearchFilled={setSearchFilled}
+      />
       <View style={styles.searchCon}>
         <SvgXml
           xml={backIcon()}
@@ -35,10 +40,13 @@ const SearchScreen = ({ navigation }: any) => {
         />
 
         <TextInput
-          style={styles.search}
+          style={[
+            styles.search,
+            { borderColor: colors.grey, borderWidth: searchFilled ? 1 : 0 },
+          ]}
           placeholder="Search the network"
-          onChangeText={(newQuery) => setQuery(newQuery)}
-          defaultValue={query}
+          onChangeText={(newQuery) => setSearchQuery(newQuery)}
+          defaultValue={searchQuery}
         />
       </View>
       <StatusBar style="auto" />
@@ -65,7 +73,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   search: {
-    width: "85%",
+    width: "80%",
     fontFamily: "LatoRegular",
     fontSize: 12,
     color: colors.black,

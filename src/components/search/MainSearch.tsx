@@ -7,6 +7,8 @@ import {
   Button,
   ViewProps,
   ScrollView,
+  ImageBackground,
+  Image,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useEffect, useRef, useState } from "react";
@@ -26,8 +28,22 @@ import colors from "../../config/colors";
 import * as Location from "expo-location";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { StatusBar } from "expo-status-bar";
-import { businesses } from "../../../assets/placeholdersForBiz/placeholdersForBiz";
+//import { businesses } from "../../../assets/placeholdersForBiz/placeholdersForBiz";
 import { searchAndRank } from "../../../api/searchAlgo";
+import {
+  collection,
+  collectionGroup,
+  doc,
+  orderBy,
+  query,
+} from "firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "../../../firebaseConfig";
+import {
+  useCollection,
+  useCollectionData,
+  useDocumentData,
+} from "react-firebase-hooks/firestore";
 
 const markers = [
   {
@@ -63,10 +79,12 @@ const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
 
 interface Props {
-  query: string;
+  searchQuery: string;
+  searchFilled: boolean;
+  setSearchFilled: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MainSearch = ({ query }: Props) => {
+const MainSearch = ({ searchQuery, setSearchFilled }: Props) => {
   const [userLocation, setUserLocation] = useState<any>(null);
   const [errMsg, setErrorMsg] = useState<any>(null);
   const gpa = useRef<any>(null);
@@ -89,11 +107,17 @@ const MainSearch = ({ query }: Props) => {
 
   useEffect(() => {
     translateY.value = withSpring(-SCREEN_HEIGHT / 3, { damping: 50 });
-    gpa.current?.setAddressText("Some Text");
   }, []);
 
   const translateY = useSharedValue(0);
   const context = useSharedValue({ y: 0 });
+
+  useEffect(() => {
+    while (translateY.value > SCREEN_HEIGHT) {
+      setSearchFilled(true);
+    }
+    console.log(translateY.value, context.value, "Reached ceiling");
+  }, [context.value]);
 
   const gesture = Gesture.Pan()
     .onStart(() => {
@@ -125,19 +149,22 @@ const MainSearch = ({ query }: Props) => {
     };
   });
 
+  const [user] = useAuthState(auth);
+
+  const businessesRef = collection(db, "businesses");
+  const [businesses] = useCollectionData(businessesRef);
+
   //businesses.map((location) => {});
 
-  //console.log(businesses[0][0].location, "here");
+  console.log(businesses && businesses[0], "here");
 
   let results =
-    query.length > 0
-      ? searchAndRank(query, businesses, {
+    searchQuery && searchQuery.length > 0
+      ? searchAndRank(searchQuery, businesses, {
           lat: parseFloat(userLocation?.coords.latitude),
           lng: parseFloat(userLocation?.coords.longitude),
         })
       : null;
-
-  console.log("wrong");
 
   return (
     <GestureHandlerRootView>
@@ -186,16 +213,32 @@ const MainSearch = ({ query }: Props) => {
               style={{
                 height: "100%",
                 width: "100%",
+                padding: 10,
               }}
             >
-              {results &&
-                results.map((business: any) => {
-                  return (
-                    <>
-                      <Text>{business[0].name.name}</Text>
-                    </>
-                  );
-                })}
+              <ScrollView>
+                {results &&
+                  results.map((business: any, i: number) => {
+                    if (i < 4)
+                      return (
+                        <View
+                          style={styles.business}
+                          key={business.location.lat + Math.random()}
+                        >
+                          <View style={styles.imgCon}>
+                            <Image
+                              source={require("../../.././assets/tfp.png")}
+                              style={styles.img}
+                            />
+                          </View>
+                          <View style={styles.txtCon}>
+                            <Text style={styles.txt}>{business.name}</Text>
+                          </View>
+                        </View>
+                      );
+                  })}
+                {results ? <Text style={styles.more}>See more...</Text> : null}
+              </ScrollView>
             </View>
           </Animated.View>
         </GestureDetector>
@@ -249,6 +292,44 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginVertical: 15,
     borderRadius: 2,
+  },
+  business: {
+    width: "100%",
+    height: 80,
+    flexDirection: "row",
+    justifyContent: "center",
+
+    borderRadius: 8,
+    marginTop: 10,
+  },
+  imgCon: {
+    width: "50%",
+  },
+  img: {
+    width: "100%",
+    height: "100%",
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8,
+  },
+  txtCon: {
+    width: "50%",
+    padding: 10,
+    borderColor: colors.grey,
+    borderWidth: 1,
+    borderLeftWidth: 0,
+    borderTopRightRadius: 8,
+    borderBottomRightRadius: 8,
+  },
+  txt: {
+    fontFamily: "Lato",
+    fontSize: 13,
+  },
+  more: {
+    alignSelf: "center",
+    fontFamily: "LatoRegular",
+    fontSize: 13,
+    color: colors.primary,
+    marginTop: 10,
   },
 });
 

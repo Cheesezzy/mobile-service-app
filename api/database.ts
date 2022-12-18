@@ -1,5 +1,6 @@
 import {
   addDoc,
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
@@ -32,7 +33,8 @@ export function createUser(
   joined: any,
   messages: any,
   onBoard: boolean,
-  bizInformed: boolean
+  bizInformed: boolean,
+  bizId: any
 ) {
   const userRef = doc(db, "users", userId);
   setDoc(userRef, {
@@ -47,6 +49,7 @@ export function createUser(
     messages,
     onBoard,
     bizInformed,
+    bizId,
   });
 }
 
@@ -169,34 +172,57 @@ export function updateUserRole(userId: any, role: string) {
   });
 }
 
-// info about business
-export function updateBusinessName(userId: any, name: string) {
-  const businessNameRef = doc(db, "users", userId, "business", "name");
+// add business to database
+export function addBusiness(userId: any) {
+  const businessRef = collection(db, "businesses");
+  const userRef = doc(db, "users", userId);
 
-  setDoc(businessNameRef, {
+  addDoc(businessRef, {
+    name: "",
+    desc: "",
+    userId: userId,
+    location: "",
+    rating: 0,
+    manager: "",
+  }).then((doc) => {
+    updateDoc(userRef, {
+      bizId: doc.id,
+    });
+  });
+}
+
+// info about business
+export function updateBusinessName(bizId: any, name: string, user: any) {
+  const businessRef = doc(db, "businesses", bizId);
+
+  updateDoc(businessRef, {
     name,
   });
 }
 
-export function updateBusinessDesc(userId: any, desc: any) {
-  const businessDescRef = doc(db, "users", userId, "business", "desc");
+export function updateBusinessDesc(bizId: any, desc: any) {
+  const businessRef = doc(db, "businesses", bizId);
 
-  setDoc(businessDescRef, desc);
-}
-
-export function updateLocation(userId: any, lat: any, lng: any) {
-  const businessLocationRef = doc(db, "users", userId, "business", "location");
-
-  setDoc(businessLocationRef, {
-    lat,
-    lng,
+  updateDoc(businessRef, {
+    desc,
   });
 }
 
-export function updateRating(userId: any, rating: any) {
-  const businessRatingRef = doc(db, "users", userId, "business", "rating");
+export function updateLocation(bizId: any, lat: any, lng: any) {
+  const businessRef = doc(db, "businesses", bizId);
 
-  setDoc(businessRatingRef, {
+  updateDoc(businessRef, {
+    location: {
+      lat,
+      lng,
+    },
+  });
+}
+
+export function updateRating(bizId: any, rating: any) {
+  const businessRef = doc(db, "businesses", bizId, "business", "rating");
+
+  updateDoc(businessRef, {
     rating,
   });
 }

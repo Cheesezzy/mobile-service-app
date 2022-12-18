@@ -25,22 +25,22 @@ export function searchAndRank(
 ) {
   // First, filter the businesses based on the search query
   const filteredBusinesses = businesses.filter((business: any) => {
-    return business[0].name.name.toLowerCase().includes(query);
+    return business.name.toLowerCase().includes(query);
 
-    //  || business[0].desc.includes(query)
+    //  || business.desc.includes(query)
   });
 
   // Next, sort the filtered businesses by rating
   const sortedByRating = filteredBusinesses.sort((a: any, b: any) => {
-    return b[0].rating.rating - a[0].rating.rating;
+    return b.rating - a.rating;
   });
 
   //console.log(sortedByRating, "found ny rating!");
 
   // Finally, sort the businesses by proximity to the given location
   const sortedByProximity = sortedByRating.sort((a: any, b: any) => {
-    const distanceToA = calculateDistance(location, a[0].location);
-    const distanceToB = calculateDistance(location, b[0].location);
+    const distanceToA = calculateDistance(location, a.location);
+    const distanceToB = calculateDistance(location, b.location);
     return distanceToA - distanceToB;
   });
 

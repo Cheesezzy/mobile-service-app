@@ -13,13 +13,28 @@ import { Dialog } from "@rneui/themed";
 import * as Location from "expo-location";
 import { updateLocation } from "../../api/database";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebaseConfig";
+import { auth, db } from "../../firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
+import { collection, doc } from "firebase/firestore";
+import {
+  useCollectionData,
+  useDocumentData,
+} from "react-firebase-hooks/firestore";
 
 const SetLocationPopup = () => {
   const [user] = useAuthState(auth);
   const navigation = useNavigation();
   const [errMsg, setErrorMsg] = useState<any>(null);
+
+  const businessRef = collection(db, "users", user?.uid!, "business");
+  //const userRef = doc(db, "users", user?.uid!);
+  const [business, loading] = useCollectionData(businessRef);
+
+  const userRef = doc(db, "users", user?.uid!);
+
+  const [User] = useDocumentData(userRef);
+
+  //console.log(business[1].rating, "data");
 
   const usePresentLocation = () => {
     (async () => {
@@ -33,7 +48,7 @@ const SetLocationPopup = () => {
         accuracy: Location.Accuracy.BestForNavigation,
       });
       updateLocation(
-        user?.uid,
+        User?.bizId,
         location.coords?.latitude,
         location.coords?.longitude
       );

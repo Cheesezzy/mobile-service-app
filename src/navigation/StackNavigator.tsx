@@ -33,7 +33,10 @@ import AnalyticsScreen from "../screens/AnalyticsScreen";
 import PaymentsScreen from "../screens/PaymentsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import EarningsScreen from "../screens/EarningsScreen";
-import { useDocumentData } from "react-firebase-hooks/firestore";
+import {
+  useDocumentData,
+  useCollectionData,
+} from "react-firebase-hooks/firestore";
 import colors from "../config/colors";
 import CategoryScreen from "../screens/CategoryScreen";
 import { GoogleSearch } from "../components/GoogleSearch";

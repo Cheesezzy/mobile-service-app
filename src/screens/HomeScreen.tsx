@@ -30,33 +30,39 @@ import {
   professional,
   social,
 } from "../../assets/svgs/svgs";
-import { doc } from "firebase/firestore";
+import {
+  collection,
+  collectionGroup,
+  doc,
+  onSnapshot,
+} from "firebase/firestore";
 import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
 import SetLocationPopup from "../components/SetLocationPopup";
 
-const image = require("../../assets/welcome/find.png");
-
 const HomeScreen = ({ navigation }: any) => {
   const dispatch = useDispatch();
   const selector = useSelector(handleAllUsers);
 
-  const user = selector.payload.user.value;
   const [User] = useAuthState(auth);
 
-  const businessLocationRef = doc(
-    db,
-    "users",
-    User?.uid!,
-    "business",
-    "location"
-  );
+  const userRef = doc(db, "users", User?.uid!);
+  const businessesRef = collection(db, "businesses");
+  const [biz] = useCollectionData(businessesRef);
+  console.log(biz, "biz");
 
-  const allUsers = selector.payload.users.value;
+  const [user] = useDocumentData(userRef);
+  //const user = selector.payload.user.value;
 
-  const [location, loading] = useDocumentData(businessLocationRef);
+  const businessRef = user?.bizId && doc(db, "businesses", user?.bizId);
+
+  //console.log(user?.bizId, "user");
+
+  //const allUsers = selector.payload.users.value;
+
+  const [business, loading] = useDocumentData(businessRef);
 
   useEffect(() => {}, []);
 
@@ -65,7 +71,7 @@ const HomeScreen = ({ navigation }: any) => {
       <HeaderTitle title="Home" />
 
       <View style={styles.container}>
-        {loading ? null : location ? null : <SetLocationPopup />}
+        {loading ? null : business?.location ? null : <SetLocationPopup />}
         <ScrollView style={{ padding: 5, paddingBottom: 20 }}>
           <View>
             <View style={styles.categorySecs}>

@@ -1,3 +1,4 @@
+// remember to change inputs to lower case
 import {
   View,
   Text,
@@ -56,7 +57,8 @@ const SignupScreen = ({ navigation }: any) => {
           "",
           "",
           false,
-          false
+          false,
+          ""
         );
       })
       .catch((error) => {
@@ -90,7 +92,8 @@ const SignupScreen = ({ navigation }: any) => {
         null,
         null,
         false,
-        false
+        false,
+        ""
       );
       setAuthLoading(false);
     } catch (error: any) {
@@ -163,7 +166,7 @@ const SignupScreen = ({ navigation }: any) => {
         disabled={authLoading}
       >
         <Text style={styles.inputBtnTxt}>
-          {authLoading ? <ActivityIndicator color="#fff" /> : "Sign in"}
+          {authLoading ? <ActivityIndicator color="#fff" /> : "Sign up"}
         </Text>
       </TouchableOpacity>
 

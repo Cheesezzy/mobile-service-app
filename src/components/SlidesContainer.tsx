@@ -29,13 +29,13 @@ const Slide = ({ item, scrollX, navigation }: any) => {
   const [loading, setLoading] = useState(false);
   const [user] = useAuthState(auth);
 
-  const userbizInformedRef = doc(db, "users", user?.uid!);
+  const userRef = doc(db, "users", user?.uid!);
 
-  const [bizData] = useDocumentData(userbizInformedRef);
+  const [bizData] = useDocumentData(userRef);
 
   const handleUpdateBizInformed = () => {
     setLoading(true);
-    updateRating(user?.uid, 0);
+    updateRating(bizData?.bizId, 0);
     updateBizInformedStat(user?.uid);
   };
 
@@ -91,12 +91,15 @@ const Slide = ({ item, scrollX, navigation }: any) => {
 const SlidesContainer = ({ navigation, route }: any) => {
   const { role } = route.params;
   const [user] = useAuthState(auth);
+  const userRef = doc(db, "users", user?.uid!);
+
+  const [User] = useDocumentData(userRef);
 
   const [name, setName] = useState<any>(null);
   const [desc, setDesc] = useState<any>(null);
 
   const handleSubmit = () => {
-    updateBusinessName(user?.uid, name);
+    updateBusinessName(User?.bizId, name, User);
     setName("");
   };
 

@@ -12,16 +12,23 @@ import {
 import React, { useEffect, useRef } from "react";
 import colors from "../config/colors";
 import { useState } from "react";
-import { updateUserRole } from "../../api/database";
+import { addBusiness, updateUserRole } from "../../api/database";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebaseConfig";
+import { auth, db } from "../../firebaseConfig";
+import { doc } from "firebase/firestore";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 
 const BusinessEnroll = ({ navigation }: any) => {
   const { width } = useWindowDimensions();
   const [user] = useAuthState(auth);
 
+  const userRef = doc(db, "users", user?.uid!);
+
+  const [User] = useDocumentData(userRef);
+
   const handleNavigation = (role: string) => {
-    updateUserRole(user?.uid, role);
+    //updateUserRole(User?.bizId, role);
+    addBusiness(user?.uid);
     navigation.navigate("SlidesContainer", { role });
   };
 

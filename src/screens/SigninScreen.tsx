@@ -126,6 +126,7 @@ const SigninScreen = ({ navigation }: any) => {
       </View>
 
       <TextInput
+        keyboardType="email-address"
         onChangeText={(newEmail) => setEmail(newEmail)}
         style={styles.inputBox}
         placeholder="Email or username"
