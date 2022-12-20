@@ -26,11 +26,30 @@ import {
 } from "../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
 import { StatusBar } from "expo-status-bar";
+import { doc } from "firebase/firestore";
+import { auth, db } from "../../firebaseConfig";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import { checkRole } from "../../api/customHooks/generalHooks";
 
 const HustleScreen = ({ navigation }: any) => {
   const [fontsLoaded] = useFonts({
     Lato: require("../../assets/fonts/Lato/Lato-Black.ttf"),
   });
+
+  const [User] = useAuthState(auth);
+
+  const userRef = doc(db, "users", User?.uid!);
+
+  const [user] = useDocumentData(userRef);
+
+  const businessRef = user?.bizId && doc(db, "businesses", user?.bizId);
+
+  //console.log(user?.bizId, "user");
+
+  //const allUsers = selector.payload.users.value;
+
+  const [business, loading] = useDocumentData(businessRef);
 
   return (
     <View style={styles.container}>
@@ -44,158 +63,198 @@ const HustleScreen = ({ navigation }: any) => {
         </View>
 
         <View>
-          <Text style={styles.businessName}>Rete Technologies</Text>
+          {user && checkRole(user) ? (
+            <Text style={styles.businessName}>{business?.name}</Text>
+          ) : (
+            <Text style={styles.businessName}>{user?.name}</Text>
+          )}
         </View>
       </View>
 
       <ScrollView style={styles.body} showsVerticalScrollIndicator={false}>
-        <View style={styles.statsSec}>
-          <View style={[styles.statsItem, styles.firstStat]}>
-            <Text style={styles.statsItemTxtA}>Business Level</Text>
+        {user && checkRole(user) ? (
+          <>
+            <View style={styles.statsSec}>
+              <View style={[styles.statsItem, styles.firstStat]}>
+                <Text style={styles.statsItemTxtA}>Business Level</Text>
 
-            <Text style={styles.statsItemTxtB}>Start-up</Text>
-          </View>
-          <View style={styles.statsItem}>
-            <Text style={styles.statsItemTxtA}>Withdrawable</Text>
-
-            <Text style={styles.statsItemTxtB}>₦150,000</Text>
-          </View>
-
-          <View style={styles.statsItem}>
-            <Text style={styles.statsItemTxtA}>Total Earnings</Text>
-
-            <Text style={styles.statsItemTxtB}>₦1,000,000</Text>
-          </View>
-
-          <View style={styles.statsItem}>
-            <Text style={styles.statsItemTxtA}>Business Rating</Text>
-
-            <View style={{}}>
-              <Rating
-                type="custom"
-                fractions={1}
-                startingValue={4}
-                readonly
-                imageSize={12}
-                ratingCount={5}
-                ratingColor={colors.primary}
-                tintColor={colors.secondary}
-                ratingBackgroundColor="grey"
-              />
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.secHeader}>My Hustle</Text>
-
-          <TouchableOpacity
-            activeOpacity={0.6}
-            // @ts-ignore
-            onPress={() => navigation.navigate("Profile")}
-          >
-            <View style={styles.itemContainer}>
-              <View style={styles.iconFlex}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={profileIcon()}
-                  width="21"
-                  height="21"
-                />
-                <Text style={styles.menuItem}>Profile</Text>
+                <Text style={styles.statsItemTxtB}>Start-up</Text>
               </View>
-              <View style={styles.goTo}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={frontIcon()}
-                  width="14"
-                  height="14"
-                />
+              <View style={styles.statsItem}>
+                <Text style={styles.statsItemTxtA}>Withdrawable</Text>
+
+                <Text style={styles.statsItemTxtB}>₦150,000</Text>
+              </View>
+
+              <View style={styles.statsItem}>
+                <Text style={styles.statsItemTxtA}>Total Earnings</Text>
+
+                <Text style={styles.statsItemTxtB}>₦1,000,000</Text>
+              </View>
+
+              <View style={styles.statsItem}>
+                <Text style={styles.statsItemTxtA}>Business Rating</Text>
+
+                <View style={{}}>
+                  <Rating
+                    type="custom"
+                    fractions={1}
+                    startingValue={business?.rating}
+                    readonly
+                    imageSize={12}
+                    ratingCount={5}
+                    ratingColor={colors.primary}
+                    tintColor={colors.secondary}
+                    ratingBackgroundColor="grey"
+                  />
+                </View>
               </View>
             </View>
-          </TouchableOpacity>
 
-          <TouchableOpacity
-            activeOpacity={0.6}
-            // @ts-ignore
-            onPress={() => navigation.navigate("Earnings")}
-          >
-            <View style={styles.itemContainer}>
-              <View style={styles.iconFlex}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={earningIcon()}
-                  width="21"
-                  height="21"
-                />
-                <Text style={styles.menuItem}>Earnings</Text>
-              </View>
-              <View style={styles.goTo}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={frontIcon()}
-                  width="14"
-                  height="14"
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
+            <View style={styles.section}>
+              <Text style={styles.secHeader}>My Hustle</Text>
 
-          <TouchableOpacity
-            activeOpacity={0.6}
-            // @ts-ignore
-            onPress={() => navigation.navigate("Analytics")}
-          >
-            <View style={styles.itemContainer}>
-              <View style={styles.iconFlex}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={analyticsIcon()}
-                  width="21"
-                  height="21"
-                />
-                <Text style={styles.menuItem}>Analytics</Text>
-              </View>
-              <View style={styles.goTo}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={frontIcon()}
-                  width="14"
-                  height="14"
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.6}
+                // @ts-ignore
+                onPress={() =>
+                  navigation.navigate("Profile", {
+                    business,
+                  })
+                }
+              >
+                <View style={styles.itemContainer}>
+                  <View style={styles.iconFlex}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={profileIcon()}
+                      width="21"
+                      height="21"
+                    />
+                    <Text style={styles.menuItem}>Profile</Text>
+                  </View>
+                  <View style={styles.goTo}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={frontIcon()}
+                      width="14"
+                      height="14"
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
 
-          <TouchableOpacity
-            activeOpacity={0.6}
-            // @ts-ignore
-            onPress={() => navigation.navigate("Ad")}
-          >
-            <View style={styles.itemContainer}>
-              <View style={styles.iconFlex}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={adIcon("", "")}
-                  width="21"
-                  height="21"
-                />
-                <Text style={styles.menuItem}>Rete Ads</Text>
-              </View>
-              <View style={styles.goTo}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={frontIcon()}
-                  width="14"
-                  height="14"
-                />
-              </View>
+              <TouchableOpacity
+                activeOpacity={0.6}
+                // @ts-ignore
+                onPress={() => navigation.navigate("Earnings")}
+              >
+                <View style={styles.itemContainer}>
+                  <View style={styles.iconFlex}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={earningIcon()}
+                      width="21"
+                      height="21"
+                    />
+                    <Text style={styles.menuItem}>Earnings</Text>
+                  </View>
+                  <View style={styles.goTo}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={frontIcon()}
+                      width="14"
+                      height="14"
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                activeOpacity={0.6}
+                // @ts-ignore
+                onPress={() => navigation.navigate("Analytics")}
+              >
+                <View style={styles.itemContainer}>
+                  <View style={styles.iconFlex}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={analyticsIcon()}
+                      width="21"
+                      height="21"
+                    />
+                    <Text style={styles.menuItem}>Analytics</Text>
+                  </View>
+                  <View style={styles.goTo}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={frontIcon()}
+                      width="14"
+                      height="14"
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                activeOpacity={0.6}
+                // @ts-ignore
+                onPress={() => navigation.navigate("Ad")}
+              >
+                <View style={styles.itemContainer}>
+                  <View style={styles.iconFlex}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={adIcon("", "")}
+                      width="21"
+                      height="21"
+                    />
+                    <Text style={styles.menuItem}>Rete Ads</Text>
+                  </View>
+                  <View style={styles.goTo}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={frontIcon()}
+                      width="14"
+                      height="14"
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-        </View>
+          </>
+        ) : null}
 
         <View style={styles.section}>
           <Text style={styles.secHeader}>General</Text>
+
+          {user && !checkRole(user) ? (
+            <TouchableOpacity
+              activeOpacity={0.6}
+              // @ts-ignore
+              onPress={() => navigation.navigate("Profile", { business: null })}
+            >
+              <View style={styles.itemContainer}>
+                <View style={styles.iconFlex}>
+                  <SvgXml
+                    style={styles.icon}
+                    xml={profileIcon()}
+                    width="21"
+                    height="21"
+                  />
+                  <Text style={styles.menuItem}>Profile</Text>
+                </View>
+                <View style={styles.goTo}>
+                  <SvgXml
+                    style={styles.icon}
+                    xml={frontIcon()}
+                    width="14"
+                    height="14"
+                  />
+                </View>
+              </View>
+            </TouchableOpacity>
+          ) : null}
 
           <TouchableOpacity
             activeOpacity={0.6}

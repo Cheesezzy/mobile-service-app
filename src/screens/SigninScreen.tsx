@@ -127,22 +127,25 @@ const SigninScreen = ({ navigation }: any) => {
 
       <TextInput
         keyboardType="email-address"
-        onChangeText={(newEmail) => setEmail(newEmail)}
+        onChangeText={(newEmail) => setEmail(newEmail.toLowerCase())}
         style={styles.inputBox}
         placeholder="Email or username"
-        defaultValue={email}
       />
       <TextInput
         onChangeText={(newPass) => setPassword(newPass)}
         style={styles.inputBox}
         placeholder="Password"
-        defaultValue={password}
       />
 
       <Text style={styles.err}>{error}</Text>
 
       <TouchableOpacity
-        style={styles.inputBtn}
+        style={[
+          styles.inputBtn,
+          {
+            opacity: authLoading ? 0.5 : 1,
+          },
+        ]}
         onPress={handleLogin}
         disabled={authLoading}
       >

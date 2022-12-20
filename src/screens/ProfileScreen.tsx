@@ -11,8 +11,18 @@ import { SvgXml } from "react-native-svg";
 import { backIcon, locationIcon, profileIcon } from "../../assets/icons/icons";
 import { Avatar } from "@rneui/themed";
 import { StatusBar } from "expo-status-bar";
+import { doc } from "firebase/firestore";
+import { auth, db } from "../../firebaseConfig";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
 
-const ProfileScreen = ({ navigation }: any) => {
+const ProfileScreen = ({ navigation, route }: any) => {
+  const { business } = route.params;
+
+  const [User] = useAuthState(auth);
+  const userRef = doc(db, "users", business ? business?.userId : User?.uid);
+  const [user] = useDocumentData(userRef);
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.body}>
@@ -33,73 +43,147 @@ const ProfileScreen = ({ navigation }: any) => {
               source={{ uri: "https://picsum.photos/200" }}
               containerStyle={styles.avatar}
             />
-            <Text style={styles.profileName}>Rete Technologies</Text>
+            <Text style={styles.profileName}>
+              {business ? business?.name : user?.name}
+            </Text>
+            {business && business.userId !== User?.uid ? (
+              <View style={styles.choiceBtnCon}>
+                <TouchableOpacity
+                  style={[styles.choiceBtn, { marginRight: 10 }]}
+                  onPress={() =>
+                    navigation.navigate("NegoDisplay", {
+                      personId: business.userId,
+                      name: user?.name,
+                    })
+                  }
+                >
+                  <Text style={styles.choiceBtnTxt}>Negotiate</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.choiceBtn}
+                  onPress={() =>
+                    navigation.navigate("Transfer", {
+                      business: business,
+                    })
+                  }
+                >
+                  <Text style={styles.choiceBtnTxt}>Hire</Text>
+                </TouchableOpacity>
+              </View>
+            ) : null}
           </View>
         </View>
 
-        <View style={styles.businessInfoCon}>
-          <Text style={styles.businessInfoConTxt}>Business Information</Text>
+        {business && business.userId !== User?.uid ? (
+          <>
+            <View style={styles.businessInfoCon}>
+              <Text style={styles.businessInfoConTxt}>
+                Business Information
+              </Text>
 
-          <View style={styles.bio}>
-            <Text style={styles.bioTxt}>
-              Rete Technologies is a fast-growing online platform that connects
+              <View style={styles.bio}>
+                <Text style={styles.bioTxt}>
+                  {/*Rete Technologies is a fast-growing online platform that connects
               people looking for services with service providers. Our platform
               uses the searcher's location to suggest service providers who are
               close to them, making it easy for people to find the services they
               need quickly and efficiently. Our platform is similar to Fiverr,
               but with a greater focus on hard skills such as painting and
-              barbering.
-            </Text>
-          </View>
-          <View style={styles.about}>
-            <View style={styles.aboutItem}>
-              <View style={styles.aboutItemIcon}>
-                <SvgXml
-                  xml={profileIcon(colors.primary)}
-                  width="22"
-                  height="22"
-                  onPress={() => navigation.goBack()}
-                />
+  barbering.*/}
+
+                  {business && business?.desc}
+                </Text>
               </View>
-              <View>
-                <Text style={styles.aboutInfoLabel}>Manager</Text>
-                <Text style={styles.aboutInfoVal}>Jeoffrey Duke</Text>
+              <View style={styles.about}>
+                <View style={styles.aboutItem}>
+                  <View style={styles.aboutItemIcon}>
+                    <SvgXml
+                      xml={profileIcon(colors.primary)}
+                      width="22"
+                      height="22"
+                      onPress={() => navigation.goBack()}
+                    />
+                  </View>
+                  <View>
+                    <Text style={styles.aboutInfoLabel}>Manager</Text>
+                    <Text style={styles.aboutInfoVal}>{user?.name}</Text>
+                  </View>
+                </View>
+
+                <View style={styles.aboutItem}>
+                  <View style={styles.aboutItemIcon}>
+                    <SvgXml
+                      xml={locationIcon(colors.primary)}
+                      width="22"
+                      height="22"
+                      onPress={() => navigation.goBack()}
+                    />
+                  </View>
+                  <View>
+                    <Text style={styles.aboutInfoLabel}>Location</Text>
+                    <Text style={styles.aboutInfoVal}>Nigeria</Text>
+                  </View>
+                </View>
               </View>
             </View>
 
-            <View style={styles.aboutItem}>
-              <View style={styles.aboutItemIcon}>
-                <SvgXml
-                  xml={locationIcon(colors.primary)}
-                  width="22"
-                  height="22"
-                  onPress={() => navigation.goBack()}
-                />
-              </View>
-              <View>
-                <Text style={styles.aboutInfoLabel}>Location</Text>
-                <Text style={styles.aboutInfoVal}>Nigeria</Text>
+            <View style={styles.galleryCon}>
+              <Text style={styles.galleryConTxt}>Gallery</Text>
+
+              <View style={styles.gallery}>
+                <View style={styles.galleryImg}></View>
+                <View style={styles.galleryImg}></View>
+                <View style={styles.galleryImg}></View>
+                <View style={styles.galleryImg}></View>
               </View>
             </View>
-          </View>
-        </View>
 
-        <View style={styles.galleryCon}>
-          <Text style={styles.galleryConTxt}>Gallery</Text>
+            <View style={styles.reviewsCon}>
+              <Text style={styles.reviewsConTxt}>Reviews</Text>
 
-          <View style={styles.gallery}>
-            <View style={styles.galleryImg}></View>
-            <View style={styles.galleryImg}></View>
-            <View style={styles.galleryImg}></View>
-            <View style={styles.galleryImg}></View>
-          </View>
-        </View>
+              <View style={styles.reviews}></View>
+            </View>
+          </>
+        ) : (
+          <>
+            <View style={styles.businessInfoCon}>
+              <Text style={styles.businessInfoConTxt}>
+                Business Information
+              </Text>
 
-        <View style={styles.reviewsCon}>
-          <Text style={styles.reviewsConTxt}>Reviews</Text>
+              <View style={styles.bio}>
+                <Text style={styles.bioTxt}>
+                  {/*Rete Technologies is a fast-growing online platform that connects
+          people looking for services with service providers. Our platform
+          uses the searcher's location to suggest service providers who are
+          close to them, making it easy for people to find the services they
+          need quickly and efficiently. Our platform is similar to Fiverr,
+          but with a greater focus on hard skills such as painting and
+barbering.*/}
 
-          <View style={styles.reviews}></View>
-        </View>
+                  {business && business?.desc}
+                </Text>
+              </View>
+              <View style={styles.about}>
+                <View style={styles.aboutItem}>
+                  <View style={styles.aboutItemIcon}>
+                    <SvgXml
+                      xml={locationIcon(colors.primary)}
+                      width="22"
+                      height="22"
+                      onPress={() => navigation.goBack()}
+                    />
+                  </View>
+                  <View>
+                    <Text style={styles.aboutInfoLabel}>Location</Text>
+                    <Text style={styles.aboutInfoVal}>Nigeria</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </>
+        )}
 
         <View
           style={{
@@ -131,7 +215,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.secondary,
     padding: 15,
-    paddingTop: 35,
+    paddingTop: 40,
   },
   goBack: {
     position: "absolute",
@@ -143,7 +227,29 @@ const styles = StyleSheet.create({
   profileName: {
     fontFamily: "Lato",
     fontSize: 20,
+    textAlign: "center",
     marginTop: 10,
+  },
+  choiceBtnCon: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    marginTop: 10,
+  },
+  choiceBtn: {
+    width: 70,
+    height: 30,
+    backgroundColor: colors.primary,
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+  },
+  choiceBtnTxt: {
+    color: colors.secondary,
+    fontSize: 12,
+    fontFamily: "LatoRegular",
   },
   businessInfoCon: {
     backgroundColor: colors.secondary,

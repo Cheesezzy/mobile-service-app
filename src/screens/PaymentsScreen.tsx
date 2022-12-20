@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import colors from "../config/colors";
 import HeaderTitle from "../components/HeaderTitle";
 
-const PaymentsScreen = () => {
+const PaymentsScreen = ({ navigation }: any) => {
   return (
     <>
       <HeaderTitle title="Payments" />
@@ -13,16 +13,30 @@ const PaymentsScreen = () => {
           <Text style={styles.balVal}>₦150,000</Text>
         </View>
 
-        <View style={styles.paymentMethods}>
-          <Text style={styles.pmSecTxt}>Payment methods</Text>
+        <View style={styles.fundMethods}>
+          <Text style={styles.pmSecTxt}>Fund Wallet</Text>
 
-          <View style={styles.paymentBank}>
-            <Text style={styles.pmTxt}>Bank</Text>
-          </View>
+          <TouchableOpacity
+            style={styles.fundBank}
+            onPress={() =>
+              navigation.navigate("Pay", {
+                method: "account_bank",
+              })
+            }
+          >
+            <Text style={styles.pmTxt}>Bank Transfer</Text>
+          </TouchableOpacity>
 
-          <View style={styles.paymentCard}>
+          <TouchableOpacity
+            style={styles.fundCard}
+            onPress={() =>
+              navigation.navigate("Pay", {
+                method: "card",
+              })
+            }
+          >
             <Text style={styles.pmTxt}>Debit/Credit card</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     </>
@@ -58,21 +72,25 @@ const styles = StyleSheet.create({
     color: colors.lightGrey,
     marginTop: 10,
   },
-  paymentMethods: {},
-  pmSecTxt: {
-    fontSize: 15,
-    fontFamily: "Lato",
-    marginBottom: 15,
+  fundMethods: {
+    marginTop: 20,
   },
-  paymentBank: {
+  fundBank: {
     padding: 15,
     paddingLeft: 0,
     borderBottomColor: colors.grey,
     borderBottomWidth: 1,
   },
-  paymentCard: {
+  fundCard: {
     padding: 15,
     paddingLeft: 0,
+    borderBottomColor: colors.grey,
+    borderBottomWidth: 1,
+  },
+  pmSecTxt: {
+    fontSize: 15,
+    fontFamily: "Lato",
+    marginBottom: 15,
   },
   pmTxt: {
     fontFamily: "LatoRegular",

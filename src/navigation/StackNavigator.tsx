@@ -42,6 +42,8 @@ import CategoryScreen from "../screens/CategoryScreen";
 import { GoogleSearch } from "../components/GoogleSearch";
 import SlidesContainer from "../components/SlidesContainer";
 import BusinessEnroll from "../components/BusinessEnroll";
+import TransferScreen from "../screens/TransferScreen";
+import PayScreen from "../screens/PayScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -221,6 +223,22 @@ const StackNavigator = () => {
         component={SlidesContainer}
         options={{
           title: "SlidesContainer",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Transfer"
+        component={TransferScreen}
+        options={{
+          title: "Transfer",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Pay"
+        component={PayScreen}
+        options={{
+          title: "Pay",
           headerShown: false,
         }}
       />

@@ -16,6 +16,7 @@ const SearchScreen = ({ navigation }: any) => {
         searchQuery={searchQuery.toLowerCase()}
         searchFilled={searchFilled}
         setSearchFilled={setSearchFilled}
+        navigation={navigation}
       />
       <View style={styles.searchCon}>
         <SvgXml

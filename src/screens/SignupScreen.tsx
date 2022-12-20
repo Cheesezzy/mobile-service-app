@@ -146,7 +146,7 @@ const SignupScreen = ({ navigation }: any) => {
         defaultValue={name}
       />
       <TextInput
-        onChangeText={(newMoA) => setMobOrEmail(newMoA)}
+        onChangeText={(newMoA) => setMobOrEmail(newMoA.toLowerCase())}
         style={styles.inputBox}
         placeholder="Email"
         defaultValue={mobOrEmail}
@@ -161,7 +161,12 @@ const SignupScreen = ({ navigation }: any) => {
       <Text style={styles.err}>{error}</Text>
 
       <TouchableOpacity
-        style={styles.inputBtn}
+        style={[
+          styles.inputBtn,
+          {
+            opacity: authLoading ? 0.5 : 1,
+          },
+        ]}
         onPress={handleSignup}
         disabled={authLoading}
       >

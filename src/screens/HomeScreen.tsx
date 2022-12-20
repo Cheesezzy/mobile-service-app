@@ -71,7 +71,11 @@ const HomeScreen = ({ navigation }: any) => {
       <HeaderTitle title="Home" />
 
       <View style={styles.container}>
-        {loading ? null : business?.location ? null : <SetLocationPopup />}
+        {user && user?.role === "Provider" ? (
+          loading ? null : business?.location ? null : (
+            <SetLocationPopup />
+          )
+        ) : null}
         <ScrollView style={{ padding: 5, paddingBottom: 20 }}>
           <View>
             <View style={styles.categorySecs}>

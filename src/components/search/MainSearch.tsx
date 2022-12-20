@@ -16,6 +16,7 @@ import {
   Gesture,
   GestureDetector,
   GestureHandlerRootView,
+  TouchableOpacity,
 } from "react-native-gesture-handler";
 import Animated, {
   Extrapolate,
@@ -34,6 +35,7 @@ import {
   collection,
   collectionGroup,
   doc,
+  getDoc,
   orderBy,
   query,
 } from "firebase/firestore";
@@ -44,6 +46,8 @@ import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
+import { SvgXml } from "react-native-svg";
+import { star } from "../../../assets/svgs/svgs";
 
 const markers = [
   {
@@ -82,9 +86,15 @@ interface Props {
   searchQuery: string;
   searchFilled: boolean;
   setSearchFilled: React.Dispatch<React.SetStateAction<boolean>>;
+  navigation: any;
 }
 
-const MainSearch = ({ searchQuery, setSearchFilled }: Props) => {
+const MainSearch = ({
+  searchQuery,
+  searchFilled,
+  setSearchFilled,
+  navigation,
+}: Props) => {
   const [userLocation, setUserLocation] = useState<any>(null);
   const [errMsg, setErrorMsg] = useState<any>(null);
   const gpa = useRef<any>(null);
@@ -111,13 +121,6 @@ const MainSearch = ({ searchQuery, setSearchFilled }: Props) => {
 
   const translateY = useSharedValue(0);
   const context = useSharedValue({ y: 0 });
-
-  useEffect(() => {
-    while (translateY.value > SCREEN_HEIGHT) {
-      setSearchFilled(true);
-    }
-    console.log(translateY.value, context.value, "Reached ceiling");
-  }, [context.value]);
 
   const gesture = Gesture.Pan()
     .onStart(() => {
@@ -193,22 +196,37 @@ const MainSearch = ({ searchQuery, setSearchFilled }: Props) => {
               title="You"
             />
           )}
-          {markers.map((marker) => {
-            return (
-              userLocation && (
-                <Marker
-                  key={Math.random() + marker.latitude}
-                  coordinate={marker}
-                  pinColor={colors.primary}
-                  image={require("../../.././assets/map/business.png")}
-                />
-              )
-            );
-          })}
+          {results &&
+            results.map((business: any) => {
+              let coord = {
+                accuracy: 300,
+                altitude: 0,
+                altitudeAccuracy: 0,
+                heading: 0,
+                latitude: business?.location?.lat,
+                longitude: business?.location?.lng,
+                speed: 0,
+              };
+
+              return (
+                userLocation && (
+                  <Marker
+                    key={Math.random() + business?.location?.lat}
+                    coordinate={coord}
+                    pinColor={colors.primary}
+                    image={require("../../.././assets/map/business.png")}
+                    title={business?.name}
+                  />
+                )
+              );
+            })}
         </MapView>
         <GestureDetector gesture={gesture}>
           <Animated.View style={[rSearchConStyle, styles.searchCon]}>
             <View style={styles.line}></View>
+            <TouchableOpacity style={styles.locationBtn} onPress={() => null}>
+              <Text style={styles.locationBtnTxt}>Use another location</Text>
+            </TouchableOpacity>
             <View
               style={{
                 height: "100%",
@@ -218,25 +236,47 @@ const MainSearch = ({ searchQuery, setSearchFilled }: Props) => {
             >
               <ScrollView>
                 {results &&
-                  results.map((business: any, i: number) => {
-                    if (i < 4)
-                      return (
-                        <View
-                          style={styles.business}
-                          key={business.location.lat + Math.random()}
-                        >
-                          <View style={styles.imgCon}>
-                            <Image
-                              source={require("../../.././assets/tfp.png")}
-                              style={styles.img}
-                            />
-                          </View>
-                          <View style={styles.txtCon}>
-                            <Text style={styles.txt}>{business.name}</Text>
-                          </View>
-                        </View>
-                      );
-                  })}
+                  results
+                    .sort((a: any, b: any) => {
+                      return b.rating - a.rating;
+                    })
+                    .map((business: any, i: number) => {
+                      if (i < 4)
+                        return (
+                          <TouchableOpacity
+                            style={styles.business}
+                            key={business.location.lat + Math.random()}
+                            onPress={() =>
+                              navigation.navigate("Profile", { business })
+                            }
+                          >
+                            <View style={styles.imgCon}>
+                              <Image
+                                source={require("../../.././assets/placeholder.jpg")}
+                                style={styles.img}
+                              />
+                            </View>
+                            <View style={styles.txtCon}>
+                              <View style={styles.ratingCon}>
+                                <SvgXml
+                                  xml={star()}
+                                  width="11.5"
+                                  height="11.5"
+                                />
+                                <Text style={styles.ratingTxt}>
+                                  {business.rating}
+                                </Text>
+                              </View>
+
+                              <Text style={styles.txt}>{business.name}</Text>
+                              <Text style={styles.chargeTxt}>
+                                <Text style={styles.chargeTxtSm}>From</Text> ₦
+                                {business.chargeRate}
+                              </Text>
+                            </View>
+                          </TouchableOpacity>
+                        );
+                    })}
                 {results ? <Text style={styles.more}>See more...</Text> : null}
               </ScrollView>
             </View>
@@ -293,12 +333,25 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     borderRadius: 2,
   },
+  locationBtn: {
+    width: "40%",
+    height: 35,
+    backgroundColor: colors.primary,
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+  },
+  locationBtnTxt: {
+    color: colors.secondary,
+    fontSize: 12,
+    fontFamily: "LatoRegular",
+  },
   business: {
     width: "100%",
     height: 80,
     flexDirection: "row",
     justifyContent: "center",
-
     borderRadius: 8,
     marginTop: 10,
   },
@@ -311,9 +364,12 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 8,
     borderBottomLeftRadius: 8,
   },
+  ratingCon: {
+    flexDirection: "row",
+  },
   txtCon: {
     width: "50%",
-    padding: 10,
+    padding: 15,
     borderColor: colors.grey,
     borderWidth: 1,
     borderLeftWidth: 0,
@@ -323,13 +379,31 @@ const styles = StyleSheet.create({
   txt: {
     fontFamily: "Lato",
     fontSize: 13,
+    marginTop: 5,
+  },
+  ratingTxt: {
+    fontFamily: "Lato",
+    fontSize: 11.5,
+    color: colors.primary,
+    marginLeft: 5,
+  },
+  chargeTxt: {
+    fontFamily: "Lato",
+    fontSize: 12,
+    marginTop: 5,
+  },
+  chargeTxtSm: {
+    fontFamily: "Lato",
+    fontSize: 11,
+    color: colors.lightBlack,
+    marginTop: 5,
   },
   more: {
     alignSelf: "center",
     fontFamily: "LatoRegular",
     fontSize: 13,
     color: colors.primary,
-    marginTop: 10,
+    marginTop: 25,
   },
 });
 

@@ -25,9 +25,10 @@ export function searchAndRank(
 ) {
   // First, filter the businesses based on the search query
   const filteredBusinesses = businesses.filter((business: any) => {
-    return business.name.toLowerCase().includes(query);
-
-    //  || business.desc.includes(query)
+    return (
+      business.name.toLowerCase().includes(query) ||
+      business.desc.toLowerCase().includes(query)
+    );
   });
 
   // Next, sort the filtered businesses by rating
@@ -44,7 +45,7 @@ export function searchAndRank(
     return distanceToA - distanceToB;
   });
 
-  console.log(sortedByProximity, "found ny promotion!");
+  //console.log(sortedByProximity, "found ny promotion!");
   // Return the sorted list of businesses
   return sortedByProximity;
 }

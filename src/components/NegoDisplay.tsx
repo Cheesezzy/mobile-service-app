@@ -197,6 +197,7 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     backgroundColor: colors.secondary,
+    paddingTop: 40,
   },
   profile: {
     width: "90%",
@@ -298,6 +299,7 @@ const styles = StyleSheet.create({
     paddingRight: 38,
   },
   typeMsg: {
+    fontFamily: "LatoRegular",
     width: "100%",
   },
   sendIcon: {

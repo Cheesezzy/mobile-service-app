@@ -40,7 +40,7 @@ function HeaderTitle({ title }: Props) {
       {route.name === "Home" ? (
         <>
           <TouchableOpacity // @ts-ignore
-            onPress={() => navigation.navigate("Profile")}
+            onPress={() => navigation.navigate("Profile", {})}
           >
             <Avatar
               size={28}

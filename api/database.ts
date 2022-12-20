@@ -184,6 +184,7 @@ export function addBusiness(userId: any) {
     location: "",
     rating: 0,
     manager: "",
+    chargeRate: "",
   }).then((doc) => {
     updateDoc(userRef, {
       bizId: doc.id,
