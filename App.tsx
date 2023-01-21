@@ -22,8 +22,10 @@ import {
 } from "react-native";
 import colors from "./src/config/colors";
 import BusinessEnroll from "./src/components/BusinessEnroll";
+import Geocoder from "react-native-geocoding";
 
 export default function App() {
+  Geocoder.init("AIzaSyATG5qhpd-R_W7Dv0oUMatTSbRru2EbYcI");
   const [user, loading] = useAuthState(auth);
 
   const [fontsLoaded] = useFonts({

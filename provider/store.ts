@@ -5,11 +5,13 @@ import { persistStore, persistReducer } from "redux-persist";
 import userSlice from "./userSlice";
 import allUsersSlice from "./allUsersSlice";
 import categoriesSlice from "./categoriesSlice";
+import themeSlice from "./themeSlice";
 
 const rootReducer = combineReducers({
   user: userSlice,
   users: allUsersSlice,
   categories: categoriesSlice,
+  theme: themeSlice,
 });
 
 const persistedReducer = persistReducer(
@@ -17,7 +19,7 @@ const persistedReducer = persistReducer(
     key: "root",
     storage: AsyncStorage,
     version: 0,
-    whitelist: ["user", "users", "categories"],
+    whitelist: ["user", "users", "categories", "theme"],
   },
   rootReducer
 );

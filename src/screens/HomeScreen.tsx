@@ -41,17 +41,17 @@ import {
   useDocumentData,
 } from "react-firebase-hooks/firestore";
 import SetLocationPopup from "../components/SetLocationPopup";
+import { categories } from "../../provider/categoryData/categories";
+import { handleSwitchTheme } from "../../provider/themeSlice";
+import { moreIcon } from "../../assets/icons/icons";
 
 const HomeScreen = ({ navigation }: any) => {
-  const dispatch = useDispatch();
-  const selector = useSelector(handleAllUsers);
-
   const [User] = useAuthState(auth);
 
   const userRef = doc(db, "users", User?.uid!);
   const businessesRef = collection(db, "businesses");
   const [biz] = useCollectionData(businessesRef);
-  console.log(biz, "biz");
+  //console.log(biz, "biz");
 
   const [user] = useDocumentData(userRef);
   //const user = selector.payload.user.value;
@@ -64,15 +64,23 @@ const HomeScreen = ({ navigation }: any) => {
 
   const [business, loading] = useDocumentData(businessRef);
 
-  useEffect(() => {}, []);
+  const selector: any = useSelector(handleSwitchTheme);
+  const theme = selector.payload.theme.value;
 
   return (
     <>
-      <HeaderTitle title="Home" />
+      <HeaderTitle title="Home" profileURL={user?.profilePic} />
 
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          {
+            backgroundColor: theme ? colors.secondarySmoke : colors.black,
+          },
+        ]}
+      >
         {user && user?.role === "Provider" ? (
-          loading ? null : business?.location ? null : (
+          !business?.location && loading ? null : business?.location ? null : (
             <SetLocationPopup />
           )
         ) : null}
@@ -80,29 +88,61 @@ const HomeScreen = ({ navigation }: any) => {
           <View>
             <View style={styles.categorySecs}>
               <TouchableOpacity
-                style={styles.categoryBig}
+                style={[
+                  styles.categoryBig,
+                  {
+                    backgroundColor: theme
+                      ? colors.secondary
+                      : colors.blackSmoke,
+                  },
+                ]}
                 onPress={() => {
                   navigation.navigate("Category", {
                     categoryName: "Professional",
-                    desc: "Hire a certified professional from our wide range of skilled experts in various fields. These experts have been carefully ranked by their expertise and ability to deliver high-quality results. Trust them to provide exceptional service and get the results you're looking for.",
+                    desc: categories[0].value.desc,
                   });
                 }}
               >
                 <SvgXml xml={professional()} width="60%" height="60%" />
-                <Text style={styles.bigTxt}>Professional</Text>
+                <Text
+                  style={[
+                    styles.bigTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Professional
+                </Text>
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={styles.categoryBig}
+                style={[
+                  styles.categoryBig,
+                  {
+                    backgroundColor: theme
+                      ? colors.secondary
+                      : colors.blackSmoke,
+                  },
+                ]}
                 onPress={() => {
                   navigation.navigate("Category", {
                     categoryName: "Creative",
-                    desc: "Hire a creative professional from our wide range of talented and innovative experts in fields such as art, design, and writing. These experts have been carefully ranked by their unique vision and ability to bring fresh perspectives to their work. Trust them to inspire and elevate your project, and bring your ideas to life.",
+                    desc: categories[1].value.desc,
                   });
                 }}
               >
                 <SvgXml xml={creative()} width="60%" height="60%" />
-                <Text style={styles.bigTxt}>Creative</Text>
+                <Text
+                  style={[
+                    styles.bigTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Creative
+                </Text>
               </TouchableOpacity>
             </View>
 
@@ -112,14 +152,32 @@ const HomeScreen = ({ navigation }: any) => {
                 onPress={() => {
                   navigation.navigate("Category", {
                     categoryName: "Social",
-                    desc: "Hire a social professional from our wide range of friendly experts in various fields. These experts have been carefully ranked by their interpersonal skills and ability to connect with people from all walks of life. Trust them to provide personalized and attentive service, and make your social interactions a success.",
+                    desc: categories[2].value.name,
                   });
                 }}
               >
-                <View style={styles.smCon}>
+                <View
+                  style={[
+                    styles.smCon,
+                    {
+                      backgroundColor: theme
+                        ? colors.secondary
+                        : colors.blackSmoke,
+                    },
+                  ]}
+                >
                   <SvgXml xml={social()} width="70%" height="70%" />
                 </View>
-                <Text style={styles.smTxt}>Social</Text>
+                <Text
+                  style={[
+                    styles.smTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Social
+                </Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -127,14 +185,32 @@ const HomeScreen = ({ navigation }: any) => {
                 onPress={() => {
                   navigation.navigate("Category", {
                     categoryName: "Health Care",
-                    desc: "Hire a healthcare professional from our wide range of skilled experts in various fields. These experts have been carefully ranked by their knowledge and expertise in the healthcare industry. Trust them to provide high-quality care and attention to your health needs.",
+                    desc: categories[3].value.name,
                   });
                 }}
               >
-                <View style={styles.smCon}>
+                <View
+                  style={[
+                    styles.smCon,
+                    {
+                      backgroundColor: theme
+                        ? colors.secondary
+                        : colors.blackSmoke,
+                    },
+                  ]}
+                >
                   <SvgXml xml={health()} width="70%" height="70%" />
                 </View>
-                <Text style={styles.smTxt}>Health Care</Text>
+                <Text
+                  style={[
+                    styles.smTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Health Care
+                </Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -142,20 +218,48 @@ const HomeScreen = ({ navigation }: any) => {
                 onPress={() => {
                   navigation.navigate("Category", {
                     categoryName: "Knowledge",
-                    desc: "Hire an instructor from our wide range of skilled experts in various fields. These experts have been carefully ranked by their knowledge and expertise in teaching and are able to provide high-quality instruction to students of all ages and skill levels. Trust them to provide you or your child with the education you need to succeed.",
+                    desc: categories[4].value.name,
                   });
                 }}
               >
-                <View style={styles.smCon}>
-                  <SvgXml xml={knowledge()} width="70%" height="70%" />
-                </View>
-                <Text style={styles.smTxt}>Knowledge</Text>
-              </TouchableOpacity>
-
-              <View style={styles.categorySm}>
                 <View
                   style={[
                     styles.smCon,
+                    {
+                      backgroundColor: theme
+                        ? colors.secondary
+                        : colors.blackSmoke,
+                    },
+                  ]}
+                >
+                  <SvgXml xml={knowledge()} width="70%" height="70%" />
+                </View>
+                <Text
+                  style={[
+                    styles.smTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Knowledge
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.categorySm}
+                onPress={() => navigation.navigate("Categories")}
+              >
+                <View
+                  style={[
+                    [
+                      styles.smCon,
+                      {
+                        backgroundColor: theme
+                          ? colors.secondary
+                          : colors.blackSmoke,
+                      },
+                    ],
                     {
                       flex: 1,
                       padding: 5,
@@ -164,16 +268,23 @@ const HomeScreen = ({ navigation }: any) => {
                     },
                   ]}
                 >
-                  <Image
-                    source={require("../../assets/menu.png")}
-                    style={{
-                      width: 22,
-                      height: 22,
-                    }}
+                  <SvgXml
+                    xml={moreIcon(theme ? colors.black : colors.secondary)}
+                    width={20}
+                    height={20}
                   />
                 </View>
-                <Text style={styles.smTxt}>See all</Text>
-              </View>
+                <Text
+                  style={[
+                    styles.smTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  See all
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -194,7 +305,7 @@ const HomeScreen = ({ navigation }: any) => {
         </ScrollView>
 
         <Navigation navigation={navigation} />
-        <StatusBar style="auto" />
+        <StatusBar style={theme ? "dark" : "light"} />
       </View>
     </>
   );
@@ -215,7 +326,6 @@ const styles = StyleSheet.create({
     height: 70,
     margin: 4,
     borderRadius: 5,
-    backgroundColor: colors.secondary,
     padding: 5,
     justifyContent: "center",
     alignItems: "center",
@@ -228,7 +338,6 @@ const styles = StyleSheet.create({
   smCon: {
     flex: 1,
     borderRadius: 5,
-    backgroundColor: colors.secondary,
     padding: 5,
     justifyContent: "center",
     alignItems: "center",
@@ -256,6 +365,20 @@ const styles = StyleSheet.create({
   img: {
     flex: 1,
     justifyContent: "center",
+  },
+  inputBtn: {
+    height: 45,
+    width: "100%",
+    backgroundColor: colors.primary,
+    borderRadius: 5,
+    marginTop: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  inputBtnTxt: {
+    color: colors.secondary,
+    fontSize: 14,
+    fontFamily: "LatoRegular",
   },
 });
 

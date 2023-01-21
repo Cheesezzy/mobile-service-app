@@ -7,6 +7,7 @@ import {
   View,
   Image,
   ActivityIndicator,
+  FlatList,
 } from "react-native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import colors from "../config/colors";
@@ -98,9 +99,14 @@ const SlidesContainer = ({ navigation, route }: any) => {
   const [name, setName] = useState<any>(null);
   const [desc, setDesc] = useState<any>(null);
 
+  const ReanimatedFlatList = Animated.createAnimatedComponent(FlatList);
+
   const handleSubmit = () => {
+    console.log("handleSubmit called");
     updateBusinessName(User?.bizId, name, User);
     setName("");
+    scrollToIndex(0);
+    console.log("scrollTo called");
   };
 
   const images =
@@ -192,22 +198,14 @@ const SlidesContainer = ({ navigation, route }: any) => {
     viewAreaCoveragePercentThreshold: 50,
   }).current;
 
-  const scrollTo = async () => {
-    if (index < images.length - 1) {
-      slidesRef.current.scrollToIndex({ index: index + 1 });
-    } else {
-      try {
-        //await AsyncStorage.setItem("@viewedOnboarding", "true");
-      } catch (err) {
-        console.log(err);
-      }
-    }
+  const scrollToIndex = (index: any) => {
+    slidesRef.current?.scrollToIndex({ index });
   };
 
   return (
     <View style={styles.container}>
       <View>
-        <Animated.FlatList
+        <ReanimatedFlatList
           data={images}
           renderItem={({ item }) => (
             <Slide item={item} scrollX={scrollX} navigation={navigation} />

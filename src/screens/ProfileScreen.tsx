@@ -4,32 +4,177 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import colors from "../config/colors";
 import { SvgXml } from "react-native-svg";
 import { backIcon, locationIcon, profileIcon } from "../../assets/icons/icons";
 import { Avatar } from "@rneui/themed";
 import { StatusBar } from "expo-status-bar";
-import { doc } from "firebase/firestore";
-import { auth, db } from "../../firebaseConfig";
-import { useDocumentData } from "react-firebase-hooks/firestore";
+import { collection, doc } from "firebase/firestore";
+import { auth, db, store } from "../../firebaseConfig";
+import {
+  useCollectionData,
+  useDocumentData,
+} from "react-firebase-hooks/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { createNotification, updateGallery } from "../../api/database";
+import { checkRole, checkUser } from "../../api/customHooks/generalHooks";
+import { useSelector } from "react-redux";
+import { handleSwitchTheme } from "../../provider/themeSlice";
+import * as Location from "expo-location";
+import Geocoder from "react-native-geocoding";
+import * as ImagePicker from "expo-image-picker";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { addImage } from "../../assets/svgs/svgs";
 
 const ProfileScreen = ({ navigation, route }: any) => {
   const { business } = route.params;
 
   const [User] = useAuthState(auth);
-  const userRef = doc(db, "users", business ? business?.userId : User?.uid);
+  const businessUserRef =
+    business && business.userId && doc(db, "users", business.userId);
+  const userRef = doc(db, "users", User?.uid!);
   const [user] = useDocumentData(userRef);
+  const [businessUser] = useDocumentData(businessUserRef);
+  const galleryRef =
+    businessUser?.bizId &&
+    collection(db, "businesses", businessUser.bizId, "gallery");
+
+  const [gallery] = useCollectionData(galleryRef);
+
+  const [userLocation, setUserLocation] = useState<any>(null);
+  const [errMsg, setErrorMsg] = useState<any>(null);
+  const [locationName, setLocationName] = useState<any>(null);
+  const [image, setImage] = useState<any>(null);
+
+  useEffect(() => {
+    if (!business) {
+      (async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          setErrorMsg("Permission to access location was denied");
+          alert(errMsg);
+          return;
+        }
+
+        const location = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.BestForNavigation,
+        });
+        setUserLocation(location);
+      })();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (business) {
+      Geocoder.from(business?.location?.lat, business?.location?.lng)
+        .then((json) => {
+          var city = json.results[0]?.address_components?.find((component) =>
+            component?.types?.includes("locality")
+          )?.long_name;
+          var country = json.results[0]?.address_components?.find((component) =>
+            component?.types?.includes("country")
+          )?.long_name;
+          setLocationName(`${city}, ${country}`);
+        })
+        .catch((error) => console.warn(error));
+    } else {
+      userLocation &&
+        Geocoder.from(
+          userLocation.coords?.latitude,
+          userLocation.coords?.longitude
+        )
+          .then((json) => {
+            var city = json.results[0]?.address_components?.find((component) =>
+              component?.types?.includes("locality")
+            )?.long_name;
+            var country = json.results[0]?.address_components?.find(
+              (component) => component?.types?.includes("country")
+            )?.long_name;
+            setLocationName(`${city}, ${country}`);
+          })
+          .catch((error) => console.warn(error));
+    }
+  }, [userLocation]);
+
+  useEffect(() => {
+    if (user && business && User?.uid !== business?.userId) {
+      // currentUserId is the id of the current user
+      createNotification(
+        business?.userId,
+        user?.name,
+        `viewed your profile`,
+        User?.uid
+      );
+    }
+  }, [user, business?.uid]);
+
+  const handleAddGalleryImg = async (imgNumber: string) => {
+    if (image && user && user?.bizId) {
+      const fileRef = ref(
+        store,
+        `businessGalleryPics/${user?.bizId}/${imgNumber}.jpg`
+      );
+
+      const response = await fetch(image);
+      const blob = await response.blob();
+
+      uploadBytesResumable(fileRef, blob)
+        .then((snapshot: any) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+          getDownloadURL(snapshot.ref).then((url: any) => {
+            updateGallery(user.bizId, url, imgNumber);
+          });
+        })
+        .catch((error: any) => {
+          console.error(error);
+        });
+
+      setImage(null);
+    }
+  };
+
+  const pickImage = async (imgNumber: string) => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      aspect: [4, 4],
+      quality: 1,
+    });
+
+    if (result && !result?.cancelled) {
+      await setImage(result?.uri);
+      handleAddGalleryImg(imgNumber);
+    }
+  };
+
+  const selector: any = useSelector(handleSwitchTheme);
+  const theme = selector.payload.theme.value;
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme ? colors.secondary : colors.black,
+        },
+      ]}
+    >
       <ScrollView style={styles.body}>
-        <View style={styles.flexHeader}>
+        <View
+          style={[
+            styles.flexHeader,
+            {
+              backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+            },
+          ]}
+        >
           <TouchableOpacity style={styles.goBack}>
             <SvgXml
-              xml={backIcon()}
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
               width="22"
               height="22"
               onPress={() => navigation.goBack()}
@@ -40,50 +185,120 @@ const ProfileScreen = ({ navigation, route }: any) => {
             <Avatar
               size={90}
               rounded
-              source={{ uri: "https://picsum.photos/200" }}
+              source={
+                businessUser?.profilePic
+                  ? {
+                      uri: businessUser?.profilePic,
+                    }
+                  : require("../.././assets/blankProfilePic.png")
+              }
               containerStyle={styles.avatar}
             />
-            <Text style={styles.profileName}>
+            <Text
+              style={[
+                styles.profileName,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
               {business ? business?.name : user?.name}
             </Text>
-            {business && business.userId !== User?.uid ? (
-              <View style={styles.choiceBtnCon}>
-                <TouchableOpacity
-                  style={[styles.choiceBtn, { marginRight: 10 }]}
-                  onPress={() =>
-                    navigation.navigate("NegoDisplay", {
-                      personId: business.userId,
-                      name: user?.name,
-                    })
-                  }
-                >
-                  <Text style={styles.choiceBtnTxt}>Negotiate</Text>
-                </TouchableOpacity>
 
+            {checkRole(user) ? (
+              business && business.userId !== User?.uid ? (
+                <View style={styles.choiceBtnCon}>
+                  <TouchableOpacity
+                    style={[styles.choiceBtnWire, { marginRight: 10 }]}
+                    onPress={() =>
+                      navigation.navigate("NegoDisplay", {
+                        personId: business.userId,
+                        name: businessUser?.name,
+                      })
+                    }
+                  >
+                    <Text
+                      style={[styles.choiceBtnTxt, { color: colors.primary }]}
+                    >
+                      Negotiate
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.choiceBtn}
+                    onPress={() =>
+                      navigation.navigate("Transfer", {
+                        business: business,
+                        businessUser,
+                      })
+                    }
+                  >
+                    <Text style={styles.choiceBtnTxt}>Hire</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
                 <TouchableOpacity
-                  style={styles.choiceBtn}
+                  style={styles.choiceBtnWire}
                   onPress={() =>
-                    navigation.navigate("Transfer", {
-                      business: business,
+                    navigation.navigate("AccountSettings", {
+                      user,
                     })
                   }
                 >
-                  <Text style={styles.choiceBtnTxt}>Hire</Text>
+                  <Text
+                    style={[styles.choiceBtnTxt, { color: colors.primary }]}
+                  >
+                    Edit profile
+                  </Text>
                 </TouchableOpacity>
-              </View>
-            ) : null}
+              )
+            ) : (
+              <TouchableOpacity
+                style={styles.choiceBtnWire}
+                onPress={() =>
+                  navigation.navigate("AccountSettings", {
+                    user,
+                  })
+                }
+              >
+                <Text style={[styles.choiceBtnTxt, { color: colors.primary }]}>
+                  Edit profile
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
 
-        {business && business.userId !== User?.uid ? (
+        {business ? (
           <>
-            <View style={styles.businessInfoCon}>
-              <Text style={styles.businessInfoConTxt}>
+            <View
+              style={[
+                styles.businessInfoCon,
+                {
+                  backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+                },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.businessInfoConTxt,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
                 Business Information
               </Text>
 
               <View style={styles.bio}>
-                <Text style={styles.bioTxt}>
+                <Text
+                  style={[
+                    styles.bioTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
                   {/*Rete Technologies is a fast-growing online platform that connects
               people looking for services with service providers. Our platform
               uses the searcher's location to suggest service providers who are
@@ -107,7 +322,16 @@ const ProfileScreen = ({ navigation, route }: any) => {
                   </View>
                   <View>
                     <Text style={styles.aboutInfoLabel}>Manager</Text>
-                    <Text style={styles.aboutInfoVal}>{user?.name}</Text>
+                    <Text
+                      style={[
+                        styles.aboutInfoVal,
+                        {
+                          color: theme ? colors.black : colors.darkTxt,
+                        },
+                      ]}
+                    >
+                      {businessUser?.name}
+                    </Text>
                   </View>
                 </View>
 
@@ -122,49 +346,310 @@ const ProfileScreen = ({ navigation, route }: any) => {
                   </View>
                   <View>
                     <Text style={styles.aboutInfoLabel}>Location</Text>
-                    <Text style={styles.aboutInfoVal}>Nigeria</Text>
+                    <Text
+                      style={[
+                        styles.aboutInfoVal,
+                        {
+                          color: theme ? colors.black : colors.darkTxt,
+                        },
+                      ]}
+                    >
+                      {locationName ? locationName : null}
+                    </Text>
                   </View>
                 </View>
               </View>
             </View>
 
-            <View style={styles.galleryCon}>
-              <Text style={styles.galleryConTxt}>Gallery</Text>
+            <View
+              style={[
+                styles.galleryCon,
+                {
+                  backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+                },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.galleryConTxt,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                Gallery
+              </Text>
 
-              <View style={styles.gallery}>
-                <View style={styles.galleryImg}></View>
-                <View style={styles.galleryImg}></View>
-                <View style={styles.galleryImg}></View>
-                <View style={styles.galleryImg}></View>
-              </View>
+              <ScrollView
+                style={styles.gallery}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+              >
+                {business && business.userId === User?.uid ? (
+                  <>
+                    <TouchableOpacity
+                      onPress={() => pickImage("imgOne")}
+                      style={styles.galleryImgCon}
+                    >
+                      {gallery && gallery[0] ? (
+                        <>
+                          <Image
+                            style={styles.galleryImg}
+                            source={{
+                              uri: gallery[0].url,
+                            }}
+                            resizeMode="cover"
+                          />
+                        </>
+                      ) : (
+                        <SvgXml
+                          xml={addImage(
+                            theme ? colors.black : colors.darkTxt,
+                            theme ? "#F0F0F0" : colors.black
+                          )}
+                          width={"100%"}
+                          height={"100%"}
+                        />
+                      )}
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => pickImage("imgTwo")}
+                      style={styles.galleryImgCon}
+                    >
+                      {gallery && gallery[1] ? (
+                        <>
+                          <Image
+                            style={styles.galleryImg}
+                            source={{
+                              uri: gallery[1].url,
+                            }}
+                            resizeMode="cover"
+                          />
+                        </>
+                      ) : (
+                        <SvgXml
+                          xml={addImage(
+                            theme ? colors.black : colors.darkTxt,
+                            theme ? "#F0F0F0" : colors.black
+                          )}
+                          width={"100%"}
+                          height={"100%"}
+                        />
+                      )}
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => pickImage("imgThree")}
+                      style={styles.galleryImgCon}
+                    >
+                      {gallery && gallery[2] ? (
+                        <>
+                          <Image
+                            style={styles.galleryImg}
+                            source={{
+                              uri: gallery[2].url,
+                            }}
+                            resizeMode="cover"
+                          />
+                        </>
+                      ) : (
+                        <SvgXml
+                          xml={addImage(
+                            theme ? colors.black : colors.darkTxt,
+                            theme ? "#F0F0F0" : colors.black
+                          )}
+                          width={"100%"}
+                          height={"100%"}
+                        />
+                      )}
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => pickImage("imgFour")}
+                      style={[
+                        styles.galleryImgCon,
+                        {
+                          marginRight: 10,
+                        },
+                      ]}
+                    >
+                      {gallery && gallery[3] ? (
+                        <>
+                          <Image
+                            style={styles.galleryImg}
+                            source={{
+                              uri: gallery[3].url,
+                            }}
+                            resizeMode="contain"
+                          />
+                        </>
+                      ) : (
+                        <SvgXml
+                          xml={addImage(
+                            theme ? colors.black : colors.darkTxt,
+                            theme ? "#F0F0F0" : colors.black
+                          )}
+                          width={"100%"}
+                          height={"100%"}
+                        />
+                      )}
+                    </TouchableOpacity>
+                  </>
+                ) : (
+                  <>
+                    <TouchableOpacity
+                      onPress={
+                        gallery && gallery[0]
+                          ? () =>
+                              navigation.navigate("ImageScreen", {
+                                image: gallery[0].url,
+                              })
+                          : () => null
+                      }
+                      style={[
+                        styles.galleryImgCon,
+                        { backgroundColor: theme ? "#F0F0F0" : colors.black },
+                      ]}
+                    >
+                      {gallery && gallery[0] && (
+                        <>
+                          <Image
+                            style={styles.galleryImg}
+                            source={{
+                              uri: gallery[0].url,
+                            }}
+                            resizeMode="cover"
+                          />
+                        </>
+                      )}
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={
+                        gallery && gallery[1]
+                          ? () =>
+                              navigation.navigate("ImageScreen", {
+                                image: gallery[1].url,
+                              })
+                          : () => null
+                      }
+                      style={[
+                        styles.galleryImgCon,
+                        { backgroundColor: theme ? "#F0F0F0" : colors.black },
+                      ]}
+                    >
+                      {gallery && gallery[1] && (
+                        <>
+                          <Image
+                            style={styles.galleryImg}
+                            source={{
+                              uri: gallery[1].url,
+                            }}
+                            resizeMode="cover"
+                          />
+                        </>
+                      )}
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={
+                        gallery && gallery[2]
+                          ? () =>
+                              navigation.navigate("ImageScreen", {
+                                image: gallery[2].url,
+                              })
+                          : () => null
+                      }
+                      style={[
+                        styles.galleryImgCon,
+                        { backgroundColor: theme ? "#F0F0F0" : colors.black },
+                      ]}
+                    >
+                      {gallery && gallery[2] && (
+                        <>
+                          <Image
+                            style={styles.galleryImg}
+                            source={{
+                              uri: gallery[2].url,
+                            }}
+                            resizeMode="cover"
+                          />
+                        </>
+                      )}
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={
+                        gallery && gallery[3]
+                          ? () =>
+                              navigation.navigate("ImageScreen", {
+                                image: gallery[3].url,
+                              })
+                          : () => null
+                      }
+                      style={[
+                        styles.galleryImgCon,
+                        {
+                          backgroundColor: theme ? "#F0F0F0" : colors.black,
+                          marginRight: 10,
+                        },
+                      ]}
+                    >
+                      {gallery && gallery[3] && (
+                        <>
+                          <Image
+                            style={styles.galleryImg}
+                            source={{
+                              uri: gallery[3].url,
+                            }}
+                            resizeMode="contain"
+                          />
+                        </>
+                      )}
+                    </TouchableOpacity>
+                  </>
+                )}
+              </ScrollView>
             </View>
 
-            <View style={styles.reviewsCon}>
-              <Text style={styles.reviewsConTxt}>Reviews</Text>
+            <View
+              style={[
+                styles.reviewsCon,
+                {
+                  backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+                },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.reviewsConTxt,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                Reviews
+              </Text>
 
               <View style={styles.reviews}></View>
             </View>
           </>
         ) : (
           <>
-            <View style={styles.businessInfoCon}>
-              <Text style={styles.businessInfoConTxt}>
+            <View
+              style={[
+                styles.businessInfoCon,
+                {
+                  backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+                },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.businessInfoConTxt,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
                 Business Information
               </Text>
 
-              <View style={styles.bio}>
-                <Text style={styles.bioTxt}>
-                  {/*Rete Technologies is a fast-growing online platform that connects
-          people looking for services with service providers. Our platform
-          uses the searcher's location to suggest service providers who are
-          close to them, making it easy for people to find the services they
-          need quickly and efficiently. Our platform is similar to Fiverr,
-          but with a greater focus on hard skills such as painting and
-barbering.*/}
-
-                  {business && business?.desc}
-                </Text>
-              </View>
               <View style={styles.about}>
                 <View style={styles.aboutItem}>
                   <View style={styles.aboutItemIcon}>
@@ -177,7 +662,16 @@ barbering.*/}
                   </View>
                   <View>
                     <Text style={styles.aboutInfoLabel}>Location</Text>
-                    <Text style={styles.aboutInfoVal}>Nigeria</Text>
+                    <Text
+                      style={[
+                        styles.aboutInfoVal,
+                        {
+                          color: theme ? colors.black : colors.darkTxt,
+                        },
+                      ]}
+                    >
+                      {locationName ? locationName : null}
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -189,11 +683,11 @@ barbering.*/}
           style={{
             height: 100,
             width: "100%",
-            backgroundColor: colors.secondary,
+            backgroundColor: theme ? colors.secondary : colors.blackSmoke,
           }}
         />
       </ScrollView>
-      <StatusBar style="auto" backgroundColor={colors.secondary} />
+      <StatusBar style={theme ? "dark" : "light"} />
     </View>
   );
 };
@@ -203,7 +697,6 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.secondarySmoke,
   },
   body: {
     flex: 1,
@@ -213,7 +706,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.secondary,
     padding: 15,
     paddingTop: 40,
   },
@@ -245,6 +737,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
+    marginTop: 10,
+  },
+  choiceBtnWire: {
+    width: 70,
+    height: 30,
+    borderWidth: 1,
+    borderColor: colors.primary,
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    marginTop: 10,
   },
   choiceBtnTxt: {
     color: colors.secondary,
@@ -252,7 +756,6 @@ const styles = StyleSheet.create({
     fontFamily: "LatoRegular",
   },
   businessInfoCon: {
-    backgroundColor: colors.secondary,
     paddingTop: 10,
     padding: 15,
     marginTop: 10,
@@ -288,7 +791,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   galleryCon: {
-    backgroundColor: colors.secondary,
     padding: 15,
     marginTop: 10,
   },
@@ -303,15 +805,16 @@ const styles = StyleSheet.create({
     padding: 10,
     overflow: "hidden",
   },
+  galleryImgCon: {
+    height: 80,
+    width: 80,
+    margin: 5,
+  },
   galleryImg: {
     height: 80,
     width: 80,
-    borderColor: "lightgrey",
-    borderWidth: 1,
-    margin: 5,
   },
   reviewsCon: {
-    backgroundColor: colors.secondary,
     padding: 15,
     marginTop: 10,
   },

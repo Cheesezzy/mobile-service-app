@@ -1,47 +1,201 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useState } from "react";
 import colors from "../config/colors";
 import HeaderTitle from "../components/HeaderTitle";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "../../firebaseConfig";
+import { doc } from "firebase/firestore";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import { useSelector } from "react-redux";
+import { handleSwitchTheme } from "../../provider/themeSlice";
+import { StatusBar } from "expo-status-bar";
+import { SvgXml } from "react-native-svg";
+import { hidePassIcon, showPassIcon } from "../../assets/icons/icons";
+import { hideString } from "../../api/customHooks/generalHooks";
 
 const EarningsScreen = () => {
+  const [User] = useAuthState(auth);
+
+  const userRef = doc(db, "users", User?.uid!);
+
+  const [user] = useDocumentData(userRef);
+
+  const businessRef = user?.bizId && doc(db, "businesses", user?.bizId);
+
+  const [business, loading] = useDocumentData(businessRef);
+
+  const [balVisible, setBalVisible] = useState(false);
+  const selector: any = useSelector(handleSwitchTheme);
+  const theme = selector.payload.theme.value;
+
   return (
     <>
-      <HeaderTitle title="Earnings" />
-      <ScrollView style={styles.container}>
+      <HeaderTitle title="Earnings" profileURL="" />
+      <ScrollView
+        style={[
+          styles.container,
+          {
+            backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+          },
+        ]}
+      >
         <View style={styles.balCon}>
-          <Text style={styles.balTxt}>Balance</Text>
-          <Text style={styles.balVal}>₦150,000</Text>
+          <View>
+            <Text style={styles.balTxt}>Balance</Text>
+            <Text
+              style={[
+                styles.balVal,
+                balVisible
+                  ? {
+                      marginTop: 5,
+                    }
+                  : null,
+              ]}
+            >
+              {balVisible ? "*" : "₦"}
+              {user && hideString(user?.balance, balVisible)}
+            </Text>
+          </View>
+
+          <TouchableOpacity
+            style={styles.showHideToggle}
+            onPress={() => setBalVisible(!balVisible)}
+          >
+            <SvgXml
+              xml={
+                balVisible
+                  ? showPassIcon(colors.black)
+                  : hidePassIcon(colors.black)
+              }
+              width="30"
+              height="30"
+            />
+          </TouchableOpacity>
         </View>
 
         <View style={styles.analytics}>
           <Text style={styles.analyticsHead}>Analytics</Text>
           <View style={styles.analyticsCon}>
             <View style={[styles.analyticsItem, styles.firstStat]}>
-              <Text style={styles.analyticsItemTxtA}>Earnings in December</Text>
+              <Text
+                style={[
+                  styles.analyticsItemTxtA,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                Earnings in December
+              </Text>
 
-              <Text style={styles.analyticsItemTxtB}>₦10,000</Text>
+              <Text
+                style={[
+                  styles.analyticsItemTxtB,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                ₦{business?.earnings?.monthlyEarnings}
+              </Text>
             </View>
             <View style={styles.analyticsItem}>
-              <Text style={styles.analyticsItemTxtA}>Avg. booking price</Text>
+              <Text
+                style={[
+                  styles.analyticsItemTxtA,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                Avg. booking price
+              </Text>
 
-              <Text style={styles.analyticsItemTxtB}>₦1000</Text>
+              <Text
+                style={[
+                  styles.analyticsItemTxtB,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                ₦{business?.earnings?.avgBookingPrice}
+              </Text>
             </View>
             <View style={styles.analyticsItem}>
-              <Text style={styles.analyticsItemTxtA}>Active bookings</Text>
+              <Text
+                style={[
+                  styles.analyticsItemTxtA,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                Active bookings
+              </Text>
 
-              <Text style={styles.analyticsItemTxtB}>₦1000</Text>
+              <Text
+                style={[
+                  styles.analyticsItemTxtB,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                ₦{business?.earnings?.activeBookings}
+              </Text>
             </View>
             <View style={styles.analyticsItem}>
-              <Text style={styles.analyticsItemTxtA}>
+              <Text
+                style={[
+                  styles.analyticsItemTxtA,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
                 Available for cash out
               </Text>
 
-              <Text style={styles.analyticsItemTxtB}>₦100,000</Text>
+              <Text
+                style={[
+                  styles.analyticsItemTxtB,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                ₦{user && user.balance}
+              </Text>
             </View>
             <View style={styles.analyticsItem}>
-              <Text style={styles.analyticsItemTxtA}>Completed bookings</Text>
+              <Text
+                style={[
+                  styles.analyticsItemTxtA,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                Completed bookings
+              </Text>
 
-              <Text style={styles.analyticsItemTxtB}>₦150,000</Text>
+              <Text
+                style={[
+                  styles.analyticsItemTxtB,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                ₦{business?.earnings?.completedBookings}
+              </Text>
             </View>
           </View>
         </View>
@@ -50,32 +204,123 @@ const EarningsScreen = () => {
           <Text style={styles.revenuesHead}>Revenues</Text>
           <View style={styles.revenuesCon}>
             <View style={[styles.revenuesItem, styles.firstStat]}>
-              <Text style={styles.revenuesItemTxtA}>Cancelled bookings</Text>
+              <Text
+                style={[
+                  styles.revenuesItemTxtA,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                Cancelled bookings
+              </Text>
 
-              <Text style={styles.revenuesItemTxtB}>₦400</Text>
+              <Text
+                style={[
+                  styles.revenuesItemTxtB,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                ₦{business?.earnings?.cancelledBookings}
+              </Text>
             </View>
             <View style={styles.revenuesItem}>
-              <Text style={styles.revenuesItemTxtA}>Pending clearance</Text>
+              <Text
+                style={[
+                  styles.revenuesItemTxtA,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                Pending clearance
+              </Text>
 
-              <Text style={styles.revenuesItemTxtB}>₦10,000</Text>
+              <Text
+                style={[
+                  styles.revenuesItemTxtB,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                ₦{business?.earnings?.pendingClearance}
+              </Text>
             </View>
             <View style={styles.revenuesItem}>
-              <Text style={styles.revenuesItemTxtA}>Withdraw</Text>
+              <Text
+                style={[
+                  styles.revenuesItemTxtA,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                Withdrawn
+              </Text>
 
-              <Text style={styles.revenuesItemTxtB}>₦500</Text>
+              <Text
+                style={[
+                  styles.revenuesItemTxtB,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                ₦{business?.earnings?.withdrawn}
+              </Text>
             </View>
             <View style={styles.revenuesItem}>
-              <Text style={styles.revenuesItemTxtA}>Used for hiring</Text>
+              <Text
+                style={[
+                  styles.revenuesItemTxtA,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                Used for hiring
+              </Text>
 
-              <Text style={styles.revenuesItemTxtB}>₦20,000</Text>
+              <Text
+                style={[
+                  styles.revenuesItemTxtB,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                ₦{business?.earnings?.usedToHire}
+              </Text>
             </View>
             <View style={styles.revenuesItem}>
-              <Text style={styles.revenuesItemTxtA}>Cleared</Text>
+              <Text
+                style={[
+                  styles.revenuesItemTxtA,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                Cleared
+              </Text>
 
-              <Text style={styles.revenuesItemTxtB}>₦150,000</Text>
+              <Text
+                style={[
+                  styles.revenuesItemTxtB,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                ₦{business?.earnings?.cleared}
+              </Text>
             </View>
           </View>
         </View>
+        <StatusBar style={theme ? "dark" : "light"} />
       </ScrollView>
     </>
   );
@@ -92,8 +337,9 @@ const styles = StyleSheet.create({
   balCon: {
     height: 80,
     width: "100%",
+    flexDirection: "row",
     alignSelf: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
     backgroundColor: colors.lightPrimary,
     borderRadius: 10,
     padding: 20,
@@ -108,6 +354,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "LatoRegular",
     color: colors.lightGrey,
+  },
+  showHideToggle: {
+    alignSelf: "center",
   },
   analytics: {},
   analyticsHead: {

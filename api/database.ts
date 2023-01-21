@@ -34,7 +34,9 @@ export function createUser(
   messages: any,
   onBoard: boolean,
   bizInformed: boolean,
-  bizId: any
+  bizId: any,
+  profilePic: any,
+  balance: any
 ) {
   const userRef = doc(db, "users", userId);
   setDoc(userRef, {
@@ -50,6 +52,8 @@ export function createUser(
     onBoard,
     bizInformed,
     bizId,
+    profilePic,
+    balance,
   });
 }
 
@@ -71,13 +75,24 @@ export function updateBizInformedStat(userId: any) {
   });
 }
 
+export const updateProfilePic = (userId: any, imageUrl: string) => {
+  const userRef = doc(db, "users", userId);
+
+  updateDoc(userRef, {
+    profilePic: imageUrl,
+  });
+};
+
 // for sending messages
 export async function sendMessage(
   senderId: any,
   receiverId: any,
-  text: string,
+  text: any,
+  attachment: any,
   senderName: string,
+  senderPic: any,
   receiverName: string,
+  receiverPic: any,
   createdAt: any
 ) {
   // for adding or updating the present chats
@@ -85,30 +100,38 @@ export async function sendMessage(
   const receiverNegoRef = doc(db, "users", receiverId, "negotiating", senderId);
 
   await setDoc(senderNegoRef, {
+    msgId: receiverId,
     text,
+    attachment,
     type: "sent",
     sentBy: {
       id: senderId,
       name: senderName,
+      pic: senderPic,
     },
     receivedBy: {
       id: receiverId,
       name: receiverName,
+      pic: receiverPic,
     },
     createdAt,
     seen: false,
   });
 
   await setDoc(receiverNegoRef, {
+    msgId: senderId,
     text,
+    attachment,
     type: "received",
     sentBy: {
       id: senderId,
       name: senderName,
+      pic: senderPic,
     },
     receivedBy: {
       id: receiverId,
       name: receiverName,
+      pic: receiverPic,
     },
     createdAt,
     seen: false,
@@ -123,43 +146,38 @@ export async function sendMessage(
     receiverId,
     "chats"
   );
-  const receiverRef = collection(
-    db,
-    "users",
-    receiverId,
-    "messages",
-    senderId,
-    "chats"
-  );
 
   await addDoc(senderRef, {
+    msgId: "",
     text,
+    attachment,
     type: "sent",
     sentBy: {
       id: senderId,
       name: senderName,
+      pic: senderPic,
     },
     receivedBy: {
       id: receiverId,
       name: receiverName,
+      pic: receiverPic,
     },
     createdAt,
     seen: false,
-  });
+  }).then((msg) => {
+    const senderMsgIdRef = doc(
+      db,
+      "users",
+      senderId,
+      "messages",
+      receiverId,
+      "chats",
+      msg.id
+    );
 
-  await addDoc(receiverRef, {
-    text,
-    type: "received",
-    sentBy: {
-      id: senderId,
-      name: senderName,
-    },
-    receivedBy: {
-      id: receiverId,
-      name: receiverName,
-    },
-    createdAt,
-    seen: false,
+    updateDoc(senderMsgIdRef, {
+      msgId: msg.id,
+    });
   });
 }
 
@@ -184,7 +202,27 @@ export function addBusiness(userId: any) {
     location: "",
     rating: 0,
     manager: "",
-    chargeRate: "",
+    chargeRate: 0,
+    level: "Start-up",
+    earnings: {
+      avgBookingPrice: 0,
+      activeBookings: 0,
+      completedBookings: 0,
+      monthlyEarnings: 0,
+      cancelledBookings: 0,
+      pendingClearance: 0,
+      withdrawn: 0,
+      usedToHire: 0,
+      cleared: 0,
+    },
+    totalEarnings: 0,
+    category: "",
+    gallery: {
+      imgOne: null,
+      imgTwo: null,
+      imgThree: null,
+      imgFour: null,
+    },
   }).then((doc) => {
     updateDoc(userRef, {
       bizId: doc.id,
@@ -192,8 +230,16 @@ export function addBusiness(userId: any) {
   });
 }
 
+export function updateUserName(userId: any, name: string) {
+  const userRef = doc(db, "users", userId);
+
+  updateDoc(userRef, {
+    name,
+  });
+}
+
 // info about business
-export function updateBusinessName(bizId: any, name: string, user: any) {
+export function updateBusinessName(bizId: any, name: string) {
   const businessRef = doc(db, "businesses", bizId);
 
   updateDoc(businessRef, {
@@ -220,35 +266,99 @@ export function updateLocation(bizId: any, lat: any, lng: any) {
   });
 }
 
+export function updateCategory(bizId: any, category: any) {
+  const businessRef = doc(db, "businesses", bizId);
+
+  updateDoc(businessRef, {
+    category,
+  });
+}
+
 export function updateRating(bizId: any, rating: any) {
-  const businessRef = doc(db, "businesses", bizId, "business", "rating");
+  const businessRef = doc(db, "businesses", bizId);
 
   updateDoc(businessRef, {
     rating,
   });
 }
 
+export function updateGallery(bizId: any, url: any, img: string) {
+  const businessRef = doc(db, "businesses", bizId, "gallery", img);
+
+  setDoc(businessRef, {
+    url,
+  });
+}
+
 // add notification into the notification array
 export function createNotification(
   userId: any,
+  name: any,
   notification: any,
-  data: any,
-  seen: boolean,
-  roomId: string
+  senderId: any
 ) {
-  const notifsRef = doc(db, "users/" + `${userId}/notifications`);
+  const notifsRef = collection(db, "users/" + `${userId}/notifications`);
 
-  // push the notification and data into the array
-  if (!roomId) {
-    //push(notifsRef, { notification, data, seen });
-  } else {
-    //push(notifsRef, { notification, data, seen, roomId });
-  }
+  addDoc(notifsRef, {
+    id: "",
+    notification,
+    name,
+    senderId,
+    seen: false,
+  }).then((notif) => {
+    const notificationRef = doc(db, "users", userId, "notifications", notif.id);
+
+    updateDoc(notificationRef, {
+      id: notif.id,
+    });
+  });
 }
 
 export function updateSeen(userId: any, notifId: string) {
   const notifRef = doc(db, "users/" + `${userId}/notifications/${notifId}`);
   //update(notifRef, { seen: true });
+}
+
+export async function transferFunds(
+  senderId: any,
+  receiverId: any,
+  senderBalance: any,
+  receiverBalance: any,
+  amount: number
+) {
+  const senderRef = doc(db, "users", senderId);
+  const receiverRef = doc(db, "users", receiverId);
+
+  await senderBalance;
+  await receiverBalance;
+
+  if (senderBalance) {
+    updateDoc(senderRef, {
+      balance: senderBalance - amount,
+    });
+  }
+
+  if (receiverBalance) {
+    updateDoc(receiverRef, {
+      balance: receiverBalance + amount,
+    });
+  }
+}
+
+export async function fundAccount(
+  userId: any,
+  userBalance: any,
+  amount: number
+) {
+  const userRef = doc(db, "users", userId);
+
+  await userBalance;
+
+  if (userBalance) {
+    updateDoc(userRef, {
+      balance: userBalance + amount,
+    });
+  }
 }
 
 // destination specific functions (update)
@@ -277,18 +387,6 @@ export function changeDP(userId: any, imageUrl: string) {
     /*if (imageUrl !== "") {
     update(userRef, {
       profile_pic: imageUrl,
-    });
-  }*/
-  }
-}
-
-export function changeCover(userId: any, coverUrl: string) {
-  const userRef = doc(db, "users/" + `${userId}/`);
-
-  {
-    /*if (coverUrl !== "") {
-    update(userRef, {
-      cover_photo: coverUrl,
     });
   }*/
   }

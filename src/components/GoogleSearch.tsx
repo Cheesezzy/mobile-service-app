@@ -30,21 +30,32 @@ import { SvgXml } from "react-native-svg";
 import { backIcon, locationIcon, searchIcon } from "../../assets/icons/icons";
 import { updateLocation } from "../../api/database";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebaseConfig";
+import { auth, db } from "../../firebaseConfig";
+import { doc } from "firebase/firestore";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import { handleSwitchTheme } from "../../provider/themeSlice";
+import { useSelector } from "react-redux";
 
 export const GoogleSearch = () => {
   const [user] = useAuthState(auth);
   const navigation = useNavigation();
+
+  const userRef = doc(db, "users", user?.uid!);
+
+  const [User] = useDocumentData(userRef);
 
   const [showBtn, setShowBtn] = useState(false);
   const [location, setLocation] = useState<any>(null);
 
   const handleSubmit = () => {
     if (location.lat && location.lng)
-      updateLocation(user?.uid, location?.lat, location?.lng);
+      updateLocation(User?.bizId, location?.lat, location?.lng);
     console.log(location);
     navigation.goBack();
   };
+
+  const selector: any = useSelector(handleSwitchTheme);
+  const theme = selector.payload.theme.value;
 
   return (
     <KeyboardAvoidingView
@@ -52,11 +63,19 @@ export const GoogleSearch = () => {
         flex: 1,
         paddingTop: 50,
         paddingVertical: 15,
+        backgroundColor: theme ? colors.secondary : colors.blackSmoke,
       }}
     >
-      <View style={styles.searchCon}>
+      <View
+        style={[
+          styles.searchCon,
+          {
+            backgroundColor: theme ? colors.secondary : colors.black,
+          },
+        ]}
+      >
         <SvgXml
-          xml={backIcon()}
+          xml={backIcon(theme ? colors.blackSmoke : colors.darkTxt)}
           width="16"
           height="16"
           // @ts-ignore
@@ -72,11 +91,18 @@ export const GoogleSearch = () => {
             position: "relative",
             top: 7,
           }}
-          xml={searchIcon()}
+          xml={searchIcon(theme ? colors.blackSmoke : colors.darkTxt)}
           width="14"
           height="14"
         />
-        <View style={styles.search}>
+        <View
+          style={[
+            styles.search,
+            {
+              backgroundColor: theme ? colors.secondary : colors.black,
+            },
+          ]}
+        >
           <GooglePlacesAutocomplete
             suppressDefaultStyles
             styles={{
@@ -85,6 +111,9 @@ export const GoogleSearch = () => {
               },
               powered: {
                 width: "50%",
+              },
+              textInput: {
+                color: theme ? colors.black : colors.darkTxt,
               },
             }}
             placeholder="Search destination"
@@ -122,7 +151,16 @@ export const GoogleSearch = () => {
                     />
                   </View>
                   <View>
-                    <Text style={styles.resultTitle}>{title}</Text>
+                    <Text
+                      style={[
+                        styles.resultTitle,
+                        {
+                          color: theme ? colors.black : colors.darkTxt,
+                        },
+                      ]}
+                    >
+                      {title}
+                    </Text>
                     <Text style={styles.resultAddr}>{address}</Text>
                   </View>
                 </View>
@@ -195,18 +233,17 @@ const styles = StyleSheet.create({
     fontFamily: "LatoRegular",
     fontSize: 12,
     color: colors.black,
-    backgroundColor: colors.secondary,
     borderRadius: 20,
     padding: 5,
     paddingHorizontal: 10,
     alignSelf: "center",
   },
   search: {
+    height: "100%",
     width: "75%",
     fontFamily: "LatoRegular",
     fontSize: 12,
     color: colors.black,
-    backgroundColor: colors.secondary,
     alignSelf: "center",
     marginLeft: 10,
   },

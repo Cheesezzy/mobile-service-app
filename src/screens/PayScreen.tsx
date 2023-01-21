@@ -10,6 +10,13 @@ import React, { useRef, useState } from "react";
 import { Paystack, paystackProps } from "react-native-paystack-webview";
 import { PayWithFlutterwave } from "flutterwave-react-native";
 import colors from "../config/colors";
+import { useSelector } from "react-redux";
+import { handleSwitchTheme } from "../../provider/themeSlice";
+import { fundAccount } from "../../api/database";
+import { auth, db } from "../../firebaseConfig";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import { doc } from "firebase/firestore";
 
 interface RedirectParams {
   status: "successful" | "cancelled";
@@ -17,27 +24,25 @@ interface RedirectParams {
   tx_ref: string;
 }
 
-/* An example function called when transaction is completed successfully or canceled */
-const handleOnRedirect = (data: RedirectParams) => {
-  console.log(data);
-};
-
-/* An example function to generate a random transaction reference */
-const generateTransactionRef = (length: number) => {
-  var result = "";
-  var characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  var charactersLength = characters.length;
-  for (var i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return `flw_tx_ref_${result}`;
-};
-
 const PayScreen = ({ route }: any) => {
-  const paystackWebViewRef = useRef<any>();
   const [amount, setAmount] = useState<any>("");
   const { method } = route.params;
+  const [User] = useAuthState(auth);
+  const userRef = doc(db, "users", User?.uid!);
+
+  const [user] = useDocumentData(userRef);
+
+  /* An example function to generate a random transaction reference */
+  const generateTransactionRef = (length: number) => {
+    var result = "";
+    var characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return `flw_tx_ref_${result}`;
+  };
 
   const handleGetAmount = (newQuery: string) => {
     if (
@@ -49,13 +54,47 @@ const PayScreen = ({ route }: any) => {
     } else setAmount(newQuery);
   };
 
+  /* An example function called when transaction is completed successfully or canceled */
+  const handleOnRedirect = (data: RedirectParams) => {
+    console.log(data);
+
+    if (data.status === "successful" && User && user && user.balance) {
+      fundAccount(User?.uid, +user.balance, +amount);
+    }
+  };
+
+  const selector: any = useSelector(handleSwitchTheme);
+  const theme = selector.payload.theme.value;
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.headerTxt}>Pay</Text>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+        },
+      ]}
+    >
+      <Text
+        style={[
+          styles.headerTxt,
+          {
+            color: theme ? colors.black : colors.darkTxt,
+          },
+        ]}
+      >
+        Pay
+      </Text>
       <TextInput
         keyboardType="numeric"
-        style={styles.input}
+        style={[
+          styles.input,
+          {
+            color: theme ? colors.black : colors.darkTxt,
+          },
+        ]}
         placeholder="Type in the amount, min.  ₦100.00"
+        placeholderTextColor={colors.lightGrey}
         onChangeText={(newQuery) => handleGetAmount(newQuery)}
         defaultValue={amount}
       />
@@ -78,7 +117,7 @@ const PayScreen = ({ route }: any) => {
             style={[
               styles.paymentButton,
               {
-                opacity: props.isInitializing && +amount < 100 ? 0.5 : 1,
+                opacity: !props.isInitializing && +amount < 100 ? 0.5 : 1,
               },
             ]}
             onPress={props.onPress}

@@ -16,6 +16,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { handleAllUsers } from "../../provider/allUsersSlice";
 import { createStackNavigator } from "@react-navigation/stack";
+import PhoneScreen from "../screens/PhoneScreen";
+import OTPScreen from "../screens/OTPScreen";
+import GatedScreen from "../screens/GatedScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -59,6 +62,30 @@ const AuthNavigator = () => {
         component={SignupScreen}
         options={{
           title: "Signup",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Phone"
+        component={PhoneScreen}
+        options={{
+          title: "Phone",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="OTP"
+        component={OTPScreen}
+        options={{
+          title: "OTP",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Gated"
+        component={GatedScreen}
+        options={{
+          title: "Gated",
           headerShown: false,
         }}
       />

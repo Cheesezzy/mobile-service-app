@@ -1,6 +1,6 @@
 import { Avatar } from "@rneui/themed";
 import { Rating, AirbnbRating } from "react-native-ratings";
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -27,10 +27,15 @@ import {
 import { SvgXml } from "react-native-svg";
 import { StatusBar } from "expo-status-bar";
 import { doc } from "firebase/firestore";
-import { auth, db } from "../../firebaseConfig";
+import { auth, db, store } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
-import { checkRole } from "../../api/customHooks/generalHooks";
+import { addCommas, checkRole } from "../../api/customHooks/generalHooks";
+import * as ImagePicker from "expo-image-picker";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { updateProfilePic } from "../../api/database";
+import { handleSwitchTheme } from "../../provider/themeSlice";
+import { useSelector } from "react-redux";
 
 const HustleScreen = ({ navigation }: any) => {
   const [fontsLoaded] = useFonts({
@@ -41,29 +46,41 @@ const HustleScreen = ({ navigation }: any) => {
 
   const userRef = doc(db, "users", User?.uid!);
 
-  const [user] = useDocumentData(userRef);
+  const [user, loading] = useDocumentData(userRef);
 
   const businessRef = user?.bizId && doc(db, "businesses", user?.bizId);
 
-  //console.log(user?.bizId, "user");
+  const [business] = useDocumentData(businessRef);
 
-  //const allUsers = selector.payload.users.value;
-
-  const [business, loading] = useDocumentData(businessRef);
+  const selector: any = useSelector(handleSwitchTheme);
+  const theme = selector.payload.theme.value;
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View style={styles.avatar}>
+        <TouchableOpacity
+          style={styles.avatar}
+          onPress={() =>
+            navigation.navigate("ImageScreen", {
+              image: user?.profilePic ? user.profilePic : null,
+            })
+          }
+        >
           <Avatar
             size={100}
             rounded
-            source={{ uri: "https://picsum.photos/200" }}
+            source={
+              user?.profilePic
+                ? {
+                    uri: user?.profilePic,
+                  }
+                : require("../.././assets/blankProfilePic.png")
+            }
           />
-        </View>
+        </TouchableOpacity>
 
         <View>
-          {user && checkRole(user) ? (
+          {!loading && checkRole(user) ? (
             <Text style={styles.businessName}>{business?.name}</Text>
           ) : (
             <Text style={styles.businessName}>{user?.name}</Text>
@@ -71,29 +88,100 @@ const HustleScreen = ({ navigation }: any) => {
         </View>
       </View>
 
-      <ScrollView style={styles.body} showsVerticalScrollIndicator={false}>
-        {user && checkRole(user) ? (
+      <ScrollView
+        style={[
+          styles.body,
+          {
+            backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+          },
+        ]}
+        showsVerticalScrollIndicator={false}
+      >
+        {!loading && checkRole(user) ? (
           <>
             <View style={styles.statsSec}>
               <View style={[styles.statsItem, styles.firstStat]}>
-                <Text style={styles.statsItemTxtA}>Business Level</Text>
+                <Text
+                  style={[
+                    styles.statsItemTxtA,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Business Level
+                </Text>
 
-                <Text style={styles.statsItemTxtB}>Start-up</Text>
+                <Text
+                  style={[
+                    styles.statsItemTxtB,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  {business?.level}
+                </Text>
               </View>
               <View style={styles.statsItem}>
-                <Text style={styles.statsItemTxtA}>Withdrawable</Text>
+                <Text
+                  style={[
+                    styles.statsItemTxtA,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Withdrawable
+                </Text>
 
-                <Text style={styles.statsItemTxtB}>₦150,000</Text>
+                <Text
+                  style={[
+                    styles.statsItemTxtB,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  ₦{user && addCommas(user?.balance)}
+                </Text>
               </View>
 
               <View style={styles.statsItem}>
-                <Text style={styles.statsItemTxtA}>Total Earnings</Text>
+                <Text
+                  style={[
+                    styles.statsItemTxtA,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Total Earnings
+                </Text>
 
-                <Text style={styles.statsItemTxtB}>₦1,000,000</Text>
+                <Text
+                  style={[
+                    styles.statsItemTxtB,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  ₦{business && addCommas(business?.totalEarnings)}
+                </Text>
               </View>
 
               <View style={styles.statsItem}>
-                <Text style={styles.statsItemTxtA}>Business Rating</Text>
+                <Text
+                  style={[
+                    styles.statsItemTxtA,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Business Rating
+                </Text>
 
                 <View style={{}}>
                   <Rating
@@ -104,7 +192,7 @@ const HustleScreen = ({ navigation }: any) => {
                     imageSize={12}
                     ratingCount={5}
                     ratingColor={colors.primary}
-                    tintColor={colors.secondary}
+                    tintColor={theme ? colors.secondary : colors.blackSmoke}
                     ratingBackgroundColor="grey"
                   />
                 </View>
@@ -112,7 +200,16 @@ const HustleScreen = ({ navigation }: any) => {
             </View>
 
             <View style={styles.section}>
-              <Text style={styles.secHeader}>My Hustle</Text>
+              <Text
+                style={[
+                  styles.secHeader,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                My Hustle
+              </Text>
 
               <TouchableOpacity
                 activeOpacity={0.6}
@@ -131,7 +228,16 @@ const HustleScreen = ({ navigation }: any) => {
                       width="21"
                       height="21"
                     />
-                    <Text style={styles.menuItem}>Profile</Text>
+                    <Text
+                      style={[
+                        styles.menuItem,
+                        {
+                          color: theme ? colors.black : colors.darkTxt,
+                        },
+                      ]}
+                    >
+                      Profile
+                    </Text>
                   </View>
                   <View style={styles.goTo}>
                     <SvgXml
@@ -155,9 +261,18 @@ const HustleScreen = ({ navigation }: any) => {
                       style={styles.icon}
                       xml={earningIcon()}
                       width="21"
-                      height="21"
+                      height="22"
                     />
-                    <Text style={styles.menuItem}>Earnings</Text>
+                    <Text
+                      style={[
+                        styles.menuItem,
+                        {
+                          color: theme ? colors.black : colors.darkTxt,
+                        },
+                      ]}
+                    >
+                      Earnings
+                    </Text>
                   </View>
                   <View style={styles.goTo}>
                     <SvgXml
@@ -183,7 +298,16 @@ const HustleScreen = ({ navigation }: any) => {
                       width="21"
                       height="21"
                     />
-                    <Text style={styles.menuItem}>Analytics</Text>
+                    <Text
+                      style={[
+                        styles.menuItem,
+                        {
+                          color: theme ? colors.black : colors.darkTxt,
+                        },
+                      ]}
+                    >
+                      Analytics
+                    </Text>
                   </View>
                   <View style={styles.goTo}>
                     <SvgXml
@@ -209,7 +333,159 @@ const HustleScreen = ({ navigation }: any) => {
                       width="21"
                       height="21"
                     />
-                    <Text style={styles.menuItem}>Rete Ads</Text>
+                    <Text
+                      style={[
+                        styles.menuItem,
+                        {
+                          color: theme ? colors.black : colors.darkTxt,
+                        },
+                      ]}
+                    >
+                      Rete Ads
+                    </Text>
+                  </View>
+                  <View style={styles.goTo}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={frontIcon()}
+                      width="14"
+                      height="14"
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.section}>
+              <Text
+                style={[
+                  styles.secHeader,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                General
+              </Text>
+
+              <TouchableOpacity
+                activeOpacity={0.6}
+                // @ts-ignore
+                onPress={() => navigation.navigate("Settings")}
+              >
+                <View style={styles.itemContainer}>
+                  <View style={styles.iconFlex}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={settingsIcon()}
+                      width="21"
+                      height="21"
+                    />
+                    <Text
+                      style={[
+                        styles.menuItem,
+                        {
+                          color: theme ? colors.black : colors.darkTxt,
+                        },
+                      ]}
+                    >
+                      Settings
+                    </Text>
+                  </View>
+                  <View style={styles.goTo}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={frontIcon()}
+                      width="14"
+                      height="14"
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                activeOpacity={0.6}
+                // @ts-ignore
+                onPress={() => navigation.navigate("Payments")}
+              >
+                <View style={styles.itemContainer}>
+                  <View style={styles.iconFlex}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={cardIcon("")}
+                      width="21"
+                      height="21"
+                    />
+                    <Text
+                      style={[
+                        styles.menuItem,
+                        {
+                          color: theme ? colors.black : colors.darkTxt,
+                        },
+                      ]}
+                    >
+                      Payments
+                    </Text>
+                  </View>
+                  <View style={styles.goTo}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={frontIcon()}
+                      width="14"
+                      height="14"
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                activeOpacity={0.6}
+                // @ts-ignore
+              >
+                <View style={styles.itemContainer}>
+                  <View style={styles.iconFlex}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={inviteIcon()}
+                      width="21"
+                      height="21"
+                    />
+                    <Text
+                      style={[
+                        styles.menuItem,
+                        {
+                          color: theme ? colors.black : colors.darkTxt,
+                        },
+                      ]}
+                    >
+                      Invite friends
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                activeOpacity={0.6}
+                // @ts-ignore
+                onPress={() => navigation.navigate("Support")}
+              >
+                <View style={styles.itemContainer}>
+                  <View style={styles.iconFlex}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={supportIcon("", "")}
+                      width="21"
+                      height="21"
+                    />
+                    <Text
+                      style={[
+                        styles.menuItem,
+                        {
+                          color: theme ? colors.black : colors.darkTxt,
+                        },
+                      ]}
+                    >
+                      Support
+                    </Text>
                   </View>
                   <View style={styles.goTo}>
                     <SvgXml
@@ -223,160 +499,193 @@ const HustleScreen = ({ navigation }: any) => {
               </TouchableOpacity>
             </View>
           </>
-        ) : null}
+        ) : (
+          !loading && (
+            <View style={styles.section}>
+              <Text
+                style={[
+                  styles.secHeader,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                General
+              </Text>
 
-        <View style={styles.section}>
-          <Text style={styles.secHeader}>General</Text>
+              {user && !checkRole(user) ? (
+                <TouchableOpacity
+                  activeOpacity={0.6}
+                  // @ts-ignore
+                  onPress={() =>
+                    navigation.navigate("Profile", { business: null })
+                  }
+                >
+                  <View style={styles.itemContainer}>
+                    <View style={styles.iconFlex}>
+                      <SvgXml
+                        style={styles.icon}
+                        xml={profileIcon()}
+                        width="21"
+                        height="21"
+                      />
+                      <Text
+                        style={[
+                          styles.menuItem,
+                          {
+                            color: theme ? colors.black : colors.darkTxt,
+                          },
+                        ]}
+                      >
+                        Profile
+                      </Text>
+                    </View>
+                    <View style={styles.goTo}>
+                      <SvgXml
+                        style={styles.icon}
+                        xml={frontIcon()}
+                        width="14"
+                        height="14"
+                      />
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              ) : null}
 
-          {user && !checkRole(user) ? (
-            <TouchableOpacity
-              activeOpacity={0.6}
-              // @ts-ignore
-              onPress={() => navigation.navigate("Profile", { business: null })}
-            >
-              <View style={styles.itemContainer}>
-                <View style={styles.iconFlex}>
-                  <SvgXml
-                    style={styles.icon}
-                    xml={profileIcon()}
-                    width="21"
-                    height="21"
-                  />
-                  <Text style={styles.menuItem}>Profile</Text>
+              <TouchableOpacity
+                activeOpacity={0.6}
+                // @ts-ignore
+                onPress={() => navigation.navigate("Settings")}
+              >
+                <View style={styles.itemContainer}>
+                  <View style={styles.iconFlex}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={settingsIcon()}
+                      width="21"
+                      height="21"
+                    />
+                    <Text
+                      style={[
+                        styles.menuItem,
+                        {
+                          color: theme ? colors.black : colors.darkTxt,
+                        },
+                      ]}
+                    >
+                      Settings
+                    </Text>
+                  </View>
+                  <View style={styles.goTo}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={frontIcon()}
+                      width="14"
+                      height="14"
+                    />
+                  </View>
                 </View>
-                <View style={styles.goTo}>
-                  <SvgXml
-                    style={styles.icon}
-                    xml={frontIcon()}
-                    width="14"
-                    height="14"
-                  />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                activeOpacity={0.6}
+                // @ts-ignore
+                onPress={() => navigation.navigate("Payments")}
+              >
+                <View style={styles.itemContainer}>
+                  <View style={styles.iconFlex}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={cardIcon("")}
+                      width="21"
+                      height="21"
+                    />
+                    <Text
+                      style={[
+                        styles.menuItem,
+                        {
+                          color: theme ? colors.black : colors.darkTxt,
+                        },
+                      ]}
+                    >
+                      Payments
+                    </Text>
+                  </View>
+                  <View style={styles.goTo}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={frontIcon()}
+                      width="14"
+                      height="14"
+                    />
+                  </View>
                 </View>
-              </View>
-            </TouchableOpacity>
-          ) : null}
+              </TouchableOpacity>
 
-          <TouchableOpacity
-            activeOpacity={0.6}
-            // @ts-ignore
-            onPress={() => navigation.navigate("Settings")}
-          >
-            <View style={styles.itemContainer}>
-              <View style={styles.iconFlex}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={settingsIcon("", "")}
-                  width="21"
-                  height="21"
-                />
-                <Text style={styles.menuItem}>Settings</Text>
-              </View>
-              <View style={styles.goTo}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={frontIcon()}
-                  width="14"
-                  height="14"
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.6}
+                // @ts-ignore
+              >
+                <View style={styles.itemContainer}>
+                  <View style={styles.iconFlex}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={inviteIcon()}
+                      width="21"
+                      height="21"
+                    />
+                    <Text
+                      style={[
+                        styles.menuItem,
+                        {
+                          color: theme ? colors.black : colors.darkTxt,
+                        },
+                      ]}
+                    >
+                      Invite friends
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
 
-          <TouchableOpacity
-            activeOpacity={0.6}
-            // @ts-ignore
-            onPress={() => navigation.navigate("Payments")}
-          >
-            <View style={styles.itemContainer}>
-              <View style={styles.iconFlex}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={cardIcon()}
-                  width="21"
-                  height="21"
-                />
-                <Text style={styles.menuItem}>Payments</Text>
-              </View>
-              <View style={styles.goTo}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={frontIcon()}
-                  width="14"
-                  height="14"
-                />
-              </View>
+              <TouchableOpacity
+                activeOpacity={0.6}
+                // @ts-ignore
+                onPress={() => navigation.navigate("Support")}
+              >
+                <View style={styles.itemContainer}>
+                  <View style={styles.iconFlex}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={supportIcon("", "")}
+                      width="21"
+                      height="21"
+                    />
+                    <Text
+                      style={[
+                        styles.menuItem,
+                        {
+                          color: theme ? colors.black : colors.darkTxt,
+                        },
+                      ]}
+                    >
+                      Support
+                    </Text>
+                  </View>
+                  <View style={styles.goTo}>
+                    <SvgXml
+                      style={styles.icon}
+                      xml={frontIcon()}
+                      width="14"
+                      height="14"
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
+          )
+        )}
 
-          <TouchableOpacity
-            activeOpacity={0.6}
-            // @ts-ignore
-          >
-            <View style={styles.itemContainer}>
-              <View style={styles.iconFlex}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={inviteIcon()}
-                  width="21"
-                  height="21"
-                />
-                <Text style={styles.menuItem}>Invite friends</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            activeOpacity={0.6}
-            // @ts-ignore
-            onPress={() => navigation.navigate("Support")}
-          >
-            <View style={styles.itemContainer}>
-              <View style={styles.iconFlex}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={supportIcon("", "")}
-                  width="21"
-                  height="21"
-                />
-                <Text style={styles.menuItem}>Support</Text>
-              </View>
-              <View style={styles.goTo}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={frontIcon()}
-                  width="14"
-                  height="14"
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            activeOpacity={0.6}
-            // @ts-ignore
-            onPress={() => navigation.navigate("About")}
-          >
-            <View style={styles.itemContainer}>
-              <View style={styles.iconFlex}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={aboutIcon("", "")}
-                  width="20"
-                  height="20"
-                />
-                <Text style={styles.menuItem}>About</Text>
-              </View>
-              <View style={styles.goTo}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={frontIcon()}
-                  width="14"
-                  height="14"
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-        </View>
         <View style={{ height: 50, width: "100%" }} />
       </ScrollView>
       <Navigation navigation={navigation} />
@@ -418,7 +727,6 @@ const styles = StyleSheet.create({
   },
   body: {
     height: "100%",
-    backgroundColor: colors.secondary,
     padding: 20,
     paddingBottom: 300,
     borderTopLeftRadius: 20,

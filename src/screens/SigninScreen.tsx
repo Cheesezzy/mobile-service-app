@@ -9,7 +9,12 @@ import {
 } from "react-native";
 import colors from "../config/colors";
 import { SvgXml } from "react-native-svg";
-import { facebookicon, googleIcon } from "../../assets/icons/icons";
+import {
+  facebookicon,
+  googleIcon,
+  hidePassIcon,
+  showPassIcon,
+} from "../../assets/icons/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { handleAllUsers, refreshAllUsers } from "../../provider/allUsersSlice";
 import { useEffect, useState } from "react";
@@ -37,11 +42,11 @@ const SigninScreen = ({ navigation }: any) => {
   dispatch(handleAllUsers(Users));
 
   const users = selector.payload.users.value;
-  console.log(users);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   useEffect(() => {
     //dispatch(refreshAllUsers());
@@ -119,23 +124,73 @@ const SigninScreen = ({ navigation }: any) => {
     }
   };
 
+  const theme = selector.payload.theme.value;
+
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+        },
+      ]}
+    >
       <View>
-        <Text style={styles.title}>Sign In</Text>
+        <Text
+          style={[
+            styles.title,
+            {
+              color: theme ? colors.black : colors.darkTxt,
+            },
+          ]}
+        >
+          Sign In
+        </Text>
       </View>
 
       <TextInput
         keyboardType="email-address"
         onChangeText={(newEmail) => setEmail(newEmail.toLowerCase())}
-        style={styles.inputBox}
+        style={[
+          styles.inputBox,
+          { color: theme ? colors.black : colors.darkTxt },
+        ]}
         placeholder="Email or username"
+        autoCapitalize="none"
+        autoCorrect={false}
+        placeholderTextColor={colors.lightGrey}
       />
-      <TextInput
-        onChangeText={(newPass) => setPassword(newPass)}
-        style={styles.inputBox}
-        placeholder="Password"
-      />
+      <View style={styles.password}>
+        <TextInput
+          onChangeText={(newPass) => setPassword(newPass)}
+          style={[
+            styles.inputBox,
+            {
+              borderBottomWidth: 0,
+              color: theme ? colors.black : colors.darkTxt,
+            },
+          ]}
+          placeholder="Password"
+          secureTextEntry={!passwordVisible}
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholderTextColor={colors.lightGrey}
+        />
+        <TouchableOpacity
+          style={styles.showHideToggle}
+          onPress={() => setPasswordVisible(!passwordVisible)}
+        >
+          <SvgXml
+            xml={
+              passwordVisible
+                ? showPassIcon(theme ? colors.black : colors.darkTxt)
+                : hidePassIcon(theme ? colors.black : colors.darkTxt)
+            }
+            width="19"
+            height="19"
+          />
+        </TouchableOpacity>
+      </View>
 
       <Text style={styles.err}>{error}</Text>
 
@@ -174,7 +229,16 @@ const SigninScreen = ({ navigation }: any) => {
           width={20}
           height={20}
         />
-        <Text style={styles.thirdPartyTxt}>Continue with Google</Text>
+        <Text
+          style={[
+            styles.thirdPartyTxt,
+            {
+              color: theme ? colors.black : colors.darkTxt,
+            },
+          ]}
+        >
+          Continue with Google
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.thirdParty}>
@@ -186,7 +250,16 @@ const SigninScreen = ({ navigation }: any) => {
           width={20}
           height={20}
         />
-        <Text style={styles.thirdPartyTxt}>Continue with Facebook</Text>
+        <Text
+          style={[
+            styles.thirdPartyTxt,
+            {
+              color: theme ? colors.black : colors.darkTxt,
+            },
+          ]}
+        >
+          Continue with Facebook
+        </Text>
       </TouchableOpacity>
 
       <View>
@@ -215,12 +288,25 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     height: 45,
+    width: "100%",
     borderColor: "lightgrey",
     borderBottomWidth: 1,
     borderRadius: 5,
     padding: 10,
     marginTop: 10,
     fontFamily: "LatoRegular",
+  },
+  password: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderColor: "lightgrey",
+    paddingRight: 30,
+    borderBottomWidth: 1,
+    borderRadius: 5,
+  },
+  showHideToggle: {
+    alignSelf: "center",
+    marginTop: 8,
   },
   inputBtn: {
     height: 48,

@@ -5,22 +5,41 @@ import { SvgXml } from "react-native-svg";
 import { backIcon, searchIcon } from "../../assets/icons/icons";
 import MainSearch from "../components/search/MainSearch";
 import colors from "../config/colors";
+import { useSelector } from "react-redux";
+import { handleSwitchTheme } from "../../provider/themeSlice";
 
 const SearchScreen = ({ navigation }: any) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchFilled, setSearchFilled] = useState(false);
 
+  const selector: any = useSelector(handleSwitchTheme);
+  const theme = selector.payload.theme.value;
+
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+        },
+      ]}
+    >
       <MainSearch
         searchQuery={searchQuery.toLowerCase()}
         searchFilled={searchFilled}
         setSearchFilled={setSearchFilled}
         navigation={navigation}
       />
-      <View style={styles.searchCon}>
+      <View
+        style={[
+          styles.searchCon,
+          {
+            backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+          },
+        ]}
+      >
         <SvgXml
-          xml={backIcon()}
+          xml={backIcon(theme ? colors.blackSmoke : colors.darkTxt)}
           width="16"
           height="16"
           onPress={() => navigation.goBack()}
@@ -35,7 +54,7 @@ const SearchScreen = ({ navigation }: any) => {
             position: "relative",
             top: 7,
           }}
-          xml={searchIcon()}
+          xml={searchIcon(theme ? colors.blackSmoke : colors.darkTxt)}
           width="14"
           height="14"
         />
@@ -43,8 +62,14 @@ const SearchScreen = ({ navigation }: any) => {
         <TextInput
           style={[
             styles.search,
-            { borderColor: colors.grey, borderWidth: searchFilled ? 1 : 0 },
+            {
+              borderColor: colors.grey,
+              borderWidth: searchFilled ? 1 : 0,
+              backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+              color: theme ? colors.black : colors.darkTxt,
+            },
           ]}
+          placeholderTextColor={colors.lightGrey}
           placeholder="Search the network"
           onChangeText={(newQuery) => setSearchQuery(newQuery)}
           defaultValue={searchQuery}
@@ -56,9 +81,7 @@ const SearchScreen = ({ navigation }: any) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.secondary,
-  },
+  container: {},
   searchCon: {
     flexDirection: "row",
     position: "absolute",
@@ -77,8 +100,6 @@ const styles = StyleSheet.create({
     width: "80%",
     fontFamily: "LatoRegular",
     fontSize: 12,
-    color: colors.black,
-    backgroundColor: colors.secondary,
     alignSelf: "center",
     marginLeft: 10,
   },

@@ -10,7 +10,7 @@ import {
   ImageBackground,
   Image,
 } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { useEffect, useRef, useState } from "react";
 import {
   Gesture,
@@ -27,57 +27,16 @@ import Animated, {
 } from "react-native-reanimated";
 import colors from "../../config/colors";
 import * as Location from "expo-location";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import { StatusBar } from "expo-status-bar";
-//import { businesses } from "../../../assets/placeholdersForBiz/placeholdersForBiz";
-import { searchAndRank } from "../../../api/searchAlgo";
-import {
-  collection,
-  collectionGroup,
-  doc,
-  getDoc,
-  orderBy,
-  query,
-} from "firebase/firestore";
+import { calculateDistance, searchAndRank } from "../../../api/searchAlgo";
+import { collection } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../../../firebaseConfig";
-import {
-  useCollection,
-  useCollectionData,
-  useDocumentData,
-} from "react-firebase-hooks/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import { SvgXml } from "react-native-svg";
 import { star } from "../../../assets/svgs/svgs";
-
-const markers = [
-  {
-    accuracy: 300,
-    altitude: 0,
-    altitudeAccuracy: 0,
-    heading: 0,
-    latitude: 4.9760008,
-    longitude: 8.3305643,
-    speed: 0,
-  },
-  {
-    accuracy: 300,
-    altitude: 0,
-    altitudeAccuracy: 0,
-    heading: 0,
-    latitude: 4.9757894,
-    longitude: 8.3309179,
-    speed: 0,
-  },
-  {
-    accuracy: 300,
-    altitude: 0,
-    altitudeAccuracy: 0,
-    heading: 0,
-    latitude: 4.9744057,
-    longitude: 8.3306784,
-    speed: 0,
-  },
-];
+import { roundDistance } from "../../../api/customHooks/generalHooks";
+import { useSelector } from "react-redux";
+import { handleSwitchTheme } from "../../../provider/themeSlice";
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
@@ -111,16 +70,15 @@ const MainSearch = ({
         accuracy: Location.Accuracy.BestForNavigation,
       });
       setUserLocation(location);
-      //console.log(userLocation);
     })();
-  }, []);
-
-  useEffect(() => {
-    translateY.value = withSpring(-SCREEN_HEIGHT / 3, { damping: 50 });
   }, []);
 
   const translateY = useSharedValue(0);
   const context = useSharedValue({ y: 0 });
+
+  useEffect(() => {
+    translateY.value = withSpring(-SCREEN_HEIGHT / 3, { damping: 50 });
+  }, []);
 
   const gesture = Gesture.Pan()
     .onStart(() => {
@@ -159,8 +117,6 @@ const MainSearch = ({
 
   //businesses.map((location) => {});
 
-  console.log(businesses && businesses[0], "here");
-
   let results =
     searchQuery && searchQuery.length > 0
       ? searchAndRank(searchQuery, businesses, {
@@ -169,60 +125,94 @@ const MainSearch = ({
         })
       : null;
 
+  const selector: any = useSelector(handleSwitchTheme);
+  const theme = selector.payload.theme.value;
+
   return (
     <GestureHandlerRootView>
-      <View style={styles.container}>
-        <MapView
-          style={styles.map}
-          customMapStyle={mapStyle}
-          initialRegion={
-            userLocation && {
-              latitude: parseFloat(userLocation?.coords?.latitude),
-              longitude: parseFloat(userLocation?.coords?.longitude),
-              latitudeDelta: 0.02,
-              longitudeDelta: 0.02,
+      <View
+        style={[
+          styles.container,
+          {
+            backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+          },
+        ]}
+      >
+        {userLocation && (
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            style={styles.map}
+            customMapStyle={mapStyle}
+            initialRegion={
+              userLocation && {
+                latitude: parseFloat(userLocation?.coords?.latitude),
+                longitude: parseFloat(userLocation?.coords?.longitude),
+                latitudeDelta: 0.02,
+                longitudeDelta: 0.02,
+              }
             }
-          }
-          showsUserLocation={true}
-          followsUserLocation={true}
-          region={userLocation && userLocation}
-          loadingEnabled
-          loadingIndicatorColor={colors.primary}
-        >
-          {userLocation && (
-            <Marker
-              coordinate={userLocation.coords}
-              image={require("../../.././assets/map/user.png")}
-              title="You"
-            />
-          )}
-          {results &&
-            results.map((business: any) => {
-              let coord = {
-                accuracy: 300,
-                altitude: 0,
-                altitudeAccuracy: 0,
-                heading: 0,
-                latitude: business?.location?.lat,
-                longitude: business?.location?.lng,
-                speed: 0,
-              };
+            showsUserLocation={true}
+            followsUserLocation={true}
+            region={
+              userLocation && {
+                latitude: parseFloat(userLocation?.coords?.latitude),
+                longitude: parseFloat(userLocation?.coords?.longitude),
+                latitudeDelta: 0.02,
+                longitudeDelta: 0.02,
+              }
+            }
+            loadingEnabled={false}
+            //loadingIndicatorColor={colors.primary}
+          >
+            {userLocation && (
+              <Marker
+                coordinate={userLocation?.coords}
+                image={require("../../.././assets/map/user.png")}
+                title="You"
+              />
+            )}
+            {results &&
+              results
+                .filter((business: any) => {
+                  if (business.userId !== user?.uid) return business;
+                })
+                .map((business: any) => {
+                  if (!business.location) return;
+                  let coord = {
+                    accuracy: 300,
+                    altitude: 0,
+                    altitudeAccuracy: 0,
+                    heading: 0,
+                    latitude: business?.location?.lat,
+                    longitude: business?.location?.lng,
+                    speed: 0,
+                  };
 
-              return (
-                userLocation && (
-                  <Marker
-                    key={Math.random() + business?.location?.lat}
-                    coordinate={coord}
-                    pinColor={colors.primary}
-                    image={require("../../.././assets/map/business.png")}
-                    title={business?.name}
-                  />
-                )
-              );
-            })}
-        </MapView>
+                  return (
+                    userLocation &&
+                    business?.location && (
+                      <Marker
+                        key={business?.location?.lat}
+                        coordinate={coord}
+                        pinColor={colors.primary}
+                        image={require("../../.././assets/map/business.png")}
+                        title={business?.name}
+                      />
+                    )
+                  );
+                })}
+          </MapView>
+        )}
         <GestureDetector gesture={gesture}>
-          <Animated.View style={[rSearchConStyle, styles.searchCon]}>
+          <Animated.View
+            style={[
+              rSearchConStyle,
+              styles.searchCon,
+              {
+                backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+              },
+            ]}
+          >
             <View style={styles.line}></View>
             <TouchableOpacity style={styles.locationBtn} onPress={() => null}>
               <Text style={styles.locationBtnTxt}>Use another location</Text>
@@ -240,42 +230,100 @@ const MainSearch = ({
                     .sort((a: any, b: any) => {
                       return b.rating - a.rating;
                     })
+                    .filter((business: any, i: number) => {
+                      if (business.userId !== user?.uid && i < 4)
+                        return business;
+                    })
                     .map((business: any, i: number) => {
-                      if (i < 4)
-                        return (
-                          <TouchableOpacity
-                            style={styles.business}
-                            key={business.location.lat + Math.random()}
-                            onPress={() =>
-                              navigation.navigate("Profile", { business })
-                            }
-                          >
-                            <View style={styles.imgCon}>
-                              <Image
-                                source={require("../../.././assets/placeholder.jpg")}
-                                style={styles.img}
-                              />
-                            </View>
-                            <View style={styles.txtCon}>
-                              <View style={styles.ratingCon}>
-                                <SvgXml
-                                  xml={star()}
-                                  width="11.5"
-                                  height="11.5"
-                                />
-                                <Text style={styles.ratingTxt}>
-                                  {business.rating}
-                                </Text>
-                              </View>
-
-                              <Text style={styles.txt}>{business.name}</Text>
-                              <Text style={styles.chargeTxt}>
-                                <Text style={styles.chargeTxtSm}>From</Text> ₦
-                                {business.chargeRate}
+                      return (
+                        <TouchableOpacity
+                          style={styles.business}
+                          key={business?.userId}
+                          onPress={() =>
+                            navigation.navigate("Profile", { business })
+                          }
+                        >
+                          <View style={styles.imgCon}>
+                            <Image
+                              source={require("../../.././assets/placeholder.jpg")}
+                              style={styles.img}
+                            />
+                          </View>
+                          <View style={styles.txtCon}>
+                            <Text
+                              style={[
+                                styles.disTxt,
+                                {
+                                  color: theme ? colors.darkTxt : colors.black,
+                                  backgroundColor: theme
+                                    ? colors.blackSmoke
+                                    : colors.secondary,
+                                },
+                              ]}
+                            >
+                              {userLocation?.coords &&
+                                business?.location &&
+                                roundDistance(
+                                  calculateDistance(
+                                    {
+                                      lat: parseFloat(
+                                        userLocation?.coords?.latitude
+                                      ),
+                                      lng: parseFloat(
+                                        userLocation?.coords?.longitude
+                                      ),
+                                    },
+                                    {
+                                      lat: business?.location?.lat,
+                                      lng: business?.location?.lng,
+                                    }
+                                  )
+                                )}
+                              km
+                            </Text>
+                            <View style={styles.ratingCon}>
+                              <SvgXml xml={star()} width="11.5" height="11.5" />
+                              <Text style={styles.ratingTxt}>
+                                {business.rating}
                               </Text>
                             </View>
-                          </TouchableOpacity>
-                        );
+
+                            <Text
+                              style={[
+                                styles.txt,
+                                {
+                                  color: theme ? colors.black : colors.darkTxt,
+                                },
+                              ]}
+                            >
+                              {business.name}
+                            </Text>
+                            <Text
+                              style={[
+                                styles.chargeTxt,
+                                ,
+                                {
+                                  color: theme ? colors.black : colors.darkTxt,
+                                },
+                              ]}
+                            >
+                              <Text
+                                style={[
+                                  styles.chargeTxtSm,
+                                  {
+                                    color: theme
+                                      ? colors.black
+                                      : colors.darkTxt,
+                                  },
+                                ]}
+                              >
+                                From
+                              </Text>{" "}
+                              ₦{business.chargeRate}
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      );
                     })}
                 {results ? <Text style={styles.more}>See more...</Text> : null}
               </ScrollView>
@@ -320,7 +368,6 @@ const styles = StyleSheet.create({
   searchCon: {
     height: SCREEN_HEIGHT,
     width: "100%",
-    backgroundColor: colors.secondary,
     position: "absolute",
     top: SCREEN_HEIGHT,
     borderRadius: 25,
@@ -375,6 +422,16 @@ const styles = StyleSheet.create({
     borderLeftWidth: 0,
     borderTopRightRadius: 8,
     borderBottomRightRadius: 8,
+  },
+  disTxt: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    fontFamily: "LatoRegular",
+    fontSize: 10,
+    padding: 3,
+    paddingHorizontal: 5,
+    borderTopRightRadius: 8,
   },
   txt: {
     fontFamily: "Lato",

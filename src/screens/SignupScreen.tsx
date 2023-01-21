@@ -1,4 +1,3 @@
-// remember to change inputs to lower case
 import {
   View,
   Text,
@@ -9,30 +8,35 @@ import {
   ActivityIndicator,
 } from "react-native";
 import colors from "../config/colors";
-import { facebookicon, googleIcon } from "../../assets/icons/icons";
+import {
+  facebookicon,
+  googleIcon,
+  hidePassIcon,
+  showPassIcon,
+} from "../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
 import { useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
+  getAuth,
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 import { AuthErrorCodes } from "firebase/auth";
 import { createUser } from "../../api/database";
+import { sendEmailVerification } from "../../api/verify";
+import { useSelector } from "react-redux";
+import { handleSwitchTheme } from "../../provider/themeSlice";
 
 const SignupScreen = ({ navigation }: any) => {
   const googleProvider = new GoogleAuthProvider();
   const [error, setError] = useState("");
-  const [userData, setUserData] = useState({
-    name: "",
-    mobOrEmail: "",
-    password: "",
-  });
   const [name, setName] = useState("");
   const [mobOrEmail, setMobOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   useEffect(() => {
     console.log(name);
@@ -58,7 +62,9 @@ const SignupScreen = ({ navigation }: any) => {
           "",
           false,
           false,
-          ""
+          "",
+          "",
+          0
         );
       })
       .catch((error) => {
@@ -74,6 +80,7 @@ const SignupScreen = ({ navigation }: any) => {
   const createAcctWithEandP = async () => {
     try {
       setAuthLoading(true);
+
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         mobOrEmail,
@@ -93,8 +100,11 @@ const SignupScreen = ({ navigation }: any) => {
         null,
         false,
         false,
-        ""
+        "",
+        "",
+        0
       );
+
       setAuthLoading(false);
     } catch (error: any) {
       // check for error codes
@@ -129,34 +139,99 @@ const SignupScreen = ({ navigation }: any) => {
       return;
     }
 
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long");
+      return;
+    }
+
     setError("");
+
     createAcctWithEandP();
+
+    {
+      /*sendEmailVerification(mobOrEmail).then((sent) => {
+      navigation.navigate("OTP", { userChannel: mobOrEmail, type: "email" });
+    });*/
+    }
   };
 
+  const selector: any = useSelector(handleSwitchTheme);
+  const theme = selector.payload.theme.value;
+
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+        },
+      ]}
+    >
       <View>
-        <Text style={styles.title}>Sign Up</Text>
+        <Text
+          style={[
+            styles.title,
+            {
+              color: theme ? colors.black : colors.darkTxt,
+            },
+          ]}
+        >
+          Sign Up
+        </Text>
       </View>
 
       <TextInput
         onChangeText={(newName) => setName(newName)}
-        style={styles.inputBox}
+        style={[
+          styles.inputBox,
+          { color: theme ? colors.black : colors.darkTxt },
+        ]}
         placeholder="Full Name"
-        defaultValue={name}
+        placeholderTextColor={colors.lightGrey}
       />
       <TextInput
         onChangeText={(newMoA) => setMobOrEmail(newMoA.toLowerCase())}
-        style={styles.inputBox}
+        style={[
+          styles.inputBox,
+          { color: theme ? colors.black : colors.darkTxt },
+        ]}
         placeholder="Email"
-        defaultValue={mobOrEmail}
+        autoCapitalize="none"
+        autoCorrect={false}
+        placeholderTextColor={colors.lightGrey}
       />
-      <TextInput
-        onChangeText={(newPass) => setPassword(newPass)}
-        style={styles.inputBox}
-        placeholder="Password"
-        defaultValue={password}
-      />
+
+      <View style={styles.password}>
+        <TextInput
+          onChangeText={(newPass) => setPassword(newPass)}
+          style={[
+            styles.inputBox,
+            {
+              borderBottomWidth: 0,
+              color: theme ? colors.black : colors.darkTxt,
+            },
+          ]}
+          placeholder="Password"
+          secureTextEntry={!passwordVisible}
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholderTextColor={colors.lightGrey}
+        />
+        <TouchableOpacity
+          style={styles.showHideToggle}
+          onPress={() => setPasswordVisible(!passwordVisible)}
+        >
+          <SvgXml
+            xml={
+              passwordVisible
+                ? showPassIcon(theme ? colors.black : colors.darkTxt)
+                : hidePassIcon(theme ? colors.black : colors.darkTxt)
+            }
+            width="19"
+            height="19"
+          />
+        </TouchableOpacity>
+      </View>
 
       <Text style={styles.err}>{error}</Text>
 
@@ -193,10 +268,23 @@ const SignupScreen = ({ navigation }: any) => {
           width={20}
           height={20}
         />
-        <Text style={styles.thirdPartyTxt}>Continue with Google</Text>
+        <Text
+          style={[
+            styles.thirdPartyTxt,
+            {
+              color: theme ? colors.black : colors.darkTxt,
+            },
+          ]}
+        >
+          Continue with Google
+        </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.thirdParty}>
+      <TouchableOpacity
+        style={styles.thirdParty}
+        onPress={() => navigation.navigate("Phone")}
+        disabled
+      >
         <SvgXml
           style={{
             marginRight: 10,
@@ -205,7 +293,16 @@ const SignupScreen = ({ navigation }: any) => {
           width={20}
           height={20}
         />
-        <Text style={styles.thirdPartyTxt}>Continue with Facebook</Text>
+        <Text
+          style={[
+            styles.thirdPartyTxt,
+            {
+              color: theme ? colors.black : colors.darkTxt,
+            },
+          ]}
+        >
+          Continue with Phone Number
+        </Text>
       </TouchableOpacity>
 
       <View>
@@ -234,12 +331,25 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     height: 45,
+    width: "100%",
     borderColor: "lightgrey",
     borderBottomWidth: 1,
     borderRadius: 5,
     padding: 10,
     marginTop: 10,
     fontFamily: "LatoRegular",
+  },
+  password: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingRight: 30,
+    borderColor: "lightgrey",
+    borderBottomWidth: 1,
+    borderRadius: 5,
+  },
+  showHideToggle: {
+    alignSelf: "center",
+    marginTop: 8,
   },
   inputBtn: {
     height: 48,

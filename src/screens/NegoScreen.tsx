@@ -11,6 +11,7 @@ import {
   query,
   serverTimestamp,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import {
   View,
@@ -32,18 +33,24 @@ import {
   updateNegotiating,
 } from "../../provider/userSlice";
 import { useEffect, useState } from "react";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import {
+  useCollectionData,
+  useDocumentData,
+} from "react-firebase-hooks/firestore";
 import HeaderTitle from "../components/HeaderTitle";
 import { StatusBar } from "expo-status-bar";
+import { getTime } from "../../api/customHooks/convertTimestamp";
+import { trimText } from "../../api/customHooks/generalHooks";
+import { handleSwitchTheme } from "../../provider/themeSlice";
+import { waiting } from "../../assets/svgs/svgs";
+import { SvgXml } from "react-native-svg";
 
 const NegoScreen = ({ navigation }: any) => {
-  const dispatch = useDispatch();
-  const selector = useSelector(handleAllUsers);
   const [user] = useAuthState(auth);
-  const users = selector.payload.users.value;
-  const User = selector.payload.user.value;
-  const negotiatingRef = collection(db, "users", user?.uid!, "negotiating");
+  const usersRef = collection(db, "users");
+  const [users] = useCollectionData(usersRef);
 
+  const negotiatingRef = collection(db, "users", user?.uid!, "negotiating");
   const [negotiating, loading] = useCollectionData(negotiatingRef);
 
   const checkingPerson = (msg: any) => {
@@ -53,12 +60,55 @@ const NegoScreen = ({ navigation }: any) => {
     return msg?.sentBy;
   };
 
+  const getPerson = async (id: any) => {
+    try {
+      const userData = await getDoc(doc(db, "users", id));
+      return userData.data();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const checkAttachmentTxt = (msg: any) => {
+    if (msg?.attachment) {
+      if (msg?.text?.length > 0) {
+        if (msg?.type === "sent") {
+          return trimText(`You a photo: ${msg?.text}`, 30);
+        } else return trimText(`Sent you a photo: ${msg?.text}`, 30);
+      } else {
+        if (msg?.type === "sent") {
+          return "You sent a photo";
+        } else return "Sent you a photo";
+      }
+    }
+    return trimText(msg?.text, 30);
+  };
+
+  const handleClick = (msg: any) => {
+    navigation.navigate("NegoDisplay", {
+      personId: checkingPerson(msg)?.id,
+      name: checkingPerson(msg)?.name,
+      personPic: checkingPerson(msg)?.pic,
+    });
+
+    if (msg.msgId) {
+      const chatRef = doc(negotiatingRef, msg.msgId);
+
+      updateDoc(chatRef, {
+        seen: true,
+      });
+    }
+  };
+
+  const selector: any = useSelector(handleSwitchTheme);
+  const theme = selector.payload.theme.value;
+
   if (loading) {
     return (
       <View
         style={{
           flex: 1,
-          backgroundColor: colors.secondary,
+          backgroundColor: theme ? colors.secondary : colors.blackSmoke,
           justifyContent: "center",
         }}
       >
@@ -69,8 +119,15 @@ const NegoScreen = ({ navigation }: any) => {
 
   return (
     <>
-      <HeaderTitle title="Negotiations" />
-      <View style={styles.container}>
+      <HeaderTitle title="Negotiations" profileURL="" />
+      <View
+        style={[
+          styles.container,
+          {
+            backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+          },
+        ]}
+      >
         <View
           style={{
             width: "100%",
@@ -78,51 +135,116 @@ const NegoScreen = ({ navigation }: any) => {
             paddingHorizontal: 15,
           }}
         >
-          {negotiating &&
-            negotiating.map((msg: any) => {
-              return (
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate("NegoDisplay", {
-                      personId: checkingPerson(msg)?.id,
-                      name: checkingPerson(msg)?.name,
-                    })
-                  }
-                  key={
-                    msg?.sentBy?.id +
-                    Math.floor(Math.random() * 100) +
-                    msg?.text
-                  }
-                >
-                  <View style={styles.displayBox}>
-                    <View style={styles.avatar}>
-                      <Avatar
-                        size={40}
-                        rounded
-                        source={{ uri: "https://picsum.photos/200" }}
-                      />
-                    </View>
-                    <View style={styles.displayInfo}>
-                      <View style={styles.nameAndTimeCon}>
-                        <Text style={styles.displayName}>
-                          {checkingPerson(msg)?.name}
-                        </Text>
-                        <Text style={styles.displayTime}>19 NOV</Text>
-                      </View>
-                      <View style={styles.msgAndStatus}>
-                        <Text style={styles.displayMsg}>{msg?.text}</Text>
-                        <View style={styles.displayStatus}>
-                          <Text style={styles.displayStatusTxt}>1</Text>
+          {negotiating && negotiating.length > 0
+            ? negotiating
+                .sort((a, b) => b.createdAt - a.createdAt)
+                .map((msg: any) => {
+                  console.log(
+                    "user!",
+
+                    getPerson(checkingPerson(msg)?.id),
+                    checkingPerson(msg)?.id
+                  );
+
+                  return (
+                    <TouchableOpacity
+                      onPress={() => handleClick(msg)}
+                      key={
+                        msg?.sentBy?.id +
+                        Math.floor(Math.random() * 100) +
+                        msg?.text
+                      }
+                    >
+                      <View style={styles.displayBox}>
+                        <View style={styles.avatar}>
+                          <Avatar
+                            size={40}
+                            rounded
+                            source={
+                              checkingPerson(msg)?.pic
+                                ? {
+                                    uri: checkingPerson(msg)?.pic,
+                                  }
+                                : require("../.././assets/blankProfilePic.png")
+                            }
+                          />
+                        </View>
+                        <View style={styles.displayInfo}>
+                          <View style={styles.nameAndTimeCon}>
+                            <Text
+                              style={[
+                                styles.displayName,
+                                {
+                                  color: theme ? colors.black : colors.darkTxt,
+                                },
+                              ]}
+                            >
+                              {checkingPerson(msg)?.name}
+                            </Text>
+                            <Text
+                              style={[
+                                styles.displayTime,
+                                {
+                                  color:
+                                    msg?.sentBy.id !== user?.uid && !msg?.seen
+                                      ? colors.primary
+                                      : colors.lightGrey,
+                                },
+                              ]}
+                            >
+                              {msg.createdAt &&
+                                getTime(
+                                  msg?.createdAt?.seconds,
+                                  msg?.createdAt?.nanoseconds
+                                )}
+                            </Text>
+                          </View>
+                          <View style={styles.msgAndStatus}>
+                            <Text
+                              style={[
+                                styles.displayMsg,
+                                {
+                                  fontFamily:
+                                    msg?.sentBy.id !== user?.uid && !msg?.seen
+                                      ? "Lato"
+                                      : "LatoRegular",
+                                },
+                              ]}
+                            >
+                              {checkAttachmentTxt(msg)}
+                            </Text>
+                            {msg?.sentBy.id !== user?.uid && !msg?.seen ? (
+                              <View style={styles.displayStatus} />
+                            ) : null}
+                          </View>
                         </View>
                       </View>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              );
-            })}
+                    </TouchableOpacity>
+                  );
+                })
+            : !loading && (
+                <View
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <SvgXml xml={waiting()} width={"100%"} height={"40%"} />
+                  <Text
+                    style={{
+                      fontFamily: "LatoRegular",
+                      marginTop: 10,
+                    }}
+                  >
+                    You do not have any message yet
+                  </Text>
+                </View>
+              )}
         </View>
         <Navigation navigation={navigation} />
-        <StatusBar style="auto" />
+        <StatusBar style={theme ? "dark" : "light"} />
       </View>
     </>
   );
@@ -161,7 +283,6 @@ const styles = StyleSheet.create({
   displayTime: {
     fontSize: 10,
     fontFamily: "LatoRegular",
-    color: colors.lightGrey,
   },
   msgAndStatus: {
     width: "81%",
@@ -170,14 +291,13 @@ const styles = StyleSheet.create({
   },
   displayMsg: {
     fontSize: 13,
-    fontFamily: "LatoRegular",
     color: colors.lightGrey,
   },
   displayStatus: {
-    height: 15,
-    width: 15,
+    height: 10,
+    width: 10,
     backgroundColor: colors.primary,
-    borderRadius: 15,
+    borderRadius: 10,
     justifyContent: "center",
   },
   displayStatusTxt: {

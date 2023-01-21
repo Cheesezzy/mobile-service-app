@@ -1,27 +1,81 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import colors from "../config/colors";
 import { Avatar } from "@rneui/themed";
 import { SvgXml } from "react-native-svg";
 import { backIcon, deleteIcon } from "../../assets/icons/icons";
 import { StatusBar } from "expo-status-bar";
+import { doc } from "firebase/firestore";
+import { auth, db } from "../../firebaseConfig";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import { addCommas, checkRole } from "../../api/customHooks/generalHooks";
+import { useSelector } from "react-redux";
+import { handleSwitchTheme } from "../../provider/themeSlice";
+import { transferFunds } from "../../api/database";
+
+const buttonSize = Dimensions.get("window").width * 0.18;
 
 const TransferScreen = ({ route, navigation }: any) => {
-  const { business } = route.params;
+  const { business, businessUser } = route.params;
 
-  const [displayAmount, setDisplayAmount] = useState<any[]>([]);
+  const [displayAmount, setDisplayAmount] = useState("");
 
   const handleInput = (input: any, method: string) => {
-    const amount: any[] = [];
-
     if (method === "add") {
-      amount.push(input);
-      setDisplayAmount((prev: any) => [...prev, amount.join("")]);
-    } else setDisplayAmount((prev: any) => prev.slice(0, -1));
+      setDisplayAmount((prev) => prev + input);
+    } else if (method === "delete") {
+      setDisplayAmount((prev) => prev.slice(0, -1));
+    }
+  };
+
+  useEffect(() => {
+    console.log(displayAmount);
+  }, [displayAmount]);
+
+  const [User] = useAuthState(auth);
+
+  const userRef = doc(db, "users", User?.uid!);
+
+  const [user] = useDocumentData(userRef);
+
+  const selector: any = useSelector(handleSwitchTheme);
+  const theme = selector.payload.theme.value;
+
+  const handleTransfer = () => {
+    console.log("clicked");
+    if (
+      User?.uid &&
+      business.userId &&
+      user &&
+      user.balance &&
+      businessUser.balance
+    ) {
+      transferFunds(
+        User?.uid,
+        business.userId,
+        +user.balance,
+        businessUser.balance,
+        +displayAmount
+      );
+    }
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+        },
+      ]}
+    >
       <View style={styles.transferTo}>
         <View style={styles.flex}>
           <TouchableOpacity style={styles.goBack}>
@@ -43,12 +97,32 @@ const TransferScreen = ({ route, navigation }: any) => {
       <View style={styles.balanceCon}>
         <View style={styles.inputDisplay}>
           {displayAmount.length > 0 ? (
-            <Text style={styles.inputDisplayTxt}>₦{displayAmount}</Text>
+            <Text
+              style={[
+                styles.inputDisplayTxt,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              ₦{displayAmount}
+            </Text>
           ) : (
-            <Text style={styles.inputDisplayPh}>Type in the amount (₦)</Text>
+            <Text
+              style={[
+                styles.inputDisplayPh,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              Type in the amount, min. ₦50.00
+            </Text>
           )}
         </View>
-        <Text style={styles.balance}>Available Balance: ₦150,000</Text>
+        <Text style={styles.balance}>
+          Available Balance: ₦{user && addCommas(user?.balance)}
+        </Text>
       </View>
       <View style={styles.inputBtnsRow}>
         <TouchableOpacity
@@ -124,24 +198,21 @@ const TransferScreen = ({ route, navigation }: any) => {
           <Text style={styles.val}>0</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => handleInput("", "delete")}
+          onPress={() => handleInput(null, "delete")}
           style={styles.inputBtn}
         >
-          <SvgXml
-            xml={deleteIcon(colors.primary)}
-            width="14"
-            height="16"
-            onPress={() => navigation.goBack()}
-          />
+          <SvgXml xml={deleteIcon(colors.primary)} width="14" height="16" />
         </TouchableOpacity>
       </View>
       <TouchableOpacity
-        onPress={() => null}
-        disabled={displayAmount.length <= 0}
+        onPress={handleTransfer}
+        disabled={
+          +displayAmount >= 50 && displayAmount.length > 0 ? false : true
+        }
         style={[
           styles.inputBtnSend,
           {
-            opacity: displayAmount.length <= 0 ? 0.5 : 1,
+            opacity: +displayAmount >= 50 && displayAmount.length > 0 ? 1 : 0.5,
           },
         ]}
       >
@@ -223,11 +294,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
   },
   inputBtn: {
-    height: 58,
-    width: 58,
+    height: buttonSize,
+    width: buttonSize,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 58,
+    borderRadius: buttonSize,
     borderColor: colors.primary,
     borderWidth: 1,
     margin: 15,
@@ -238,7 +309,7 @@ const styles = StyleSheet.create({
     color: colors.primary,
   },
   inputBtnSend: {
-    height: 50,
+    height: buttonSize - 5,
     width: "75%",
     justifyContent: "center",
     alignItems: "center",

@@ -6,8 +6,6 @@ import {
   TouchableOpacity,
   useWindowDimensions,
   Image,
-  Button,
-  KeyboardAvoidingView,
 } from "react-native";
 import React, { useEffect, useRef } from "react";
 import colors from "../config/colors";
@@ -22,14 +20,14 @@ const BusinessEnroll = ({ navigation }: any) => {
   const { width } = useWindowDimensions();
   const [user] = useAuthState(auth);
 
-  const userRef = doc(db, "users", user?.uid!);
+  const userRef = user && doc(db, "users", user?.uid);
 
   const [User] = useDocumentData(userRef);
 
   const handleNavigation = (role: string) => {
-    //updateUserRole(User?.bizId, role);
-    addBusiness(user?.uid);
-    navigation.navigate("SlidesContainer", { role });
+    role === "Provider" && addBusiness(user?.uid);
+    user?.uid && User?.bizId && updateUserRole(User?.bizId, role);
+    navigation.navigate("Slider", { role });
   };
 
   return (

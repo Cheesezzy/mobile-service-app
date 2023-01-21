@@ -44,6 +44,13 @@ import SlidesContainer from "../components/SlidesContainer";
 import BusinessEnroll from "../components/BusinessEnroll";
 import TransferScreen from "../screens/TransferScreen";
 import PayScreen from "../screens/PayScreen";
+import Slider from "../components/Slider";
+import CategoriesScreen from "../screens/CategoriesScreen";
+import PhoneScreen from "../screens/PhoneScreen";
+import OTPScreen from "../screens/OTPScreen";
+import GatedScreen from "../screens/GatedScreen";
+import AccountSettings from "../screens/AccountSettings";
+import ImageScreen from "../components/ShowImage";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -73,7 +80,7 @@ const StackNavigator = () => {
       <Stack.Screen
         name={"Home"}
         component={
-          loading
+          !bizData?.bizInformed && loading
             ? HomeScreen
             : bizData?.bizInformed
             ? HomeScreen
@@ -219,10 +226,10 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="SlidesContainer"
-        component={SlidesContainer}
+        name="Slider"
+        component={Slider}
         options={{
-          title: "SlidesContainer",
+          title: "Slider",
           headerShown: false,
         }}
       />
@@ -239,6 +246,30 @@ const StackNavigator = () => {
         component={PayScreen}
         options={{
           title: "Pay",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Categories"
+        component={CategoriesScreen}
+        options={{
+          title: "Categories",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="AccountSettings"
+        component={AccountSettings}
+        options={{
+          title: "AccountSettings",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ImageScreen"
+        component={ImageScreen}
+        options={{
+          title: "ImageScreen",
           headerShown: false,
         }}
       />

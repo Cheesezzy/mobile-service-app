@@ -20,6 +20,8 @@ import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
+import { useSelector } from "react-redux";
+import { handleSwitchTheme } from "../../provider/themeSlice";
 
 const SetLocationPopup = () => {
   const [user] = useAuthState(auth);
@@ -55,17 +57,33 @@ const SetLocationPopup = () => {
     })();
   };
 
+  const selector: any = useSelector(handleSwitchTheme);
+  const theme = selector.payload.theme.value;
+
   //setVisible(true);
   return (
     <>
-      <Dialog isVisible style={styles.dialogBox}>
+      <Dialog
+        overlayStyle={{
+          backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+        }}
+        isVisible
+        style={styles.dialogBox}
+      >
         <SvgXml
           style={{ alignSelf: "center" }}
           xml={location()}
           width={300}
           height={100}
         />
-        <Text style={styles.title}>
+        <Text
+          style={[
+            styles.title,
+            {
+              color: theme ? colors.black : colors.darkTxt,
+            },
+          ]}
+        >
           For clients to find you in searches; you need to update your location
         </Text>
         <TouchableOpacity style={styles.choiceBtn} onPress={usePresentLocation}>

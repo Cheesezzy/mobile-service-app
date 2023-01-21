@@ -12,14 +12,20 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import colors from "../config/colors";
 import { SvgXml } from "react-native-svg";
 import { backIcon, searchIcon, settingsIcon } from "../../assets/icons/icons";
+import { handleSwitchTheme } from "../../provider/themeSlice";
+import { useSelector } from "react-redux";
 
 type Props = {
   title: string;
+  profileURL: string;
 };
 
-function HeaderTitle({ title }: Props) {
+function HeaderTitle({ title, profileURL }: Props) {
   const navigation = useNavigation();
   const route = useRoute();
+
+  const selector: any = useSelector(handleSwitchTheme);
+  const theme = selector.payload.theme.value;
 
   return (
     <View
@@ -34,18 +40,24 @@ function HeaderTitle({ title }: Props) {
         paddingHorizontal: 18,
         paddingTop: 42,
         zIndex: 200,
-        backgroundColor: colors.secondary,
+        backgroundColor: theme ? colors.secondary : colors.blackSmoke,
       }}
     >
       {route.name === "Home" ? (
         <>
           <TouchableOpacity // @ts-ignore
-            onPress={() => navigation.navigate("Profile", {})}
+            onPress={() => navigation.navigate("Hustle")}
           >
             <Avatar
               size={28}
               rounded
-              source={require("../../assets/tfp.png")}
+              source={
+                profileURL
+                  ? {
+                      uri: profileURL,
+                    }
+                  : require("../../assets/blankProfilePic.png")
+              }
             />
           </TouchableOpacity>
 
@@ -53,7 +65,11 @@ function HeaderTitle({ title }: Props) {
             // @ts-ignore
             onPress={() => navigation.navigate("Search")}
           >
-            <SvgXml xml={searchIcon()} width="21" height="21" />
+            <SvgXml
+              xml={searchIcon(theme ? colors.blackSmoke : colors.darkTxt)}
+              width="21"
+              height="21"
+            />
           </TouchableOpacity>
         </>
       ) : (
@@ -66,6 +82,7 @@ function HeaderTitle({ title }: Props) {
             style={{
               fontFamily: "Lato",
               fontSize: 18,
+              color: theme ? colors.black : colors.darkTxt,
             }}
           >
             {
@@ -83,6 +100,7 @@ function HeaderTitle({ title }: Props) {
             style={{
               fontFamily: "Lato",
               fontSize: 20,
+              color: theme ? colors.black : colors.darkTxt,
             }}
           >
             Notifications
@@ -99,7 +117,7 @@ function HeaderTitle({ title }: Props) {
         >
           <TouchableOpacity>
             <SvgXml
-              xml={backIcon()}
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
               width="22"
               height="22"
               onPress={() => navigation.goBack()}
@@ -110,6 +128,7 @@ function HeaderTitle({ title }: Props) {
               fontFamily: "Lato",
               fontSize: 20,
               marginLeft: 10,
+              color: theme ? colors.black : colors.darkTxt,
             }}
           >
             Settings
@@ -126,7 +145,7 @@ function HeaderTitle({ title }: Props) {
         >
           <TouchableOpacity>
             <SvgXml
-              xml={backIcon()}
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
               width="22"
               height="22"
               onPress={() => navigation.goBack()}
@@ -137,6 +156,7 @@ function HeaderTitle({ title }: Props) {
               fontFamily: "Lato",
               fontSize: 20,
               marginLeft: 10,
+              color: theme ? colors.black : colors.darkTxt,
             }}
           >
             Earnings
@@ -153,7 +173,7 @@ function HeaderTitle({ title }: Props) {
         >
           <TouchableOpacity>
             <SvgXml
-              xml={backIcon()}
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
               width="22"
               height="22"
               onPress={() => navigation.goBack()}
@@ -164,6 +184,7 @@ function HeaderTitle({ title }: Props) {
               fontFamily: "Lato",
               fontSize: 20,
               marginLeft: 10,
+              color: theme ? colors.black : colors.darkTxt,
             }}
           >
             Payments
@@ -183,34 +204,41 @@ function HeaderTitle({ title }: Props) {
             // @ts-ignore
             onPress={() => navigation.navigate("Search")}
           >
-            <SvgXml xml={searchIcon()} width="21" height="21" />
+            <SvgXml
+              xml={searchIcon(theme ? colors.blackSmoke : colors.darkTxt)}
+              width="21"
+              height="21"
+            />
           </TouchableOpacity>
         </>
       ) : (
         <></>
       )}
       {title === "categoryItem" ? (
-        <>
+        <View
+          style={{
+            flexDirection: "row",
+          }}
+        >
           <TouchableOpacity>
             <SvgXml
-              xml={backIcon()}
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
               width="22"
               height="22"
               onPress={() => navigation.goBack()}
             />
           </TouchableOpacity>
-          <TouchableOpacity
+          <Text
             style={{
-              position: "absolute",
-              right: 18,
-              top: 35,
+              fontFamily: "Lato",
+              fontSize: 20,
+              marginLeft: 10,
+              color: theme ? colors.black : colors.darkTxt,
             }}
-            // @ts-ignore
-            onPress={() => navigation.navigate("Search")}
           >
-            <SvgXml xml={searchIcon()} width="21" height="21" />
-          </TouchableOpacity>
-        </>
+            Categories
+          </Text>
+        </View>
       ) : (
         <></>
       )}

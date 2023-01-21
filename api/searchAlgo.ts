@@ -1,4 +1,4 @@
-function calculateDistance(
+export function calculateDistance(
   locationA: { lat: number; lng: number },
   locationB: { lat: number; lng: number }
 ) {
