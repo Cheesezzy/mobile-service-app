@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import store, { persistor } from "./provider/store";
@@ -21,7 +21,6 @@ import {
   Image,
 } from "react-native";
 import colors from "./src/config/colors";
-import BusinessEnroll from "./src/components/BusinessEnroll";
 import Geocoder from "react-native-geocoding";
 
 export default function App() {
@@ -42,18 +41,6 @@ export default function App() {
 
   if (!fontsLoaded) {
     return null;
-  }
-
-  {
-    /* 
-  const writeUserData = () => {
-    const userRef = doc(db, "users", "alovelace");
-    setDoc(userRef, {
-      first: "Ada",
-      last: "Lovelace",
-      born: 1815,
-    });
-  */
   }
 
   return (

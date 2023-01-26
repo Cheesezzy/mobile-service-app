@@ -6,6 +6,7 @@ export default {
   blackSmoke: "#1d1d1d",
   darkTxt: "#ddd",
   transparentBlack: "rgba(0, 0, 0, 0.7)",
+  transparentWhite: "rgba(255, 255, 255, 0.7)",
   grey: "rgb(205, 205, 205)",
   deeperSmoke: "rgb(235, 235, 235)",
   lightBlack: "rgb(158, 155, 155)",

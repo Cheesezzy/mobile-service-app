@@ -1,6 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRoute } from "@react-navigation/native";
-import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableHighlight,
+  Dimensions,
+} from "react-native";
 import { Icon } from "@rneui/themed";
 import colors from "../config/colors";
 import { SvgXml } from "react-native-svg";
@@ -17,6 +23,7 @@ import { handleSwitchTheme } from "../../provider/themeSlice";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { collection } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import NetInfo from "@react-native-community/netinfo";
 
 const Navigation = ({ navigation }: any) => {
   const [user] = useAuthState(auth);
@@ -26,6 +33,12 @@ const Navigation = ({ navigation }: any) => {
   const [notifications] = useCollectionData(notifsRef);
   const [negoUnread, setNegoUnread] = useState(false);
   const [notifUnread, setNotifUnread] = useState(false);
+  const connectionStatusRef = useRef<any>(null);
+
+  const unsubscribe = NetInfo.addEventListener((state) => {
+    connectionStatusRef.current =
+      state.isConnected && state.isInternetReachable;
+  });
 
   useEffect(() => {
     if (negotiating) setNegoUnread(negotiating.some((msg: any) => !msg?.seen));
@@ -53,6 +66,24 @@ const Navigation = ({ navigation }: any) => {
         },
       ]}
     >
+      {!connectionStatusRef && (
+        <View style={styles.internetPopupCon}>
+          <Text
+            style={[
+              styles.internetPopup,
+              {
+                color: theme ? colors.darkTxt : colors.black,
+                backgroundColor: theme
+                  ? colors.transparentBlack
+                  : colors.transparentWhite,
+              },
+            ]}
+          >
+            We've detected a problem with your internet connection. Please check
+            your connection and try again later.
+          </Text>
+        </View>
+      )}
       <TouchableHighlight
         activeOpacity={0.6}
         underlayColor={theme ? "#ddd" : colors.black}
@@ -224,6 +255,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 7,
     justifyContent: "center",
+  },
+  internetPopupCon: {
+    width: Dimensions.get("window").width,
+    position: "absolute",
+    bottom: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 500,
+  },
+  internetPopup: {
+    backgroundColor: colors.transparentBlack,
+    padding: 10,
+    fontFamily: "LatoRegular",
   },
 });
 

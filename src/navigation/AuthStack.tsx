@@ -19,6 +19,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import PhoneScreen from "../screens/PhoneScreen";
 import OTPScreen from "../screens/OTPScreen";
 import GatedScreen from "../screens/GatedScreen";
+import ForgotPwdScreen from "../screens/ForgotPwdScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -86,6 +87,14 @@ const AuthNavigator = () => {
         component={GatedScreen}
         options={{
           title: "Gated",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ForgotPassword"
+        component={ForgotPwdScreen}
+        options={{
+          title: "ForgotPassword",
           headerShown: false,
         }}
       />

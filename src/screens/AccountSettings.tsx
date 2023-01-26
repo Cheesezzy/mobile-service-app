@@ -35,7 +35,7 @@ const AccountSettings = ({ route }: any) => {
   const [clicked, setClicked] = useState(false);
   const [image, setImage] = useState<any>(null);
 
-  async function changeProfilePic(file: any, user: any) {
+  async function changeProfilePic(user: any) {
     if (image) {
       const fileRef = ref(store, `profilePics/${user?.uid}`);
 
@@ -73,27 +73,44 @@ const AccountSettings = ({ route }: any) => {
 
     if (result && !result?.cancelled) {
       setImage(result?.uri);
-      changeProfilePic(result, User);
     }
   };
 
   const handleSave = () => {
     setClicked(true);
 
+    if (image) {
+      changeProfilePic(User);
+      setClicked(false);
+      setImage(null);
+    }
+
     if (businessName.length > 0) {
       updateBusinessName(user?.bizId, businessName);
       setClicked(false);
+      setBusinessName("");
     }
 
     if (profileName.length > 0) {
       updateUserName(User?.uid, profileName);
       setClicked(false);
+      setProfileName("");
     }
 
     if (desc.length > 0) {
       updateBusinessDesc(user?.bizId, desc);
       setClicked(false);
+      setDesc("");
     }
+  };
+
+  const checkInputs = () => {
+    if (image) return true;
+    if (businessName.length > 0) return true;
+    if (profileName.length > 0) return true;
+    if (desc.length > 0) return true;
+
+    return false;
   };
 
   const selector: any = useSelector(handleSwitchTheme);
@@ -116,7 +133,7 @@ const AccountSettings = ({ route }: any) => {
           source={
             user?.profilePic
               ? {
-                  uri: user?.profilePic,
+                  uri: image ? image : user?.profilePic,
                 }
               : require("../.././assets/blankProfilePic.png")
           }
@@ -145,7 +162,15 @@ const AccountSettings = ({ route }: any) => {
           multiline
         />
       )}
-      <TouchableOpacity style={styles.choiceBtn} onPress={handleSave}>
+      <TouchableOpacity
+        style={[
+          styles.choiceBtn,
+          {
+            opacity: checkInputs() ? 1 : 0.5,
+          },
+        ]}
+        onPress={handleSave}
+      >
         <Text style={styles.choiceBtnTxt}>
           {clicked ? (
             <ActivityIndicator color={colors.primary} size="small" />

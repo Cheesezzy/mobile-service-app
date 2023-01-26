@@ -58,9 +58,25 @@ const HomeScreen = ({ navigation }: any) => {
 
   const businessRef = user?.bizId && doc(db, "businesses", user?.bizId);
 
-  //console.log(user?.bizId, "user");
+  const checkRoleAndLocation = () => {
+    {
+      /*user && user?.role === "Provider" ? (
+      !business?.location && loading ? null : business?.location ? null : (
+        <SetLocationPopup />
+      )
+      ) : null*/
+    }
 
-  //const allUsers = selector.payload.users.value;
+    if (user && user?.role === "Provider") {
+      if (!business?.location && loading) {
+        return null;
+      } else {
+        return <SetLocationPopup />;
+      }
+    } else {
+      return null;
+    }
+  };
 
   const [business, loading] = useDocumentData(businessRef);
 

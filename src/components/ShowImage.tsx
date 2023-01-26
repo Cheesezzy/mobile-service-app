@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
   goBack: {
     position: "absolute",
-    top: 30,
+    top: 60,
     left: 15,
     zIndex: 10,
   },

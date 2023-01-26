@@ -238,6 +238,14 @@ export function updateUserName(userId: any, name: string) {
   });
 }
 
+export function updatePassword(userId: any, password: string) {
+  const userRef = doc(db, "users", userId);
+
+  updateDoc(userRef, {
+    password,
+  });
+}
+
 // info about business
 export function updateBusinessName(bizId: any, name: string) {
   const businessRef = doc(db, "businesses", bizId);

@@ -209,9 +209,9 @@ const SigninScreen = ({ navigation }: any) => {
         </Text>
       </TouchableOpacity>
 
-      <View>
+      <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
         <Text style={styles.forgotPassword}>Forgot password?</Text>
-      </View>
+      </TouchableOpacity>
 
       <View style={styles.dividerCon}>
         <View style={styles.line} />

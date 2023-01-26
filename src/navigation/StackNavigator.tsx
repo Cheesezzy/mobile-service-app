@@ -75,17 +75,29 @@ const StackNavigator = () => {
     console.log(bizData?.bizInformed, "biz stat");
   }, []);
 
+  const checkBizInformed = () => {
+    {
+      /*
+      !bizData?.bizInformed && loading
+        ? HomeScreen
+        : bizData?.bizInformed
+        ? HomeScreen
+        : BusinessEnroll;
+  */
+    }
+
+    if (bizData && bizData?.bizInformed && !loading) {
+      if (bizData?.bizInformed) return HomeScreen;
+      return BusinessEnroll;
+    }
+    return HomeScreen;
+  };
+
   return (
     <Stack.Navigator initialRouteName={"Home"}>
       <Stack.Screen
         name={"Home"}
-        component={
-          !bizData?.bizInformed && loading
-            ? HomeScreen
-            : bizData?.bizInformed
-            ? HomeScreen
-            : BusinessEnroll
-        }
+        component={checkBizInformed()}
         options={{
           title: "Home",
           headerShown: false,

@@ -38,16 +38,30 @@ const ProfileScreen = ({ navigation, route }: any) => {
   const userRef = doc(db, "users", User?.uid!);
   const [user] = useDocumentData(userRef);
   const [businessUser] = useDocumentData(businessUserRef);
-  const galleryRef =
-    businessUser?.bizId &&
-    collection(db, "businesses", businessUser.bizId, "gallery");
 
-  const [gallery] = useCollectionData(galleryRef);
+  const imageOneRef =
+    businessUser?.bizId &&
+    doc(db, "businesses", businessUser.bizId, "gallery", "imgOne");
+  const imageTwoRef =
+    businessUser?.bizId &&
+    doc(db, "businesses", businessUser.bizId, "gallery", "imgTwo");
+  const imageThreeRef =
+    businessUser?.bizId &&
+    doc(db, "businesses", businessUser.bizId, "gallery", "imgThree");
+  const imageFourRef =
+    businessUser?.bizId &&
+    doc(db, "businesses", businessUser.bizId, "gallery", "imgFour");
+
+  const [imageOne] = useDocumentData(imageOneRef);
+  const [imageTwo] = useDocumentData(imageTwoRef);
+  const [imageThree] = useDocumentData(imageThreeRef);
+  const [imageFour] = useDocumentData(imageFourRef);
 
   const [userLocation, setUserLocation] = useState<any>(null);
   const [errMsg, setErrorMsg] = useState<any>(null);
   const [locationName, setLocationName] = useState<any>(null);
   const [image, setImage] = useState<any>(null);
+  const [imageNum, setImageNum] = useState<any>(null);
 
   useEffect(() => {
     if (!business) {
@@ -112,7 +126,7 @@ const ProfileScreen = ({ navigation, route }: any) => {
   }, [user, business?.uid]);
 
   const handleAddGalleryImg = async (imgNumber: string) => {
-    if (image && user && user?.bizId) {
+    if (image && imgNumber && user && user?.bizId) {
       const fileRef = ref(
         store,
         `businessGalleryPics/${user?.bizId}/${imgNumber}.jpg`
@@ -135,6 +149,7 @@ const ProfileScreen = ({ navigation, route }: any) => {
         });
 
       setImage(null);
+      setImageNum(null);
     }
   };
 
@@ -146,10 +161,16 @@ const ProfileScreen = ({ navigation, route }: any) => {
     });
 
     if (result && !result?.cancelled) {
-      await setImage(result?.uri);
-      handleAddGalleryImg(imgNumber);
+      setImageNum(imgNumber);
+      setImage(result?.uri);
     }
   };
+
+  useEffect(() => {
+    if (image && imageNum) {
+      handleAddGalleryImg(imageNum);
+    }
+  }, [image, imageNum]);
 
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
@@ -391,12 +412,12 @@ const ProfileScreen = ({ navigation, route }: any) => {
                       onPress={() => pickImage("imgOne")}
                       style={styles.galleryImgCon}
                     >
-                      {gallery && gallery[0] ? (
+                      {imageOne && imageOne ? (
                         <>
                           <Image
                             style={styles.galleryImg}
                             source={{
-                              uri: gallery[0].url,
+                              uri: imageOne.url,
                             }}
                             resizeMode="cover"
                           />
@@ -416,12 +437,12 @@ const ProfileScreen = ({ navigation, route }: any) => {
                       onPress={() => pickImage("imgTwo")}
                       style={styles.galleryImgCon}
                     >
-                      {gallery && gallery[1] ? (
+                      {imageTwo && imageTwo ? (
                         <>
                           <Image
                             style={styles.galleryImg}
                             source={{
-                              uri: gallery[1].url,
+                              uri: imageTwo.url,
                             }}
                             resizeMode="cover"
                           />
@@ -441,12 +462,12 @@ const ProfileScreen = ({ navigation, route }: any) => {
                       onPress={() => pickImage("imgThree")}
                       style={styles.galleryImgCon}
                     >
-                      {gallery && gallery[2] ? (
+                      {imageThree && imageThree ? (
                         <>
                           <Image
                             style={styles.galleryImg}
                             source={{
-                              uri: gallery[2].url,
+                              uri: imageThree.url,
                             }}
                             resizeMode="cover"
                           />
@@ -471,12 +492,12 @@ const ProfileScreen = ({ navigation, route }: any) => {
                         },
                       ]}
                     >
-                      {gallery && gallery[3] ? (
+                      {imageFour && imageFour ? (
                         <>
                           <Image
                             style={styles.galleryImg}
                             source={{
-                              uri: gallery[3].url,
+                              uri: imageFour.url,
                             }}
                             resizeMode="contain"
                           />
@@ -497,10 +518,10 @@ const ProfileScreen = ({ navigation, route }: any) => {
                   <>
                     <TouchableOpacity
                       onPress={
-                        gallery && gallery[0]
+                        imageOne && imageOne
                           ? () =>
                               navigation.navigate("ImageScreen", {
-                                image: gallery[0].url,
+                                image: imageOne.url,
                               })
                           : () => null
                       }
@@ -509,12 +530,12 @@ const ProfileScreen = ({ navigation, route }: any) => {
                         { backgroundColor: theme ? "#F0F0F0" : colors.black },
                       ]}
                     >
-                      {gallery && gallery[0] && (
+                      {imageOne && imageOne && (
                         <>
                           <Image
                             style={styles.galleryImg}
                             source={{
-                              uri: gallery[0].url,
+                              uri: imageOne.url,
                             }}
                             resizeMode="cover"
                           />
@@ -523,10 +544,10 @@ const ProfileScreen = ({ navigation, route }: any) => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={
-                        gallery && gallery[1]
+                        imageTwo && imageTwo
                           ? () =>
                               navigation.navigate("ImageScreen", {
-                                image: gallery[1].url,
+                                image: imageTwo.url,
                               })
                           : () => null
                       }
@@ -535,12 +556,12 @@ const ProfileScreen = ({ navigation, route }: any) => {
                         { backgroundColor: theme ? "#F0F0F0" : colors.black },
                       ]}
                     >
-                      {gallery && gallery[1] && (
+                      {imageTwo && imageTwo && (
                         <>
                           <Image
                             style={styles.galleryImg}
                             source={{
-                              uri: gallery[1].url,
+                              uri: imageTwo.url,
                             }}
                             resizeMode="cover"
                           />
@@ -549,10 +570,10 @@ const ProfileScreen = ({ navigation, route }: any) => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={
-                        gallery && gallery[2]
+                        imageThree && imageThree
                           ? () =>
                               navigation.navigate("ImageScreen", {
-                                image: gallery[2].url,
+                                image: imageThree.url,
                               })
                           : () => null
                       }
@@ -561,12 +582,12 @@ const ProfileScreen = ({ navigation, route }: any) => {
                         { backgroundColor: theme ? "#F0F0F0" : colors.black },
                       ]}
                     >
-                      {gallery && gallery[2] && (
+                      {imageThree && imageThree && (
                         <>
                           <Image
                             style={styles.galleryImg}
                             source={{
-                              uri: gallery[2].url,
+                              uri: imageThree.url,
                             }}
                             resizeMode="cover"
                           />
@@ -575,10 +596,10 @@ const ProfileScreen = ({ navigation, route }: any) => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={
-                        gallery && gallery[3]
+                        imageFour && imageFour
                           ? () =>
                               navigation.navigate("ImageScreen", {
-                                image: gallery[3].url,
+                                image: imageFour.url,
                               })
                           : () => null
                       }
@@ -590,12 +611,12 @@ const ProfileScreen = ({ navigation, route }: any) => {
                         },
                       ]}
                     >
-                      {gallery && gallery[3] && (
+                      {imageFour && imageFour && (
                         <>
                           <Image
                             style={styles.galleryImg}
                             source={{
-                              uri: gallery[3].url,
+                              uri: imageFour.url,
                             }}
                             resizeMode="contain"
                           />
