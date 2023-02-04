@@ -9,7 +9,12 @@ import {
 import React, { useEffect, useState } from "react";
 import colors from "../config/colors";
 import { SvgXml } from "react-native-svg";
-import { backIcon, locationIcon, profileIcon } from "../../assets/icons/icons";
+import {
+  backIcon,
+  levelIcon,
+  locationIcon,
+  profileIcon,
+} from "../../assets/icons/icons";
 import { Avatar } from "@rneui/themed";
 import { StatusBar } from "expo-status-bar";
 import { collection, doc } from "firebase/firestore";
@@ -331,6 +336,7 @@ const ProfileScreen = ({ navigation, route }: any) => {
                   {business && business?.desc}
                 </Text>
               </View>
+
               <View style={styles.about}>
                 <View style={styles.aboutItem}>
                   <View style={styles.aboutItemIcon}>
@@ -376,6 +382,30 @@ const ProfileScreen = ({ navigation, route }: any) => {
                       ]}
                     >
                       {locationName ? locationName : null}
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={styles.aboutItem}>
+                  <View style={styles.aboutItemIcon}>
+                    <SvgXml
+                      xml={levelIcon()}
+                      width="22"
+                      height="22"
+                      onPress={() => navigation.goBack()}
+                    />
+                  </View>
+                  <View>
+                    <Text style={styles.aboutInfoLabel}>Level</Text>
+                    <Text
+                      style={[
+                        styles.aboutInfoVal,
+                        {
+                          color: theme ? colors.black : colors.darkTxt,
+                        },
+                      ]}
+                    >
+                      {business?.level}
                     </Text>
                   </View>
                 </View>

@@ -52,7 +52,7 @@ const SignupScreen = ({ navigation }: any) => {
         createUser(
           user.uid,
           name,
-          "Provider",
+          "",
           {},
           mobOrEmail,
           password,
@@ -90,7 +90,7 @@ const SignupScreen = ({ navigation }: any) => {
       createUser(
         userCredential.user.uid,
         name,
-        "Provider",
+        "",
         {},
         mobOrEmail,
         password,

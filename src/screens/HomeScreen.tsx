@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   ActivityIndicator,
@@ -11,6 +11,7 @@ import {
   Platform,
   Dimensions,
   TouchableOpacity,
+  RefreshControl,
 } from "react-native";
 import colors from "../config/colors";
 import Navigation from "../components/Navigation";

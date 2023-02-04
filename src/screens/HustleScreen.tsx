@@ -1,6 +1,6 @@
 import { Avatar } from "@rneui/themed";
 import { Rating, AirbnbRating } from "react-native-ratings";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  RefreshControl,
 } from "react-native";
 import Navigation from "../components/Navigation";
 import colors from "../config/colors";
@@ -51,6 +52,15 @@ const HustleScreen = ({ navigation }: any) => {
   const businessRef = user?.bizId && doc(db, "businesses", user?.bizId);
 
   const [business] = useDocumentData(businessRef);
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
@@ -96,6 +106,15 @@ const HustleScreen = ({ navigation }: any) => {
           },
         ]}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            enabled
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            progressBackgroundColor={colors.primary}
+            colors={[colors.secondary]}
+          />
+        }
       >
         {!loading && checkRole(user) ? (
           <>
