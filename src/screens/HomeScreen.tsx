@@ -21,9 +21,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import HeaderTitle from "../components/HeaderTitle";
 import { SvgXml } from "react-native-svg";
 import {
-  chef,
   creative,
   health,
+  infotech,
   knowledge,
   professional,
   social,
@@ -209,8 +209,8 @@ const HomeScreen = ({ navigation }: any) => {
                 ]}
                 onPress={() => {
                   navigation.navigate("Category", {
-                    categoryName: "Creative",
-                    desc: categories[1].value.desc,
+                    categoryName: "Healthcare",
+                    desc: categories[3].value.desc,
                   });
                 }}
               >
@@ -238,8 +238,8 @@ const HomeScreen = ({ navigation }: any) => {
                 ]}
                 onPress={() => {
                   navigation.navigate("Category", {
-                    categoryName: "Creative",
-                    desc: categories[1].value.desc,
+                    categoryName: "Social",
+                    desc: categories[2].value.desc,
                   });
                 }}
               >
@@ -267,12 +267,12 @@ const HomeScreen = ({ navigation }: any) => {
                 ]}
                 onPress={() => {
                   navigation.navigate("Category", {
-                    categoryName: "Creative",
-                    desc: categories[1].value.desc,
+                    categoryName: "Knowledge",
+                    desc: categories[4].value.desc,
                   });
                 }}
               >
-                <SvgXml xml={social()} width="60%" height="60%" />
+                <SvgXml xml={knowledge()} width="60%" height="60%" />
                 <Text
                   style={[
                     styles.bigTxt,
@@ -281,7 +281,7 @@ const HomeScreen = ({ navigation }: any) => {
                     },
                   ]}
                 >
-                  Social
+                  Knowledge
                 </Text>
               </TouchableOpacity>
 
@@ -296,12 +296,12 @@ const HomeScreen = ({ navigation }: any) => {
                 ]}
                 onPress={() => {
                   navigation.navigate("Category", {
-                    categoryName: "Creative",
-                    desc: categories[1].value.desc,
+                    categoryName: "Information Technology",
+                    desc: categories[5].value.desc,
                   });
                 }}
               >
-                <SvgXml xml={social()} width="60%" height="60%" />
+                <SvgXml xml={infotech()} width="60%" height="60%" />
                 <Text
                   style={[
                     styles.bigTxt,
@@ -310,197 +310,7 @@ const HomeScreen = ({ navigation }: any) => {
                     },
                   ]}
                 >
-                  Social
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.titleCon}>
-              <Text style={styles.title}>Popular Services</Text>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Categories")}
-              >
-                <Text style={styles.viewAll}>View All</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.categories}>
-              <TouchableOpacity
-                style={[
-                  styles.subCategory,
-                  {
-                    backgroundColor: theme
-                      ? colors.secondary
-                      : colors.blackSmoke,
-                  },
-                ]}
-                onPress={() => {
-                  navigation.navigate("Category", {
-                    categoryName: "Professional",
-                    desc: categories[0].value.desc,
-                  });
-                }}
-              >
-                <Image
-                  style={styles.image}
-                  source={require("../.././assets/svgs/chef.png")}
-                  resizeMode="contain"
-                />
-                <SvgXml xml={chef()} width="60%" height="60%" />
-                <Text
-                  style={[
-                    styles.bigTxt,
-                    {
-                      color: theme ? colors.black : colors.darkTxt,
-                    },
-                  ]}
-                >
-                  Chef
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.subCategory,
-                  {
-                    backgroundColor: theme
-                      ? colors.secondary
-                      : colors.blackSmoke,
-                  },
-                ]}
-                onPress={() => {
-                  navigation.navigate("Category", {
-                    categoryName: "Creative",
-                    desc: categories[1].value.desc,
-                  });
-                }}
-              >
-                <SvgXml xml={creative()} width="60%" height="60%" />
-                <Text
-                  style={[
-                    styles.bigTxt,
-                    {
-                      color: theme ? colors.black : colors.darkTxt,
-                    },
-                  ]}
-                >
-                  Tailor
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.subCategory,
-                  {
-                    backgroundColor: theme
-                      ? colors.secondary
-                      : colors.blackSmoke,
-                  },
-                ]}
-                onPress={() => {
-                  navigation.navigate("Category", {
-                    categoryName: "Creative",
-                    desc: categories[1].value.desc,
-                  });
-                }}
-              >
-                <SvgXml xml={health()} width="60%" height="60%" />
-                <Text
-                  style={[
-                    styles.bigTxt,
-                    {
-                      color: theme ? colors.black : colors.darkTxt,
-                    },
-                  ]}
-                >
-                  Mechanic
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.subCategory,
-                  {
-                    backgroundColor: theme
-                      ? colors.secondary
-                      : colors.blackSmoke,
-                  },
-                ]}
-                onPress={() => {
-                  navigation.navigate("Category", {
-                    categoryName: "Creative",
-                    desc: categories[1].value.desc,
-                  });
-                }}
-              >
-                <SvgXml xml={social()} width="60%" height="60%" />
-                <Text
-                  style={[
-                    styles.bigTxt,
-                    {
-                      color: theme ? colors.black : colors.darkTxt,
-                    },
-                  ]}
-                >
-                  Electrician
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.subCategory,
-                  {
-                    backgroundColor: theme
-                      ? colors.secondary
-                      : colors.blackSmoke,
-                  },
-                ]}
-                onPress={() => {
-                  navigation.navigate("Category", {
-                    categoryName: "Creative",
-                    desc: categories[1].value.desc,
-                  });
-                }}
-              >
-                <SvgXml xml={social()} width="60%" height="60%" />
-                <Text
-                  style={[
-                    styles.bigTxt,
-                    {
-                      color: theme ? colors.black : colors.darkTxt,
-                    },
-                  ]}
-                >
-                  Cleaner
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.subCategory,
-                  {
-                    backgroundColor: theme
-                      ? colors.secondary
-                      : colors.blackSmoke,
-                  },
-                ]}
-                onPress={() => {
-                  navigation.navigate("Category", {
-                    categoryName: "Creative",
-                    desc: categories[1].value.desc,
-                  });
-                }}
-              >
-                <SvgXml xml={chef()} width="60%" height="60%" />
-                <Text
-                  style={[
-                    styles.bigTxt,
-                    {
-                      color: theme ? colors.black : colors.darkTxt,
-                    },
-                  ]}
-                >
-                  Plumber
+                  IT
                 </Text>
               </TouchableOpacity>
             </View>

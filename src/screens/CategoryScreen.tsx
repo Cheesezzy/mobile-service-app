@@ -86,12 +86,9 @@ const CategoryScreen = ({ route, navigation }: any) => {
               .map((business: any, i: number) => {
                 if (i < 51)
                   return (
-                    <TouchableOpacity
+                    <View
                       style={styles.business}
                       key={business.location.lat + Math.random() + i.toString()}
-                      onPress={() =>
-                        navigation.navigate("Profile", { business })
-                      }
                     >
                       <View style={styles.businessCon}>
                         <View style={styles.imgCon}>
@@ -146,12 +143,17 @@ const CategoryScreen = ({ route, navigation }: any) => {
                             ₦{business.chargeRate}
                           </Text>
 
-                          <TouchableOpacity style={styles.negotiate}>
-                            <Text style={styles.negotiateTxt}>Negotiate</Text>
+                          <TouchableOpacity
+                            onPress={() =>
+                              navigation.navigate("Profile", { business })
+                            }
+                            style={styles.negotiate}
+                          >
+                            <Text style={styles.negotiateTxt}>Check out</Text>
                           </TouchableOpacity>
                         </View>
                       </View>
-                    </TouchableOpacity>
+                    </View>
                   );
               })}
         </View>
@@ -212,13 +214,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   business: {
-    flex: 1,
+    width: 120,
     borderRadius: 8,
     margin: 10,
     backgroundColor: colors.secondary,
   },
   businessCon: {
-    width: 120,
     justifyContent: "center",
     alignItems: "center",
     padding: 15,
