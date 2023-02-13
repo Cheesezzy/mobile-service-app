@@ -10,9 +10,11 @@ import {
 import colors from "../config/colors";
 import { SvgXml } from "react-native-svg";
 import {
+  emailIcon,
   facebookicon,
   googleIcon,
   hidePassIcon,
+  lockIcon,
   showPassIcon,
 } from "../../assets/icons/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -146,36 +148,56 @@ const SigninScreen = ({ navigation }: any) => {
         >
           Sign In
         </Text>
+        <Text style={[styles.titleSmall]}>
+          Welcome back 👋, kindly enter your details to continue
+        </Text>
       </View>
 
-      <TextInput
-        keyboardType="email-address"
-        onChangeText={(newEmail) => setEmail(newEmail.toLowerCase())}
-        style={[
-          styles.inputBox,
-          { color: theme ? colors.black : colors.darkTxt },
-        ]}
-        placeholder="Email or username"
-        autoCapitalize="none"
-        autoCorrect={false}
-        placeholderTextColor={colors.lightGrey}
-      />
-      <View style={styles.password}>
+      <View style={styles.txtIconCon}>
+        <SvgXml
+          style={styles.firstIcon}
+          xml={emailIcon(theme ? colors.black : colors.darkTxt)}
+          width="15"
+          height="15"
+        />
         <TextInput
-          onChangeText={(newPass) => setPassword(newPass)}
+          keyboardType="email-address"
+          onChangeText={(newEmail) => setEmail(newEmail.toLowerCase())}
           style={[
             styles.inputBox,
-            {
-              borderBottomWidth: 0,
-              color: theme ? colors.black : colors.darkTxt,
-            },
+            { color: theme ? colors.black : colors.darkTxt },
           ]}
-          placeholder="Password"
-          secureTextEntry={!passwordVisible}
+          placeholder="Email or username"
           autoCapitalize="none"
           autoCorrect={false}
           placeholderTextColor={colors.lightGrey}
         />
+      </View>
+
+      <View style={styles.password}>
+        <View style={styles.iconTxtCon}>
+          <SvgXml
+            style={styles.firstIcon}
+            xml={lockIcon(theme ? colors.black : colors.darkTxt)}
+            width="15"
+            height="15"
+          />
+          <TextInput
+            onChangeText={(newPass) => setPassword(newPass)}
+            style={[
+              styles.inputBox,
+              {
+                borderBottomWidth: 0,
+                color: theme ? colors.black : colors.darkTxt,
+              },
+            ]}
+            placeholder="Password"
+            secureTextEntry={!passwordVisible}
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholderTextColor={colors.lightGrey}
+          />
+        </View>
         <TouchableOpacity
           style={styles.showHideToggle}
           onPress={() => setPasswordVisible(!passwordVisible)}
@@ -186,8 +208,8 @@ const SigninScreen = ({ navigation }: any) => {
                 ? showPassIcon(theme ? colors.black : colors.darkTxt)
                 : hidePassIcon(theme ? colors.black : colors.darkTxt)
             }
-            width="19"
-            height="19"
+            width="15"
+            height="15"
           />
         </TouchableOpacity>
       </View>
@@ -241,27 +263,6 @@ const SigninScreen = ({ navigation }: any) => {
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.thirdParty}>
-        <SvgXml
-          style={{
-            marginRight: 10,
-          }}
-          xml={facebookicon()}
-          width={20}
-          height={20}
-        />
-        <Text
-          style={[
-            styles.thirdPartyTxt,
-            {
-              color: theme ? colors.black : colors.darkTxt,
-            },
-          ]}
-        >
-          Continue with Facebook
-        </Text>
-      </TouchableOpacity>
-
       <View>
         <Text
           style={styles.signin}
@@ -282,26 +283,42 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    fontFamily: "Lato",
-    textAlign: "center",
-    marginBottom: 20,
+    fontFamily: "PrimarySemiBold",
+    marginBottom: 5,
+  },
+  titleSmall: {
+    fontSize: 12,
+    fontFamily: "PrimaryRegular",
+    color: colors.greyMain,
+    marginBottom: 10,
+  },
+  txtIconCon: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderColor: colors.greyMid,
+    borderBottomWidth: 0.7,
+  },
+  firstIcon: {
+    top: 3,
   },
   inputBox: {
     height: 45,
     width: "100%",
-    borderColor: "lightgrey",
-    borderBottomWidth: 1,
     borderRadius: 5,
     padding: 10,
     marginTop: 10,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
+  },
+  iconTxtCon: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   password: {
     flexDirection: "row",
     justifyContent: "space-between",
-    borderColor: "lightgrey",
+    borderColor: colors.greyMid,
     paddingRight: 30,
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.9,
     borderRadius: 5,
   },
   showHideToggle: {
@@ -319,7 +336,7 @@ const styles = StyleSheet.create({
   inputBtnTxt: {
     color: colors.secondary,
     fontSize: 15,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
   },
   err: {
     color: "#ff3333",
@@ -331,7 +348,7 @@ const styles = StyleSheet.create({
     color: colors.primary,
     textAlign: "center",
     marginTop: 10,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
   },
   dividerCon: {
     width: "100%",
@@ -348,7 +365,7 @@ const styles = StyleSheet.create({
   },
   or: {
     color: colors.grey,
-    fontFamily: "LatoLight",
+    fontFamily: "PrimaryLight",
     fontSize: 15,
     marginTop: 20,
     marginBottom: 10,
@@ -366,13 +383,13 @@ const styles = StyleSheet.create({
   },
   thirdPartyTxt: {
     fontSize: 15,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
   },
   signin: {
     color: colors.primary,
     textAlign: "center",
     marginTop: 15,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     fontSize: 15,
   },
 });

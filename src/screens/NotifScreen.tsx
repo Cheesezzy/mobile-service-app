@@ -34,17 +34,17 @@ const NotifScreen = ({ navigation }: any) => {
 
   return (
     <>
-      <HeaderTitle title="Notifications" profileURL="" />
+      <HeaderTitle title="Notifications" profileURL="" user="" />
 
       <View
         style={[
           styles.container,
           {
-            backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+            backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
           },
         ]}
       >
-        <View style={styles.notifCon}>
+        <View>
           {notifications && notifications?.length > 0
             ? notifications.map((notification) => {
                 if (!notification?.seen && notification.id) {
@@ -57,7 +57,7 @@ const NotifScreen = ({ navigation }: any) => {
                   >
                     <View style={styles.avatar}>
                       <Avatar
-                        size={22}
+                        size={25}
                         rounded
                         source={{ uri: "https://picsum.photos/200" }}
                       />
@@ -118,7 +118,6 @@ const NotifScreen = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.secondary,
     paddingTop: 10,
   },
   btn: {
@@ -126,26 +125,24 @@ const styles = StyleSheet.create({
     height: 20,
     color: "red",
   },
-  notifCon: {
-    borderTopColor: colors.lightPrimary,
-    borderTopWidth: 0.5,
-  },
   notification: {
+    width: "90%",
     flexDirection: "row",
     alignItems: "center",
+    alignSelf: "center",
     padding: 20,
-    borderBottomColor: colors.lightPrimary,
+    borderBottomColor: colors.greyMid,
     borderBottomWidth: 0.5,
   },
   avatar: {
     marginRight: 15,
   },
   name: {
-    fontFamily: "Lato",
+    fontFamily: "PrimarySemiBold",
     fontSize: 14.5,
   },
   msg: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     fontSize: 14,
   },
 });

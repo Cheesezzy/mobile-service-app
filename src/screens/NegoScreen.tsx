@@ -44,6 +44,7 @@ import { trimText } from "../../api/customHooks/generalHooks";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 import { waiting } from "../../assets/svgs/svgs";
 import { SvgXml } from "react-native-svg";
+import { searchIcon } from "../../assets/icons/icons";
 
 const NegoScreen = ({ navigation }: any) => {
   const [user] = useAuthState(auth);
@@ -119,7 +120,6 @@ const NegoScreen = ({ navigation }: any) => {
 
   return (
     <>
-      <HeaderTitle title="Negotiations" profileURL="" />
       <View
         style={[
           styles.container,
@@ -128,6 +128,27 @@ const NegoScreen = ({ navigation }: any) => {
           },
         ]}
       >
+        <View style={[styles.searchCon]}>
+          <SvgXml
+            style={{
+              marginRight: 10,
+            }}
+            xml={searchIcon()}
+            width="14"
+            height="14"
+          />
+          <Text
+            style={{
+              fontFamily: "PrimaryRegular",
+              color: colors.greyMain,
+            }}
+          >
+            Search
+          </Text>
+        </View>
+
+        <Text style={styles.header}>Negotiations</Text>
+
         <View
           style={{
             width: "100%",
@@ -139,13 +160,6 @@ const NegoScreen = ({ navigation }: any) => {
             ? negotiating
                 .sort((a, b) => b.createdAt - a.createdAt)
                 .map((msg: any) => {
-                  console.log(
-                    "user!",
-
-                    getPerson(checkingPerson(msg)?.id),
-                    checkingPerson(msg)?.id
-                  );
-
                   return (
                     <TouchableOpacity
                       onPress={() => handleClick(msg)}
@@ -158,7 +172,7 @@ const NegoScreen = ({ navigation }: any) => {
                       <View style={styles.displayBox}>
                         <View style={styles.avatar}>
                           <Avatar
-                            size={40}
+                            size={38}
                             rounded
                             source={
                               checkingPerson(msg)?.pic
@@ -188,7 +202,7 @@ const NegoScreen = ({ navigation }: any) => {
                                   color:
                                     msg?.sentBy.id !== user?.uid && !msg?.seen
                                       ? colors.primary
-                                      : colors.lightGrey,
+                                      : colors.greyMain,
                                 },
                               ]}
                             >
@@ -206,8 +220,8 @@ const NegoScreen = ({ navigation }: any) => {
                                 {
                                   fontFamily:
                                     msg?.sentBy.id !== user?.uid && !msg?.seen
-                                      ? "Lato"
-                                      : "LatoRegular",
+                                      ? "PrimarySemiBold"
+                                      : "PrimaryRegular",
                                 },
                               ]}
                             >
@@ -219,6 +233,7 @@ const NegoScreen = ({ navigation }: any) => {
                           </View>
                         </View>
                       </View>
+                      <View style={styles.line} />
                     </TouchableOpacity>
                   );
                 })
@@ -256,12 +271,33 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary,
     paddingTop: 20,
   },
+  searchCon: {
+    flexDirection: "row",
+    height: 45,
+    width: "90%",
+    fontFamily: "LatoRegular",
+    fontSize: 12,
+    color: colors.black,
+    borderWidth: 1,
+    borderColor: colors.greyLight,
+    borderRadius: 5,
+    padding: 5,
+    paddingHorizontal: 10,
+    alignItems: "center",
+    alignSelf: "center",
+    marginTop: 50,
+  },
+  header: {
+    fontFamily: "PrimarySemiBold",
+    fontSize: 16,
+    marginTop: 20,
+    marginLeft: 15,
+  },
   displayBox: {
     width: "100%",
     flexDirection: "row",
-    marginBottom: 20,
-    //borderWidth: 1,
-    //borderColor: colors.primary,
+    marginBottom: 10,
+    marginTop: 10,
   },
   avatar: {
     marginRight: 15,
@@ -278,11 +314,12 @@ const styles = StyleSheet.create({
   displayName: {
     fontSize: 15,
     fontFamily: "LatoRegular",
-    marginBottom: 3,
+    marginBottom: 2,
   },
   displayTime: {
     fontSize: 10,
     fontFamily: "LatoRegular",
+    alignSelf: "center",
   },
   msgAndStatus: {
     width: "81%",
@@ -291,7 +328,7 @@ const styles = StyleSheet.create({
   },
   displayMsg: {
     fontSize: 13,
-    color: colors.lightGrey,
+    color: colors.greyMain,
   },
   displayStatus: {
     height: 10,
@@ -305,6 +342,11 @@ const styles = StyleSheet.create({
     fontFamily: "LatoRegular",
     alignSelf: "center",
     color: colors.secondary,
+  },
+  line: {
+    height: 0.8,
+    width: "100%",
+    backgroundColor: colors.greyLight,
   },
 });
 

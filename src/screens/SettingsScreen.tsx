@@ -11,6 +11,8 @@ import { handleSwitchTheme } from "../../provider/themeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { StatusBar } from "expo-status-bar";
 import { Switch } from "@rneui/themed";
+import { SvgXml } from "react-native-svg";
+import { frontIcon } from "../../assets/icons/icons";
 
 const SettingsScreen = ({ navigation }: any) => {
   const [User] = useAuthState(auth);
@@ -30,12 +32,12 @@ const SettingsScreen = ({ navigation }: any) => {
 
   return (
     <>
-      <HeaderTitle title="Settings" profileURL="" />
+      <HeaderTitle title="Settings" profileURL="" user="" />
       <View
         style={[
           styles.container,
           {
-            backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+            backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
           },
         ]}
       >
@@ -60,6 +62,14 @@ const SettingsScreen = ({ navigation }: any) => {
             >
               Account settings
             </Text>
+            <View style={styles.goTo}>
+              <SvgXml
+                style={styles.icon}
+                xml={frontIcon()}
+                width="14"
+                height="14"
+              />
+            </View>
           </TouchableOpacity>
           <View style={styles.settingsItem}>
             <Text
@@ -72,6 +82,14 @@ const SettingsScreen = ({ navigation }: any) => {
             >
               Notifications
             </Text>
+            <View style={styles.goTo}>
+              <SvgXml
+                style={styles.icon}
+                xml={frontIcon()}
+                width="14"
+                height="14"
+              />
+            </View>
           </View>
           <View style={styles.settingsItem}>
             <Text
@@ -84,6 +102,14 @@ const SettingsScreen = ({ navigation }: any) => {
             >
               Security
             </Text>
+            <View style={styles.goTo}>
+              <SvgXml
+                style={styles.icon}
+                xml={frontIcon()}
+                width="14"
+                height="14"
+              />
+            </View>
           </View>
           <View style={styles.settingsItem}>
             <Text
@@ -96,6 +122,14 @@ const SettingsScreen = ({ navigation }: any) => {
             >
               Terms of service
             </Text>
+            <View style={styles.goTo}>
+              <SvgXml
+                style={styles.icon}
+                xml={frontIcon()}
+                width="14"
+                height="14"
+              />
+            </View>
           </View>
           <View style={styles.settingsItem}>
             <Text
@@ -108,6 +142,14 @@ const SettingsScreen = ({ navigation }: any) => {
             >
               Privacy policy
             </Text>
+            <View style={styles.goTo}>
+              <SvgXml
+                style={styles.icon}
+                xml={frontIcon()}
+                width="14"
+                height="14"
+              />
+            </View>
           </View>
           <View
             style={[
@@ -165,29 +207,43 @@ const styles = StyleSheet.create({
     paddingRight: 0,
   },
   settingsItem: {
-    paddingVertical: 20,
-    borderBottomColor: colors.grey,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 15,
+    paddingRight: 15,
+    borderBottomColor: colors.greyLight,
     borderBottomWidth: 1,
   },
   settingsItemTxt: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
+    fontSize: 14,
+  },
+  icon: {
+    position: "relative",
+    top: 1.5,
+    marginRight: 15,
+  },
+  goTo: {
+    position: "relative",
+    left: 15,
   },
   logout: {
     paddingBottom: 20,
-    borderBottomColor: colors.grey,
+    borderBottomColor: colors.greyLight,
     borderBottomWidth: 1,
   },
   logoutTxt: {
     marginLeft: 20,
     color: "#d9534f",
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
   },
   settingsFooter: {
     alignSelf: "center",
     marginTop: 20,
   },
   settingsFooterTxt: {
-    color: colors.lightBlack,
-    fontFamily: "LatoRegular",
+    color: colors.greyMain,
+    fontFamily: "PrimaryRegular",
+    fontSize: 12,
   },
 });

@@ -23,14 +23,16 @@ const CategoryScreen = ({ route, navigation }: any) => {
 
   return (
     <>
-      <HeaderTitle title="categoryItem" profileURL="" />
+      <HeaderTitle title="categoryItem" profileURL="" user="" />
       <ScrollView
         style={[
           styles.container,
           [
             styles.container,
             {
-              backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+              backgroundColor: theme
+                ? colors.secondarySmoke
+                : colors.blackSmoke,
             },
           ],
         ]}
@@ -72,69 +74,87 @@ const CategoryScreen = ({ route, navigation }: any) => {
           <Text style={styles.filterItemTxt}>Rating</Text>
         </View>
 
-        {businesses &&
-          businesses
-            .sort((a: any, b: any) => {
-              return b.rating - a.rating;
-            })
-            .filter((business) => {
-              return business.category === categoryName;
-            })
-            .map((business: any, i: number) => {
-              if (i < 51)
-                return (
-                  <TouchableOpacity
-                    style={styles.business}
-                    key={business.location.lat + Math.random() + i.toString()}
-                    onPress={() => navigation.navigate("Profile", { business })}
-                  >
-                    <View style={styles.imgCon}>
-                      <Image
-                        source={require("../../assets/placeholder.jpg")}
-                        style={styles.img}
-                      />
-                    </View>
-                    <View style={styles.txtCon}>
-                      <View style={styles.ratingCon}>
-                        <SvgXml xml={star()} width="11.5" height="11.5" />
-                        <Text style={styles.ratingTxt}>{business.rating}</Text>
-                      </View>
-
-                      <Text
-                        style={[
-                          styles.txt,
-                          {
-                            color: theme ? colors.black : colors.darkTxt,
-                          },
-                        ]}
-                      >
-                        {business.name}
-                      </Text>
-                      <Text
-                        style={[
-                          styles.chargeTxt,
-                          ,
-                          {
-                            color: theme ? colors.black : colors.darkTxt,
-                          },
-                        ]}
-                      >
+        <View style={styles.businessesCon}>
+          {businesses &&
+            businesses
+              .sort((a: any, b: any) => {
+                return b.rating - a.rating;
+              })
+              .filter((business) => {
+                return business.category === categoryName;
+              })
+              .map((business: any, i: number) => {
+                if (i < 51)
+                  return (
+                    <TouchableOpacity
+                      style={styles.business}
+                      key={business.location.lat + Math.random() + i.toString()}
+                      onPress={() =>
+                        navigation.navigate("Profile", { business })
+                      }
+                    >
+                      <View style={styles.businessCon}>
+                        <View style={styles.imgCon}>
+                          <Image
+                            source={require("../../assets/placeholder.jpg")}
+                            style={styles.img}
+                          />
+                        </View>
                         <Text
                           style={[
-                            styles.chargeTxtSm,
+                            styles.txt,
                             {
                               color: theme ? colors.black : colors.darkTxt,
                             },
                           ]}
                         >
-                          From
-                        </Text>{" "}
-                        ₦{business.chargeRate}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                );
-            })}
+                          {business.name}
+                        </Text>
+
+                        <View style={styles.ratingCon}>
+                          <SvgXml xml={star()} width="11.5" height="11.5" />
+                          <Text style={styles.ratingTxt}>
+                            {business.rating}
+                          </Text>
+                        </View>
+
+                        <View
+                          style={{
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Text
+                            style={[
+                              styles.chargeTxt,
+                              ,
+                              {
+                                color: theme ? colors.black : colors.darkTxt,
+                              },
+                            ]}
+                          >
+                            <Text
+                              style={[
+                                styles.chargeTxtSm,
+                                {
+                                  color: theme ? colors.black : colors.darkTxt,
+                                },
+                              ]}
+                            >
+                              From
+                            </Text>{" "}
+                            ₦{business.chargeRate}
+                          </Text>
+
+                          <TouchableOpacity style={styles.negotiate}>
+                            <Text style={styles.negotiateTxt}>Negotiate</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  );
+              })}
+        </View>
 
         <StatusBar style={theme ? "dark" : "light"} />
 
@@ -152,19 +172,20 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   categoryName: {
-    fontFamily: "Lato",
+    fontFamily: "PrimarySemiBold",
     fontSize: 20,
     marginBottom: 15,
   },
   categoryDesc: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
+    fontSize: 12,
     lineHeight: 18,
     marginBottom: 15,
     color: "#111",
   },
   filter: {
     flexDirection: "row",
-    fontFamily: "Lato",
+    fontFamily: "PrimarySemiBold",
     fontSize: 15,
     marginBottom: 12,
   },
@@ -176,68 +197,77 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderColor: colors.primary,
     borderWidth: 0.5,
+    marginBottom: 15,
   },
   filterItemTxt: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     textAlign: "center",
     color: colors.primary,
   },
-  business: {
+  businessesCon: {
     width: "100%",
-    height: 80,
     flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
     justifyContent: "center",
+  },
+  business: {
+    flex: 1,
     borderRadius: 8,
-    marginTop: 30,
+    margin: 10,
+    backgroundColor: colors.secondary,
+  },
+  businessCon: {
+    width: 120,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 15,
+    borderRadius: 8,
   },
   imgCon: {
-    width: "50%",
+    height: 50,
+    width: 50,
   },
   img: {
     width: "100%",
     height: "100%",
-    borderTopLeftRadius: 8,
-    borderBottomLeftRadius: 8,
+    borderRadius: 5,
   },
   ratingCon: {
     flexDirection: "row",
   },
-  txtCon: {
-    width: "50%",
-    padding: 15,
-    borderColor: colors.grey,
-    borderWidth: 1,
-    borderLeftWidth: 0,
-    borderTopRightRadius: 8,
-    borderBottomRightRadius: 8,
-  },
+
   txt: {
-    fontFamily: "Lato",
+    fontFamily: "PrimarySemiBold",
     fontSize: 13,
     marginTop: 5,
   },
   ratingTxt: {
-    fontFamily: "Lato",
+    fontFamily: "PrimarySemiBold",
     fontSize: 11.5,
     color: colors.primary,
     marginLeft: 5,
   },
   chargeTxt: {
-    fontFamily: "Lato",
+    fontFamily: "PrimarySemiBold",
     fontSize: 12,
     marginTop: 5,
   },
   chargeTxtSm: {
-    fontFamily: "Lato",
+    fontFamily: "PrimarySemiBold",
     fontSize: 11,
     color: colors.lightBlack,
     marginTop: 5,
   },
-  more: {
-    alignSelf: "center",
-    fontFamily: "LatoRegular",
-    fontSize: 13,
-    color: colors.primary,
-    marginTop: 25,
+  negotiate: {
+    padding: 5,
+    borderColor: colors.greyLight,
+    borderWidth: 1,
+    borderRadius: 5,
+  },
+  negotiateTxt: {
+    fontFamily: "PrimaryRegular",
+    fontSize: 10,
+    color: colors.greyMain,
   },
 });

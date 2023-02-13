@@ -40,3 +40,10 @@ export const hideString = (num: number, bool: boolean) => {
   }
   return addCommas(num);
 };
+
+export const trimAfterSpace = (str: string) => {
+  if (str) {
+    const index = str.indexOf(" ");
+    return index === -1 ? str : str.substring(0, index);
+  }
+};

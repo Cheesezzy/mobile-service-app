@@ -30,7 +30,7 @@ import { handleAllUsers } from "../../provider/allUsersSlice";
 import { NegoDisplay } from "../components/NegoDisplay";
 import { createStackNavigator } from "@react-navigation/stack";
 import AnalyticsScreen from "../screens/AnalyticsScreen";
-import PaymentsScreen from "../screens/PaymentsScreen";
+import PaymentsScreen from "../screens/Payments & Wallets/PaymentsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import EarningsScreen from "../screens/EarningsScreen";
 import {
@@ -51,6 +51,7 @@ import OTPScreen from "../screens/OTPScreen";
 import GatedScreen from "../screens/GatedScreen";
 import AccountSettings from "../screens/AccountSettings";
 import ImageScreen from "../components/ShowImage";
+import MoreScreen from "../screens/MoreScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -116,6 +117,14 @@ const StackNavigator = () => {
         component={NegoScreen}
         options={{
           title: "Negotiations",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="More"
+        component={MoreScreen}
+        options={{
+          title: "More",
           headerShown: false,
         }}
       />

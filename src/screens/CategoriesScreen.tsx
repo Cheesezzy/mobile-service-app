@@ -14,7 +14,7 @@ const CategoriesScreen = ({ navigation }: any) => {
 
   return (
     <>
-      <HeaderTitle title="categoryItem" profileURL="" />
+      <HeaderTitle title="categoryItem" profileURL="" user="" />
       <ScrollView
         style={[
           styles.container,
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 15,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     textAlign: "center",
   },
 });

@@ -13,16 +13,21 @@ import { SvgXml } from "react-native-svg";
 import {
   businessIcon,
   homeIcon,
+  moreIcon,
   negotiateIcon,
   notifIcon,
+  profileIcon,
 } from "../../assets/icons/icons";
 import { signOut } from "firebase/auth";
 import { auth, db } from "../../firebaseConfig";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { collection } from "firebase/firestore";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import { collection, doc } from "firebase/firestore";
+import {
+  useCollectionData,
+  useDocumentData,
+} from "react-firebase-hooks/firestore";
 import NetInfo from "@react-native-community/netinfo";
 
 const Navigation = ({ navigation }: any) => {
@@ -34,6 +39,11 @@ const Navigation = ({ navigation }: any) => {
   const [negoUnread, setNegoUnread] = useState(false);
   const [notifUnread, setNotifUnread] = useState(false);
   const connectionStatusRef = useRef<any>(null);
+
+  const userRef = doc(db, "users", user?.uid!);
+  const [User] = useDocumentData(userRef);
+  const businessRef = User?.bizId && doc(db, "businesses", User?.bizId);
+  const [business] = useDocumentData(businessRef);
 
   const unsubscribe = NetInfo.addEventListener((state) => {
     connectionStatusRef.current =
@@ -114,11 +124,15 @@ const Navigation = ({ navigation }: any) => {
         activeOpacity={0.6}
         underlayColor={theme ? "#ddd" : colors.black}
         style={{ borderRadius: 10 }}
-        onPress={() => navigation.navigate("Hustle")}
+        onPress={() =>
+          navigation.navigate("Profile", {
+            business,
+          })
+        }
       >
         <View style={styles.btns}>
           <SvgXml
-            xml={businessIcon(route && route.name, "Hustle")}
+            xml={profileIcon(route && route.name, "Profile")}
             width="24"
             height="24"
           />
@@ -127,51 +141,11 @@ const Navigation = ({ navigation }: any) => {
               styles.btnLabel,
               {
                 color:
-                  route.name === "Hustle" ? colors.primary : colors.lightGrey,
+                  route.name === "Profile" ? colors.primary : colors.lightGrey,
               },
             ]}
           >
-            Your Hustle
-          </Text>
-        </View>
-      </TouchableHighlight>
-
-      <TouchableHighlight
-        activeOpacity={0.6}
-        underlayColor={theme ? "#ddd" : colors.black}
-        style={{ borderRadius: 10 }}
-        onPress={() => navigation.navigate("Notifications")}
-      >
-        <View style={styles.btns}>
-          <SvgXml
-            xml={notifIcon(route && route.name, "Notifications")}
-            width="24"
-            height="24"
-          />
-          {notifUnread ? (
-            <View
-              style={[
-                styles.unreadStatus,
-                {
-                  top: 4,
-                  right: 22,
-                  borderColor: theme ? colors.secondary : colors.blackSmoke,
-                },
-              ]}
-            />
-          ) : null}
-          <Text
-            style={[
-              styles.btnLabel,
-              {
-                color:
-                  route.name === "Notifications"
-                    ? colors.primary
-                    : colors.lightGrey,
-              },
-            ]}
-          >
-            Notifications
+            Profile
           </Text>
         </View>
       </TouchableHighlight>
@@ -212,6 +186,32 @@ const Navigation = ({ navigation }: any) => {
             ]}
           >
             Negotiations
+          </Text>
+        </View>
+      </TouchableHighlight>
+
+      <TouchableHighlight
+        activeOpacity={0.6}
+        underlayColor={theme ? "#ddd" : colors.black}
+        style={{ borderRadius: 10 }}
+        onPress={() => navigation.navigate("More")}
+      >
+        <View style={styles.btns}>
+          <SvgXml
+            xml={moreIcon(route && route.name, "More")}
+            width="24"
+            height="24"
+          />
+          <Text
+            style={[
+              styles.btnLabel,
+              {
+                color:
+                  route.name === "More" ? colors.primary : colors.lightGrey,
+              },
+            ]}
+          >
+            More
           </Text>
         </View>
       </TouchableHighlight>

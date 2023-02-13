@@ -9,9 +9,11 @@ import {
 } from "react-native";
 import colors from "../config/colors";
 import {
+  emailIcon,
   facebookicon,
   googleIcon,
   hidePassIcon,
+  lockIcon,
   showPassIcon,
 } from "../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
@@ -178,45 +180,73 @@ const SignupScreen = ({ navigation }: any) => {
         >
           Sign Up
         </Text>
+        <Text style={[styles.titleSmall]}>
+          Hi there 👋, Create your account
+        </Text>
       </View>
 
-      <TextInput
-        onChangeText={(newName) => setName(newName)}
-        style={[
-          styles.inputBox,
-          { color: theme ? colors.black : colors.darkTxt },
-        ]}
-        placeholder="Full Name"
-        placeholderTextColor={colors.lightGrey}
-      />
-      <TextInput
-        onChangeText={(newMoA) => setMobOrEmail(newMoA.toLowerCase())}
-        style={[
-          styles.inputBox,
-          { color: theme ? colors.black : colors.darkTxt },
-        ]}
-        placeholder="Email"
-        autoCapitalize="none"
-        autoCorrect={false}
-        placeholderTextColor={colors.lightGrey}
-      />
-
-      <View style={styles.password}>
+      <View style={styles.txtIconCon}>
+        <SvgXml
+          style={styles.firstIcon}
+          xml={emailIcon(theme ? colors.black : colors.darkTxt)}
+          width="15"
+          height="15"
+        />
         <TextInput
-          onChangeText={(newPass) => setPassword(newPass)}
+          onChangeText={(newName) => setName(newName)}
           style={[
             styles.inputBox,
-            {
-              borderBottomWidth: 0,
-              color: theme ? colors.black : colors.darkTxt,
-            },
+            { color: theme ? colors.black : colors.darkTxt },
           ]}
-          placeholder="Password"
-          secureTextEntry={!passwordVisible}
+          placeholder="Full Name"
+          placeholderTextColor={colors.lightGrey}
+        />
+      </View>
+
+      <View style={styles.txtIconCon}>
+        <SvgXml
+          style={styles.firstIcon}
+          xml={emailIcon(theme ? colors.black : colors.darkTxt)}
+          width="15"
+          height="15"
+        />
+        <TextInput
+          onChangeText={(newMoA) => setMobOrEmail(newMoA.toLowerCase())}
+          style={[
+            styles.inputBox,
+            { color: theme ? colors.black : colors.darkTxt },
+          ]}
+          placeholder="Email"
           autoCapitalize="none"
           autoCorrect={false}
           placeholderTextColor={colors.lightGrey}
         />
+      </View>
+
+      <View style={styles.password}>
+        <View style={styles.iconTxtCon}>
+          <SvgXml
+            style={styles.firstIcon}
+            xml={lockIcon(theme ? colors.black : colors.darkTxt)}
+            width="15"
+            height="15"
+          />
+          <TextInput
+            onChangeText={(newPass) => setPassword(newPass)}
+            style={[
+              styles.inputBox,
+              {
+                borderBottomWidth: 0,
+                color: theme ? colors.black : colors.darkTxt,
+              },
+            ]}
+            placeholder="Password"
+            secureTextEntry={!passwordVisible}
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholderTextColor={colors.lightGrey}
+          />
+        </View>
         <TouchableOpacity
           style={styles.showHideToggle}
           onPress={() => setPasswordVisible(!passwordVisible)}
@@ -227,8 +257,8 @@ const SignupScreen = ({ navigation }: any) => {
                 ? showPassIcon(theme ? colors.black : colors.darkTxt)
                 : hidePassIcon(theme ? colors.black : colors.darkTxt)
             }
-            width="19"
-            height="19"
+            width="15"
+            height="15"
           />
         </TouchableOpacity>
       </View>
@@ -280,7 +310,7 @@ const SignupScreen = ({ navigation }: any) => {
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.thirdParty}
         onPress={() => navigation.navigate("Phone")}
         disabled
@@ -303,7 +333,7 @@ const SignupScreen = ({ navigation }: any) => {
         >
           Continue with Phone Number
         </Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <View>
         <Text
@@ -325,25 +355,41 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    fontFamily: "Lato",
-    textAlign: "center",
-    marginBottom: 20,
+    fontFamily: "PrimarySemiBold",
+    marginBottom: 5,
+  },
+  titleSmall: {
+    fontSize: 12,
+    fontFamily: "PrimaryRegular",
+    color: colors.greyMain,
+    marginBottom: 10,
+  },
+  txtIconCon: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderColor: colors.greyMid,
+    borderBottomWidth: 0.9,
+  },
+  firstIcon: {
+    top: 3,
   },
   inputBox: {
     height: 45,
     width: "100%",
-    borderColor: "lightgrey",
-    borderBottomWidth: 1,
     borderRadius: 5,
     padding: 10,
     marginTop: 10,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
+  },
+  iconTxtCon: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   password: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingRight: 30,
-    borderColor: "lightgrey",
+    borderColor: colors.greyMid,
     borderBottomWidth: 1,
     borderRadius: 5,
   },
@@ -362,7 +408,7 @@ const styles = StyleSheet.create({
   inputBtnTxt: {
     color: colors.secondary,
     fontSize: 15,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
   },
   err: {
     color: "#ff3333",
@@ -385,7 +431,7 @@ const styles = StyleSheet.create({
   },
   or: {
     color: colors.grey,
-    fontFamily: "LatoLight",
+    fontFamily: "PrimaryLight",
     fontSize: 15,
     marginTop: 20,
     marginBottom: 10,
@@ -403,13 +449,13 @@ const styles = StyleSheet.create({
   },
   thirdPartyTxt: {
     fontSize: 15,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
   },
   signup: {
     color: colors.primary,
     textAlign: "center",
     marginTop: 15,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     fontSize: 15,
   },
 });

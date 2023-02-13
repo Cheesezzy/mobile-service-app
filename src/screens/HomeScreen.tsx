@@ -2,22 +2,18 @@ import React, { useCallback, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   ActivityIndicator,
-  Button,
   StyleSheet,
   Text,
   View,
   Image,
   ImageBackground,
-  Platform,
   Dimensions,
   TouchableOpacity,
-  RefreshControl,
 } from "react-native";
 import colors from "../config/colors";
 import Navigation from "../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
-import { handleAllUsers, refreshAllUsers } from "../../provider/allUsersSlice";
 import { signOut } from "firebase/auth";
 import { auth, db } from "../../firebaseConfig";
 import { updateBizInformedStat } from "../../api/database";
@@ -25,18 +21,14 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import HeaderTitle from "../components/HeaderTitle";
 import { SvgXml } from "react-native-svg";
 import {
+  chef,
   creative,
   health,
   knowledge,
   professional,
   social,
 } from "../../assets/svgs/svgs";
-import {
-  collection,
-  collectionGroup,
-  doc,
-  onSnapshot,
-} from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import {
   useCollectionData,
   useDocumentData,
@@ -44,7 +36,7 @@ import {
 import SetLocationPopup from "../components/SetLocationPopup";
 import { categories } from "../../provider/categoryData/categories";
 import { handleSwitchTheme } from "../../provider/themeSlice";
-import { moreIcon } from "../../assets/icons/icons";
+import { searchIcon } from "../../assets/icons/icons";
 
 const HomeScreen = ({ navigation }: any) => {
   const [User] = useAuthState(auth);
@@ -86,7 +78,7 @@ const HomeScreen = ({ navigation }: any) => {
 
   return (
     <>
-      <HeaderTitle title="Home" profileURL={user?.profilePic} />
+      <HeaderTitle title="Home" profileURL={user?.profilePic} user={user} />
 
       <View
         style={[
@@ -103,10 +95,54 @@ const HomeScreen = ({ navigation }: any) => {
         ) : null}
         <ScrollView style={{ padding: 5, paddingBottom: 20 }}>
           <View>
-            <View style={styles.categorySecs}>
+            <View style={[styles.searchCon]}>
+              <SvgXml
+                style={{
+                  marginRight: 10,
+                }}
+                xml={searchIcon()}
+                width="14"
+                height="14"
+              />
+              <Text
+                style={{
+                  fontFamily: "PrimaryRegular",
+                  color: colors.greyMain,
+                }}
+              >
+                Search for services
+              </Text>
+            </View>
+
+            <View style={styles.banner}>
+              <ImageBackground
+                source={require("../../assets/banner.png")}
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  borderRadius: 15,
+                  alignSelf: "center",
+                }}
+                resizeMode="contain"
+              />
+              <TouchableOpacity style={styles.bannerBtn}>
+                <Text style={styles.bannerTxt}>Book Now</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.titleCon}>
+              <Text style={styles.title}>Categories</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Categories")}
+              >
+                <Text style={styles.viewAll}>View All</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.categories}>
               <TouchableOpacity
                 style={[
-                  styles.categoryBig,
+                  styles.category,
                   {
                     backgroundColor: theme
                       ? colors.secondary
@@ -135,7 +171,7 @@ const HomeScreen = ({ navigation }: any) => {
 
               <TouchableOpacity
                 style={[
-                  styles.categoryBig,
+                  styles.category,
                   {
                     backgroundColor: theme
                       ? colors.secondary
@@ -161,33 +197,56 @@ const HomeScreen = ({ navigation }: any) => {
                   Creative
                 </Text>
               </TouchableOpacity>
-            </View>
 
-            <View style={styles.categorySecs}>
               <TouchableOpacity
-                style={styles.categorySm}
+                style={[
+                  styles.category,
+                  {
+                    backgroundColor: theme
+                      ? colors.secondary
+                      : colors.blackSmoke,
+                  },
+                ]}
                 onPress={() => {
                   navigation.navigate("Category", {
-                    categoryName: "Social",
-                    desc: categories[2].value.name,
+                    categoryName: "Creative",
+                    desc: categories[1].value.desc,
                   });
                 }}
               >
-                <View
+                <SvgXml xml={health()} width="60%" height="60%" />
+                <Text
                   style={[
-                    styles.smCon,
+                    styles.bigTxt,
                     {
-                      backgroundColor: theme
-                        ? colors.secondary
-                        : colors.blackSmoke,
+                      color: theme ? colors.black : colors.darkTxt,
                     },
                   ]}
                 >
-                  <SvgXml xml={social()} width="70%" height="70%" />
-                </View>
+                  Healthcare
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.category,
+                  {
+                    backgroundColor: theme
+                      ? colors.secondary
+                      : colors.blackSmoke,
+                  },
+                ]}
+                onPress={() => {
+                  navigation.navigate("Category", {
+                    categoryName: "Creative",
+                    desc: categories[1].value.desc,
+                  });
+                }}
+              >
+                <SvgXml xml={social()} width="60%" height="60%" />
                 <Text
                   style={[
-                    styles.smTxt,
+                    styles.bigTxt,
                     {
                       color: theme ? colors.black : colors.darkTxt,
                     },
@@ -198,123 +257,252 @@ const HomeScreen = ({ navigation }: any) => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={styles.categorySm}
+                style={[
+                  styles.category,
+                  {
+                    backgroundColor: theme
+                      ? colors.secondary
+                      : colors.blackSmoke,
+                  },
+                ]}
                 onPress={() => {
                   navigation.navigate("Category", {
-                    categoryName: "Health Care",
-                    desc: categories[3].value.name,
+                    categoryName: "Creative",
+                    desc: categories[1].value.desc,
                   });
                 }}
               >
-                <View
-                  style={[
-                    styles.smCon,
-                    {
-                      backgroundColor: theme
-                        ? colors.secondary
-                        : colors.blackSmoke,
-                    },
-                  ]}
-                >
-                  <SvgXml xml={health()} width="70%" height="70%" />
-                </View>
+                <SvgXml xml={social()} width="60%" height="60%" />
                 <Text
                   style={[
-                    styles.smTxt,
+                    styles.bigTxt,
                     {
                       color: theme ? colors.black : colors.darkTxt,
                     },
                   ]}
                 >
-                  Health Care
+                  Social
                 </Text>
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={styles.categorySm}
+                style={[
+                  styles.category,
+                  {
+                    backgroundColor: theme
+                      ? colors.secondary
+                      : colors.blackSmoke,
+                  },
+                ]}
                 onPress={() => {
                   navigation.navigate("Category", {
-                    categoryName: "Knowledge",
-                    desc: categories[4].value.name,
+                    categoryName: "Creative",
+                    desc: categories[1].value.desc,
                   });
                 }}
               >
-                <View
-                  style={[
-                    styles.smCon,
-                    {
-                      backgroundColor: theme
-                        ? colors.secondary
-                        : colors.blackSmoke,
-                    },
-                  ]}
-                >
-                  <SvgXml xml={knowledge()} width="70%" height="70%" />
-                </View>
+                <SvgXml xml={social()} width="60%" height="60%" />
                 <Text
                   style={[
-                    styles.smTxt,
+                    styles.bigTxt,
                     {
                       color: theme ? colors.black : colors.darkTxt,
                     },
                   ]}
                 >
-                  Knowledge
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.categorySm}
-                onPress={() => navigation.navigate("Categories")}
-              >
-                <View
-                  style={[
-                    [
-                      styles.smCon,
-                      {
-                        backgroundColor: theme
-                          ? colors.secondary
-                          : colors.blackSmoke,
-                      },
-                    ],
-                    {
-                      flex: 1,
-                      padding: 5,
-                      justifyContent: "center",
-                      alignItems: "center",
-                    },
-                  ]}
-                >
-                  <SvgXml
-                    xml={moreIcon(theme ? colors.black : colors.secondary)}
-                    width={20}
-                    height={20}
-                  />
-                </View>
-                <Text
-                  style={[
-                    styles.smTxt,
-                    {
-                      color: theme ? colors.black : colors.darkTxt,
-                    },
-                  ]}
-                >
-                  See all
+                  Social
                 </Text>
               </TouchableOpacity>
             </View>
-          </View>
 
-          <View style={styles.categorySecs}>
-            <View style={styles.categoryLarge}>
-              <Image
-                source={require("../../assets/jfy.png")}
-                style={{
-                  height: "100%",
-                  width: "100%",
-                  borderRadius: 15,
+            <View style={styles.titleCon}>
+              <Text style={styles.title}>Popular Services</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Categories")}
+              >
+                <Text style={styles.viewAll}>View All</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.categories}>
+              <TouchableOpacity
+                style={[
+                  styles.subCategory,
+                  {
+                    backgroundColor: theme
+                      ? colors.secondary
+                      : colors.blackSmoke,
+                  },
+                ]}
+                onPress={() => {
+                  navigation.navigate("Category", {
+                    categoryName: "Professional",
+                    desc: categories[0].value.desc,
+                  });
                 }}
-              />
+              >
+                <Image
+                  style={styles.image}
+                  source={require("../.././assets/svgs/chef.png")}
+                  resizeMode="contain"
+                />
+                <SvgXml xml={chef()} width="60%" height="60%" />
+                <Text
+                  style={[
+                    styles.bigTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Chef
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.subCategory,
+                  {
+                    backgroundColor: theme
+                      ? colors.secondary
+                      : colors.blackSmoke,
+                  },
+                ]}
+                onPress={() => {
+                  navigation.navigate("Category", {
+                    categoryName: "Creative",
+                    desc: categories[1].value.desc,
+                  });
+                }}
+              >
+                <SvgXml xml={creative()} width="60%" height="60%" />
+                <Text
+                  style={[
+                    styles.bigTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Tailor
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.subCategory,
+                  {
+                    backgroundColor: theme
+                      ? colors.secondary
+                      : colors.blackSmoke,
+                  },
+                ]}
+                onPress={() => {
+                  navigation.navigate("Category", {
+                    categoryName: "Creative",
+                    desc: categories[1].value.desc,
+                  });
+                }}
+              >
+                <SvgXml xml={health()} width="60%" height="60%" />
+                <Text
+                  style={[
+                    styles.bigTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Mechanic
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.subCategory,
+                  {
+                    backgroundColor: theme
+                      ? colors.secondary
+                      : colors.blackSmoke,
+                  },
+                ]}
+                onPress={() => {
+                  navigation.navigate("Category", {
+                    categoryName: "Creative",
+                    desc: categories[1].value.desc,
+                  });
+                }}
+              >
+                <SvgXml xml={social()} width="60%" height="60%" />
+                <Text
+                  style={[
+                    styles.bigTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Electrician
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.subCategory,
+                  {
+                    backgroundColor: theme
+                      ? colors.secondary
+                      : colors.blackSmoke,
+                  },
+                ]}
+                onPress={() => {
+                  navigation.navigate("Category", {
+                    categoryName: "Creative",
+                    desc: categories[1].value.desc,
+                  });
+                }}
+              >
+                <SvgXml xml={social()} width="60%" height="60%" />
+                <Text
+                  style={[
+                    styles.bigTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Cleaner
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.subCategory,
+                  {
+                    backgroundColor: theme
+                      ? colors.secondary
+                      : colors.blackSmoke,
+                  },
+                ]}
+                onPress={() => {
+                  navigation.navigate("Category", {
+                    categoryName: "Creative",
+                    desc: categories[1].value.desc,
+                  });
+                }}
+              >
+                <SvgXml xml={chef()} width="60%" height="60%" />
+                <Text
+                  style={[
+                    styles.bigTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Plumber
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -329,26 +517,76 @@ const HomeScreen = ({ navigation }: any) => {
 };
 
 const styles = StyleSheet.create({
+  image: {
+    height: "30%",
+    width: "30%",
+  },
   container: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: colors.secondarySmoke,
     justifyContent: "space-between",
   },
-  categorySecs: {
+  searchCon: {
     flexDirection: "row",
+    height: 45,
+    width: "90%",
+    fontFamily: "LatoRegular",
+    fontSize: 12,
+    color: colors.black,
+    borderWidth: 1,
+    borderColor: colors.greyLight,
+    borderRadius: 5,
+    padding: 5,
+    paddingHorizontal: 10,
+    alignItems: "center",
+    alignSelf: "center",
+    marginTop: 8,
   },
-  categoryBig: {
-    flex: 1,
-    height: 70,
+  titleCon: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginHorizontal: 16,
+    marginTop: 10,
+  },
+  viewAll: {
+    fontFamily: "PrimaryRegular",
+    fontSize: 12,
+    color: "#FD922E",
+    textDecorationLine: "underline",
+  },
+  title: {
+    margin: 5,
+    fontFamily: "PrimarySemiBold",
+    fontSize: 20,
+    lineHeight: 28,
+  },
+  categories: {
+    flexWrap: "wrap",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    marginBottom: 5,
+  },
+  category: {
+    height: 90,
+    width: 90,
     margin: 4,
     borderRadius: 5,
     padding: 5,
     justifyContent: "center",
     alignItems: "center",
   },
+  subCategory: {
+    height: 90,
+    width: 90,
+    margin: 4,
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   bigTxt: {
-    fontSize: 15,
+    fontSize: 12,
     fontFamily: "LatoRegular",
     textAlign: "center",
   },
@@ -367,17 +605,30 @@ const styles = StyleSheet.create({
   },
   smTxt: {
     fontSize: 12,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     textAlign: "center",
     marginTop: 2,
   },
-  categoryLarge: {
+  banner: {
     flex: 1,
-    height: Dimensions.get("window").height * 0.58,
-    width: "100%",
+    height: 160,
     margin: 4,
-    marginTop: 15,
-    borderRadius: 15,
+    marginTop: 20,
+    marginHorizontal: 16,
+  },
+  bannerBtn: {
+    position: "absolute",
+    bottom: 50,
+    padding: 8,
+    paddingHorizontal: 18,
+    marginLeft: 10,
+    backgroundColor: colors.primary,
+    borderRadius: 8,
+  },
+  bannerTxt: {
+    fontSize: 9,
+    fontFamily: "PrimaryRegular",
+    color: colors.secondary,
   },
   img: {
     flex: 1,

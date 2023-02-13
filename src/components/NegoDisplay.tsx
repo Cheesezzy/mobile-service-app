@@ -23,6 +23,8 @@ import {
   exitIcon,
   editIcon,
   closeIcon,
+  optionIcon,
+  backIcon,
 } from "../../assets/icons/icons";
 import {
   collection,
@@ -53,6 +55,7 @@ import * as ImagePicker from "expo-image-picker";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 import { StatusBar } from "expo-status-bar";
 import { uuidv4 } from "@firebase/util";
+import Appointment from "./Appointment";
 
 export const NegoDisplay = ({ navigation, route }: any) => {
   const selector = useSelector(handleUser);
@@ -66,6 +69,18 @@ export const NegoDisplay = ({ navigation, route }: any) => {
   const [messages, setMessages]: any[] = useState([]);
   const [messagesLoading, setMessagesLoading] = useState(true);
   const scrollViewRef = useAnimatedRef<any>();
+  const [headerVisible, setHeaderVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  const handleScroll = (event: any) => {
+    const scrollY = event.nativeEvent.contentOffset.y;
+    if (scrollY > 20) {
+      setHeaderVisible(true);
+    } else if (scrollY < 20) {
+      setHeaderVisible(false);
+    }
+  };
+
   const sentMessagesRef = collection(
     db,
     "users",
@@ -241,6 +256,67 @@ export const NegoDisplay = ({ navigation, route }: any) => {
 
   return (
     <>
+      {headerVisible && (
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.profilePicAndName}
+            onPress={() =>
+              navigation.navigate("ImageScreen", {
+                image: personPic,
+              })
+            }
+          >
+            <TouchableOpacity
+              style={{
+                marginRight: 10,
+              }}
+            >
+              <SvgXml
+                xml={backIcon(theme ? colors.black : colors.darkTxt)}
+                width="22"
+                height="22"
+                onPress={() => navigation.goBack()}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                marginRight: 5,
+              }}
+            >
+              <Avatar
+                size={30}
+                rounded
+                source={
+                  personPic
+                    ? {
+                        uri: personPic,
+                      }
+                    : require("../../assets/blankProfilePic.png")
+                }
+              />
+            </TouchableOpacity>
+
+            <View
+              style={{
+                width: "100%",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={styles.headerName}>{name}</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            // @ts-ignore
+            onPress={() => setIsVisible(true)}
+          >
+            <SvgXml xml={optionIcon()} width="21" height="21" />
+          </TouchableOpacity>
+          <Appointment isVisible={isVisible} setIsVisible={setIsVisible} />
+        </View>
+      )}
       <ScrollView
         ref={scrollViewRef}
         style={[
@@ -249,6 +325,7 @@ export const NegoDisplay = ({ navigation, route }: any) => {
             backgroundColor: theme ? colors.secondary : colors.blackSmoke,
           },
         ]}
+        onScroll={handleScroll}
       >
         <View style={styles.profile}>
           <TouchableOpacity
@@ -519,7 +596,7 @@ export const NegoDisplay = ({ navigation, route }: any) => {
 
         <View style={styles.sendMsgIcons}>
           <TouchableOpacity style={styles.attachIcon} onPress={pickImage}>
-            <SvgXml xml={attachIcon()} width="24" height="24" />
+            <SvgXml xml={attachIcon()} width="21" height="21" />
           </TouchableOpacity>
 
           {showSend() && (
@@ -527,7 +604,7 @@ export const NegoDisplay = ({ navigation, route }: any) => {
               style={styles.sendIcon}
               onPress={image ? handleSendAttachment : handleSendMessage}
             >
-              <SvgXml xml={sendIcon()} width="24" height="24" />
+              <SvgXml xml={sendIcon()} width="21" height="21" />
             </TouchableOpacity>
           )}
         </View>
@@ -543,6 +620,24 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingTop: 40,
   },
+  header: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "white",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    paddingBottom: 15,
+    zIndex: 1,
+  },
+  headerName: {
+    fontFamily: "PrimarySemiBold",
+    fontSize: 15,
+  },
   profile: {
     width: "90%",
     padding: 15,
@@ -551,23 +646,28 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.4,
     borderBottomColor: colors.lightGrey,
   },
+  profilePicAndName: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: 100,
+  },
   profilePic: {
     marginBottom: 10,
   },
   name: {
-    fontFamily: "Lato",
+    fontFamily: "PrimarySemiBold",
     fontSize: 15,
     marginBottom: 10,
   },
   desc: {
     width: 200,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     marginBottom: 10,
     color: colors.lightBlack,
     textAlign: "center",
   },
   joined: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     fontSize: 12,
     color: colors.lightGrey,
   },
@@ -576,7 +676,7 @@ const styles = StyleSheet.create({
   },
   messages: {},
   day: {
-    fontFamily: "Lato",
+    fontFamily: "PrimarySemiBold",
     fontSize: 12,
     textAlign: "center",
     margin: 10,
@@ -584,8 +684,8 @@ const styles = StyleSheet.create({
   msgBox: {},
   msgSent: {
     maxWidth: "80%",
-    padding: 12,
-    paddingHorizontal: 15,
+    padding: 7,
+    paddingHorizontal: 10,
     borderRadius: 20,
     borderBottomRightRadius: 0,
     backgroundColor: colors.primary,
@@ -596,8 +696,8 @@ const styles = StyleSheet.create({
   },
   msgReceived: {
     maxWidth: "80%",
-    padding: 12,
-    paddingHorizontal: 15,
+    padding: 7,
+    paddingHorizontal: 10,
     borderRadius: 20,
     borderBottomLeftRadius: 0,
     backgroundColor: colors.lightPrimary,
@@ -608,14 +708,16 @@ const styles = StyleSheet.create({
   },
 
   msgSentTxt: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
+    fontSize: 12,
     color: colors.secondary,
   },
   msgReceivedTxt: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
+    fontSize: 12,
   },
   msgSentTime: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     fontSize: 9.5,
     alignSelf: "flex-end",
     color: colors.lightGrey,
@@ -623,7 +725,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   msgRecTime: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     fontSize: 9.5,
     alignSelf: "flex-start",
     color: colors.lightGrey,
@@ -681,7 +783,8 @@ const styles = StyleSheet.create({
     paddingRight: 38,
   },
   typeMsg: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
+    fontSize: 13,
     width: "100%",
   },
   sendMsgIcons: {
