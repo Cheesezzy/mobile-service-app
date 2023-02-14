@@ -24,7 +24,8 @@ import { trimAfterSpace } from "../../api/customHooks/generalHooks";
 import { useEffect, useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { collection } from "firebase/firestore";
-import { db } from "../../firebaseConfig";
+import { auth, db } from "../../firebaseConfig";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 type Props = {
   title: string;
@@ -35,8 +36,9 @@ type Props = {
 function HeaderTitle({ title, profileURL, user }: Props) {
   const navigation = useNavigation();
   const route = useRoute();
+  const [User] = useAuthState(auth);
 
-  const notifsRef = collection(db, "users/" + `${user?.uid}/notifications`);
+  const notifsRef = collection(db, "users/" + `${User?.uid}/notifications`);
   const [notifications] = useCollectionData(notifsRef);
   const [notifUnread, setNotifUnread] = useState(false);
 
@@ -131,8 +133,8 @@ function HeaderTitle({ title, profileURL, user }: Props) {
                 style={[
                   styles.unreadStatus,
                   {
-                    top: 4,
-                    right: 22,
+                    top: 2,
+                    right: 2,
                     borderColor: theme ? colors.secondary : colors.blackSmoke,
                   },
                 ]}
@@ -189,8 +191,8 @@ function HeaderTitle({ title, profileURL, user }: Props) {
                 style={[
                   styles.unreadStatus,
                   {
-                    top: 4,
-                    right: 22,
+                    top: 2,
+                    right: 2,
                     borderColor: theme ? colors.secondary : colors.blackSmoke,
                   },
                 ]}
@@ -245,8 +247,8 @@ function HeaderTitle({ title, profileURL, user }: Props) {
                 style={[
                   styles.unreadStatus,
                   {
-                    top: 4,
-                    right: 22,
+                    top: 2,
+                    right: 2,
                     borderColor: theme ? colors.secondary : colors.blackSmoke,
                   },
                 ]}
@@ -357,8 +359,8 @@ function HeaderTitle({ title, profileURL, user }: Props) {
                 style={[
                   styles.unreadStatus,
                   {
-                    top: 4,
-                    right: 22,
+                    top: 2,
+                    right: 2,
                     borderColor: theme ? colors.secondary : colors.blackSmoke,
                   },
                 ]}
@@ -441,8 +443,8 @@ function HeaderTitle({ title, profileURL, user }: Props) {
                 style={[
                   styles.unreadStatus,
                   {
-                    top: 4,
-                    right: 22,
+                    top: 2,
+                    right: 2,
                     borderColor: theme ? colors.secondary : colors.blackSmoke,
                   },
                 ]}
@@ -518,8 +520,8 @@ function HeaderTitle({ title, profileURL, user }: Props) {
                 style={[
                   styles.unreadStatus,
                   {
-                    top: 4,
-                    right: 22,
+                    top: 2,
+                    right: 2,
                     borderColor: theme ? colors.secondary : colors.blackSmoke,
                   },
                 ]}

@@ -51,9 +51,10 @@ const Navigation = ({ navigation }: any) => {
   });
 
   useEffect(() => {
-    if (negotiating) setNegoUnread(negotiating.some((msg: any) => !msg?.seen));
-    if (notifications)
-      setNotifUnread(notifications.some((msg: any) => !msg?.seen));
+    if (negotiating)
+      setNegoUnread(
+        negotiating.some((msg: any) => msg?.type === "received" && !msg?.seen)
+      );
   }, [negotiating, notifications]);
 
   const route = useRoute();

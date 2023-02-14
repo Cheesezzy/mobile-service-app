@@ -7,9 +7,13 @@ import {
   View,
   useWindowDimensions,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Dialog } from "@rneui/themed";
 import colors from "../config/colors";
+import CalendarPicker from "react-native-calendar-picker";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { frontIcon } from "../../assets/icons/icons";
+import { SvgXml } from "react-native-svg";
 
 const { width, height } = Dimensions.get("window");
 
@@ -19,6 +23,31 @@ interface Props {
 }
 
 const Appointment = ({ isVisible, setIsVisible }: Props) => {
+  const [selectedDate, setSelectedDate] = useState();
+  const [selectedTime, setSelectedTime] = useState();
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const hideTimePicker = () => {
+    setTimePickerVisibility(false);
+  };
+
+  const handleConfirmDate = (date: any) => {
+    console.log("A date has been picked: ", date);
+    setSelectedDate(date);
+    hideDatePicker();
+  };
+
+  const handleConfirmTime = (time: any) => {
+    console.log("A time has been picked: ", time);
+    setSelectedTime(time);
+    hideDatePicker();
+  };
+
   return (
     <>
       <Dialog
@@ -45,31 +74,39 @@ const Appointment = ({ isVisible, setIsVisible }: Props) => {
             />
           </View>
 
-          <View>
-            <Text style={styles.label}>Appointment Date</Text>
+          <TouchableOpacity
+            style={styles.picker}
+            onPress={() => setDatePickerVisibility(true)}
+          >
+            <Text style={styles.label}>Select Date</Text>
 
-            <TextInput
-              keyboardType="email-address"
-              style={[styles.inputBox]}
-              placeholder="Date"
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholderTextColor={colors.lightGrey}
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              onConfirm={handleConfirmDate}
+              onCancel={hideDatePicker}
             />
-          </View>
 
-          <View>
-            <Text style={styles.label}>Appointment Time</Text>
+            <SvgXml xml={frontIcon()} width="14" height="14" />
+          </TouchableOpacity>
 
-            <TextInput
-              keyboardType="email-address"
-              style={[styles.inputBox]}
-              placeholder="Time"
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholderTextColor={colors.lightGrey}
+          <TouchableOpacity
+            style={styles.picker}
+            onPress={() => setTimePickerVisibility(true)}
+          >
+            <Text style={styles.label}>Select Time</Text>
+
+            <DateTimePickerModal
+              isVisible={isTimePickerVisible}
+              mode="time"
+              onConfirm={handleConfirmTime}
+              onCancel={hideTimePicker}
             />
-          </View>
+
+            <View>
+              <SvgXml xml={frontIcon()} width="14" height="14" />
+            </View>
+          </TouchableOpacity>
 
           <View>
             <Text style={styles.label}>Appointment Location</Text>
@@ -85,10 +122,17 @@ const Appointment = ({ isVisible, setIsVisible }: Props) => {
           </View>
 
           <TouchableOpacity
-            style={[styles.inputBtn]}
+            style={[styles.doneBtn]}
             onPress={() => setIsVisible(false)}
           >
-            <Text style={styles.inputBtnTxt}>Done</Text>
+            <Text style={styles.doneBtnTxt}>Done</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.cancelBtn]}
+            onPress={() => setIsVisible(false)}
+          >
+            <Text style={styles.cancelBtnTxt}>Cancel</Text>
           </TouchableOpacity>
         </View>
       </Dialog>
@@ -123,7 +167,7 @@ const styles = StyleSheet.create({
     borderColor: colors.greyLight,
     borderWidth: 1,
   },
-  inputBtn: {
+  doneBtn: {
     height: 35,
     backgroundColor: colors.primary,
     borderRadius: 5,
@@ -131,9 +175,37 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  inputBtnTxt: {
+  cancelBtn: {
+    height: 35,
+    borderColor: colors.primary,
+    borderWidth: 1,
+    borderRadius: 5,
+    marginTop: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  doneBtnTxt: {
     color: colors.secondary,
     fontSize: 13,
     fontFamily: "PrimaryRegular",
+  },
+  cancelBtnTxt: {
+    color: colors.primary,
+    fontSize: 13,
+    fontFamily: "PrimaryRegular",
+  },
+  picker: {
+    height: 35,
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderRadius: 5,
+    padding: 5,
+    marginBottom: 10,
+    fontFamily: "PrimaryRegular",
+    fontSize: 12,
+    borderColor: colors.greyLight,
+    borderWidth: 1,
   },
 });

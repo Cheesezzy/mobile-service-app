@@ -22,11 +22,15 @@ import HeaderTitle from "../components/HeaderTitle";
 import { SvgXml } from "react-native-svg";
 import {
   creative,
+  design,
+  event,
+  events,
   health,
   infotech,
   knowledge,
   professional,
   social,
+  sport,
 } from "../../assets/svgs/svgs";
 import { collection, doc } from "firebase/firestore";
 import {
@@ -95,7 +99,10 @@ const HomeScreen = ({ navigation }: any) => {
         ) : null}
         <ScrollView style={{ padding: 5, paddingBottom: 20 }}>
           <View>
-            <View style={[styles.searchCon]}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Search")}
+              style={[styles.searchCon]}
+            >
               <SvgXml
                 style={{
                   marginRight: 10,
@@ -112,7 +119,7 @@ const HomeScreen = ({ navigation }: any) => {
               >
                 Search for services
               </Text>
-            </View>
+            </TouchableOpacity>
 
             <View style={styles.banner}>
               <ImageBackground
@@ -313,6 +320,93 @@ const HomeScreen = ({ navigation }: any) => {
                   IT
                 </Text>
               </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.category,
+                  {
+                    backgroundColor: theme
+                      ? colors.secondary
+                      : colors.blackSmoke,
+                  },
+                ]}
+                onPress={() => {
+                  navigation.navigate("Category", {
+                    categoryName: "Design",
+                    desc: categories[6].value.desc,
+                  });
+                }}
+              >
+                <SvgXml xml={design()} width="60%" height="60%" />
+                <Text
+                  style={[
+                    styles.bigTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Design
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.category,
+                  {
+                    backgroundColor: theme
+                      ? colors.secondary
+                      : colors.blackSmoke,
+                  },
+                ]}
+                onPress={() => {
+                  navigation.navigate("Category", {
+                    categoryName: "Sports & Fitness",
+                    desc: categories[11].value.desc,
+                  });
+                }}
+              >
+                <SvgXml xml={sport()} width="60%" height="60%" />
+                <Text
+                  style={[
+                    styles.bigTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Sports & Fitness
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.category,
+                  {
+                    backgroundColor: theme
+                      ? colors.secondary
+                      : colors.blackSmoke,
+                  },
+                ]}
+                onPress={() => {
+                  navigation.navigate("Category", {
+                    categoryName: "Events",
+                    desc: categories[17].value.desc,
+                  });
+                }}
+              >
+                <SvgXml xml={events()} width="60%" height="60%" />
+                <Text
+                  style={[
+                    styles.bigTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Events
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -382,6 +476,7 @@ const styles = StyleSheet.create({
     height: 90,
     width: 90,
     margin: 4,
+    marginBottom: 10,
     borderRadius: 5,
     padding: 5,
     justifyContent: "center",
