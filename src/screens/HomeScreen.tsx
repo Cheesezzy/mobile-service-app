@@ -23,7 +23,6 @@ import { SvgXml } from "react-native-svg";
 import {
   creative,
   design,
-  event,
   events,
   health,
   infotech,
