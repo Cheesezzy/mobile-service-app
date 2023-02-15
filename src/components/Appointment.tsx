@@ -5,12 +5,10 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  useWindowDimensions,
 } from "react-native";
 import React, { useState } from "react";
 import { Dialog } from "@rneui/themed";
 import colors from "../config/colors";
-import CalendarPicker from "react-native-calendar-picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { frontIcon } from "../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";

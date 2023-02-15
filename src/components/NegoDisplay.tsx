@@ -1,5 +1,5 @@
 import { Avatar } from "@rneui/themed";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -11,7 +11,6 @@ import {
   useWindowDimensions,
   ActivityIndicator,
   Image,
-  ImageBackground,
 } from "react-native";
 import colors from "../config/colors";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -20,8 +19,6 @@ import { SvgXml } from "react-native-svg";
 import {
   attachIcon,
   sendIcon,
-  exitIcon,
-  editIcon,
   closeIcon,
   optionIcon,
   backIcon,
@@ -29,21 +26,14 @@ import {
 import {
   collection,
   doc,
-  FieldValue,
-  getDoc,
-  getDocs,
-  limit,
-  onSnapshot,
   orderBy,
   query,
   serverTimestamp,
-  setDoc,
-  Timestamp,
   updateDoc,
 } from "firebase/firestore";
 import { sendMessage } from "../../api/database";
-import { useDispatch, useSelector } from "react-redux";
-import { handleUser, updateMessages } from "../../provider/userSlice";
+import { useSelector } from "react-redux";
+import { handleUser } from "../../provider/userSlice";
 import {
   useCollectionData,
   useDocumentData,
@@ -52,7 +42,6 @@ import { getTime } from "../../api/customHooks/convertTimestamp";
 import { useAnimatedRef } from "react-native-reanimated";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
-import { handleSwitchTheme } from "../../provider/themeSlice";
 import { StatusBar } from "expo-status-bar";
 import { uuidv4 } from "@firebase/util";
 import Appointment from "./Appointment";

@@ -1,10 +1,7 @@
 import {
-  Image,
-  SafeAreaView,
   TouchableOpacity,
   View,
   Text,
-  TextInput,
   StyleSheet,
   Dimensions,
 } from "react-native";
@@ -12,12 +9,7 @@ import { Avatar, Icon } from "@rneui/themed";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import colors from "../config/colors";
 import { SvgXml } from "react-native-svg";
-import {
-  backIcon,
-  notifIcon,
-  searchIcon,
-  settingsIcon,
-} from "../../assets/icons/icons";
+import { backIcon, notifIcon, searchIcon } from "../../assets/icons/icons";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 import { useSelector } from "react-redux";
 import { trimAfterSpace } from "../../api/customHooks/generalHooks";

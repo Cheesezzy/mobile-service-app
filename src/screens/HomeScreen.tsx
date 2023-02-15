@@ -1,22 +1,16 @@
-import React, { useCallback, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
-  ActivityIndicator,
   StyleSheet,
   Text,
   View,
-  Image,
   ImageBackground,
-  Dimensions,
   TouchableOpacity,
 } from "react-native";
 import colors from "../config/colors";
 import Navigation from "../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
-import { useDispatch, useSelector } from "react-redux";
-import { signOut } from "firebase/auth";
+import { useSelector } from "react-redux";
 import { auth, db } from "../../firebaseConfig";
-import { updateBizInformedStat } from "../../api/database";
 import { useAuthState } from "react-firebase-hooks/auth";
 import HeaderTitle from "../components/HeaderTitle";
 import { SvgXml } from "react-native-svg";

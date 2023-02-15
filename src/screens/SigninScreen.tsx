@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  SafeAreaView,
   StyleSheet,
   TextInput,
   TouchableOpacity,
@@ -11,7 +10,6 @@ import colors from "../config/colors";
 import { SvgXml } from "react-native-svg";
 import {
   emailIcon,
-  facebookicon,
   googleIcon,
   hidePassIcon,
   lockIcon,
