@@ -14,6 +14,7 @@ import {
   earningIcon,
   frontIcon,
   inviteIcon,
+  payAndWalletIcon,
   settingsIcon,
   supportIcon,
 } from "../../assets/icons/icons";
@@ -67,12 +68,14 @@ const MoreScreen = ({ navigation }: any) => {
                 >
                   <View style={styles.itemContainer}>
                     <View style={styles.iconFlex}>
-                      <SvgXml
-                        style={styles.icon}
-                        xml={earningIcon()}
-                        width="21"
-                        height="22"
-                      />
+                      <View style={styles.iconCon}>
+                        <SvgXml
+                          style={styles.icon}
+                          xml={earningIcon()}
+                          width="16"
+                          height="16"
+                        />
+                      </View>
                       <Text
                         style={[
                           styles.menuItem,
@@ -84,7 +87,7 @@ const MoreScreen = ({ navigation }: any) => {
                         Earnings
                       </Text>
                     </View>
-                    <View style={styles.goTo}>
+                    <View>
                       <SvgXml
                         style={styles.icon}
                         xml={frontIcon()}
@@ -102,12 +105,14 @@ const MoreScreen = ({ navigation }: any) => {
                 >
                   <View style={styles.itemContainer}>
                     <View style={styles.iconFlex}>
-                      <SvgXml
-                        style={styles.icon}
-                        xml={analyticsIcon()}
-                        width="21"
-                        height="21"
-                      />
+                      <View style={styles.iconCon}>
+                        <SvgXml
+                          style={styles.icon}
+                          xml={analyticsIcon()}
+                          width="16"
+                          height="16"
+                        />
+                      </View>
                       <Text
                         style={[
                           styles.menuItem,
@@ -119,7 +124,7 @@ const MoreScreen = ({ navigation }: any) => {
                         Analytics
                       </Text>
                     </View>
-                    <View style={styles.goTo}>
+                    <View>
                       <SvgXml
                         style={styles.icon}
                         xml={frontIcon()}
@@ -137,12 +142,14 @@ const MoreScreen = ({ navigation }: any) => {
                 >
                   <View style={styles.itemContainer}>
                     <View style={styles.iconFlex}>
-                      <SvgXml
-                        style={styles.icon}
-                        xml={adIcon("", "")}
-                        width="21"
-                        height="21"
-                      />
+                      <View style={styles.iconCon}>
+                        <SvgXml
+                          style={styles.icon}
+                          xml={adIcon("", "")}
+                          width="16"
+                          height="16"
+                        />
+                      </View>
                       <Text
                         style={[
                           styles.menuItem,
@@ -154,7 +161,7 @@ const MoreScreen = ({ navigation }: any) => {
                         Rete Ads
                       </Text>
                     </View>
-                    <View style={styles.goTo}>
+                    <View>
                       <SvgXml
                         style={styles.icon}
                         xml={frontIcon()}
@@ -185,12 +192,14 @@ const MoreScreen = ({ navigation }: any) => {
               >
                 <View style={styles.itemContainer}>
                   <View style={styles.iconFlex}>
-                    <SvgXml
-                      style={styles.icon}
-                      xml={settingsIcon()}
-                      width="21"
-                      height="21"
-                    />
+                    <View style={styles.iconCon}>
+                      <SvgXml
+                        style={styles.icon}
+                        xml={settingsIcon()}
+                        width="16"
+                        height="16"
+                      />
+                    </View>
                     <Text
                       style={[
                         styles.menuItem,
@@ -202,7 +211,7 @@ const MoreScreen = ({ navigation }: any) => {
                       Settings
                     </Text>
                   </View>
-                  <View style={styles.goTo}>
+                  <View>
                     <SvgXml
                       style={styles.icon}
                       xml={frontIcon()}
@@ -220,12 +229,14 @@ const MoreScreen = ({ navigation }: any) => {
               >
                 <View style={styles.itemContainer}>
                   <View style={styles.iconFlex}>
-                    <SvgXml
-                      style={styles.icon}
-                      xml={cardIcon("")}
-                      width="21"
-                      height="21"
-                    />
+                    <View style={styles.iconCon}>
+                      <SvgXml
+                        style={styles.icon}
+                        xml={payAndWalletIcon()}
+                        width="16"
+                        height="16"
+                      />
+                    </View>
                     <Text
                       style={[
                         styles.menuItem,
@@ -237,7 +248,7 @@ const MoreScreen = ({ navigation }: any) => {
                       Payments & Wallet
                     </Text>
                   </View>
-                  <View style={styles.goTo}>
+                  <View>
                     <SvgXml
                       style={styles.icon}
                       xml={frontIcon()}
@@ -254,12 +265,15 @@ const MoreScreen = ({ navigation }: any) => {
               >
                 <View style={styles.itemContainer}>
                   <View style={styles.iconFlex}>
-                    <SvgXml
-                      style={styles.icon}
-                      xml={inviteIcon()}
-                      width="21"
-                      height="21"
-                    />
+                    <View style={styles.iconCon}>
+                      <SvgXml
+                        style={styles.icon}
+                        xml={inviteIcon()}
+                        width="16"
+                        height="16"
+                      />
+                    </View>
+
                     <Text
                       style={[
                         styles.menuItem,
@@ -281,12 +295,14 @@ const MoreScreen = ({ navigation }: any) => {
               >
                 <View style={styles.itemContainer}>
                   <View style={styles.iconFlex}>
-                    <SvgXml
-                      style={styles.icon}
-                      xml={supportIcon("", "")}
-                      width="21"
-                      height="21"
-                    />
+                    <View style={styles.iconCon}>
+                      <SvgXml
+                        style={styles.icon}
+                        xml={supportIcon()}
+                        width="16"
+                        height="16"
+                      />
+                    </View>
                     <Text
                       style={[
                         styles.menuItem,
@@ -298,7 +314,7 @@ const MoreScreen = ({ navigation }: any) => {
                       Support
                     </Text>
                   </View>
-                  <View style={styles.goTo}>
+                  <View>
                     <SvgXml
                       style={styles.icon}
                       xml={frontIcon()}
@@ -356,14 +372,19 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 30,
   },
+  iconCon: {
+    width: 25,
+    height: 25,
+    padding: 10,
+    marginRight: 15,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.greyLight,
+  },
   icon: {
     position: "relative",
-    top: 5.5,
-    marginRight: 15,
-  },
-  goTo: {
-    position: "relative",
-    left: 15,
+    alignSelf: "center",
   },
 });
 

@@ -361,13 +361,16 @@ function HeaderTitle({ title, profileURL, user }: Props) {
           </TouchableOpacity>
         </View>
       )}
-      {route.name === "Earnings" ? (
+      {route.name === "Fund" && (
         <View
           style={{
             flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            paddingHorizontal: 10,
           }}
         >
-          <TouchableOpacity>
+          <TouchableOpacity style={{}}>
             <SvgXml
               xml={backIcon(theme ? colors.black : colors.darkTxt)}
               width="22"
@@ -375,19 +378,100 @@ function HeaderTitle({ title, profileURL, user }: Props) {
               onPress={() => navigation.goBack()}
             />
           </TouchableOpacity>
-          <Text
+          <View
             style={{
-              fontFamily: "Lato",
-              fontSize: 20,
-              marginLeft: 10,
-              color: theme ? colors.black : colors.darkTxt,
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            Earnings
-          </Text>
+            <Text
+              style={{
+                fontFamily: "PrimarySemiBold",
+                fontSize: 20,
+                alignSelf: "center",
+                color: theme ? colors.black : colors.darkTxt,
+              }}
+            >
+              Fund
+            </Text>
+          </View>
+          <TouchableOpacity
+            // @ts-ignore
+            onPress={() => navigation.navigate("Notifications")}
+          >
+            <SvgXml xml={notifIcon()} width="21" height="21" />
+            {notifUnread ? (
+              <View
+                style={[
+                  styles.unreadStatus,
+                  {
+                    top: 2,
+                    right: 2,
+                    borderColor: theme ? colors.secondary : colors.blackSmoke,
+                  },
+                ]}
+              />
+            ) : null}
+          </TouchableOpacity>
         </View>
-      ) : (
-        ""
+      )}
+      {route.name === "Earnings" && (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            paddingHorizontal: 10,
+          }}
+        >
+          <TouchableOpacity style={{}}>
+            <SvgXml
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
+              width="22"
+              height="22"
+              onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "PrimarySemiBold",
+                fontSize: 20,
+                alignSelf: "center",
+                color: theme ? colors.black : colors.darkTxt,
+              }}
+            >
+              Earnings
+            </Text>
+          </View>
+          <TouchableOpacity
+            // @ts-ignore
+            onPress={() => navigation.navigate("Notifications")}
+          >
+            <SvgXml xml={notifIcon()} width="21" height="21" />
+            {notifUnread ? (
+              <View
+                style={[
+                  styles.unreadStatus,
+                  {
+                    top: 2,
+                    right: 2,
+                    borderColor: theme ? colors.secondary : colors.blackSmoke,
+                  },
+                ]}
+              />
+            ) : null}
+          </TouchableOpacity>
+        </View>
       )}
       {route.name === "Payments" && (
         <View

@@ -68,39 +68,19 @@ export const notifIcon = () => {
     `;
 };
 
-export const settingsIcon = () => {
-  return `<?xml version="1.0" encoding="utf-8"?>
-  <!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;" xml:space="preserve">
-  <path class="st3" fill="#8A8AFF" stroke="#8A8AFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.7,12.3c-2.1,0.4-4,0-4.7-1.3c-0.7-1.3-0.2-3.1,1.3-4.7c-1.3-1.3-3-2.2-4.8-2.8C17.8,5.6,16.5,7,15,7
-    s-2.8-1.4-3.5-3.5C9.7,4.1,8.1,5,6.8,6.3c1.5,1.6,2,3.5,1.3,4.7c-0.7,1.3-2.6,1.7-4.7,1.3C3.1,13.1,3,14.1,3,15s0.1,1.9,0.3,2.7
-    c2.1-0.4,4,0,4.7,1.3c0.7,1.3,0.2,3.1-1.3,4.7c1.3,1.3,3,2.2,4.8,2.8c0.7-2.1,2-3.5,3.5-3.5s2.8,1.4,3.5,3.5
-    c1.8-0.5,3.4-1.5,4.8-2.8c-1.5-1.6-2-3.5-1.3-4.7c0.7-1.3,2.6-1.7,4.7-1.3c0.2-0.9,0.3-1.8,0.3-2.7S26.9,13.1,26.7,12.3z"/>
-  <circle class="st10" fill="#E3FAFF" stroke="#E3FAFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"  cx="15" cy="15" r="3"/>
-  </svg>  
+export const settingsIcon = (color: string = colors.black) => {
+  return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 15.75C9.93 15.75 8.25 14.07 8.25 12C8.25 9.93 9.93 8.25 12 8.25C14.07 8.25 15.75 9.93 15.75 12C15.75 14.07 14.07 15.75 12 15.75ZM12 9.75C10.76 9.75 9.75 10.76 9.75 12C9.75 13.24 10.76 14.25 12 14.25C13.24 14.25 14.25 13.24 14.25 12C14.25 10.76 13.24 9.75 12 9.75Z" fill=${color}/>
+  <path d="M15.21 22.1898C15 22.1898 14.79 22.1598 14.58 22.1098C13.96 21.9398 13.44 21.5498 13.11 20.9998L12.99 20.7998C12.4 19.7798 11.59 19.7798 11 20.7998L10.89 20.9898C10.56 21.5498 10.04 21.9498 9.42 22.1098C8.79 22.2798 8.14 22.1898 7.59 21.8598L5.87 20.8698C5.26 20.5198 4.82 19.9498 4.63 19.2598C4.45 18.5698 4.54 17.8598 4.89 17.2498C5.18 16.7398 5.26 16.2798 5.09 15.9898C4.92 15.6998 4.49 15.5298 3.9 15.5298C2.44 15.5298 1.25 14.3398 1.25 12.8798V11.1198C1.25 9.6598 2.44 8.4698 3.9 8.4698C4.49 8.4698 4.92 8.2998 5.09 8.0098C5.26 7.7198 5.19 7.2598 4.89 6.7498C4.54 6.1398 4.45 5.4198 4.63 4.7398C4.81 4.0498 5.25 3.4798 5.87 3.1298L7.6 2.1398C8.73 1.4698 10.22 1.8598 10.9 3.0098L11.02 3.2098C11.61 4.2298 12.42 4.2298 13.01 3.2098L13.12 3.0198C13.8 1.8598 15.29 1.4698 16.43 2.1498L18.15 3.1398C18.76 3.4898 19.2 4.0598 19.39 4.7498C19.57 5.4398 19.48 6.1498 19.13 6.7598C18.84 7.2698 18.76 7.7298 18.93 8.0198C19.1 8.3098 19.53 8.4798 20.12 8.4798C21.58 8.4798 22.77 9.6698 22.77 11.1298V12.8898C22.77 14.3498 21.58 15.5398 20.12 15.5398C19.53 15.5398 19.1 15.7098 18.93 15.9998C18.76 16.2898 18.83 16.7498 19.13 17.2598C19.48 17.8698 19.58 18.5898 19.39 19.2698C19.21 19.9598 18.77 20.5298 18.15 20.8798L16.42 21.8698C16.04 22.0798 15.63 22.1898 15.21 22.1898ZM12 18.4898C12.89 18.4898 13.72 19.0498 14.29 20.0398L14.4 20.2298C14.52 20.4398 14.72 20.5898 14.96 20.6498C15.2 20.7098 15.44 20.6798 15.64 20.5598L17.37 19.5598C17.63 19.4098 17.83 19.1598 17.91 18.8598C17.99 18.5598 17.95 18.2498 17.8 17.9898C17.23 17.0098 17.16 15.9998 17.6 15.2298C18.04 14.4598 18.95 14.0198 20.09 14.0198C20.73 14.0198 21.24 13.5098 21.24 12.8698V11.1098C21.24 10.4798 20.73 9.9598 20.09 9.9598C18.95 9.9598 18.04 9.5198 17.6 8.7498C17.16 7.9798 17.23 6.9698 17.8 5.9898C17.95 5.7298 17.99 5.4198 17.91 5.1198C17.83 4.8198 17.64 4.5798 17.38 4.4198L15.65 3.4298C15.22 3.1698 14.65 3.3198 14.39 3.7598L14.28 3.9498C13.71 4.9398 12.88 5.4998 11.99 5.4998C11.1 5.4998 10.27 4.9398 9.7 3.9498L9.59 3.7498C9.34 3.3298 8.78 3.1798 8.35 3.4298L6.62 4.4298C6.36 4.5798 6.16 4.8298 6.08 5.1298C6 5.4298 6.04 5.7398 6.19 5.9998C6.76 6.9798 6.83 7.9898 6.39 8.7598C5.95 9.5298 5.04 9.9698 3.9 9.9698C3.26 9.9698 2.75 10.4798 2.75 11.1198V12.8798C2.75 13.5098 3.26 14.0298 3.9 14.0298C5.04 14.0298 5.95 14.4698 6.39 15.2398C6.83 16.0098 6.76 17.0198 6.19 17.9998C6.04 18.2598 6 18.5698 6.08 18.8698C6.16 19.1698 6.35 19.4098 6.61 19.5698L8.34 20.5598C8.55 20.6898 8.8 20.7198 9.03 20.6598C9.27 20.5998 9.47 20.4398 9.6 20.2298L9.71 20.0398C10.28 19.0598 11.11 18.4898 12 18.4898Z" fill=${color}/>
+  </svg>
+   
   `;
 };
 
-export const supportIcon = (route: string, name: string) => {
-  return `<?xml version="1.0" encoding="UTF-8" standalone="no"?> <svg version="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" enable-background="new 0 0 48 48">
-  <rect x="13" y="30" fill="#BF360C" width="22" height="12"/>
-  <g fill="#FFA726">
-      <circle cx="10" cy="26" r="4"/>
-      <circle cx="38" cy="26" r="4"/>
-  </g>
-  <path fill="#FFB74D" d="M39,19c0-12.7-30-8.3-30,0c0,1.8,0,8.2,0,10c0,8.3,6.7,15,15,15s15-6.7,15-15C39,27.2,39,20.8,39,19z"/>
-  <g fill="#784719">
-      <circle cx="30" cy="26" r="2"/>
-      <circle cx="18" cy="26" r="2"/>
-  </g>
-  <path fill="#FF5722" d="M24,2C15.5,2,3,7.8,3,35.6L13,42V24l16.8-9.8L35,21v21l10-8.2c0-5.6-0.9-29-15.4-29L28.2,2H24z"/>
-  <path fill="#757575" d="M45,24c-0.6,0-1,0.4-1,1v-7c0-8.8-7.2-16-16-16h-9c-0.6,0-1,0.4-1,1s0.4,1,1,1h9c7.7,0,14,6.3,14,14v10 c0,0.6,0.4,1,1,1s1-0.4,1-1v2c0,3.9-3.1,7-7,7H24c-0.6,0-1,0.4-1,1s0.4,1,1,1h13c5,0,9-4,9-9v-5C46,24.4,45.6,24,45,24z"/>
-  <g fill="#37474F">
-      <path d="M45,22h-1c-1.1,0-2,0.9-2,2v4c0,1.1,0.9,2,2,2h1c1.1,0,2-0.9,2-2v-4C47,22.9,46.1,22,45,22z"/>
-      <circle cx="24" cy="38" r="2"/>
-  </g>
-</svg>
+export const supportIcon = (color: string = colors.black) => {
+  return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M5.57001 22.7C3.23001 22.7 1.25001 20.72 1.25001 18.38V12.22C1.20001 9.3 2.28001 6.55 4.30001 4.49C6.32001 2.44 9.03001 1.3 11.95 1.3C17.91 1.3 22.75 6.15 22.75 12.1V18.26C22.75 20.64 20.81 22.58 18.43 22.58C16.09 22.58 14.11 20.6 14.11 18.26V15.45C14.11 14 15.25 12.86 16.7 12.86C18.15 12.86 19.29 14 19.29 15.45V18.48C19.29 18.89 18.95 19.23 18.54 19.23C18.13 19.23 17.79 18.89 17.79 18.48V15.45C17.79 14.77 17.24 14.36 16.7 14.36C16.02 14.36 15.61 14.91 15.61 15.45V18.26C15.61 19.79 16.9 21.08 18.43 21.08C19.96 21.08 21.25 19.79 21.25 18.26V12.1C21.25 6.97 17.08 2.8 11.95 2.8C9.44001 2.8 7.11001 3.77 5.37001 5.54C3.63001 7.31 2.70001 9.68 2.75001 12.2V18.38C2.75001 19.91 4.04001 21.2 5.57001 21.2C7.10001 21.2 8.39001 19.91 8.39001 18.38V15.57C8.39001 14.89 7.84001 14.48 7.30001 14.48C6.62001 14.48 6.21001 15.03 6.21001 15.57V18.49C6.21001 18.9 5.87001 19.24 5.46001 19.24C5.05001 19.24 4.71001 18.9 4.71001 18.49V15.57C4.71001 14.12 5.85001 12.98 7.30001 12.98C8.75001 12.98 9.89001 14.12 9.89001 15.57V18.38C9.89001 20.72 7.91001 22.7 5.57001 22.7Z" fill="#454647"/>
+  </svg>  
   `;
 };
 
@@ -189,154 +169,34 @@ export const exitIcon = () => {
   return `<?xml version="1.0" encoding="UTF-8" standalone="no"?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill=${colors.lightGrey} stroke=${colors.lightGrey} stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><path d="M4,12a1,1,0,0,0,1,1h7.59l-2.3,2.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0l4-4a1,1,0,0,0,.21-.33,1,1,0,0,0,0-.76,1,1,0,0,0-.21-.33l-4-4a1,1,0,1,0-1.42,1.42L12.59,11H5A1,1,0,0,0,4,12ZM17,2H7A3,3,0,0,0,4,5V8A1,1,0,0,0,6,8V5A1,1,0,0,1,7,4H17a1,1,0,0,1,1,1V19a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V16a1,1,0,0,0-2,0v3a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V5A3,3,0,0,0,17,2Z"/></svg>`;
 };
 
-export const sendIcon = () => {
+export const sendIcon = (color: string = colors.black) => {
   return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M5.40995 21.7501C4.28995 21.7501 3.57995 21.3701 3.12995 20.9201C2.24995 20.0401 1.62995 18.1701 3.60995 14.2001L4.47995 12.4701C4.58995 12.2401 4.58995 11.7601 4.47995 11.5301L3.60995 9.80014C1.61995 5.83014 2.24995 3.95014 3.12995 3.08014C3.99995 2.20014 5.87995 1.57014 9.83995 3.56014L18.3999 7.84014C20.5299 8.90014 21.6999 10.3801 21.6999 12.0001C21.6999 13.6201 20.5299 15.1001 18.4099 16.1601L9.84995 20.4401C7.90995 21.4101 6.46995 21.7501 5.40995 21.7501ZM5.40995 3.75014C4.86995 3.75014 4.44995 3.88014 4.18995 4.14014C3.45995 4.86014 3.74995 6.73014 4.94995 9.12014L5.81995 10.8601C6.13995 11.5101 6.13995 12.4901 5.81995 13.1401L4.94995 14.8701C3.74995 17.2701 3.45995 19.1301 4.18995 19.8501C4.90995 20.5801 6.77995 20.2901 9.17995 19.0901L17.7399 14.8101C19.3099 14.0301 20.1999 13.0001 20.1999 11.9901C20.1999 10.9801 19.2999 9.95014 17.7299 9.17014L9.16995 4.90014C7.64995 4.14014 6.33995 3.75014 5.40995 3.75014Z" fill="#292D32"/>
-  <path d="M10.8395 12.75H5.43945C5.02945 12.75 4.68945 12.41 4.68945 12C4.68945 11.59 5.02945 11.25 5.43945 11.25H10.8395C11.2495 11.25 11.5895 11.59 11.5895 12C11.5895 12.41 11.2495 12.75 10.8395 12.75Z" fill="#292D32"/>
+  <path d="M5.40995 21.7501C4.28995 21.7501 3.57995 21.3701 3.12995 20.9201C2.24995 20.0401 1.62995 18.1701 3.60995 14.2001L4.47995 12.4701C4.58995 12.2401 4.58995 11.7601 4.47995 11.5301L3.60995 9.80014C1.61995 5.83014 2.24995 3.95014 3.12995 3.08014C3.99995 2.20014 5.87995 1.57014 9.83995 3.56014L18.3999 7.84014C20.5299 8.90014 21.6999 10.3801 21.6999 12.0001C21.6999 13.6201 20.5299 15.1001 18.4099 16.1601L9.84995 20.4401C7.90995 21.4101 6.46995 21.7501 5.40995 21.7501ZM5.40995 3.75014C4.86995 3.75014 4.44995 3.88014 4.18995 4.14014C3.45995 4.86014 3.74995 6.73014 4.94995 9.12014L5.81995 10.8601C6.13995 11.5101 6.13995 12.4901 5.81995 13.1401L4.94995 14.8701C3.74995 17.2701 3.45995 19.1301 4.18995 19.8501C4.90995 20.5801 6.77995 20.2901 9.17995 19.0901L17.7399 14.8101C19.3099 14.0301 20.1999 13.0001 20.1999 11.9901C20.1999 10.9801 19.2999 9.95014 17.7299 9.17014L9.16995 4.90014C7.64995 4.14014 6.33995 3.75014 5.40995 3.75014Z" fill=${color}/>
+  <path d="M10.8395 12.75H5.43945C5.02945 12.75 4.68945 12.41 4.68945 12C4.68945 11.59 5.02945 11.25 5.43945 11.25H10.8395C11.2495 11.25 11.5895 11.59 11.5895 12C11.5895 12.41 11.2495 12.75 10.8395 12.75Z" fill=${color}/>
   </svg>  
   `;
 };
 
-export const earningIcon = () => {
-  return `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-  <svg
-     xmlns:dc="http://purl.org/dc/elements/1.1/"
-     xmlns:cc="http://creativecommons.org/ns#"
-     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-     xmlns:svg="http://www.w3.org/2000/svg"
-     xmlns="http://www.w3.org/2000/svg"
-     xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-     xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-     width="24"
-     height="24"
-     viewBox="0 0 6.3499999 6.3500002"
-     version="1.1"
-     id="svg8"
-     inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
-     sodipodi:docname="1. Wallet.svg">
-    <defs
-       id="defs2" />
-    <sodipodi:namedview
-       id="base"
-       pagecolor="#ffffff"
-       bordercolor="#666666"
-       borderopacity="1.0"
-       inkscape:pageopacity="0.0"
-       inkscape:pageshadow="2"
-       inkscape:zoom="11.313708"
-       inkscape:cx="-1.8243053"
-       inkscape:cy="15.654393"
-       inkscape:document-units="px"
-       inkscape:current-layer="layer1"
-       showgrid="false"
-       units="px"
-       inkscape:window-width="1280"
-       inkscape:window-height="658"
-       inkscape:window-x="-8"
-       inkscape:window-y="-8"
-       inkscape:window-maximized="1"
-       showguides="true"
-       guidecolor="#af0000"
-       guideopacity="0.49803922"
-       guidehicolor="#ff4b4b"
-       guidehiopacity="0.49803922">
-      <inkscape:grid
-         type="xygrid"
-         id="grid815"
-         empspacing="1"
-         originx="0"
-         originy="0"
-         spacingx="0"
-         spacingy="0"
-         snapvisiblegridlinesonly="true"
-         visible="true"
-         enabled="true"
-         dotted="false" />
-    </sodipodi:namedview>
-    <metadata
-       id="metadata5">
-      <rdf:RDF>
-        <cc:Work
-           rdf:about="">
-          <dc:format>image/svg+xml</dc:format>
-          <dc:type
-             rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-          <dc:title />
-        </cc:Work>
-      </rdf:RDF>
-    </metadata>
-    <g
-       inkscape:label="Guides"
-       inkscape:groupmode="layer"
-       id="layer1"
-       transform="translate(0,-290.64999)">
-      <path
-         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#79ef78;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.26458335;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-         d="m 1.4492188,292.10547 c -0.1069703,0 -0.1737883,0.0776 -0.2089844,0.14844 -0.035196,0.0708 -0.050781,0.15302 -0.050781,0.24218 0,0.0892 0.015578,0.1714 0.050781,0.24219 0.035204,0.0708 0.1020578,0.14844 0.2089844,0.14844 H 4.53125 c 0.1069517,0 0.1737848,-0.0777 0.2089844,-0.14844 0.0352,-0.0708 0.052734,-0.15302 0.052734,-0.24219 0,-0.0892 -0.017532,-0.17139 -0.052734,-0.24218 -0.035202,-0.0708 -0.1020511,-0.14844 -0.2089844,-0.14844 z"
-         id="rect852"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="scscsscscss" />
-      <path
-         sodipodi:nodetypes="scscsscscss"
-         inkscape:connector-curvature="0"
-         id="path842"
-         d="m 1.5875002,292.20753 c -0.097378,0 -0.1582036,0.0573 -0.1902434,0.10965 -0.03204,0.0523 -0.046227,0.11305 -0.046227,0.17891 0,0.0659 0.014181,0.12662 0.046227,0.17892 0.032048,0.0523 0.092906,0.10966 0.1902434,0.10966 H 4.393144 c 0.09736,0 0.1582004,-0.0574 0.1902434,-0.10966 0.032043,-0.0523 0.048005,-0.11304 0.048005,-0.17892 0,-0.0659 -0.015959,-0.12661 -0.048005,-0.17891 -0.032045,-0.0523 -0.0929,-0.10965 -0.1902434,-0.10965 z"
-         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#9dcc78;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.26458335;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
-      <path
-         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#cc785f;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.26458335;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-         d="m 1.1816406,292.63477 c -0.21005929,0 -0.38867185,0.16675 -0.38867185,0.37695 v 2.16797 c 0,0.2102 0.17861876,0.37695 0.38867185,0.37695 h 3.53125 c 0.2100531,0 0.3886719,-0.16675 0.3886719,-0.37695 v -2.16797 c 0,-0.2102 -0.1786126,-0.37695 -0.3886719,-0.37695 z"
-         id="rect848"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="sssssssss" />
-      <path
-         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#cc584b;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.26458335;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-         d="m 4.2324219,293.37891 c -0.2131595,0 -0.3886719,0.17552 -0.3886719,0.38867 v 0.51953 c 0,0.21315 0.1755186,0.38867 0.3886719,0.38867 h 0.9433593 c 0.2131533,0 0.3886719,-0.17552 0.3886719,-0.38867 v -0.51953 c 0,-0.21315 -0.1755124,-0.38867 -0.3886719,-0.38867 z"
-         id="rect850"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="sssssssss" />
-      <path
-         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#ab9f8a;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.26458335;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-         d="m 4.7050781,293.63867 c -0.2132086,0 -0.3886731,0.17546 -0.3886719,0.38867 -9.6e-6,0.21322 0.1754576,0.38868 0.3886719,0.38868 0.2132144,0 0.3886815,-0.17546 0.3886719,-0.38868 1.3e-6,-0.21321 -0.1754633,-0.38867 -0.3886719,-0.38867 z"
-         id="path854"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="scscs" />
-    </g>
-  </svg>
+export const earningIcon = (color: string = colors.black) => {
+  return `
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.8892 18.2197H6.09921C5.57921 18.2197 5.0892 18.1698 4.6492 18.0698C4.4192 18.0398 4.13921 17.9597 3.84921 17.8497C2.51921 17.3497 0.949219 16.1198 0.949219 13.0598V7.90973C0.949219 4.63973 2.82921 2.75977 6.09921 2.75977H14.8892C17.6492 2.75977 19.4292 4.07974 19.9092 6.47974C19.9992 6.91974 20.0392 7.38973 20.0392 7.90973V13.0598C20.0392 16.3498 18.1692 18.2197 14.8892 18.2197ZM6.10919 4.27979C3.64919 4.27979 2.4592 5.46975 2.4592 7.92975V13.0798C2.4592 14.8698 3.08921 15.9698 4.37921 16.4598C4.57921 16.5298 4.76922 16.5797 4.94922 16.6097C5.32922 16.6897 5.69919 16.7297 6.10919 16.7297H14.8992C17.3592 16.7297 18.5492 15.5398 18.5492 13.0798V7.92975C18.5492 7.50975 18.5192 7.13974 18.4492 6.79974C18.1092 5.09974 16.9492 4.27979 14.8992 4.27979H6.10919Z" fill=${color}/>
+<path d="M17.8911 21.2198H9.10107C8.25107 21.2198 7.49106 21.0998 6.84106 20.8498C5.37106 20.2998 4.41105 19.1398 4.08105 17.4798C4.03105 17.2298 4.11107 16.9698 4.29107 16.7998C4.47107 16.6198 4.73107 16.5498 4.98107 16.6098C5.31107 16.6798 5.68107 16.7198 6.10107 16.7198H14.8911C17.3511 16.7198 18.5411 15.5299 18.5411 13.0699V7.91984C18.5411 7.49984 18.5111 7.12984 18.4411 6.78984C18.3911 6.53984 18.4711 6.28985 18.6411 6.10985C18.8211 5.92985 19.0711 5.84983 19.3211 5.90983C21.7211 6.39983 23.0411 8.17984 23.0411 10.9198V16.0699C23.0411 19.3499 21.1711 21.2198 17.8911 21.2198ZM5.92107 18.2198C6.24107 18.7998 6.72107 19.2099 7.38107 19.4499C7.86107 19.6299 8.44105 19.7198 9.11105 19.7198H17.9011C20.3611 19.7198 21.551 18.5299 21.551 16.0699V10.9198C21.551 9.33984 21.061 8.28985 20.051 7.73985C20.051 7.79985 20.051 7.85984 20.051 7.91984V13.0699C20.051 16.3399 18.1711 18.2198 14.9011 18.2198H6.11105C6.04105 18.2198 5.98107 18.2198 5.92107 18.2198Z" fill=${color}/>
+<path d="M10.4994 13.8899C8.62939 13.8899 7.10938 12.3699 7.10938 10.4999C7.10938 8.62988 8.62939 7.10986 10.4994 7.10986C12.3694 7.10986 13.8894 8.62988 13.8894 10.4999C13.8894 12.3699 12.3694 13.8899 10.4994 13.8899ZM10.4994 8.60986C9.45939 8.60986 8.60938 9.45988 8.60938 10.4999C8.60938 11.5399 9.45939 12.3899 10.4994 12.3899C11.5394 12.3899 12.3894 11.5399 12.3894 10.4999C12.3894 9.45988 11.5394 8.60986 10.4994 8.60986Z" fill=${color}/>
+<path d="M4.78125 13.4498C4.37125 13.4498 4.03125 13.1098 4.03125 12.6998V8.2998C4.03125 7.8898 4.37125 7.5498 4.78125 7.5498C5.19125 7.5498 5.53125 7.8898 5.53125 8.2998V12.6998C5.53125 13.1098 5.20125 13.4498 4.78125 13.4498Z" fill=${color}/>
+<path d="M16.2109 13.4498C15.8009 13.4498 15.4609 13.1098 15.4609 12.6998V8.2998C15.4609 7.8898 15.8009 7.5498 16.2109 7.5498C16.6209 7.5498 16.9609 7.8898 16.9609 8.2998V12.6998C16.9609 13.1098 16.6309 13.4498 16.2109 13.4498Z" fill=${color}/>
+</svg>
   `;
 };
 
-export const analyticsIcon = () => {
-  return `<?xml version="1.0" encoding="UTF-8"?>
-  <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-  <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="7.83333in" height="7.83333in" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-  viewBox="0 0 7.83333 7.83333"
-   xmlns:xlink="http://www.w3.org/1999/xlink">
-   <defs>
-    
-   </defs>
-   <g id="Layer_x0020_1">
-    <metadata id="CorelCorpID_0Corel-Layer"/>
-    <circle class="fil0" fill="#FFDB78" cx="3.91667" cy="3.91667" r="3.91667"/>
-    <g id="_348345304">
-     <path id="_348346480" class="fil1" fill="#413B32" fill-rule="nonzero" d="M1.43667 1.82687l4.96 0c0.0441811,0 0.08,0.0358189 0.08,0.08l0 3.4953c0,0.0441811 -0.0358189,0.08 -0.08,0.08l-4.96 0c-0.0441811,0 -0.08,-0.0358189 -0.08,-0.08l0 -3.4953c0,-0.0441811 0.0358189,-0.08 0.08,-0.08zm4.88 0.16l-4.8 0 0 3.3353 4.8 0 0 -3.3353z"/>
-     <path id="_348347152" class="fil1" fill="#413B32" fill-rule="nonzero" d="M3.45063 5.32217l0.932079 0c0.0441811,0 0.08,0.0358189 0.08,0.08l0 0.524291c0,0.0441811 -0.0358189,0.08 -0.08,0.08l-0.932079 0c-0.0441811,0 -0.08,-0.0358189 -0.08,-0.08l0 -0.524291c0,-0.0441811 0.0358189,-0.08 0.08,-0.08zm0.852079 0.16l-0.772079 0 0 0.364291 0.772079 0 0 -0.364291z"/>
-     <path id="_348346744" class="fil1" fill="#413B32" fill-rule="nonzero" d="M2.67863 5.84646c-0.0441811,0 -0.08,0.0358189 -0.08,0.08 0,0.0441811 0.0358189,0.08 0.08,0.08l2.47607 0c0.0441811,0 0.08,-0.0358189 0.08,-0.08 0,-0.0441811 -0.0358189,-0.08 -0.08,-0.08l-2.47607 0z"/>
-     <g>
-      <path id="_348346552" class="fil1" fill="#413B32" fill-rule="nonzero" d="M4.77731 2.60435l0.898075 0c0.0441811,0 0.08,0.0358189 0.08,0.08l0 2.71294c0,0.0441811 -0.0358189,0.08 -0.08,0.08l-0.898075 0c-0.0441811,0 -0.08,-0.0358189 -0.08,-0.08l0 -2.71294c0,-0.0441811 0.0358189,-0.08 0.08,-0.08zm0.818075 0.16l-0.738075 0 0 2.55294 0.738075 0 0 -2.55294z"/>
-      <path id="_348346696" class="fil1" fill="#413B32" fill-rule="nonzero" d="M3.46763 3.28492l0.898079 0c0.0441811,0 0.08,0.0358189 0.08,0.08l0 2.03237c0,0.0441811 -0.0358189,0.08 -0.08,0.08l-0.898079 0c-0.0441811,0 -0.08,-0.0358189 -0.08,-0.08l0 -2.03237c0,-0.0441811 0.0358189,-0.08 0.08,-0.08zm0.818079 0.16l-0.738079 0 0 1.87237 0.738079 0 0 -1.87237z"/>
-      <path id="_348346504" class="fil1" fill="#413B32" fill-rule="nonzero" d="M2.15794 3.96081l0.898075 0c0.0441811,0 0.08,0.0358189 0.08,0.08l0 1.35647c0,0.0441811 -0.0358189,0.08 -0.08,0.08l-0.898075 0c-0.0441811,0 -0.08,-0.0358189 -0.08,-0.08l0 -1.35647c0,-0.0441811 0.0358189,-0.08 0.08,-0.08zm0.818075 0.16l-0.738075 0 0 1.19647 0.738075 0 0 -1.19647z"/>
-     </g>
-     <polygon id="_348346336" class="fil2" fill="#FFF59D" points="4.85731,2.76435 4.85731,5.31728 5.59539,5.31728 5.59539,2.76435 "/>
-     <polygon id="_348345736" class="fil3" fill="#FFCC80" points="4.2857,5.31728 4.2857,3.44492 3.54763,3.44492 3.54763,5.31728 "/>
-     <polygon id="_348346312" class="fil4" fill="#FFCCBC" points="2.97602,5.31728 2.97602,4.12081 2.23794,4.12081 2.23794,5.31728 "/>
-     <path id="_348345976" class="fil5" fill="#E3F2FD" d="M2.15794 3.96081l0.898075 0c0.0441811,0 0.08,0.0358189 0.08,0.08l0 1.28135 0.25161 0 0 -1.95725c0,-0.0441811 0.0358189,-0.08 0.08,-0.08l0.898079 0c0.0441811,0 0.08,0.0358189 0.08,0.08l0 1.95725 0.25161 0 0 -2.63782c0,-0.0441811 0.0358189,-0.08 0.08,-0.08l0.898075 0c0.0441811,0 0.08,0.0358189 0.08,0.08l0 2.63782 0.561276 0 0 -3.3353 -4.8 0 0 3.3353 0.561276 0 0 -1.28135c0,-0.0441811 0.0358189,-0.08 0.08,-0.08z"/>
-     <polygon id="_348345808" class="fil6" fill="whitesmoke" points="4.3027,5.48217 3.53063,5.48217 3.53063,5.84646 4.3027,5.84646 "/>
-     <polygon id="_348345784" class="fil7" fill="#D3A99C" points="2.60805,4.12081 2.60805,5.31728 2.97602,5.31728 2.97602,4.12081 "/>
-     <polygon id="_348345952" class="fil8" fill="#D3A96B" points="3.91774,3.44492 3.91774,5.31728 4.2857,5.31728 4.2857,3.44492 "/>
-     <polygon id="_348345376" class="fil9" fill="#D3CB83" points="5.22743,2.76435 5.22743,5.31728 5.59539,5.31728 5.59539,2.76435 "/>
-     <rect id="_348345040" class="fil10" fill="#BBC8D1" x="6.06535" y="1.98687" width="0.251311" height="3.3353"/>
-    </g>
-   </g>
+export const analyticsIcon = (color: string = colors.black) => {
+  return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M6.87988 18.9001C6.46988 18.9001 6.12988 18.5601 6.12988 18.1501V16.0801C6.12988 15.6701 6.46988 15.3301 6.87988 15.3301C7.28988 15.3301 7.62988 15.6701 7.62988 16.0801V18.1501C7.62988 18.5701 7.28988 18.9001 6.87988 18.9001Z" fill=${color}/>
+  <path d="M12 18.9C11.59 18.9 11.25 18.56 11.25 18.15V14C11.25 13.59 11.59 13.25 12 13.25C12.41 13.25 12.75 13.59 12.75 14V18.15C12.75 18.57 12.41 18.9 12 18.9Z" fill=${color}/>
+  <path d="M17.1201 18.9002C16.7101 18.9002 16.3701 18.5602 16.3701 18.1502V11.9302C16.3701 11.5202 16.7101 11.1802 17.1201 11.1802C17.5301 11.1802 17.8701 11.5202 17.8701 11.9302V18.1502C17.8701 18.5702 17.5401 18.9002 17.1201 18.9002Z" fill=${color}/>
+  <path d="M6.87958 13.1799C6.53958 13.1799 6.23958 12.9499 6.14958 12.6099C6.04958 12.2099 6.28958 11.7999 6.69958 11.6999C10.3796 10.7799 13.6196 8.76992 16.0896 5.89992L16.5496 5.35992C16.8196 5.04992 17.2896 5.00992 17.6096 5.27992C17.9196 5.54992 17.9596 6.01992 17.6896 6.33992L17.2296 6.87992C14.5596 9.99992 11.0396 12.1699 7.05958 13.1599C6.99958 13.1799 6.93958 13.1799 6.87958 13.1799Z" fill=${color}/>
+  <path d="M17.1204 9.5201C16.7104 9.5201 16.3704 9.1801 16.3704 8.7701V6.6001H14.1904C13.7804 6.6001 13.4404 6.2601 13.4404 5.8501C13.4404 5.4401 13.7804 5.1001 14.1904 5.1001H17.1204C17.5304 5.1001 17.8704 5.4401 17.8704 5.8501V8.7801C17.8704 9.1901 17.5404 9.5201 17.1204 9.5201Z" fill=${color}/>
+  <path d="M15 22.75H9C3.57 22.75 1.25 20.43 1.25 15V9C1.25 3.57 3.57 1.25 9 1.25H15C20.43 1.25 22.75 3.57 22.75 9V15C22.75 20.43 20.43 22.75 15 22.75ZM9 2.75C4.39 2.75 2.75 4.39 2.75 9V15C2.75 19.61 4.39 21.25 9 21.25H15C19.61 21.25 21.25 19.61 21.25 15V9C21.25 4.39 19.61 2.75 15 2.75H9Z" fill=${color}/>
   </svg>  
   `;
 };
@@ -367,10 +227,10 @@ export const profileIcon = (route: string, name: string) => {
     `;
 };
 
-export const frontIcon = () => {
+export const frontIcon = (color = colors.lightGrey) => {
   return `
   <svg width="24" height="24" viewBox="0 0 24 24" fill=${colors.greyMain} xmlns="http://www.w3.org/2000/svg">
-<path d="M8.90961 20.67C8.71961 20.67 8.52961 20.6 8.37961 20.45C8.08961 20.16 8.08961 19.68 8.37961 19.39L14.8996 12.87C15.3796 12.39 15.3796 11.61 14.8996 11.13L8.37961 4.61002C8.08961 4.32002 8.08961 3.84002 8.37961 3.55002C8.66961 3.26002 9.14961 3.26002 9.43961 3.55002L15.9596 10.07C16.4696 10.58 16.7596 11.27 16.7596 12C16.7596 12.73 16.4796 13.42 15.9596 13.93L9.43961 20.45C9.28961 20.59 9.09961 20.67 8.90961 20.67Z" fill="#292D32"/>
+<path d="M8.90961 20.67C8.71961 20.67 8.52961 20.6 8.37961 20.45C8.08961 20.16 8.08961 19.68 8.37961 19.39L14.8996 12.87C15.3796 12.39 15.3796 11.61 14.8996 11.13L8.37961 4.61002C8.08961 4.32002 8.08961 3.84002 8.37961 3.55002C8.66961 3.26002 9.14961 3.26002 9.43961 3.55002L15.9596 10.07C16.4696 10.58 16.7596 11.27 16.7596 12C16.7596 12.73 16.4796 13.42 15.9596 13.93L9.43961 20.45C9.28961 20.59 9.09961 20.67 8.90961 20.67Z" fill=${color}/>
 </svg>
   `;
 };
@@ -470,12 +330,12 @@ export const goNextIcon = (color = "none") => {
   `;
 };
 
-export const attachIcon = () => {
+export const attachIcon = (color: string = colors.black) => {
   return `
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M15 22.75H9C3.57 22.75 1.25 20.43 1.25 15V9C1.25 3.57 3.57 1.25 9 1.25H15C20.43 1.25 22.75 3.57 22.75 9V15C22.75 20.43 20.43 22.75 15 22.75ZM9 2.75C4.39 2.75 2.75 4.39 2.75 9V15C2.75 19.61 4.39 21.25 9 21.25H15C19.61 21.25 21.25 19.61 21.25 15V9C21.25 4.39 19.61 2.75 15 2.75H9Z" fill="#292D32"/>
-<path d="M9 10.75C7.48 10.75 6.25 9.52 6.25 8C6.25 6.48 7.48 5.25 9 5.25C10.52 5.25 11.75 6.48 11.75 8C11.75 9.52 10.52 10.75 9 10.75ZM9 6.75C8.31 6.75 7.75 7.31 7.75 8C7.75 8.69 8.31 9.25 9 9.25C9.69 9.25 10.25 8.69 10.25 8C10.25 7.31 9.69 6.75 9 6.75Z" fill="#292D32"/>
-<path d="M2.67075 19.7001C2.43075 19.7001 2.19075 19.5801 2.05075 19.3701C1.82075 19.0301 1.91075 18.5601 2.26075 18.3301L7.19075 15.0201C8.27075 14.2901 9.76075 14.3801 10.7407 15.2101L11.0707 15.5001C11.5707 15.9301 12.4207 15.9301 12.9107 15.5001L17.0707 11.9301C18.1307 11.0201 19.8007 11.0201 20.8707 11.9301L22.5007 13.3301C22.8107 13.6001 22.8507 14.0701 22.5807 14.3901C22.3107 14.7001 21.8407 14.7401 21.5207 14.4701L19.8907 13.0701C19.3907 12.6401 18.5407 12.6401 18.0407 13.0701L13.8807 16.6401C12.8207 17.5501 11.1507 17.5501 10.0807 16.6401L9.75075 16.3501C9.29075 15.9601 8.53075 15.9201 8.02075 16.2701L3.09075 19.5801C2.96075 19.6601 2.81075 19.7001 2.67075 19.7001Z" fill="#292D32"/>
+<path d="M15 22.75H9C3.57 22.75 1.25 20.43 1.25 15V9C1.25 3.57 3.57 1.25 9 1.25H15C20.43 1.25 22.75 3.57 22.75 9V15C22.75 20.43 20.43 22.75 15 22.75ZM9 2.75C4.39 2.75 2.75 4.39 2.75 9V15C2.75 19.61 4.39 21.25 9 21.25H15C19.61 21.25 21.25 19.61 21.25 15V9C21.25 4.39 19.61 2.75 15 2.75H9Z" fill=${color}/>
+<path d="M9 10.75C7.48 10.75 6.25 9.52 6.25 8C6.25 6.48 7.48 5.25 9 5.25C10.52 5.25 11.75 6.48 11.75 8C11.75 9.52 10.52 10.75 9 10.75ZM9 6.75C8.31 6.75 7.75 7.31 7.75 8C7.75 8.69 8.31 9.25 9 9.25C9.69 9.25 10.25 8.69 10.25 8C10.25 7.31 9.69 6.75 9 6.75Z" fill=${color}/>
+<path d="M2.67075 19.7001C2.43075 19.7001 2.19075 19.5801 2.05075 19.3701C1.82075 19.0301 1.91075 18.5601 2.26075 18.3301L7.19075 15.0201C8.27075 14.2901 9.76075 14.3801 10.7407 15.2101L11.0707 15.5001C11.5707 15.9301 12.4207 15.9301 12.9107 15.5001L17.0707 11.9301C18.1307 11.0201 19.8007 11.0201 20.8707 11.9301L22.5007 13.3301C22.8107 13.6001 22.8507 14.0701 22.5807 14.3901C22.3107 14.7001 21.8407 14.7401 21.5207 14.4701L19.8907 13.0701C19.3907 12.6401 18.5407 12.6401 18.0407 13.0701L13.8807 16.6401C12.8207 17.5501 11.1507 17.5501 10.0807 16.6401L9.75075 16.3501C9.29075 15.9601 8.53075 15.9201 8.02075 16.2701L3.09075 19.5801C2.96075 19.6601 2.81075 19.7001 2.67075 19.7001Z" fill=${color}/>
 </svg>
 
   `;
@@ -500,6 +360,13 @@ export const closeIcon = () => {
   `;
 };
 
+export const checkIcon = () => {
+  return `<svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M7.15988 15.1602C6.75988 15.1602 6.37988 15.0002 6.09988 14.7202L0.439883 9.06019C-0.140117 8.48019 -0.140117 7.5202 0.439883 6.9402C1.01988 6.3602 1.97988 6.3602 2.55988 6.9402L7.15988 11.5402L17.4399 1.2602C18.0199 0.680195 18.9799 0.680195 19.5599 1.2602C20.1399 1.8402 20.1399 2.80019 19.5599 3.38019L8.21988 14.7202C7.93988 15.0002 7.55988 15.1602 7.15988 15.1602Z" fill="white"/>
+  </svg>  
+  `;
+};
+
 export const moreIcon = (route: string, name: string) => {
   if (route === name) {
     return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -516,29 +383,25 @@ export const moreIcon = (route: string, name: string) => {
     `;
 };
 
-export const cardIcon = (color: any) => {
+export const payAndWalletIcon = (color: string = colors.black) => {
   return `
-  <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="58px" height="42px" viewBox="0 0 58 42" version="1.1">
-    <title>040 - Payment Cards</title>
-    <desc>Created with Sketch.</desc>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="040---Payment-Cards">
-            <path d="M12,32 L12,39 C12,40.6568542 13.3431458,42 15,42 L55,42 C56.6568542,42 58,40.6568542 58,39 L58,13 C58,11.3431458 56.6568542,10 55,10 L46,10 L12,32 Z" id="Path" fill="#3B97D3"/>
-            <rect id="Rectangle" fill="#F29C1F" x="0" y="0" width="46" height="32" rx="3"/>
-            <rect id="Rectangle" fill="#F3D55B" x="30" y="4" width="12" height="9" rx="2"/>
-            <polygon id="Path" fill="#F0C419" points="35 4 35 13 33 13 33 9 30 9 30 7 33 7 33 4"/>
-            <path d="M42,7 L42,9 L39,9 L39,13 L37,13 L37,8 C37,7.44771525 37.4477153,7 38,7 L42,7 Z" id="Path" fill="#F0C419"/>
-            <path d="M6,8 L20,8 C20.5522847,8 21,7.55228475 21,7 C21,6.44771525 20.5522847,6 20,6 L6,6 C5.44771525,6 5,6.44771525 5,7 C5,7.55228475 5.44771525,8 6,8 Z" id="Path" fill="#F9EAB0"/>
-            <path d="M5,22 L11,22 C11.5522847,22 12,21.5522847 12,21 C12,20.4477153 11.5522847,20 11,20 L5,20 C4.44771525,20 4,20.4477153 4,21 C4,21.5522847 4.44771525,22 5,22 Z" id="Path" fill="#F9EAB0"/>
-            <path d="M21,20 L15,20 C14.4477153,20 14,20.4477153 14,21 C14,21.5522847 14.4477153,22 15,22 L21,22 C21.5522847,22 22,21.5522847 22,21 C22,20.4477153 21.5522847,20 21,20 Z" id="Path" fill="#F9EAB0"/>
-            <path d="M31,20 L25,20 C24.4477153,20 24,20.4477153 24,21 C24,21.5522847 24.4477153,22 25,22 L31,22 C31.5522847,22 32,21.5522847 32,21 C32,20.4477153 31.5522847,20 31,20 Z" id="Path" fill="#F9EAB0"/>
-            <path d="M41,20 L35,20 C34.4477153,20 34,20.4477153 34,21 C34,21.5522847 34.4477153,22 35,22 L41,22 C41.5522847,22 42,21.5522847 42,21 C42,20.4477153 41.5522847,20 41,20 Z" id="Path" fill="#F9EAB0"/>
-            <path d="M18,26 L5,26 C4.44771525,26 4,26.4477153 4,27 C4,27.5522847 4.44771525,28 5,28 L18,28 C18.5522847,28 19,27.5522847 19,27 C19,26.4477153 18.5522847,26 18,26 Z" id="Path" fill="#F9EAB0"/>
-            <path d="M58,29 L58,37 L12,37 L12,32 L43,32 C44.6568542,32 46,30.6568542 46,29 L58,29 Z" id="Path" fill="#547580"/>
-        </g>
-    </g>
-</svg>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M13 11.9H7C6.59 11.9 6.25 11.56 6.25 11.15C6.25 10.74 6.59 10.4 7 10.4H13C13.41 10.4 13.75 10.74 13.75 11.15C13.75 11.56 13.41 11.9 13 11.9Z" fill="#454647"/>
+  <path d="M2 11.9001C1.59 11.9001 1.25 11.5601 1.25 11.1501V6.53009C1.25 4.08009 3.24 2.09009 5.69 2.09009H11.31C13.88 2.09009 15.75 3.80009 15.75 6.15009C15.75 6.56009 15.41 6.90009 15 6.90009C14.59 6.90009 14.25 6.56009 14.25 6.15009C14.25 4.39009 12.72 3.59009 11.31 3.59009H5.69C4.07 3.59009 2.75 4.91009 2.75 6.53009V11.1501C2.75 11.5701 2.41 11.9001 2 11.9001Z" fill="#454647"/>
+  <path d="M16 21.9H6C3.38 21.9 1.25 19.77 1.25 17.15V10.15C1.25 7.53002 3.38 5.40002 6 5.40002H16C18.62 5.40002 20.75 7.53002 20.75 10.15V11.6C20.75 12.01 20.41 12.35 20 12.35H18.92C18.57 12.35 18.25 12.48 18.02 12.72L18.01 12.73C17.68 13.06 17.55 13.52 17.67 13.97C17.82 14.53 18.41 14.94 19.07 14.94H20C20.41 14.94 20.75 15.28 20.75 15.69V17.14C20.75 19.77 18.62 21.9 16 21.9ZM6 6.90002C4.21 6.90002 2.75 8.36002 2.75 10.15V17.15C2.75 18.94 4.21 20.4 6 20.4H16C17.79 20.4 19.25 18.94 19.25 17.15V16.45H19.07C17.72 16.45 16.55 15.6 16.22 14.37C15.96 13.4 16.24 12.37 16.95 11.67C17.47 11.14 18.17 10.85 18.92 10.85H19.25V10.15C19.25 8.36002 17.79 6.90002 16 6.90002H6Z" fill="#454647"/>
+  <path d="M20.9699 16.45H19.0399C17.5299 16.45 16.2499 15.33 16.1299 13.89C16.0499 13.06 16.3499 12.25 16.9499 11.66C17.4499 11.14 18.1599 10.85 18.9099 10.85H20.9599C21.9399 10.85 22.7399 11.64 22.7399 12.62V14.68C22.7499 15.66 21.9499 16.45 20.9699 16.45ZM18.9199 12.35C18.5699 12.35 18.2499 12.48 18.0199 12.72C17.7299 13 17.5899 13.38 17.6299 13.76C17.6799 14.42 18.3199 14.95 19.0399 14.95H20.9699C21.1199 14.95 21.2499 14.83 21.2499 14.68V12.62C21.2499 12.47 21.1199 12.35 20.9699 12.35H18.9199Z" fill="#454647"/>
+  </svg>
+  `;
+};
+
+export const cardIcon = (color: string = colors.black) => {
+  return `
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M13 11.9H7C6.59 11.9 6.25 11.56 6.25 11.15C6.25 10.74 6.59 10.4 7 10.4H13C13.41 10.4 13.75 10.74 13.75 11.15C13.75 11.56 13.41 11.9 13 11.9Z" fill="#454647"/>
+  <path d="M2 11.9001C1.59 11.9001 1.25 11.5601 1.25 11.1501V6.53009C1.25 4.08009 3.24 2.09009 5.69 2.09009H11.31C13.88 2.09009 15.75 3.80009 15.75 6.15009C15.75 6.56009 15.41 6.90009 15 6.90009C14.59 6.90009 14.25 6.56009 14.25 6.15009C14.25 4.39009 12.72 3.59009 11.31 3.59009H5.69C4.07 3.59009 2.75 4.91009 2.75 6.53009V11.1501C2.75 11.5701 2.41 11.9001 2 11.9001Z" fill="#454647"/>
+  <path d="M16 21.9H6C3.38 21.9 1.25 19.77 1.25 17.15V10.15C1.25 7.53002 3.38 5.40002 6 5.40002H16C18.62 5.40002 20.75 7.53002 20.75 10.15V11.6C20.75 12.01 20.41 12.35 20 12.35H18.92C18.57 12.35 18.25 12.48 18.02 12.72L18.01 12.73C17.68 13.06 17.55 13.52 17.67 13.97C17.82 14.53 18.41 14.94 19.07 14.94H20C20.41 14.94 20.75 15.28 20.75 15.69V17.14C20.75 19.77 18.62 21.9 16 21.9ZM6 6.90002C4.21 6.90002 2.75 8.36002 2.75 10.15V17.15C2.75 18.94 4.21 20.4 6 20.4H16C17.79 20.4 19.25 18.94 19.25 17.15V16.45H19.07C17.72 16.45 16.55 15.6 16.22 14.37C15.96 13.4 16.24 12.37 16.95 11.67C17.47 11.14 18.17 10.85 18.92 10.85H19.25V10.15C19.25 8.36002 17.79 6.90002 16 6.90002H6Z" fill="#454647"/>
+  <path d="M20.9699 16.45H19.0399C17.5299 16.45 16.2499 15.33 16.1299 13.89C16.0499 13.06 16.3499 12.25 16.9499 11.66C17.4499 11.14 18.1599 10.85 18.9099 10.85H20.9599C21.9399 10.85 22.7399 11.64 22.7399 12.62V14.68C22.7499 15.66 21.9499 16.45 20.9699 16.45ZM18.9199 12.35C18.5699 12.35 18.2499 12.48 18.0199 12.72C17.7299 13 17.5899 13.38 17.6299 13.76C17.6799 14.42 18.3199 14.95 19.0399 14.95H20.9699C21.1199 14.95 21.2499 14.83 21.2499 14.68V12.62C21.2499 12.47 21.1199 12.35 20.9699 12.35H18.9199Z" fill="#454647"/>
+  </svg>
   `;
 };
 
@@ -584,7 +447,7 @@ export const lockIcon = (color = colors.black) => {
   `;
 };
 
-export const emailIcon = (color = colors.black) => {
+export const emailIcon = (color: string = colors.black) => {
   return `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M11.3335 14.1667H4.66683C2.2335 14.1667 0.833496 12.7667 0.833496 10.3333V5.66667C0.833496 3.23333 2.2335 1.83333 4.66683 1.83333H11.3335C13.7668 1.83333 15.1668 3.23333 15.1668 5.66667V10.3333C15.1668 12.7667 13.7668 14.1667 11.3335 14.1667ZM4.66683 2.83333C2.76016 2.83333 1.8335 3.76 1.8335 5.66667V10.3333C1.8335 12.24 2.76016 13.1667 4.66683 13.1667H11.3335C13.2402 13.1667 14.1668 12.24 14.1668 10.3333V5.66667C14.1668 3.76 13.2402 2.83333 11.3335 2.83333H4.66683Z" fill=${color}/>
   <path d="M7.99969 8.57998C7.43969 8.57998 6.87302 8.40665 6.43969 8.05331L4.35302 6.38665C4.13969 6.21331 4.09969 5.89998 4.27302 5.68665C4.44636 5.47331 4.75969 5.43332 4.97303 5.60665L7.05969 7.27332C7.56635 7.67998 8.42635 7.67998 8.93302 7.27332L11.0197 5.60665C11.233 5.43332 11.553 5.46665 11.7197 5.68665C11.893 5.89998 11.8597 6.21998 11.6397 6.38665L9.55302 8.05331C9.12636 8.40665 8.55969 8.57998 7.99969 8.57998Z" fill=${color}/>
@@ -592,31 +455,31 @@ export const emailIcon = (color = colors.black) => {
   `;
 };
 
-export const receiveMoneyIcon = () => {
+export const receiveMoneyIcon = (color: string = colors.black) => {
   return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M13.05 16.25H11.17C9.84001 16.25 8.75 15.13 8.75 13.75C8.75 13.34 9.09 13 9.5 13C9.91 13 10.25 13.34 10.25 13.75C10.25 14.3 10.66 14.75 11.17 14.75H13.05C13.44 14.75 13.75 14.4 13.75 13.97C13.75 13.43 13.6 13.35 13.26 13.23L10.25 12.18C9.61 11.96 8.75 11.49 8.75 10.02C8.75 8.76999 9.74001 7.73999 10.95 7.73999H12.83C14.16 7.73999 15.25 8.85999 15.25 10.24C15.25 10.65 14.91 10.99 14.5 10.99C14.09 10.99 13.75 10.65 13.75 10.24C13.75 9.68999 13.34 9.23999 12.83 9.23999H10.95C10.56 9.23999 10.25 9.58999 10.25 10.02C10.25 10.56 10.4 10.64 10.74 10.76L13.75 11.81C14.39 12.03 15.25 12.5 15.25 13.97C15.25 15.23 14.26 16.25 13.05 16.25Z" fill="#2776EA"/>
   <path d="M12 17.25C11.59 17.25 11.25 16.91 11.25 16.5V7.5C11.25 7.09 11.59 6.75 12 6.75C12.41 6.75 12.75 7.09 12.75 7.5V16.5C12.75 16.91 12.41 17.25 12 17.25Z" fill="#2776EA"/>
-  <path d="M12 22.75C6.07 22.75 1.25 17.93 1.25 12C1.25 6.07 6.07 1.25 12 1.25C12.41 1.25 12.75 1.59 12.75 2C12.75 2.41 12.41 2.75 12 2.75C6.9 2.75 2.75 6.9 2.75 12C2.75 17.1 6.9 21.25 12 21.25C17.1 21.25 21.25 17.1 21.25 12C21.25 11.59 21.59 11.25 22 11.25C22.41 11.25 22.75 11.59 22.75 12C22.75 17.93 17.93 22.75 12 22.75Z" fill="#292D32"/>
+  <path d="M12 22.75C6.07 22.75 1.25 17.93 1.25 12C1.25 6.07 6.07 1.25 12 1.25C12.41 1.25 12.75 1.59 12.75 2C12.75 2.41 12.41 2.75 12 2.75C6.9 2.75 2.75 6.9 2.75 12C2.75 17.1 6.9 21.25 12 21.25C17.1 21.25 21.25 17.1 21.25 12C21.25 11.59 21.59 11.25 22 11.25C22.41 11.25 22.75 11.59 22.75 12C22.75 17.93 17.93 22.75 12 22.75Z" fill=${color}/>
   <path d="M21 7.75H17C16.59 7.75 16.25 7.41 16.25 7V3C16.25 2.59 16.59 2.25 17 2.25C17.41 2.25 17.75 2.59 17.75 3V6.25H21C21.41 6.25 21.75 6.59 21.75 7C21.75 7.41 21.41 7.75 21 7.75Z" fill="#2776EA"/>
   <path d="M16.9999 7.74994C16.8099 7.74994 16.6199 7.67994 16.4699 7.52994C16.1799 7.23994 16.1799 6.75994 16.4699 6.46994L21.4699 1.46994C21.7599 1.17994 22.2399 1.17994 22.5299 1.46994C22.8199 1.75994 22.8199 2.23994 22.5299 2.52994L17.5299 7.52994C17.3799 7.67994 17.1899 7.74994 16.9999 7.74994Z" fill="#2776EA"/>
   </svg>
   `;
 };
 
-export const withdrawMoneyIcon = () => {
+export const withdrawMoneyIcon = (color: string = colors.black) => {
   return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M13.05 16.25H11.17C9.84001 16.25 8.75 15.13 8.75 13.75C8.75 13.34 9.09 13 9.5 13C9.91 13 10.25 13.34 10.25 13.75C10.25 14.3 10.66 14.75 11.17 14.75H13.05C13.44 14.75 13.75 14.4 13.75 13.97C13.75 13.43 13.6 13.35 13.26 13.23L10.25 12.18C9.61 11.95 8.75 11.49 8.75 10.02C8.75 8.76999 9.74001 7.73999 10.95 7.73999H12.83C14.16 7.73999 15.25 8.85999 15.25 10.24C15.25 10.65 14.91 10.99 14.5 10.99C14.09 10.99 13.75 10.65 13.75 10.24C13.75 9.68999 13.34 9.23999 12.83 9.23999H10.95C10.56 9.23999 10.25 9.58999 10.25 10.02C10.25 10.56 10.4 10.64 10.74 10.76L13.75 11.81C14.39 12.04 15.25 12.5 15.25 13.97C15.25 15.23 14.26 16.25 13.05 16.25Z" fill="#2776EA"/>
   <path d="M12 17.25C11.59 17.25 11.25 16.91 11.25 16.5V7.5C11.25 7.09 11.59 6.75 12 6.75C12.41 6.75 12.75 7.09 12.75 7.5V16.5C12.75 16.91 12.41 17.25 12 17.25Z" fill="#2776EA"/>
-  <path d="M12 22.75C6.07 22.75 1.25 17.93 1.25 12C1.25 6.07 6.07 1.25 12 1.25C12.41 1.25 12.75 1.59 12.75 2C12.75 2.41 12.41 2.75 12 2.75C6.9 2.75 2.75 6.9 2.75 12C2.75 17.1 6.9 21.25 12 21.25C17.1 21.25 21.25 17.1 21.25 12C21.25 11.59 21.59 11.25 22 11.25C22.41 11.25 22.75 11.59 22.75 12C22.75 17.93 17.93 22.75 12 22.75Z" fill="#292D32"/>
+  <path d="M12 22.75C6.07 22.75 1.25 17.93 1.25 12C1.25 6.07 6.07 1.25 12 1.25C12.41 1.25 12.75 1.59 12.75 2C12.75 2.41 12.41 2.75 12 2.75C6.9 2.75 2.75 6.9 2.75 12C2.75 17.1 6.9 21.25 12 21.25C17.1 21.25 21.25 17.1 21.25 12C21.25 11.59 21.59 11.25 22 11.25C22.41 11.25 22.75 11.59 22.75 12C22.75 17.93 17.93 22.75 12 22.75Z" fill=${color}/>
   <path d="M22 6.75C21.59 6.75 21.25 6.41 21.25 6V2.75H18C17.59 2.75 17.25 2.41 17.25 2C17.25 1.59 17.59 1.25 18 1.25H22C22.41 1.25 22.75 1.59 22.75 2V6C22.75 6.41 22.41 6.75 22 6.75Z" fill="#2776EA"/>
   <path d="M16.9999 7.74994C16.8099 7.74994 16.6199 7.67994 16.4699 7.52994C16.1799 7.23994 16.1799 6.75994 16.4699 6.46994L21.4699 1.46994C21.7599 1.17994 22.2399 1.17994 22.5299 1.46994C22.8199 1.75994 22.8199 2.23994 22.5299 2.52994L17.5299 7.52994C17.3799 7.67994 17.1899 7.74994 16.9999 7.74994Z" fill="#2776EA"/>
   </svg>
   `;
 };
 
-export const transferMoneyIcon = () => {
+export const transferMoneyIcon = (color: string = colors.black) => {
   return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M12 22.75C6.07 22.75 1.25 17.93 1.25 12C1.25 6.07 6.07 1.25 12 1.25C17.93 1.25 22.75 6.07 22.75 12C22.75 17.93 17.93 22.75 12 22.75ZM12 2.75C6.9 2.75 2.75 6.9 2.75 12C2.75 17.1 6.9 21.25 12 21.25C17.1 21.25 21.25 17.1 21.25 12C21.25 6.9 17.1 2.75 12 2.75Z" fill="#292D32"/>
+  <path d="M12 22.75C6.07 22.75 1.25 17.93 1.25 12C1.25 6.07 6.07 1.25 12 1.25C17.93 1.25 22.75 6.07 22.75 12C22.75 17.93 17.93 22.75 12 22.75ZM12 2.75C6.9 2.75 2.75 6.9 2.75 12C2.75 17.1 6.9 21.25 12 21.25C17.1 21.25 21.25 17.1 21.25 12C21.25 6.9 17.1 2.75 12 2.75Z" fill=${color}/>
   <path d="M11.9999 17.4701C10.5999 17.4701 9.19994 16.9401 8.12994 15.8701C7.84994 15.5901 7.59993 15.2801 7.36993 14.9101C7.14993 14.5601 7.25992 14.1001 7.60992 13.8801C7.95992 13.6601 8.41995 13.7701 8.63995 14.1201C8.80995 14.4001 8.98994 14.6201 9.18994 14.8201C10.7399 16.3701 13.2599 16.3701 14.8099 14.8201C15.4099 14.2201 15.79 13.4401 15.92 12.5701C15.98 12.1601 16.3599 11.8601 16.7699 11.9301C17.1799 11.9901 17.4599 12.3701 17.4099 12.7801C17.2399 13.9701 16.7099 15.0401 15.8799 15.8801C14.7999 16.9401 13.3999 17.4701 11.9999 17.4701Z" fill="#2776EA"/>
   <path d="M7.3399 12.08C7.2999 12.08 7.26991 12.08 7.22991 12.07C6.81991 12.01 6.5299 11.6299 6.5899 11.2199C6.7599 10.0299 7.2899 8.95996 8.1199 8.11996C10.2499 5.98996 13.7199 5.98996 15.8599 8.11996C16.1399 8.39996 16.3899 8.70999 16.6199 9.08999C16.8399 9.43999 16.7299 9.89996 16.3799 10.12C16.0299 10.34 15.5699 10.23 15.3499 9.87997C15.1799 9.60997 14.9999 9.37996 14.7999 9.17996C13.2499 7.62996 10.7299 7.62996 9.17989 9.17996C8.57989 9.77996 8.19991 10.56 8.06991 11.43C8.02991 11.81 7.7099 12.08 7.3399 12.08Z" fill="#2776EA"/>
   <path d="M7.82031 17.93C7.41031 17.93 7.07031 17.59 7.07031 17.18V14.51C7.07031 14.1 7.41031 13.76 7.82031 13.76H10.4903C10.9003 13.76 11.2403 14.1 11.2403 14.51C11.2403 14.92 10.9003 15.26 10.4903 15.26H8.57031V17.18C8.57031 17.59 8.24031 17.93 7.82031 17.93Z" fill="#2776EA"/>
@@ -636,4 +499,32 @@ export const optionIcon = (color = colors.black) => {
 
 export const nextplaceholdIcon = () => {
   return ``;
+};
+
+export const callUsIcon = (color: string = colors.black) => {
+  return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M17.45 22.75C16.32 22.75 15.13 22.48 13.9 21.96C12.7 21.45 11.49 20.75 10.31 19.9C9.14 19.04 8.01 18.08 6.94 17.03C5.88 15.96 4.92 14.83 4.07 13.67C3.21 12.47 2.52 11.27 2.03 10.11C1.51 8.87 1.25 7.67 1.25 6.54C1.25 5.76 1.39 5.02 1.66 4.33C1.94 3.62 2.39 2.96 3 2.39C3.77 1.63 4.65 1.25 5.59 1.25C5.98 1.25 6.38 1.34 6.72 1.5C7.11 1.68 7.44 1.95 7.68 2.31L10 5.58C10.21 5.87 10.37 6.15 10.48 6.43C10.61 6.73 10.68 7.03 10.68 7.32C10.68 7.7 10.57 8.07 10.36 8.42C10.21 8.69 9.98 8.98 9.69 9.27L9.01 9.98C9.02 10.01 9.03 10.03 9.04 10.05C9.16 10.26 9.4 10.62 9.86 11.16C10.35 11.72 10.81 12.23 11.27 12.7C11.86 13.28 12.35 13.74 12.81 14.12C13.38 14.6 13.75 14.84 13.97 14.95L13.95 15L14.68 14.28C14.99 13.97 15.29 13.74 15.58 13.59C16.13 13.25 16.83 13.19 17.53 13.48C17.79 13.59 18.07 13.74 18.37 13.95L21.69 16.31C22.06 16.56 22.33 16.88 22.49 17.26C22.64 17.64 22.71 17.99 22.71 18.34C22.71 18.82 22.6 19.3 22.39 19.75C22.18 20.2 21.92 20.59 21.59 20.95C21.02 21.58 20.4 22.03 19.68 22.32C18.99 22.6 18.24 22.75 17.45 22.75ZM5.59 2.75C5.04 2.75 4.53 2.99 4.04 3.47C3.58 3.9 3.26 4.37 3.06 4.88C2.85 5.4 2.75 5.95 2.75 6.54C2.75 7.47 2.97 8.48 3.41 9.52C3.86 10.58 4.49 11.68 5.29 12.78C6.09 13.88 7 14.95 8 15.96C9 16.95 10.08 17.87 11.19 18.68C12.27 19.47 13.38 20.11 14.48 20.57C16.19 21.3 17.79 21.47 19.11 20.92C19.62 20.71 20.07 20.39 20.48 19.93C20.71 19.68 20.89 19.41 21.04 19.09C21.16 18.84 21.22 18.58 21.22 18.32C21.22 18.16 21.19 18 21.11 17.82C21.08 17.76 21.02 17.65 20.83 17.52L17.51 15.16C17.31 15.02 17.13 14.92 16.96 14.85C16.74 14.76 16.65 14.67 16.31 14.88C16.11 14.98 15.93 15.13 15.73 15.33L14.97 16.08C14.58 16.46 13.98 16.55 13.52 16.38L13.25 16.26C12.84 16.04 12.36 15.7 11.83 15.25C11.35 14.84 10.83 14.36 10.2 13.74C9.71 13.24 9.22 12.71 8.71 12.12C8.24 11.57 7.9 11.1 7.69 10.71L7.57 10.41C7.51 10.18 7.49 10.05 7.49 9.91C7.49 9.55 7.62 9.23 7.87 8.98L8.62 8.2C8.82 8 8.97 7.81 9.07 7.64C9.15 7.51 9.18 7.4 9.18 7.3C9.18 7.22 9.15 7.1 9.1 6.98C9.03 6.82 8.92 6.64 8.78 6.45L6.46 3.17C6.36 3.03 6.24 2.93 6.09 2.86C5.93 2.79 5.76 2.75 5.59 2.75ZM13.95 15.01L13.79 15.69L14.06 14.99C14.01 14.98 13.97 14.99 13.95 15.01Z" fill="#454647"/>
+  <path d="M18.5 9.75C18.09 9.75 17.75 9.41 17.75 9C17.75 8.64 17.39 7.89 16.79 7.25C16.2 6.62 15.55 6.25 15 6.25C14.59 6.25 14.25 5.91 14.25 5.5C14.25 5.09 14.59 4.75 15 4.75C15.97 4.75 16.99 5.27 17.88 6.22C18.71 7.11 19.25 8.2 19.25 9C19.25 9.41 18.91 9.75 18.5 9.75Z" fill="#454647"/>
+  <path d="M22 9.75C21.59 9.75 21.25 9.41 21.25 9C21.25 5.55 18.45 2.75 15 2.75C14.59 2.75 14.25 2.41 14.25 2C14.25 1.59 14.59 1.25 15 1.25C19.27 1.25 22.75 4.73 22.75 9C22.75 9.41 22.41 9.75 22 9.75Z" fill="#454647"/>
+  </svg>  
+  `;
+};
+
+export const chatUsIcon = (color: string = colors.black) => {
+  return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M7.25999 18.89C7.17999 18.89 7.1 18.88 7.02 18.87C6.42 18.79 5.91 18.41 5.66 17.87L4.39999 15.1C2.39999 13.62 1.25 11.41 1.25 9.01001C1.25 4.74001 4.95 1.26001 9.5 1.26001C12.71 1.26001 15.64 3.02 16.97 5.75C17.48 6.76 17.75 7.86001 17.75 9.01001C17.75 13.17 14.24 16.58 9.86 16.75L8.60001 18.27C8.26001 18.66 7.76999 18.89 7.25999 18.89ZM9.5 2.75C5.78 2.75 2.75 5.55 2.75 9C2.75 10.97 3.72999 12.79 5.42999 13.99C5.53999 14.07 5.62999 14.17 5.67999 14.29L7.02 17.24C7.07 17.35 7.17 17.38 7.22 17.38C7.27 17.39 7.37 17.38 7.44 17.3L8.92 15.52C9.06 15.35 9.27 15.25 9.5 15.25C13.22 15.25 16.25 12.45 16.25 9C16.25 8.09 16.04 7.21997 15.63 6.40997C14.55 4.17997 12.14 2.75 9.5 2.75Z" fill="#454647"/>
+  <path d="M16.7401 22.75C16.2201 22.75 15.7401 22.52 15.4001 22.12L14.1401 20.61C11.7201 20.51 9.44008 19.4 7.98008 17.6C7.75008 17.32 7.76009 16.92 7.99009 16.65L8.92008 15.53C9.06008 15.36 9.27008 15.26 9.50008 15.26C13.2201 15.26 16.2501 12.46 16.2501 9.01C16.2501 8.1 16.0401 7.22997 15.6301 6.41997C15.5001 6.15997 15.5301 5.84998 15.7101 5.61998C15.8901 5.38998 16.1901 5.28996 16.4701 5.34996C20.1701 6.19996 22.7501 9.28998 22.7501 12.87C22.7501 15.27 21.6001 17.48 19.6001 18.96L18.3401 21.73C18.0801 22.29 17.5701 22.67 16.9601 22.74C16.8901 22.75 16.8101 22.75 16.7401 22.75ZM9.56008 17.1C10.8101 18.37 12.6101 19.11 14.5001 19.11C14.7201 19.11 14.9301 19.21 15.0801 19.38L16.5601 21.16C16.6301 21.25 16.7201 21.26 16.7801 21.25C16.8201 21.25 16.9301 21.22 16.9901 21.1L18.3301 18.15C18.3901 18.03 18.4701 17.92 18.5801 17.85C20.2801 16.65 21.2601 14.83 21.2601 12.86C21.2601 10.46 19.7901 8.33002 17.5501 7.28002C17.6901 7.84002 17.7601 8.40999 17.7601 8.99999C17.7601 13.16 14.2501 16.57 9.87008 16.74L9.56008 17.1Z" fill="#454647"/>
+  <path d="M12 9.75H7C6.59 9.75 6.25 9.41 6.25 9C6.25 8.59 6.59 8.25 7 8.25H12C12.41 8.25 12.75 8.59 12.75 9C12.75 9.41 12.41 9.75 12 9.75Z" fill="#454647"/>
+  </svg>  
+`;
+};
+
+export const emailUsIcon = (color: string = colors.black) => {
+  return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 21.25H7C3.35 21.25 1.25 19.15 1.25 15.5V8.5C1.25 4.85 3.35 2.75 7 2.75H17C20.65 2.75 22.75 4.85 22.75 8.5V11.5C22.75 11.91 22.41 12.25 22 12.25C21.59 12.25 21.25 11.91 21.25 11.5V8.5C21.25 5.64 19.86 4.25 17 4.25H7C4.14 4.25 2.75 5.64 2.75 8.5V15.5C2.75 18.36 4.14 19.75 7 19.75H12C12.41 19.75 12.75 20.09 12.75 20.5C12.75 20.91 12.41 21.25 12 21.25Z" fill=${color}/>
+  <path d="M11.9988 12.87C11.1588 12.87 10.3088 12.61 9.6588 12.08L6.5288 9.57996C6.2088 9.31996 6.14881 8.84997 6.4088 8.52997C6.66881 8.20997 7.13879 8.15997 7.45879 8.40997L10.5888 10.91C11.3488 11.52 12.6388 11.52 13.3988 10.91L16.5288 8.40997C16.8488 8.14997 17.3188 8.19997 17.5788 8.52997C17.8388 8.84997 17.7888 9.32996 17.4588 9.57996L14.3288 12.08C13.6888 12.61 12.8388 12.87 11.9988 12.87Z" fill=${color}/>
+  <path d="M15.8196 21.7801C15.4396 21.7801 15.0796 21.6401 14.8196 21.3801C14.5096 21.0701 14.3696 20.6201 14.4396 20.1501L14.6296 18.8001C14.6796 18.4501 14.8896 18.0301 15.1396 17.7801L18.6796 14.2401C19.1596 13.7601 19.6296 13.5101 20.1396 13.4601C20.7596 13.4001 21.3796 13.6601 21.9596 14.2401C22.5396 14.8201 22.7996 15.4301 22.7396 16.0601C22.6896 16.5601 22.4296 17.0401 21.9596 17.5201L18.4196 21.0601C18.1696 21.3101 17.7496 21.5201 17.3996 21.5701L16.0495 21.7601C15.9695 21.7701 15.8996 21.7801 15.8196 21.7801ZM20.3096 14.9501C20.2996 14.9501 20.2896 14.9501 20.2796 14.9501C20.1396 14.9601 19.9496 15.0901 19.7396 15.3001L16.1996 18.8401C16.1696 18.8701 16.1196 18.9701 16.1196 19.0101L15.9396 20.2601L17.1896 20.0801C17.2296 20.0701 17.3295 20.0201 17.3595 19.9901L20.8996 16.4501C21.1096 16.2301 21.2396 16.0501 21.2496 15.9101C21.2696 15.7101 21.0696 15.4701 20.8996 15.3001C20.7396 15.1401 20.5096 14.9501 20.3096 14.9501Z" fill=${color}/>
+  <path d="M20.9206 18.2499C20.8506 18.2499 20.7806 18.2399 20.7206 18.2199C19.4006 17.8499 18.3506 16.7999 17.9806 15.4799C17.8706 15.0799 18.1006 14.6699 18.5006 14.5499C18.9006 14.4399 19.3106 14.6699 19.4206 15.0699C19.6506 15.8899 20.3006 16.5399 21.1206 16.7699C21.5206 16.8799 21.7506 17.2999 21.6406 17.6999C21.5506 18.0299 21.2506 18.2499 20.9206 18.2499Z" fill=${color}/>
+  </svg>  
+`;
 };

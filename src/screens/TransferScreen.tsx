@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
 
   businessName: {
     fontSize: 15,
-    fontFamily: "Lato",
+    fontFamily: "PrimarySemiBold",
     marginTop: 10,
     color: colors.secondary,
   },
@@ -270,17 +270,17 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   inputDisplayTxt: {
-    fontFamily: "Lato",
+    fontFamily: "PrimarySemiBold",
     fontSize: 18,
   },
   inputDisplayPh: {
-    fontFamily: "LatoRegular",
-    fontSize: 15,
+    fontFamily: "PrimaryRegular",
+    fontSize: 13,
     opacity: 0.2,
   },
   balance: {
     fontSize: 11,
-    fontFamily: "Lato",
+    fontFamily: "PrimarySemiBold",
     color: colors.lightBlack,
     marginTop: 10,
     marginBottom: 15,
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   val: {
-    fontFamily: "Lato",
+    fontFamily: "PrimarySemiBold",
     color: colors.primary,
   },
   inputBtnSend: {
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   sendTxt: {
-    fontFamily: "Lato",
+    fontFamily: "PrimarySemiBold",
     color: colors.secondary,
   },
 });

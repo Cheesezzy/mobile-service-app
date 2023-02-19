@@ -4,7 +4,13 @@ import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 import colors from "../config/colors";
 import { StatusBar } from "expo-status-bar";
-import { earningIcon, frontIcon } from "../../assets/icons/icons";
+import {
+  callUsIcon,
+  chatUsIcon,
+  earningIcon,
+  emailUsIcon,
+  frontIcon,
+} from "../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
 import HeaderTitle from "../components/HeaderTitle";
 
@@ -31,12 +37,14 @@ const SupportScreen = () => {
         >
           <View style={styles.itemContainer}>
             <View style={styles.iconFlex}>
-              <SvgXml
-                style={styles.icon}
-                xml={earningIcon()}
-                width="21"
-                height="22"
-              />
+              <View style={styles.iconCon}>
+                <SvgXml
+                  style={styles.icon}
+                  xml={callUsIcon()}
+                  width="16"
+                  height="16"
+                />
+              </View>
               <Text
                 style={[
                   styles.menuItem,
@@ -66,12 +74,14 @@ const SupportScreen = () => {
         >
           <View style={styles.itemContainer}>
             <View style={styles.iconFlex}>
-              <SvgXml
-                style={styles.icon}
-                xml={earningIcon()}
-                width="21"
-                height="22"
-              />
+              <View style={styles.iconCon}>
+                <SvgXml
+                  style={styles.icon}
+                  xml={chatUsIcon()}
+                  width="16"
+                  height="16"
+                />
+              </View>
               <Text
                 style={[
                   styles.menuItem,
@@ -101,12 +111,14 @@ const SupportScreen = () => {
         >
           <View style={styles.itemContainer}>
             <View style={styles.iconFlex}>
-              <SvgXml
-                style={styles.icon}
-                xml={earningIcon()}
-                width="21"
-                height="22"
-              />
+              <View style={styles.iconCon}>
+                <SvgXml
+                  style={styles.icon}
+                  xml={emailUsIcon()}
+                  width="16"
+                  height="16"
+                />
+              </View>
               <Text
                 style={[
                   styles.menuItem,
@@ -158,14 +170,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
   },
+  iconCon: {
+    width: 25,
+    height: 25,
+    padding: 10,
+    marginRight: 15,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.greyLight,
+  },
   icon: {
     position: "relative",
-    top: 1.5,
-    marginRight: 15,
   },
   goTo: {
     position: "relative",
-    left: 15,
   },
 });
 

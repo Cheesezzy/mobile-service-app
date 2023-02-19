@@ -341,7 +341,7 @@ const ProfileScreen = ({ navigation, route }: any) => {
                 <View style={styles.aboutItem}>
                   <View style={styles.aboutItemIcon}>
                     <SvgXml
-                      xml={profileIcon(colors.primary)}
+                      xml={profileIcon("", "")}
                       width="22"
                       height="22"
                       onPress={() => navigation.goBack()}

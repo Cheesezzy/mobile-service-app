@@ -43,7 +43,7 @@ import { GoogleSearch } from "../components/GoogleSearch";
 import SlidesContainer from "../components/SlidesContainer";
 import BusinessEnroll from "../components/BusinessEnroll";
 import TransferScreen from "../screens/TransferScreen";
-import PayScreen from "../screens/PayScreen";
+import PayScreen from "../screens/Payments & Wallets/PayScreen";
 import Slider from "../components/Slider";
 import CategoriesScreen from "../screens/CategoriesScreen";
 import PhoneScreen from "../screens/PhoneScreen";
@@ -52,6 +52,9 @@ import GatedScreen from "../screens/GatedScreen";
 import AccountSettings from "../screens/AccountSettings";
 import ImageScreen from "../components/ShowImage";
 import MoreScreen from "../screens/MoreScreen";
+import FundScreen from "../screens/Payments & Wallets/FundScreen";
+import PayStatScreen from "../screens/Payments & Wallets/PayStatScreen";
+import TransactionHistory from "../screens/Payments & Wallets/TransactionHistory";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -291,6 +294,30 @@ const StackNavigator = () => {
         component={ImageScreen}
         options={{
           title: "ImageScreen",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Fund"
+        component={FundScreen}
+        options={{
+          title: "Fund",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="PayStatus"
+        component={PayStatScreen}
+        options={{
+          title: "PayStatus",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Transaction History"
+        component={TransactionHistory}
+        options={{
+          title: "Transaction His",
           headerShown: false,
         }}
       />

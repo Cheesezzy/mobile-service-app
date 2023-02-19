@@ -7,13 +7,12 @@ import {
   View,
 } from "react-native";
 import React, { useRef, useState } from "react";
-import { Paystack, paystackProps } from "react-native-paystack-webview";
 import { PayWithFlutterwave } from "flutterwave-react-native";
-import colors from "../config/colors";
+import colors from "../../config/colors";
 import { useSelector } from "react-redux";
-import { handleSwitchTheme } from "../../provider/themeSlice";
-import { fundAccount } from "../../api/database";
-import { auth, db } from "../../firebaseConfig";
+import { handleSwitchTheme } from "../../../provider/themeSlice";
+import { fundAccount } from "../../../api/database";
+import { auth, db } from "../../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { doc } from "firebase/firestore";

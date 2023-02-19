@@ -6,11 +6,7 @@ import { doc } from "firebase/firestore";
 import { auth, db } from "../../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
-import {
-  addCommas,
-  checkRole,
-  hideString,
-} from "../../../api/customHooks/generalHooks";
+import { hideString } from "../../../api/customHooks/generalHooks";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../../provider/themeSlice";
 import { StatusBar } from "expo-status-bar";
@@ -92,23 +88,28 @@ const PaymentsScreen = ({ navigation }: any) => {
         </View>
 
         <View style={styles.moneyOptions}>
-          <TouchableOpacity style={styles.moneyOption}>
-            <SvgXml xml={receiveMoneyIcon()} width="21" height="21" />
-            <Text style={styles.moneyOptionTxt}>Deposit</Text>
+          <TouchableOpacity
+            style={[styles.moneyOptionBtnWire, { marginRight: 10 }]}
+            onPress={() => navigation.navigate("PayStatus")}
+          >
+            <SvgXml xml={withdrawMoneyIcon()} width="18" height="18" />
+            <Text style={[styles.moneyOptionTxt, { color: colors.primary }]}>
+              Withdraw
+            </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.moneyOption}>
-            <SvgXml xml={withdrawMoneyIcon()} width="21" height="21" />
-            <Text style={styles.moneyOptionTxt}>Withdraw</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.moneyOption}>
-            <SvgXml xml={transferMoneyIcon()} width="21" height="21" />
-            <Text style={styles.moneyOptionTxt}>Transfer</Text>
+          <TouchableOpacity
+            style={styles.moneyOptionBtn}
+            onPress={() => navigation.navigate("Fund")}
+          >
+            <SvgXml xml={receiveMoneyIcon()} width="18" height="18" />
+            <Text style={[styles.moneyOptionTxt, { color: colors.darkTxt }]}>
+              Fund
+            </Text>
           </TouchableOpacity>
         </View>
 
-        <View style={styles.fundMethods}>
+        <View style={styles.history}>
           <Text
             style={[
               styles.pmSecTxt,
@@ -120,123 +121,9 @@ const PaymentsScreen = ({ navigation }: any) => {
             Transaction History
           </Text>
 
-          <TouchableOpacity
-            style={styles.fundBank}
-            onPress={() =>
-              navigation.navigate("Pay", {
-                method: "account_bank",
-              })
-            }
-          >
-            <SvgXml
-              style={styles.icon}
-              xml={bankIcon("")}
-              width="21"
-              height="21"
-            />
-            <Text
-              style={[
-                styles.pmTxt,
-                {
-                  color: theme ? colors.black : colors.darkTxt,
-                },
-              ]}
-            >
-              Bank Transfer
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.fundCard}
-            onPress={() =>
-              navigation.navigate("Pay", {
-                method: "card",
-              })
-            }
-          >
-            <SvgXml
-              style={styles.icon}
-              xml={cardIcon("")}
-              width="21"
-              height="21"
-            />
-            <Text
-              style={[
-                styles.pmTxt,
-                {
-                  color: theme ? colors.black : colors.darkTxt,
-                },
-              ]}
-            >
-              Debit/Credit card
-            </Text>
-          </TouchableOpacity>
+          <Text style={styles.viewAll}>View all</Text>
         </View>
 
-        {/*<View style={styles.fundMethods}>
-          <Text
-            style={[
-              styles.pmSecTxt,
-              {
-                color: theme ? colors.black : colors.darkTxt,
-              },
-            ]}
-          >
-            Fund Wallet
-          </Text>
-
-          <TouchableOpacity
-            style={styles.fundBank}
-            onPress={() =>
-              navigation.navigate("Pay", {
-                method: "account_bank",
-              })
-            }
-          >
-            <SvgXml
-              style={styles.icon}
-              xml={bankIcon("")}
-              width="21"
-              height="21"
-            />
-            <Text
-              style={[
-                styles.pmTxt,
-                {
-                  color: theme ? colors.black : colors.darkTxt,
-                },
-              ]}
-            >
-              Bank Transfer
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.fundCard}
-            onPress={() =>
-              navigation.navigate("Pay", {
-                method: "card",
-              })
-            }
-          >
-            <SvgXml
-              style={styles.icon}
-              xml={cardIcon("")}
-              width="21"
-              height="21"
-            />
-            <Text
-              style={[
-                styles.pmTxt,
-                {
-                  color: theme ? colors.black : colors.darkTxt,
-                },
-              ]}
-            >
-              Debit/Credit card
-            </Text>
-          </TouchableOpacity>
-        </View>*/}
         <StatusBar style={theme ? "dark" : "light"} />
       </View>
     </>
@@ -292,40 +179,51 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
   },
-  moneyOption: {
+  moneyOptionBtn: {
+    width: 90,
+    height: 30,
+    backgroundColor: colors.black,
+    borderRadius: 5,
+    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
+    alignSelf: "center",
+    marginTop: 10,
+  },
+  moneyOptionBtnWire: {
+    width: 90,
+    height: 30,
+    borderWidth: 1,
+    borderColor: colors.black,
+    borderRadius: 5,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    paddingHorizontal: 10,
+    marginTop: 10,
   },
   moneyOptionTxt: {
     fontSize: 12,
     fontFamily: "PrimaryRegular",
     textAlign: "center",
+    marginLeft: 5,
   },
-  fundMethods: {
-    marginTop: 20,
-  },
-  fundBank: {
+  history: {
+    marginTop: 30,
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    padding: 15,
-    paddingLeft: 0,
-    borderBottomColor: colors.grey,
-    borderBottomWidth: 1,
   },
-  fundCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 15,
-    paddingLeft: 0,
-    borderBottomColor: colors.grey,
-    borderBottomWidth: 1,
-  },
-  icon: {
-    marginRight: 10,
+  viewAll: {
+    fontSize: 12,
+    fontFamily: "PrimaryRegular",
+    textDecorationLine: "underline",
+    bottom: 1,
   },
   pmSecTxt: {
     fontSize: 18,
     fontFamily: "PrimarySemiBold",
-    marginBottom: 15,
   },
   pmTxt: {
     fontFamily: "PrimaryRegular",
