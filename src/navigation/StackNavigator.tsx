@@ -10,7 +10,7 @@ import NegoScreen from "../screens/NegoScreen";
 import HustleScreen from "../screens/HustleScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import AboutScreen from "../screens/AboutScreen";
-import AdScreen from "../screens/AdScreen";
+import PromotionScreen from "../screens/PromotionScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import SupportScreen from "../screens/SupportScreen";
 import SearchScreen from "../screens/SearchScreen";
@@ -148,10 +148,10 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="Ad"
-        component={AdScreen}
+        name="Promotion"
+        component={PromotionScreen}
         options={{
-          title: "Ad",
+          title: "Promotion",
           headerShown: false,
         }}
       />

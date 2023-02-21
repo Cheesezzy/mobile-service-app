@@ -159,6 +159,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 15,
     marginBottom: 10,
+    borderRadius: 10,
   },
   iconFlex: {
     flexDirection: "row",
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
     position: "relative",
     top: 4,
     fontFamily: "PrimaryRegular",
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: "600",
   },
   iconCon: {

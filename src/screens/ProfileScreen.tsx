@@ -10,12 +10,13 @@ import React, { useEffect, useState } from "react";
 import colors from "../config/colors";
 import { SvgXml } from "react-native-svg";
 import {
+  addIcon,
   backIcon,
   levelIcon,
   locationIcon,
   profileIcon,
 } from "../../assets/icons/icons";
-import { Avatar } from "@rneui/themed";
+import { Avatar, Tab } from "@rneui/themed";
 import { StatusBar } from "expo-status-bar";
 import { collection, doc } from "firebase/firestore";
 import { auth, db, store } from "../../firebaseConfig";
@@ -33,6 +34,9 @@ import Geocoder from "react-native-geocoding";
 import * as ImagePicker from "expo-image-picker";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { addImage } from "../../assets/svgs/svgs";
+import HeaderTitle from "../components/HeaderTitle";
+import { Rating } from "react-native-ratings";
+import { TabView } from "@rneui/base";
 
 const ProfileScreen = ({ navigation, route }: any) => {
   const { business } = route.params;
@@ -67,6 +71,7 @@ const ProfileScreen = ({ navigation, route }: any) => {
   const [locationName, setLocationName] = useState<any>(null);
   const [image, setImage] = useState<any>(null);
   const [imageNum, setImageNum] = useState<any>(null);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     if (!business) {
@@ -181,45 +186,38 @@ const ProfileScreen = ({ navigation, route }: any) => {
   const theme = selector.payload.theme.value;
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: theme ? colors.secondary : colors.black,
-        },
-      ]}
-    >
-      <ScrollView style={styles.body}>
+    <>
+      <HeaderTitle title="Profile" profileURL="" user="" />
+
+      <ScrollView
+        style={[
+          styles.container,
+          {
+            backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+          },
+        ]}
+      >
         <View
           style={[
-            styles.flexHeader,
+            styles.header,
             {
               backgroundColor: theme ? colors.secondary : colors.blackSmoke,
             },
           ]}
         >
-          <TouchableOpacity style={styles.goBack}>
-            <SvgXml
-              xml={backIcon(theme ? colors.black : colors.darkTxt)}
-              width="22"
-              height="22"
-              onPress={() => navigation.goBack()}
-            />
-          </TouchableOpacity>
-
+          <Avatar
+            size={80}
+            rounded
+            source={
+              businessUser?.profilePic
+                ? {
+                    uri: businessUser?.profilePic,
+                  }
+                : require("../.././assets/blankProfilePic.png")
+            }
+            containerStyle={styles.avatar}
+          />
           <View>
-            <Avatar
-              size={90}
-              rounded
-              source={
-                businessUser?.profilePic
-                  ? {
-                      uri: businessUser?.profilePic,
-                    }
-                  : require("../.././assets/blankProfilePic.png")
-              }
-              containerStyle={styles.avatar}
-            />
             <Text
               style={[
                 styles.profileName,
@@ -231,515 +229,424 @@ const ProfileScreen = ({ navigation, route }: any) => {
               {business ? business?.name : user?.name}
             </Text>
 
-            {checkRole(user) ? (
-              business && business.userId !== User?.uid ? (
-                <View style={styles.choiceBtnCon}>
-                  <TouchableOpacity
-                    style={[styles.choiceBtnWire, { marginRight: 10 }]}
-                    onPress={() =>
-                      navigation.navigate("NegoDisplay", {
-                        personId: business.userId,
-                        name: businessUser?.name,
-                      })
-                    }
-                  >
-                    <Text
-                      style={[styles.choiceBtnTxt, { color: colors.primary }]}
-                    >
-                      Negotiate
-                    </Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={styles.choiceBtn}
-                    onPress={() =>
-                      navigation.navigate("Transfer", {
-                        business: business,
-                        businessUser,
-                      })
-                    }
-                  >
-                    <Text style={styles.choiceBtnTxt}>Hire</Text>
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                <TouchableOpacity
-                  style={styles.choiceBtnWire}
-                  onPress={() =>
-                    navigation.navigate("AccountSettings", {
-                      user,
-                    })
-                  }
+            {business && (
+              <Text
+                style={[
+                  styles.manager,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                <Text
+                  style={{
+                    fontFamily: "PrimarySemiBold",
+                  }}
                 >
-                  <Text
-                    style={[styles.choiceBtnTxt, { color: colors.primary }]}
-                  >
-                    Edit profile
-                  </Text>
-                </TouchableOpacity>
-              )
-            ) : (
+                  Manager:{" "}
+                </Text>
+                {user?.name}
+              </Text>
+            )}
+
+            <Text
+              style={[
+                styles.location,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              <Text
+                style={{
+                  fontFamily: "PrimarySemiBold",
+                }}
+              >
+                Location:{" "}
+              </Text>
+              {locationName && locationName}
+            </Text>
+
+            <View style={styles.rating}>
+              <Rating
+                type="custom"
+                fractions={1}
+                startingValue={business?.rating}
+                readonly
+                imageSize={12}
+                ratingCount={5}
+                ratingColor={colors.primary}
+                tintColor={theme ? colors.secondary : colors.blackSmoke}
+                ratingBackgroundColor="grey"
+              />
+            </View>
+          </View>
+        </View>
+
+        {checkRole(user) ? (
+          business && business.userId !== User?.uid ? (
+            <View style={styles.choiceBtnCon}>
               <TouchableOpacity
-                style={styles.choiceBtnWire}
+                style={[styles.choiceBtnWire, { marginRight: 10 }]}
                 onPress={() =>
-                  navigation.navigate("AccountSettings", {
-                    user,
+                  navigation.navigate("NegoDisplay", {
+                    personId: business.userId,
+                    name: businessUser?.name,
                   })
                 }
               >
                 <Text style={[styles.choiceBtnTxt, { color: colors.primary }]}>
-                  Edit profile
+                  Negotiate
                 </Text>
               </TouchableOpacity>
-            )}
+
+              <TouchableOpacity
+                style={styles.choiceBtn}
+                onPress={() =>
+                  navigation.navigate("Transfer", {
+                    business: business,
+                    businessUser,
+                  })
+                }
+              >
+                <Text style={styles.choiceBtnTxt}>Hire</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <TouchableOpacity
+              style={styles.choiceBtnWire}
+              onPress={() =>
+                navigation.navigate("AccountSettings", {
+                  user,
+                })
+              }
+            >
+              <Text style={[styles.choiceBtnTxt, { color: colors.primary }]}>
+                Edit profile
+              </Text>
+            </TouchableOpacity>
+          )
+        ) : (
+          <TouchableOpacity
+            style={styles.choiceBtnWire}
+            onPress={() =>
+              navigation.navigate("AccountSettings", {
+                user,
+              })
+            }
+          >
+            <Text style={[styles.choiceBtnTxt, { color: colors.primary }]}>
+              Edit profile
+            </Text>
+          </TouchableOpacity>
+        )}
+
+        <View style={styles.stats}>
+          <View style={styles.statsItem}>
+            <Text style={styles.statsItemBigTxt}>2 yrs+</Text>
+            <Text style={styles.statsItemSmTxt}>Experience</Text>
+          </View>
+
+          <View style={styles.statsItem}>
+            <Text style={styles.statsItemBigTxt}>234</Text>
+            <Text style={styles.statsItemSmTxt}>Completed Orders</Text>
+          </View>
+
+          <View style={styles.statsItem}>
+            <Text style={styles.statsItemBigTxt}>30</Text>
+            <Text style={styles.statsItemSmTxt}>Reviews</Text>
           </View>
         </View>
 
-        {business ? (
-          <>
-            <View
-              style={[
-                styles.businessInfoCon,
-                {
-                  backgroundColor: theme ? colors.secondary : colors.blackSmoke,
-                },
-              ]}
-            >
-              <Text
-                style={[
-                  styles.businessInfoConTxt,
+        <View
+          style={{
+            height: 400,
+          }}
+        >
+          <Tab
+            value={index}
+            onChange={(e) => setIndex(e)}
+            indicatorStyle={{
+              backgroundColor: colors.primary,
+              height: 3,
+            }}
+            containerStyle={{
+              backgroundColor: colors.secondarySmoke,
+            }}
+            variant="primary"
+          >
+            <Tab.Item
+              title="About"
+              titleStyle={{
+                color: colors.black,
+                fontSize: 12,
+                fontFamily: "PrimarySemiBold",
+              }}
+            />
+            <Tab.Item
+              title="Gallery"
+              titleStyle={{
+                color: colors.black,
+                fontSize: 12,
+                fontFamily: "PrimarySemiBold",
+              }}
+            />
+            <Tab.Item
+              title="Reviews"
+              titleStyle={{
+                color: colors.black,
+                fontSize: 12,
+                fontFamily: "PrimarySemiBold",
+              }}
+            />
+          </Tab>
+
+          <TabView value={index} onChange={setIndex} animationType="spring">
+            {business && (
+              <>
+                <TabView.Item style={styles.tabSection}>
                   {
-                    color: theme ? colors.black : colors.darkTxt,
-                  },
-                ]}
-              >
-                Business Information
-              </Text>
-
-              <View style={styles.bio}>
-                <Text
-                  style={[
-                    styles.bioTxt,
-                    {
-                      color: theme ? colors.black : colors.darkTxt,
-                    },
-                  ]}
-                >
-                  {/*Rete Technologies is a fast-growing online platform that connects
-              people looking for services with service providers. Our platform
-              uses the searcher's location to suggest service providers who are
-              close to them, making it easy for people to find the services they
-              need quickly and efficiently. Our platform is similar to Fiverr,
-              but with a greater focus on hard skills such as painting and
-  barbering.*/}
-
-                  {business && business?.desc}
-                </Text>
-              </View>
-
-              <View style={styles.about}>
-                <View style={styles.aboutItem}>
-                  <View style={styles.aboutItemIcon}>
-                    <SvgXml
-                      xml={profileIcon("", "")}
-                      width="22"
-                      height="22"
-                      onPress={() => navigation.goBack()}
-                    />
-                  </View>
-                  <View>
-                    <Text style={styles.aboutInfoLabel}>Manager</Text>
-                    <Text
-                      style={[
-                        styles.aboutInfoVal,
-                        {
-                          color: theme ? colors.black : colors.darkTxt,
-                        },
-                      ]}
-                    >
-                      {businessUser?.name}
-                    </Text>
-                  </View>
-                </View>
-
-                <View style={styles.aboutItem}>
-                  <View style={styles.aboutItemIcon}>
-                    <SvgXml
-                      xml={locationIcon(colors.primary)}
-                      width="22"
-                      height="22"
-                      onPress={() => navigation.goBack()}
-                    />
-                  </View>
-                  <View>
-                    <Text style={styles.aboutInfoLabel}>Location</Text>
-                    <Text
-                      style={[
-                        styles.aboutInfoVal,
-                        {
-                          color: theme ? colors.black : colors.darkTxt,
-                        },
-                      ]}
-                    >
-                      {locationName ? locationName : null}
-                    </Text>
-                  </View>
-                </View>
-
-                <View style={styles.aboutItem}>
-                  <View style={styles.aboutItemIcon}>
-                    <SvgXml
-                      xml={levelIcon()}
-                      width="22"
-                      height="22"
-                      onPress={() => navigation.goBack()}
-                    />
-                  </View>
-                  <View>
-                    <Text style={styles.aboutInfoLabel}>Level</Text>
-                    <Text
-                      style={[
-                        styles.aboutInfoVal,
-                        {
-                          color: theme ? colors.black : colors.darkTxt,
-                        },
-                      ]}
-                    >
-                      {business?.level}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-
-            <View
-              style={[
-                styles.galleryCon,
-                {
-                  backgroundColor: theme ? colors.secondary : colors.blackSmoke,
-                },
-              ]}
-            >
-              <Text
-                style={[
-                  styles.galleryConTxt,
-                  {
-                    color: theme ? colors.black : colors.darkTxt,
-                  },
-                ]}
-              >
-                Gallery
-              </Text>
-
-              <ScrollView
-                style={styles.gallery}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-              >
-                {business && business.userId === User?.uid ? (
-                  <>
-                    <TouchableOpacity
-                      onPress={() => pickImage("imgOne")}
-                      style={styles.galleryImgCon}
-                    >
-                      {imageOne && imageOne ? (
-                        <>
-                          <Image
-                            style={styles.galleryImg}
-                            source={{
-                              uri: imageOne.url,
-                            }}
-                            resizeMode="cover"
-                          />
-                        </>
-                      ) : (
-                        <SvgXml
-                          xml={addImage(
-                            theme ? colors.black : colors.darkTxt,
-                            theme ? "#F0F0F0" : colors.black
-                          )}
-                          width={"100%"}
-                          height={"100%"}
-                        />
-                      )}
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => pickImage("imgTwo")}
-                      style={styles.galleryImgCon}
-                    >
-                      {imageTwo && imageTwo ? (
-                        <>
-                          <Image
-                            style={styles.galleryImg}
-                            source={{
-                              uri: imageTwo.url,
-                            }}
-                            resizeMode="cover"
-                          />
-                        </>
-                      ) : (
-                        <SvgXml
-                          xml={addImage(
-                            theme ? colors.black : colors.darkTxt,
-                            theme ? "#F0F0F0" : colors.black
-                          )}
-                          width={"100%"}
-                          height={"100%"}
-                        />
-                      )}
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => pickImage("imgThree")}
-                      style={styles.galleryImgCon}
-                    >
-                      {imageThree && imageThree ? (
-                        <>
-                          <Image
-                            style={styles.galleryImg}
-                            source={{
-                              uri: imageThree.url,
-                            }}
-                            resizeMode="cover"
-                          />
-                        </>
-                      ) : (
-                        <SvgXml
-                          xml={addImage(
-                            theme ? colors.black : colors.darkTxt,
-                            theme ? "#F0F0F0" : colors.black
-                          )}
-                          width={"100%"}
-                          height={"100%"}
-                        />
-                      )}
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => pickImage("imgFour")}
-                      style={[
-                        styles.galleryImgCon,
-                        {
-                          marginRight: 10,
-                        },
-                      ]}
-                    >
-                      {imageFour && imageFour ? (
-                        <>
-                          <Image
-                            style={styles.galleryImg}
-                            source={{
-                              uri: imageFour.url,
-                            }}
-                            resizeMode="contain"
-                          />
-                        </>
-                      ) : (
-                        <SvgXml
-                          xml={addImage(
-                            theme ? colors.black : colors.darkTxt,
-                            theme ? "#F0F0F0" : colors.black
-                          )}
-                          width={"100%"}
-                          height={"100%"}
-                        />
-                      )}
-                    </TouchableOpacity>
-                  </>
-                ) : (
-                  <>
-                    <TouchableOpacity
-                      onPress={
-                        imageOne && imageOne
-                          ? () =>
-                              navigation.navigate("ImageScreen", {
-                                image: imageOne.url,
-                              })
-                          : () => null
-                      }
-                      style={[
-                        styles.galleryImgCon,
-                        { backgroundColor: theme ? "#F0F0F0" : colors.black },
-                      ]}
-                    >
-                      {imageOne && imageOne && (
-                        <>
-                          <Image
-                            style={styles.galleryImg}
-                            source={{
-                              uri: imageOne.url,
-                            }}
-                            resizeMode="cover"
-                          />
-                        </>
-                      )}
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={
-                        imageTwo && imageTwo
-                          ? () =>
-                              navigation.navigate("ImageScreen", {
-                                image: imageTwo.url,
-                              })
-                          : () => null
-                      }
-                      style={[
-                        styles.galleryImgCon,
-                        { backgroundColor: theme ? "#F0F0F0" : colors.black },
-                      ]}
-                    >
-                      {imageTwo && imageTwo && (
-                        <>
-                          <Image
-                            style={styles.galleryImg}
-                            source={{
-                              uri: imageTwo.url,
-                            }}
-                            resizeMode="cover"
-                          />
-                        </>
-                      )}
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={
-                        imageThree && imageThree
-                          ? () =>
-                              navigation.navigate("ImageScreen", {
-                                image: imageThree.url,
-                              })
-                          : () => null
-                      }
-                      style={[
-                        styles.galleryImgCon,
-                        { backgroundColor: theme ? "#F0F0F0" : colors.black },
-                      ]}
-                    >
-                      {imageThree && imageThree && (
-                        <>
-                          <Image
-                            style={styles.galleryImg}
-                            source={{
-                              uri: imageThree.url,
-                            }}
-                            resizeMode="cover"
-                          />
-                        </>
-                      )}
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={
-                        imageFour && imageFour
-                          ? () =>
-                              navigation.navigate("ImageScreen", {
-                                image: imageFour.url,
-                              })
-                          : () => null
-                      }
-                      style={[
-                        styles.galleryImgCon,
-                        {
-                          backgroundColor: theme ? "#F0F0F0" : colors.black,
-                          marginRight: 10,
-                        },
-                      ]}
-                    >
-                      {imageFour && imageFour && (
-                        <>
-                          <Image
-                            style={styles.galleryImg}
-                            source={{
-                              uri: imageFour.url,
-                            }}
-                            resizeMode="contain"
-                          />
-                        </>
-                      )}
-                    </TouchableOpacity>
-                  </>
-                )}
-              </ScrollView>
-            </View>
-
-            <View
-              style={[
-                styles.reviewsCon,
-                {
-                  backgroundColor: theme ? colors.secondary : colors.blackSmoke,
-                },
-              ]}
-            >
-              <Text
-                style={[
-                  styles.reviewsConTxt,
-                  {
-                    color: theme ? colors.black : colors.darkTxt,
-                  },
-                ]}
-              >
-                Reviews
-              </Text>
-
-              <View style={styles.reviews}></View>
-            </View>
-          </>
-        ) : (
-          <>
-            <View
-              style={[
-                styles.businessInfoCon,
-                {
-                  backgroundColor: theme ? colors.secondary : colors.blackSmoke,
-                },
-              ]}
-            >
-              <Text
-                style={[
-                  styles.businessInfoConTxt,
-                  {
-                    color: theme ? colors.black : colors.darkTxt,
-                  },
-                ]}
-              >
-                Business Information
-              </Text>
-
-              <View style={styles.about}>
-                <View style={styles.aboutItem}>
-                  <View style={styles.aboutItemIcon}>
-                    <SvgXml
-                      xml={locationIcon(colors.primary)}
-                      width="22"
-                      height="22"
-                      onPress={() => navigation.goBack()}
-                    />
-                  </View>
-                  <View>
-                    <Text style={styles.aboutInfoLabel}>Location</Text>
-                    <Text
-                      style={[
-                        styles.aboutInfoVal,
-                        {
-                          color: theme ? colors.black : colors.darkTxt,
-                        },
-                      ]}
-                    >
-                      {locationName ? locationName : null}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </>
-        )}
+                    <View style={styles.bio}>
+                      <Text
+                        style={[
+                          styles.bioTxt,
+                          {
+                            color: theme ? colors.black : colors.darkTxt,
+                          },
+                        ]}
+                      >
+                        {business?.desc}
+                      </Text>
+                    </View>
+                  }
+                </TabView.Item>
+                <TabView.Item style={styles.tabSection}>
+                  {business.userId === User?.uid ? (
+                    <View style={styles.gallery}>
+                      <TouchableOpacity
+                        onPress={() => pickImage("imgOne")}
+                        style={styles.galleryImgCon}
+                      >
+                        {imageOne && imageOne ? (
+                          <>
+                            <Image
+                              style={styles.galleryImg}
+                              source={{
+                                uri: imageOne.url,
+                              }}
+                              resizeMode="cover"
+                            />
+                          </>
+                        ) : (
+                          <View style={[styles.galleryImg, styles.addPhoto]}>
+                            <SvgXml xml={addIcon()} width={20} height={20} />
+                            <Text style={{ color: "#454647" }}>Add photo</Text>
+                          </View>
+                        )}
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => pickImage("imgTwo")}
+                        style={styles.galleryImgCon}
+                      >
+                        {imageTwo && imageTwo ? (
+                          <>
+                            <Image
+                              style={styles.galleryImg}
+                              source={{
+                                uri: imageTwo.url,
+                              }}
+                              resizeMode="cover"
+                            />
+                          </>
+                        ) : (
+                          <View style={[styles.galleryImg, styles.addPhoto]}>
+                            <SvgXml xml={addIcon()} width={20} height={20} />
+                            <Text style={{ color: "#454647" }}>Add photo</Text>
+                          </View>
+                        )}
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => pickImage("imgThree")}
+                        style={styles.galleryImgCon}
+                      >
+                        {imageThree && imageThree ? (
+                          <>
+                            <Image
+                              style={styles.galleryImg}
+                              source={{
+                                uri: imageThree.url,
+                              }}
+                              resizeMode="cover"
+                            />
+                          </>
+                        ) : (
+                          <View style={[styles.galleryImg, styles.addPhoto]}>
+                            <SvgXml xml={addIcon()} width={20} height={20} />
+                            <Text style={{ color: "#454647" }}>Add photo</Text>
+                          </View>
+                        )}
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => pickImage("imgFour")}
+                        style={[
+                          styles.galleryImgCon,
+                          {
+                            marginRight: 10,
+                          },
+                        ]}
+                      >
+                        {imageFour && imageFour ? (
+                          <>
+                            <Image
+                              style={styles.galleryImg}
+                              source={{
+                                uri: imageFour.url,
+                              }}
+                              resizeMode="center"
+                            />
+                          </>
+                        ) : (
+                          <View style={[styles.galleryImg, styles.addPhoto]}>
+                            <SvgXml xml={addIcon()} width={20} height={20} />
+                            <Text style={{ color: "#454647" }}>Add photo</Text>
+                          </View>
+                        )}
+                      </TouchableOpacity>
+                    </View>
+                  ) : (
+                    <View style={styles.gallery}>
+                      <TouchableOpacity
+                        onPress={
+                          imageOne && imageOne
+                            ? () =>
+                                navigation.navigate("ImageScreen", {
+                                  image: imageOne.url,
+                                })
+                            : () => null
+                        }
+                        style={[
+                          styles.galleryImgCon,
+                          {
+                            backgroundColor: theme
+                              ? colors.greyMain
+                              : colors.black,
+                          },
+                        ]}
+                      >
+                        {imageOne && imageOne && (
+                          <>
+                            <Image
+                              style={styles.galleryImg}
+                              source={{
+                                uri: imageOne.url,
+                              }}
+                              resizeMode="cover"
+                            />
+                          </>
+                        )}
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={
+                          imageTwo && imageTwo
+                            ? () =>
+                                navigation.navigate("ImageScreen", {
+                                  image: imageTwo.url,
+                                })
+                            : () => null
+                        }
+                        style={[
+                          styles.galleryImgCon,
+                          { backgroundColor: theme ? "#F0F0F0" : colors.black },
+                        ]}
+                      >
+                        {imageTwo && imageTwo && (
+                          <>
+                            <Image
+                              style={styles.galleryImg}
+                              source={{
+                                uri: imageTwo.url,
+                              }}
+                              resizeMode="cover"
+                            />
+                          </>
+                        )}
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={
+                          imageThree && imageThree
+                            ? () =>
+                                navigation.navigate("ImageScreen", {
+                                  image: imageThree.url,
+                                })
+                            : () => null
+                        }
+                        style={[
+                          styles.galleryImgCon,
+                          { backgroundColor: theme ? "#F0F0F0" : colors.black },
+                        ]}
+                      >
+                        {imageThree && imageThree && (
+                          <>
+                            <Image
+                              style={styles.galleryImg}
+                              source={{
+                                uri: imageThree.url,
+                              }}
+                              resizeMode="cover"
+                            />
+                          </>
+                        )}
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={
+                          imageFour && imageFour
+                            ? () =>
+                                navigation.navigate("ImageScreen", {
+                                  image: imageFour.url,
+                                })
+                            : () => null
+                        }
+                        style={[
+                          styles.galleryImgCon,
+                          {
+                            backgroundColor: theme ? "#F0F0F0" : colors.black,
+                            marginRight: 10,
+                          },
+                        ]}
+                      >
+                        {imageFour && imageFour && (
+                          <>
+                            <Image
+                              style={styles.galleryImg}
+                              source={{
+                                uri: imageFour.url,
+                              }}
+                              resizeMode="center"
+                            />
+                          </>
+                        )}
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </TabView.Item>
+                <TabView.Item style={styles.tabSection}>
+                  <Text>Cart</Text>
+                </TabView.Item>
+              </>
+            )}
+          </TabView>
+        </View>
 
         <View
           style={{
             height: 100,
             width: "100%",
-            backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+            backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
           }}
         />
       </ScrollView>
       <StatusBar style={theme ? "dark" : "light"} />
-    </View>
+    </>
   );
 };
 
@@ -748,30 +655,35 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 15,
+    paddingTop: 0,
   },
-  body: {
-    flex: 1,
-  },
-  flexHeader: {
+  header: {
     width: "100%",
     flexDirection: "row",
+    alignSelf: "center",
     alignItems: "center",
-    justifyContent: "center",
     padding: 15,
-    paddingTop: 40,
-  },
-  goBack: {
-    position: "absolute",
-    left: 15,
+    marginBottom: 5,
+    borderRadius: 5,
   },
   avatar: {
-    alignSelf: "center",
+    marginRight: 20,
   },
   profileName: {
-    fontFamily: "Lato",
-    fontSize: 20,
-    textAlign: "center",
-    marginTop: 10,
+    fontFamily: "PrimarySemiBold",
+    fontSize: 16,
+  },
+  manager: {
+    fontSize: 12,
+    fontFamily: "PrimaryRegular",
+  },
+  location: {
+    fontSize: 12,
+    fontFamily: "PrimaryRegular",
+  },
+  rating: {
+    alignSelf: "flex-start",
   },
   choiceBtnCon: {
     flexDirection: "row",
@@ -804,74 +716,80 @@ const styles = StyleSheet.create({
   choiceBtnTxt: {
     color: colors.secondary,
     fontSize: 12,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
+  },
+  stats: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  statsItem: {
+    height: 75,
+    width: 80,
+    alignItems: "center",
+    backgroundColor: colors.secondary,
+    padding: 10,
+    margin: 5,
+    borderRadius: 5,
+  },
+  statsItemBigTxt: {
+    fontFamily: "PrimarySemiBold",
+    fontSize: 15,
+    textAlign: "center",
+  },
+  statsItemSmTxt: {
+    fontFamily: "PrimaryRegular",
+    fontSize: 12,
+    textAlign: "center",
+  },
+  tabSection: {
+    width: "100%",
   },
   businessInfoCon: {
     paddingTop: 10,
-    padding: 15,
     marginTop: 10,
   },
   businessInfoConTxt: {
-    fontFamily: "Lato",
+    fontFamily: "PrimarySemiBold",
     fontSize: 16,
   },
   bio: {
     marginTop: 15,
   },
   bioTxt: {
-    fontFamily: "LatoRegular",
-  },
-  about: {
-    marginTop: 20,
-  },
-  aboutItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  aboutItemIcon: {
-    marginRight: 12,
-  },
-  aboutInfoLabel: {
-    fontFamily: "LatoRegular",
-    fontSize: 11,
-    color: colors.primary,
-  },
-  aboutInfoVal: {
-    fontFamily: "Lato",
-    marginTop: 5,
-  },
-  galleryCon: {
-    padding: 15,
-    marginTop: 10,
-  },
-  galleryConTxt: {
-    fontFamily: "Lato",
-    fontSize: 16,
+    fontFamily: "PrimaryRegular",
+    fontSize: 12,
   },
   gallery: {
-    height: 95,
-    flexDirection: "row",
     flexWrap: "wrap",
     padding: 10,
-    overflow: "hidden",
+    paddingTop: 20,
   },
   galleryImgCon: {
-    height: 80,
-    width: 80,
+    height: 100,
+    width: "46%",
     margin: 5,
+    borderRadius: 5,
+  },
+  addPhoto: {
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: colors.greyMid,
+    borderStyle: "dashed",
   },
   galleryImg: {
-    height: 80,
-    width: 80,
+    height: "100%",
+    width: "100%",
+    borderRadius: 5,
   },
   reviewsCon: {
-    padding: 15,
     marginTop: 10,
   },
   reviewsConTxt: {
-    fontFamily: "Lato",
-    fontSize: 16,
+    fontFamily: "PrimarySemiBold",
+    fontSize: 12,
   },
   reviews: {
     flexDirection: "row",

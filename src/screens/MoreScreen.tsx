@@ -72,27 +72,39 @@ const MoreScreen = ({ navigation }: any) => {
                         <SvgXml
                           style={styles.icon}
                           xml={earningIcon()}
-                          width="16"
-                          height="16"
+                          width="18"
+                          height="18"
                         />
                       </View>
-                      <Text
-                        style={[
-                          styles.menuItem,
-                          {
-                            color: theme ? colors.black : colors.darkTxt,
-                          },
-                        ]}
-                      >
-                        Earnings
-                      </Text>
+                      <View style={styles.menuItem}>
+                        <Text
+                          style={[
+                            styles.menuItemBig,
+                            {
+                              color: theme ? colors.black : colors.darkTxt,
+                            },
+                          ]}
+                        >
+                          Earnings
+                        </Text>
+                        <Text
+                          style={[
+                            styles.menuItemSm,
+                            {
+                              color: theme ? colors.greyMain : colors.darkTxt,
+                            },
+                          ]}
+                        >
+                          How much your business has made
+                        </Text>
+                      </View>
                     </View>
                     <View>
                       <SvgXml
                         style={styles.icon}
                         xml={frontIcon()}
-                        width="16"
-                        height="16"
+                        width="18"
+                        height="18"
                       />
                     </View>
                   </View>
@@ -109,27 +121,39 @@ const MoreScreen = ({ navigation }: any) => {
                         <SvgXml
                           style={styles.icon}
                           xml={analyticsIcon()}
-                          width="16"
-                          height="16"
+                          width="18"
+                          height="18"
                         />
                       </View>
-                      <Text
-                        style={[
-                          styles.menuItem,
-                          {
-                            color: theme ? colors.black : colors.darkTxt,
-                          },
-                        ]}
-                      >
-                        Analytics
-                      </Text>
+                      <View style={styles.menuItem}>
+                        <Text
+                          style={[
+                            styles.menuItemBig,
+                            {
+                              color: theme ? colors.black : colors.darkTxt,
+                            },
+                          ]}
+                        >
+                          Analytics
+                        </Text>
+                        <Text
+                          style={[
+                            styles.menuItemSm,
+                            {
+                              color: theme ? colors.greyMain : colors.darkTxt,
+                            },
+                          ]}
+                        >
+                          See how well your business is doing
+                        </Text>
+                      </View>
                     </View>
                     <View>
                       <SvgXml
                         style={styles.icon}
                         xml={frontIcon()}
-                        width="16"
-                        height="16"
+                        width="18"
+                        height="18"
                       />
                     </View>
                   </View>
@@ -138,7 +162,7 @@ const MoreScreen = ({ navigation }: any) => {
                 <TouchableOpacity
                   activeOpacity={0.6}
                   // @ts-ignore
-                  onPress={() => navigation.navigate("Ad")}
+                  onPress={() => navigation.navigate("Promotion")}
                 >
                   <View style={styles.itemContainer}>
                     <View style={styles.iconFlex}>
@@ -146,27 +170,39 @@ const MoreScreen = ({ navigation }: any) => {
                         <SvgXml
                           style={styles.icon}
                           xml={adIcon("", "")}
-                          width="16"
-                          height="16"
+                          width="18"
+                          height="18"
                         />
                       </View>
-                      <Text
-                        style={[
-                          styles.menuItem,
-                          {
-                            color: theme ? colors.black : colors.darkTxt,
-                          },
-                        ]}
-                      >
-                        Rete Ads
-                      </Text>
+                      <View style={styles.menuItem}>
+                        <Text
+                          style={[
+                            styles.menuItemBig,
+                            {
+                              color: theme ? colors.black : colors.darkTxt,
+                            },
+                          ]}
+                        >
+                          Promotions
+                        </Text>
+                        <Text
+                          style={[
+                            styles.menuItemSm,
+                            {
+                              color: theme ? colors.greyMain : colors.darkTxt,
+                            },
+                          ]}
+                        >
+                          Boost your business' visibility
+                        </Text>
+                      </View>
                     </View>
                     <View>
                       <SvgXml
                         style={styles.icon}
                         xml={frontIcon()}
-                        width="16"
-                        height="16"
+                        width="18"
+                        height="18"
                       />
                     </View>
                   </View>
@@ -196,27 +232,39 @@ const MoreScreen = ({ navigation }: any) => {
                       <SvgXml
                         style={styles.icon}
                         xml={settingsIcon()}
-                        width="16"
-                        height="16"
+                        width="18"
+                        height="18"
                       />
                     </View>
-                    <Text
-                      style={[
-                        styles.menuItem,
-                        {
-                          color: theme ? colors.black : colors.darkTxt,
-                        },
-                      ]}
-                    >
-                      Settings
-                    </Text>
+                    <View style={styles.menuItem}>
+                      <Text
+                        style={[
+                          styles.menuItemBig,
+                          {
+                            color: theme ? colors.black : colors.darkTxt,
+                          },
+                        ]}
+                      >
+                        Settings
+                      </Text>
+                      <Text
+                        style={[
+                          styles.menuItemSm,
+                          {
+                            color: theme ? colors.greyMain : colors.darkTxt,
+                          },
+                        ]}
+                      >
+                        Tweak things to your preferences
+                      </Text>
+                    </View>
                   </View>
                   <View>
                     <SvgXml
                       style={styles.icon}
                       xml={frontIcon()}
-                      width="16"
-                      height="16"
+                      width="18"
+                      height="18"
                     />
                   </View>
                 </View>
@@ -233,27 +281,39 @@ const MoreScreen = ({ navigation }: any) => {
                       <SvgXml
                         style={styles.icon}
                         xml={payAndWalletIcon()}
-                        width="16"
-                        height="16"
+                        width="18"
+                        height="18"
                       />
                     </View>
-                    <Text
-                      style={[
-                        styles.menuItem,
-                        {
-                          color: theme ? colors.black : colors.darkTxt,
-                        },
-                      ]}
-                    >
-                      Payments & Wallet
-                    </Text>
+                    <View style={styles.menuItem}>
+                      <Text
+                        style={[
+                          styles.menuItemBig,
+                          {
+                            color: theme ? colors.black : colors.darkTxt,
+                          },
+                        ]}
+                      >
+                        Payments and Wallet
+                      </Text>
+                      <Text
+                        style={[
+                          styles.menuItemSm,
+                          {
+                            color: theme ? colors.greyMain : colors.darkTxt,
+                          },
+                        ]}
+                      >
+                        Manage payment methods & wallet
+                      </Text>
+                    </View>
                   </View>
                   <View>
                     <SvgXml
                       style={styles.icon}
                       xml={frontIcon()}
-                      width="16"
-                      height="16"
+                      width="18"
+                      height="18"
                     />
                   </View>
                 </View>
@@ -269,21 +329,33 @@ const MoreScreen = ({ navigation }: any) => {
                       <SvgXml
                         style={styles.icon}
                         xml={inviteIcon()}
-                        width="16"
-                        height="16"
+                        width="18"
+                        height="18"
                       />
                     </View>
 
-                    <Text
-                      style={[
-                        styles.menuItem,
-                        {
-                          color: theme ? colors.black : colors.darkTxt,
-                        },
-                      ]}
-                    >
-                      Invite friends
-                    </Text>
+                    <View style={styles.menuItem}>
+                      <Text
+                        style={[
+                          styles.menuItemBig,
+                          {
+                            color: theme ? colors.black : colors.darkTxt,
+                          },
+                        ]}
+                      >
+                        Invite Friends
+                      </Text>
+                      <Text
+                        style={[
+                          styles.menuItemSm,
+                          {
+                            color: theme ? colors.greyMain : colors.darkTxt,
+                          },
+                        ]}
+                      >
+                        Refer friends and earn rewards
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -299,27 +371,39 @@ const MoreScreen = ({ navigation }: any) => {
                       <SvgXml
                         style={styles.icon}
                         xml={supportIcon()}
-                        width="16"
-                        height="16"
+                        width="18"
+                        height="18"
                       />
                     </View>
-                    <Text
-                      style={[
-                        styles.menuItem,
-                        {
-                          color: theme ? colors.black : colors.darkTxt,
-                        },
-                      ]}
-                    >
-                      Support
-                    </Text>
+                    <View style={styles.menuItem}>
+                      <Text
+                        style={[
+                          styles.menuItemBig,
+                          {
+                            color: theme ? colors.black : colors.darkTxt,
+                          },
+                        ]}
+                      >
+                        Support
+                      </Text>
+                      <Text
+                        style={[
+                          styles.menuItemSm,
+                          {
+                            color: theme ? colors.greyMain : colors.darkTxt,
+                          },
+                        ]}
+                      >
+                        Get support and send feedback
+                      </Text>
+                    </View>
                   </View>
                   <View>
                     <SvgXml
                       style={styles.icon}
                       xml={frontIcon()}
-                      width="16"
-                      height="16"
+                      width="18"
+                      height="18"
                     />
                   </View>
                 </View>
@@ -328,7 +412,7 @@ const MoreScreen = ({ navigation }: any) => {
           </ScrollView>
         )}
 
-        <View style={{ height: 50, width: "100%" }} />
+        <View style={{ height: 80, width: "100%" }} />
         <Navigation navigation={navigation} />
         <StatusBar style="auto" />
       </View>
@@ -354,36 +438,46 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   section: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
   itemContainer: {
     flexDirection: "row",
+    backgroundColor: colors.secondary,
     justifyContent: "space-between",
-    paddingHorizontal: 5,
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    marginBottom: 10,
+    borderRadius: 10,
   },
   iconFlex: {
     flexDirection: "row",
   },
   menuItem: {
     position: "relative",
-    top: 4,
+  },
+  menuItemBig: {
     fontFamily: "PrimaryRegular",
     fontSize: 14,
     fontWeight: "600",
-    marginBottom: 30,
+  },
+  menuItemSm: {
+    fontFamily: "PrimaryRegular",
+    fontSize: 10.5,
+    fontWeight: "600",
+    color: colors.greyMid,
   },
   iconCon: {
-    width: 25,
-    height: 25,
+    width: 34,
+    height: 34,
     padding: 10,
     marginRight: 15,
-    borderRadius: 25,
+    borderRadius: 34,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: colors.greyLight,
   },
   icon: {
-    position: "relative",
     alignSelf: "center",
   },
 });

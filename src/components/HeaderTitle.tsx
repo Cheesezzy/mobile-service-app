@@ -417,6 +417,62 @@ function HeaderTitle({ title, profileURL, user }: Props) {
           </TouchableOpacity>
         </View>
       )}
+      {route.name === "Profile" && (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            paddingHorizontal: 10,
+          }}
+        >
+          <TouchableOpacity style={{}}>
+            <SvgXml
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
+              width="22"
+              height="22"
+              onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "PrimarySemiBold",
+                fontSize: 20,
+                alignSelf: "center",
+                color: theme ? colors.black : colors.darkTxt,
+              }}
+            >
+              Profile
+            </Text>
+          </View>
+          <TouchableOpacity
+            // @ts-ignore
+            onPress={() => navigation.navigate("Notifications")}
+          >
+            <SvgXml xml={notifIcon()} width="21" height="21" />
+            {notifUnread ? (
+              <View
+                style={[
+                  styles.unreadStatus,
+                  {
+                    top: 2,
+                    right: 2,
+                    borderColor: theme ? colors.secondary : colors.blackSmoke,
+                  },
+                ]}
+              />
+            ) : null}
+          </TouchableOpacity>
+        </View>
+      )}
       {route.name === "Earnings" && (
         <View
           style={{
@@ -549,6 +605,62 @@ function HeaderTitle({ title, profileURL, user }: Props) {
         </>
       ) : (
         <></>
+      )}
+      {route.name === "Promotion" && (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            paddingHorizontal: 10,
+          }}
+        >
+          <TouchableOpacity style={{}}>
+            <SvgXml
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
+              width="22"
+              height="22"
+              onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "PrimarySemiBold",
+                fontSize: 20,
+                alignSelf: "center",
+                color: theme ? colors.black : colors.darkTxt,
+              }}
+            >
+              Promotions
+            </Text>
+          </View>
+          <TouchableOpacity
+            // @ts-ignore
+            onPress={() => navigation.navigate("Notifications")}
+          >
+            <SvgXml xml={notifIcon()} width="21" height="21" />
+            {notifUnread ? (
+              <View
+                style={[
+                  styles.unreadStatus,
+                  {
+                    top: 2,
+                    right: 2,
+                    borderColor: theme ? colors.secondary : colors.blackSmoke,
+                  },
+                ]}
+              />
+            ) : null}
+          </TouchableOpacity>
+        </View>
       )}
       {title === "categoryItem" && (
         <View
