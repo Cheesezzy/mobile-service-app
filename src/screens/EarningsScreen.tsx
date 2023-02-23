@@ -36,7 +36,7 @@ const EarningsScreen = () => {
 
   return (
     <>
-      <HeaderTitle title="Earnings" profileURL="" />
+      <HeaderTitle user="" title="Earnings" profileURL="" />
       <ScrollView
         style={[
           styles.container,

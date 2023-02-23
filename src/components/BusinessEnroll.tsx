@@ -22,11 +22,9 @@ const BusinessEnroll = ({ navigation }: any) => {
 
   const userRef = user && doc(db, "users", user?.uid);
 
-  const [User] = useDocumentData(userRef);
-
   const handleNavigation = (role: string) => {
     role === "Provider" && addBusiness(user?.uid);
-    user?.uid && User?.bizId && updateUserRole(User?.bizId, role);
+    user?.uid && updateUserRole(user?.uid, role);
     navigation.navigate("Slider", { role });
   };
 

@@ -26,10 +26,14 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { checkRole } from "../../api/customHooks/generalHooks";
 import { handleSwitchTheme } from "../../provider/themeSlice";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import HeaderTitle from "../components/HeaderTitle";
+import { Switch } from "@rneui/themed";
+import { updateUserRole } from "../.././api/database";
+import { useEffect, useState } from "react";
 
 const MoreScreen = ({ navigation }: any) => {
+  const [toggle, setToggle] = useState(false);
   const [User] = useAuthState(auth);
 
   const userRef = doc(db, "users", User?.uid!);
@@ -38,8 +42,30 @@ const MoreScreen = ({ navigation }: any) => {
 
   const businessRef = user?.bizId && doc(db, "businesses", user?.bizId);
 
+  const dispatch = useDispatch();
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
+
+  const switchRole = () => {
+    if (User?.uid && user && user.role) {
+      if (user.role === "Consumer") {
+        setToggle(false);
+        updateUserRole(User.uid, "Provider");
+      } else if (user.role === "Provider") {
+        setToggle(false);
+        updateUserRole(User.uid, "Consumer");
+      }
+    }
+    return;
+  };
+
+  useEffect(() => {
+    if (user?.role === "Consumer") {
+      setToggle(false);
+    } else if (user?.role === "Provider") {
+      setToggle(true);
+    }
+  }, [user?.role]);
 
   return (
     <>
@@ -408,6 +434,51 @@ const MoreScreen = ({ navigation }: any) => {
                   </View>
                 </View>
               </TouchableOpacity>
+
+              {user.role && (
+                <View>
+                  <View style={styles.itemContainer}>
+                    <View style={styles.iconFlex}>
+                      <View style={styles.iconCon}>
+                        <SvgXml
+                          style={styles.icon}
+                          xml={supportIcon()}
+                          width="18"
+                          height="18"
+                        />
+                      </View>
+                      <View style={styles.menuItem}>
+                        <Text
+                          style={[
+                            styles.menuItemBig,
+                            {
+                              color: theme ? colors.black : colors.darkTxt,
+                            },
+                          ]}
+                        >
+                          Service Provider mode
+                        </Text>
+                        <Text
+                          style={[
+                            styles.menuItemSm,
+                            {
+                              color: theme ? colors.greyMain : colors.darkTxt,
+                            },
+                          ]}
+                        >
+                          Change your in-app experience
+                        </Text>
+                      </View>
+                    </View>
+
+                    <Switch
+                      color={colors.primary}
+                      value={toggle}
+                      onValueChange={switchRole}
+                    />
+                  </View>
+                </View>
+              )}
             </View>
           </ScrollView>
         )}

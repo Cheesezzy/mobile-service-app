@@ -3,7 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import HeaderTitle from "../components/HeaderTitle";
 import SideNav from "../components/SideNav";
-import HomeScreen from "../screens/HomeScreen";
+import HomeScreen from "../screens/HomeScreens/HomeScreen";
 import ExploreScreen from "../screens/ExploreScreen";
 import NotifScreen from "../screens/NotifScreen";
 import NegoScreen from "../screens/NegoScreen";

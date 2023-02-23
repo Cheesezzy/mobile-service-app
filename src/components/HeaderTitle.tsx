@@ -14,8 +14,11 @@ import { handleSwitchTheme } from "../../provider/themeSlice";
 import { useSelector } from "react-redux";
 import { trimAfterSpace } from "../../api/customHooks/generalHooks";
 import { useEffect, useState } from "react";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import { collection } from "firebase/firestore";
+import {
+  useCollectionData,
+  useDocumentData,
+} from "react-firebase-hooks/firestore";
+import { collection, doc } from "firebase/firestore";
 import { auth, db } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -25,10 +28,18 @@ type Props = {
   user: any;
 };
 
-function HeaderTitle({ title, profileURL, user }: Props) {
+function HeaderTitle({ title, profileURL }: Props) {
   const navigation = useNavigation();
   const route = useRoute();
   const [User] = useAuthState(auth);
+  const userRef = doc(db, "users", User?.uid!);
+
+  //console.log(biz, "biz");
+
+  const [user] = useDocumentData(userRef);
+
+  const businessRef = user?.bizId && doc(db, "businesses", user?.bizId);
+  const [business, loading] = useDocumentData(businessRef);
 
   const notifsRef = collection(db, "users/" + `${User?.uid}/notifications`);
   const [notifications] = useCollectionData(notifsRef);
@@ -80,7 +91,7 @@ function HeaderTitle({ title, profileURL, user }: Props) {
                 }
               />
             </TouchableOpacity>
-            {user && (
+            {user && business && (
               <View
                 style={{
                   marginLeft: 10,
@@ -99,7 +110,9 @@ function HeaderTitle({ title, profileURL, user }: Props) {
                       fontFamily: "PrimaryBold",
                     }}
                   >
-                    {trimAfterSpace(user?.name)} 🤗
+                    {user && user?.role === "Consumer"
+                      ? `${trimAfterSpace(user?.name)} 🤗`
+                      : `${business?.name} 🤗`}
                   </Text>
                 </Text>
                 <Text
@@ -109,7 +122,9 @@ function HeaderTitle({ title, profileURL, user }: Props) {
                     color: colors.greyMidDark,
                   }}
                 >
-                  What services do you need today?
+                  {user && user?.role === "Consumer"
+                    ? "What services do you need today?"
+                    : "Ready to get clients?"}
                 </Text>
               </View>
             )}

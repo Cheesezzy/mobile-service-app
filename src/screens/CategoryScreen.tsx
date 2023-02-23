@@ -105,13 +105,13 @@ const CategoryScreen = ({ route, navigation }: any) => {
                             },
                           ]}
                         >
-                          {business.name}
+                          {business?.name}
                         </Text>
 
                         <View style={styles.ratingCon}>
                           <SvgXml xml={star()} width="11.5" height="11.5" />
                           <Text style={styles.ratingTxt}>
-                            {business.rating}
+                            {business?.rating}
                           </Text>
                         </View>
 
@@ -140,7 +140,7 @@ const CategoryScreen = ({ route, navigation }: any) => {
                             >
                               From
                             </Text>{" "}
-                            ₦{business.chargeRate}
+                            ₦{business?.chargeRate}
                           </Text>
 
                           <TouchableOpacity
