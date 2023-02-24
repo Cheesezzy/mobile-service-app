@@ -22,6 +22,7 @@ import {
 } from "../../../assets/svgs/svgs";
 import { categories } from "../../../provider/categoryData/categories";
 import { searchIcon } from "../../../assets/icons/icons";
+import RecentOrder from "../../components/RecentOrder";
 
 interface Props {
   navigation: any;
@@ -71,7 +72,15 @@ const ProviderHome = ({ navigation, theme, business }: Props) => {
         </View>
       </>
 
-      <View style={{ height: 100, width: "100%" }} />
+      <View style={{ height: 70, width: "100%" }}>
+      <RecentOrder />
+      </View>
+      <View style={{ height: 70, width: "100%" }}>
+      <RecentOrder />
+      </View>
+      <View style={{ height: 70, width: "100%" }}>
+      <RecentOrder />
+      </View>
     </>
   );
 };
