@@ -1,10 +1,14 @@
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { color } from "react-native-reanimated";
 import colors from "../config/colors";
 import { Avatar } from "@rneui/base";
 
+interface Props {
+    name: string;
+    minutes: string;
+}
 
-const RecentOrder = () => {
+const RecentOrder = ({ name, minutes }: Props) => {
 
     return (
 
@@ -20,19 +24,20 @@ const RecentOrder = () => {
 
                     <View style={styles.orderSub}>
                         <Text style={styles.orderName}>
-                            Ayoola Ayolola
+                            {name}
                         </Text>
                         <Text style={styles.orderMinutes}>
-                            32 minutes ago
+                            {minutes}
                         </Text>
                     </View>
 
                 </View>
 
+                    <Text style={styles.orderPrice}>
+                        {'\u20A6'}7500
+                    </Text>
 
-                <Text style={styles.orderPrice}>
-                    {'\u20A6'}7500
-                </Text>
+
 
             </View>
         </>
@@ -72,7 +77,7 @@ const styles = StyleSheet.create({
         marginTop: 2,
     },
     orderPrice: {
-        fontFamily: "PrimaryBold",
+        fontFamily: "PrimarySemiBold",
         fontSize: 16,
     }
 

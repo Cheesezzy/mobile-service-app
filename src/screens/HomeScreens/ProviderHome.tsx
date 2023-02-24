@@ -73,13 +73,13 @@ const ProviderHome = ({ navigation, theme, business }: Props) => {
       </>
 
       <View style={{ height: 70, width: "100%" }}>
-      <RecentOrder />
+      <RecentOrder name="Ayoola Ayolola" minutes="32 minutes ago"/>
       </View>
       <View style={{ height: 70, width: "100%" }}>
-      <RecentOrder />
+      <RecentOrder name="Ayoola Ayolola" minutes="32 minutes ago"/>
       </View>
       <View style={{ height: 70, width: "100%" }}>
-      <RecentOrder />
+      <RecentOrder name="Ayoola Ayolola" minutes="32 minutes ago"/>
       </View>
     </>
   );

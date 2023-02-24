@@ -314,7 +314,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="Transaction History"
+        name="TransactionHistory"
         component={TransactionHistory}
         options={{
           title: "Transaction His",
