@@ -51,7 +51,6 @@ export default RecentOrder;
 
 const styles = StyleSheet.create({
     orderContainer: {
-        flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
         padding: 20,

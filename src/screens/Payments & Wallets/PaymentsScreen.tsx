@@ -47,7 +47,7 @@ const PaymentsScreen = ({ navigation }: any) => {
             backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
           },
         ]}
-      >
+        >
         <View style={{}}>
           <TouchableOpacity style={styles.addCard}>
             <Text style={styles.addCardTxt}>Add Card</Text>

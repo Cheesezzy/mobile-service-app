@@ -66,21 +66,19 @@ const ProviderHome = ({ navigation, theme, business }: Props) => {
 
         <View style={styles.titleCon}>
           <Text style={styles.title}>Recent Orders</Text>
-          <TouchableOpacity onPress={() => navigation.navigate("Categories")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Recent Order")}>
             <Text style={styles.viewAll}>View All</Text>
           </TouchableOpacity>
         </View>
       </>
 
       <View style={{ height: 70, width: "100%" }}>
-      <RecentOrder name="Ayoola Ayolola" minutes="32 minutes ago"/>
+
+        {Array(20).fill(null).map((_, i) => (
+          <RecentOrder name="Ayoola Ayolola" minutes="32 minutes ago" />
+        ))}
       </View>
-      <View style={{ height: 70, width: "100%" }}>
-      <RecentOrder name="Ayoola Ayolola" minutes="32 minutes ago"/>
-      </View>
-      <View style={{ height: 70, width: "100%" }}>
-      <RecentOrder name="Ayoola Ayolola" minutes="32 minutes ago"/>
-      </View>
+
     </>
   );
 };

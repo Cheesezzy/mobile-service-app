@@ -55,6 +55,7 @@ import MoreScreen from "../screens/MoreScreen";
 import FundScreen from "../screens/Payments & Wallets/FundScreen";
 import PayStatScreen from "../screens/Payments & Wallets/PayStatScreen";
 import TransactionHistory from "../screens/Payments & Wallets/TransactionHistory";
+import RecentOrderScreen from "../screens/RecentOrderScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -318,6 +319,14 @@ const StackNavigator = () => {
         component={TransactionHistory}
         options={{
           title: "Transaction His",
+          headerShown: false,
+        }}    
+      />
+       <Stack.Screen
+        name="Recent Order"
+        component={RecentOrderScreen}
+        options={{
+          title: "Recent Order",
           headerShown: false,
         }}
       />
