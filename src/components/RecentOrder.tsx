@@ -32,10 +32,11 @@ const RecentOrder = ({ name, minutes }: Props) => {
 
                 </View>
 
-                    <Text style={styles.orderPrice}>
+                <Text style={styles.orderPrice}>
                         {'\u20A6'}7500
                     </Text>
 
+                    
 
 
             </View>

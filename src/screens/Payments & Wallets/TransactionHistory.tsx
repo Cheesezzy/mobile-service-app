@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, FlatList } from "react-native";
 import React from "react";
 import Transactions from "../../components/Transactions";
 import colors from "../../config/colors";
@@ -11,7 +11,11 @@ const TransactionHistory = () => {
         <Text style={styles.heading}>Transaction history</Text>
       </View>
       <View>
-        <Transactions />
+
+        
+        {Array(20).fill(null).map((_, i) => (<Transactions />
+        ))}
+
       </View>
     </>
 

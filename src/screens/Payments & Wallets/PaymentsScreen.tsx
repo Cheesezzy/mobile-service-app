@@ -20,6 +20,7 @@ import {
   withdrawMoneyIcon,
 } from "../../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
+import Transactions from "../../components/Transactions";
 
 const PaymentsScreen = ({ navigation }: any) => {
   const [User] = useAuthState(auth);
@@ -124,6 +125,8 @@ const PaymentsScreen = ({ navigation }: any) => {
           <Text style={styles.viewAll}>View all</Text>
         </View>
 
+        {Array(20).fill(null).map((_, i) => (<Transactions />
+        ))}
         <StatusBar style={theme ? "dark" : "light"} />
       </View>
     </>
