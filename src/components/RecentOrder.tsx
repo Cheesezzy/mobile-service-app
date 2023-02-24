@@ -1,5 +1,4 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
-import { color } from "react-native-reanimated";
 import colors from "../config/colors";
 import { Avatar } from "@rneui/base";
 
