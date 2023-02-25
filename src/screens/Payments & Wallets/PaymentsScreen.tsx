@@ -22,6 +22,7 @@ import {
 import { SvgXml } from "react-native-svg";
 import Transactions from "../../components/Transactions";
 
+
 const PaymentsScreen = ({ navigation }: any) => {
   const [User] = useAuthState(auth);
 
@@ -37,6 +38,7 @@ const PaymentsScreen = ({ navigation }: any) => {
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
 
+  
   return (
     <>
       <HeaderTitle title="Payments" profileURL="" user="" />
@@ -47,7 +49,7 @@ const PaymentsScreen = ({ navigation }: any) => {
             backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
           },
         ]}
-        >
+      >
         <View style={{}}>
           <TouchableOpacity style={styles.addCard}>
             <Text style={styles.addCardTxt}>Add Card</Text>
@@ -62,8 +64,8 @@ const PaymentsScreen = ({ navigation }: any) => {
                 styles.balVal,
                 balVisible
                   ? {
-                      marginTop: 5,
-                    }
+                    marginTop: 5,
+                  }
                   : null,
               ]}
             >
@@ -122,7 +124,9 @@ const PaymentsScreen = ({ navigation }: any) => {
             Transaction History
           </Text>
 
-          <Text style={styles.viewAll}>View all</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Transaction History")}>
+            <Text style={styles.viewAll}>View all</Text>
+          </TouchableOpacity>
         </View>
 
         {Array(20).fill(null).map((_, i) => (<Transactions />

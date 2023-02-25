@@ -4,19 +4,24 @@ import Transactions from "../../components/Transactions";
 import colors from "../../config/colors";
 
 const TransactionHistory = () => {
+
+    const transaction = Array(20).fill(null);
+
+    const renderItem = () => {
+      return <Transactions/>;
+    };
+
   return (
 
     <>
       <View style={styles.transactionHistoryContainer}>
         <Text style={styles.heading}>Transaction history</Text>
       </View>
-      <View>
-
-        
-        {Array(20).fill(null).map((_, i) => (<Transactions />
-        ))}
-
-      </View>
+      <FlatList 
+        data = {transaction}
+        renderItem = {renderItem}
+        keyExtractor = {(_, index) => index.toString()}
+      />
     </>
 
   );
