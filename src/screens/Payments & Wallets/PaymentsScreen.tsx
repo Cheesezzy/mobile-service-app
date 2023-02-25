@@ -1,4 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useState } from "react";
 import colors from "../../config/colors";
 import HeaderTitle from "../../components/HeaderTitle";
@@ -20,6 +26,7 @@ import {
   withdrawMoneyIcon,
 } from "../../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
+import { Ipayment, Idetails } from "./interface";
 
 const PaymentsScreen = ({ navigation }: any) => {
   const [User] = useAuthState(auth);
@@ -36,9 +43,26 @@ const PaymentsScreen = ({ navigation }: any) => {
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
 
+  const details: Idetails = {
+    status: "success",
+    date: "12 feb, 2023",
+    time: "09:32am",
+    // "recipient name": "oha specialist",
+    "depositor name": "susan eneanya",
+    // "depositor acc no": "0192356782",
+    "bank name": "wema bank",
+    "transaction number": "48084841380",
+    "paid with": "balancePayment",
+  };
+  const payment: Ipayment = {
+    price: "+₦9000",
+    actionType: "deposit",
+    fee: "100",
+  };
+
   return (
     <>
-      <HeaderTitle title="Payments" profileURL="" user="" />
+      <HeaderTitle title='Payments' profileURL='' user='' />
       <View
         style={[
           styles.container,
@@ -81,8 +105,8 @@ const PaymentsScreen = ({ navigation }: any) => {
                   ? showPassIcon(colors.darkTxt)
                   : hidePassIcon(colors.darkTxt)
               }
-              width="30"
-              height="30"
+              width='30'
+              height='30'
             />
           </TouchableOpacity>
         </View>
@@ -92,7 +116,7 @@ const PaymentsScreen = ({ navigation }: any) => {
             style={[styles.moneyOptionBtnWire, { marginRight: 10 }]}
             onPress={() => navigation.navigate("PayStatus")}
           >
-            <SvgXml xml={withdrawMoneyIcon()} width="18" height="18" />
+            <SvgXml xml={withdrawMoneyIcon()} width='18' height='18' />
             <Text style={[styles.moneyOptionTxt, { color: colors.primary }]}>
               Withdraw
             </Text>
@@ -102,7 +126,7 @@ const PaymentsScreen = ({ navigation }: any) => {
             style={styles.moneyOptionBtn}
             onPress={() => navigation.navigate("Fund")}
           >
-            <SvgXml xml={receiveMoneyIcon()} width="18" height="18" />
+            <SvgXml xml={receiveMoneyIcon()} width='18' height='18' />
             <Text style={[styles.moneyOptionTxt, { color: colors.darkTxt }]}>
               Fund
             </Text>
@@ -122,6 +146,17 @@ const PaymentsScreen = ({ navigation }: any) => {
           </Text>
 
           <Text style={styles.viewAll}>View all</Text>
+
+          <Pressable
+            onPress={() =>
+              navigation.navigate("Transaction details", {
+                details: details,
+                payment: payment,
+              })
+            }
+          >
+            <Text>details</Text>
+          </Pressable>
         </View>
 
         <StatusBar style={theme ? "dark" : "light"} />
