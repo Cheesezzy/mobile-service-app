@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import WelcomeScreen from "../screens/WelcomeScreen";
+import WelcomeScreen from "../screens/Onboarding/WelcomeScreen";
 import SigninScreen from "../screens/SigninScreen";
 import SignupScreen from "../screens/SignupScreen";
 import { DrawerActions } from "@react-navigation/native";
@@ -41,7 +41,7 @@ const AuthNavigator = () => {
   }, []);
 
   return (
-    <Stack.Navigator initialRouteName={"Signin"}>
+    <Stack.Navigator initialRouteName={"Welcome"}>
       <Stack.Screen
         name="Welcome"
         component={WelcomeScreen}
