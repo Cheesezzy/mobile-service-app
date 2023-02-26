@@ -7,7 +7,10 @@ export default function CircleStatus({ text, color, outline, textColor }: any) {
     <View style={styles.circleContainer}>
       <View style={styles.statusContainer}>
         <SvgXml
-          xml={tickIcon(`${color}`, `${outline}`)}
+          xml={tickIcon(
+            `${color ? color : "#E9E7E7"}`,
+            `${outline ? outline : "#838B97"}`
+          )}
           width='40'
           height='40'
         />
