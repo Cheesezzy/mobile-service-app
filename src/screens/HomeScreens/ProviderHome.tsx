@@ -74,8 +74,8 @@ const ProviderHome = ({ navigation, theme, business }: Props) => {
 
       <View style={{ height: 70, width: "100%" }}>
 
-        {Array(5).fill(null).map((_, i) => (
-          <RecentOrder name="Ayoola Ayolola" minutes="32 minutes ago" />
+        {Array(4).fill(null).map((_, i) => (
+          <RecentOrder key={i} name="Ayoola Ayolola" minutes="32 minutes ago" />
         ))}
       </View>
 

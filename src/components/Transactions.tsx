@@ -45,8 +45,9 @@ const styles = StyleSheet.create({
     transactionContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
-        padding: 20,
-        marginTop: 30,
+        padding: 15,
+        margin: 1,
+
     },
     transactionSection: {
         flexDirection: 'row',

@@ -135,7 +135,7 @@ const PaymentsScreen = ({ navigation }: any) => {
           </TouchableOpacity>
         </View>
 
-        {Array(20).fill(null).map((_, i) => (<Transactions />
+        {Array(20).fill(null).map((_, i) => (<Transactions key={i} />
         ))}
         <StatusBar style={theme ? "dark" : "light"} />
       </View>

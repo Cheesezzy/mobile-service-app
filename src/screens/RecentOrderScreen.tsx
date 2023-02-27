@@ -1,6 +1,7 @@
 import RecentOrder from "../components/RecentOrder"
-import { View, StyleSheet, Text, FlatList } from "react-native"
+import { View, StyleSheet, Text, FlatList, SafeAreaView } from "react-native"
 import colors from "../config/colors";
+import NavigationBar from "./Payments & Wallets/components/NavigationBar";
 
 const RecentOrderScreen = () => {
 
@@ -12,15 +13,18 @@ const RecentOrderScreen = () => {
 
     return (
         <>
-            <View style={styles.container}>
-                <Text style={styles.heading}>Recent Order</Text>
-            </View>
+            <NavigationBar title="Recent Order" />
 
-            <FlatList 
-            data={transactions}
-            renderItem={renderItem}
-            keyExtractor={(_, index) => index.toString()}
-            />
+            <SafeAreaView>
+                <View style={styles.container}>
+                </View>
+
+                <FlatList
+                    data={transactions}
+                    renderItem={renderItem}
+                    keyExtractor={(_, index) => index.toString()}
+                />
+            </SafeAreaView>
         </>
     )
 }
