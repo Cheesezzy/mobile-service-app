@@ -1,4 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useState } from "react";
 import colors from "../../config/colors";
 import HeaderTitle from "../../components/HeaderTitle";
@@ -41,7 +47,7 @@ const PaymentsScreen = ({ navigation }: any) => {
   
   return (
     <>
-      <HeaderTitle title="Payments" profileURL="" user="" />
+      <HeaderTitle title='Payments' profileURL='' user='' />
       <View
         style={[
           styles.container,
@@ -84,8 +90,8 @@ const PaymentsScreen = ({ navigation }: any) => {
                   ? showPassIcon(colors.darkTxt)
                   : hidePassIcon(colors.darkTxt)
               }
-              width="30"
-              height="30"
+              width='30'
+              height='30'
             />
           </TouchableOpacity>
         </View>
@@ -95,7 +101,7 @@ const PaymentsScreen = ({ navigation }: any) => {
             style={[styles.moneyOptionBtnWire, { marginRight: 10 }]}
             onPress={() => navigation.navigate("PayStatus")}
           >
-            <SvgXml xml={withdrawMoneyIcon()} width="18" height="18" />
+            <SvgXml xml={withdrawMoneyIcon()} width='18' height='18' />
             <Text style={[styles.moneyOptionTxt, { color: colors.primary }]}>
               Withdraw
             </Text>
@@ -105,7 +111,7 @@ const PaymentsScreen = ({ navigation }: any) => {
             style={styles.moneyOptionBtn}
             onPress={() => navigation.navigate("Fund")}
           >
-            <SvgXml xml={receiveMoneyIcon()} width="18" height="18" />
+            <SvgXml xml={receiveMoneyIcon()} width='18' height='18' />
             <Text style={[styles.moneyOptionTxt, { color: colors.darkTxt }]}>
               Fund
             </Text>
