@@ -29,12 +29,12 @@ const TransactionDetailsScreen = ({
   let debit = actionType === "transfer";
   const navigate = useNavigation();
   return (
-    // <View>
     <>
       <View style={styles.nav}>
         <TouchableOpacity
+          style={{ zIndex: 1000 }}
           onPress={() => {
-            navigate.goBack();
+            return navigate.goBack();
           }}
         >
           <SvgXml xml={arrowIcon()} width={24} height={24} />
@@ -48,6 +48,7 @@ const TransactionDetailsScreen = ({
               color='#2776EA'
               text='Transaction Submitted'
               textColor='#000000'
+              outline='#2776EA'
             />
             <View style={{ width: 33 }}>
               <SvgXml xml={tikLine("#2776EA")} width='100%' height={40} />
@@ -56,18 +57,19 @@ const TransactionDetailsScreen = ({
               color='#2776EA'
               text='Payment Successful'
               textColor='#000000'
+              outline='#2776EA'
             />
             <View style={{ width: 33 }}>
               <SvgXml
-                xml={tikLine(`${debit ? "#838B97" : "#2776EA"}`)}
+                xml={tikLine(`${debit ? "#E9E7E7" : "#2776EA"}`)}
                 width='100%'
                 height={40}
               />
             </View>
             <CircleStatus
-              color={debit ? "#F9F9F9" : "transparent"}
+              color={debit ? "#F9F9F9" : "#2776EA"}
               text='Money Received'
-              outline={debit ? "#838B97" : "#2776EA"}
+              outline={debit ? "#E9E7E7" : "#2776EA"}
               textColor={debit ? "#838B97" : "#000000"}
             />
           </View>
@@ -97,8 +99,6 @@ const TransactionDetailsScreen = ({
         </View>
       </SafeAreaView>
     </>
-
-    // </View>
   );
 };
 export default TransactionDetailsScreen;
@@ -128,7 +128,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
     alignContent: "center",
-    // marginBottom: 10,
   },
   messageContainerText: {
     fontStyle: "normal",
@@ -194,6 +193,5 @@ const styles = StyleSheet.create({
   },
   transsactionDetails: {
     paddingBottom: 10,
-
   },
 });
