@@ -245,67 +245,65 @@ export const NegoDisplay = ({ navigation, route }: any) => {
 
   return (
     <>
-      {headerVisible && (
-        <View style={styles.header}>
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.profilePicAndName}
+          onPress={() =>
+            navigation.navigate("ImageScreen", {
+              image: personPic,
+            })
+          }
+        >
           <TouchableOpacity
-            style={styles.profilePicAndName}
-            onPress={() =>
-              navigation.navigate("ImageScreen", {
-                image: personPic,
-              })
-            }
+            style={{
+              marginRight: 10,
+            }}
           >
-            <TouchableOpacity
-              style={{
-                marginRight: 10,
-              }}
-            >
-              <SvgXml
-                xml={backIcon(theme ? colors.black : colors.darkTxt)}
-                width="22"
-                height="22"
-                onPress={() => navigation.goBack()}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                marginRight: 5,
-              }}
-            >
-              <Avatar
-                size={30}
-                rounded
-                source={
-                  personPic
-                    ? {
-                        uri: personPic,
-                      }
-                    : require("../../assets/blankProfilePic.png")
-                }
-              />
-            </TouchableOpacity>
-
-            <View
-              style={{
-                width: "100%",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text style={styles.headerName}>{name}</Text>
-            </View>
+            <SvgXml
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
+              width="22"
+              height="22"
+              onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              marginRight: 5,
+            }}
+          >
+            <Avatar
+              size={30}
+              rounded
+              source={
+                personPic
+                  ? {
+                      uri: personPic,
+                    }
+                  : require("../../assets/blankProfilePic.png")
+              }
+            />
           </TouchableOpacity>
 
-          <TouchableOpacity
-            // @ts-ignore
-            onPress={() => setIsVisible(true)}
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            <SvgXml xml={optionIcon()} width="21" height="21" />
-          </TouchableOpacity>
-          <Appointment isVisible={isVisible} setIsVisible={setIsVisible} />
-        </View>
-      )}
+            <Text style={styles.headerName}>{name}</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          // @ts-ignore
+          onPress={() => setIsVisible(true)}
+        >
+          <SvgXml xml={optionIcon()} width="21" height="21" />
+        </TouchableOpacity>
+        <Appointment isVisible={isVisible} setIsVisible={setIsVisible} />
+      </View>
       <ScrollView
         ref={scrollViewRef}
         style={[
@@ -607,7 +605,7 @@ const styles = StyleSheet.create({
   container: {
     height: "100%",
     width: "100%",
-    paddingTop: 40,
+    paddingTop: 80,
   },
   header: {
     position: "absolute",
@@ -624,6 +622,8 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   headerName: {
+    left: 30,
+    width: 150,
     fontFamily: "PrimarySemiBold",
     fontSize: 15,
   },

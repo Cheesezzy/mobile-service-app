@@ -22,6 +22,8 @@ import colors from "../config/colors";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 import { Avatar } from "@rneui/themed";
+import { cameraIcon } from "../../assets/icons/icons";
+import { SvgXml } from "react-native-svg";
 
 const AccountSettings = ({ route }: any) => {
   const [User] = useAuthState(auth);
@@ -117,69 +119,85 @@ const AccountSettings = ({ route }: any) => {
   const theme = selector.payload.theme.value;
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: theme ? colors.secondary : colors.blackSmoke,
-        },
-      ]}
-    >
-      <HeaderTitle title="Account Settings" profileURL="" />
-      <TouchableOpacity style={styles.avatar} onPress={pickImage}>
-        <Avatar
-          size={100}
-          rounded
-          source={
-            user?.profilePic
-              ? {
-                  uri: image ? image : user?.profilePic,
-                }
-              : require("../.././assets/blankProfilePic.png")
-          }
-        />
-      </TouchableOpacity>
-      {user.role === "Provider" && (
-        <TextInput
-          onChangeText={(newName) => setBusinessName(newName)}
-          style={styles.inputBox}
-          placeholder="Business Name"
-          placeholderTextColor={colors.lightGrey}
-        />
-      )}
-      <TextInput
-        onChangeText={(newName) => setProfileName(newName)}
-        style={styles.inputBox}
-        placeholder="Profile Name"
-        placeholderTextColor={colors.lightGrey}
-      />
-      {user.role === "Provider" && (
-        <TextInput
-          onChangeText={(newDesc) => setDesc(newDesc)}
-          style={styles.inputBox}
-          placeholder="Business Description"
-          placeholderTextColor={colors.lightGrey}
-          multiline
-        />
-      )}
-      <TouchableOpacity
+    <>
+      <HeaderTitle title="" user="" profileURL="" />
+      <View
         style={[
-          styles.choiceBtn,
+          styles.container,
           {
-            opacity: checkInputs() ? 1 : 0.5,
+            backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
           },
         ]}
-        onPress={handleSave}
       >
-        <Text style={styles.choiceBtnTxt}>
-          {clicked ? (
-            <ActivityIndicator color={colors.primary} size="small" />
-          ) : (
-            "Save changes"
-          )}
-        </Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity style={styles.avatar} onPress={pickImage}>
+          <Avatar
+            size={80}
+            rounded
+            source={
+              user?.profilePic
+                ? {
+                    uri: image ? image : user?.profilePic,
+                  }
+                : require("../.././assets/blankProfilePic.png")
+            }
+          />
+          <View
+            style={{
+              position: "absolute",
+              top: 52,
+              alignSelf: "flex-end",
+              backgroundColor: colors.secondarySmoke,
+              borderColor: colors.black,
+              borderWidth: 0.8,
+              padding: 2,
+              borderRadius: 10,
+            }}
+          >
+            <SvgXml xml={cameraIcon()} width="10" height="10" />
+          </View>
+        </TouchableOpacity>
+        {user.role === "Provider" && (
+          <TextInput
+            onChangeText={(newName) => setBusinessName(newName)}
+            style={styles.inputBox}
+            placeholder="Business Name"
+            placeholderTextColor={colors.lightGrey}
+          />
+        )}
+        <TextInput
+          onChangeText={(newName) => setProfileName(newName)}
+          style={styles.inputBox}
+          placeholder="Profile Name"
+          placeholderTextColor={colors.lightGrey}
+        />
+        {user.role === "Provider" && (
+          <TextInput
+            onChangeText={(newDesc) => setDesc(newDesc)}
+            style={styles.inputBox}
+            placeholder="Business Description"
+            placeholderTextColor={colors.lightGrey}
+            multiline
+          />
+        )}
+        <TouchableOpacity
+          style={[
+            styles.choiceBtn,
+            {
+              opacity: checkInputs() ? 1 : 0.5,
+            },
+          ]}
+          onPress={handleSave}
+        >
+          <Text style={styles.choiceBtnTxt}>
+            {clicked ? (
+              <ActivityIndicator color={colors.primary} size="small" />
+            ) : (
+              "Save changes"
+            )}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </>
   );
 };
 
@@ -188,8 +206,8 @@ export default AccountSettings;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 40,
     paddingHorizontal: 20,
+    paddingTop: 20,
     backgroundColor: colors.secondary,
   },
   avatar: {
@@ -206,14 +224,14 @@ const styles = StyleSheet.create({
     fontFamily: "LatoRegular",
   },
   choiceBtn: {
-    width: 70,
-    height: 30,
+    width: "100%",
+    height: 45,
     backgroundColor: colors.primary,
     borderRadius: 5,
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
-    marginTop: 10,
+    marginTop: 30,
   },
   choiceBtnTxt: {
     color: colors.secondary,

@@ -94,7 +94,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Notifications'
+        name="Notifications"
         component={NotifScreen}
         options={{
           title: "Notifications",
@@ -102,7 +102,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Negotiations'
+        name="Negotiations"
         component={NegoScreen}
         options={{
           title: "Negotiations",
@@ -110,7 +110,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='More'
+        name="More"
         component={MoreScreen}
         options={{
           title: "More",
@@ -118,7 +118,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Hustle'
+        name="Hustle"
         component={HustleScreen}
         options={{
           title: "Hustle",
@@ -126,7 +126,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='About'
+        name="About"
         component={AboutScreen}
         options={{
           title: "About",
@@ -134,7 +134,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Promotion'
+        name="Promotion"
         component={PromotionScreen}
         options={{
           title: "Promotion",
@@ -142,7 +142,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Settings'
+        name="Settings"
         component={SettingsScreen}
         options={{
           title: "Settings",
@@ -150,7 +150,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Support'
+        name="Support"
         component={SupportScreen}
         options={{
           title: "Support",
@@ -159,7 +159,7 @@ const StackNavigator = () => {
       />
 
       <Stack.Screen
-        name='Analytics'
+        name="Analytics"
         component={AnalyticsScreen}
         options={{
           title: "Analytics",
@@ -168,7 +168,7 @@ const StackNavigator = () => {
       />
 
       <Stack.Screen
-        name='Payments'
+        name="Payments"
         component={PaymentsScreen}
         options={{
           title: "Payments",
@@ -177,7 +177,7 @@ const StackNavigator = () => {
       />
 
       <Stack.Screen
-        name='Earnings'
+        name="Earnings"
         component={EarningsScreen}
         options={{
           title: "Earnings",
@@ -186,7 +186,7 @@ const StackNavigator = () => {
       />
 
       <Stack.Screen
-        name='Profile'
+        name="Profile"
         component={ProfileScreen}
         options={{
           title: "Profile",
@@ -195,7 +195,7 @@ const StackNavigator = () => {
       />
 
       <Stack.Screen
-        name='Search'
+        name="Search"
         component={SearchScreen}
         options={{
           title: "Search",
@@ -203,7 +203,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='NegoDisplay'
+        name="NegoDisplay"
         component={NegoDisplay}
         options={{
           title: "NegoDisplay",
@@ -211,7 +211,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='BusinessEnroll'
+        name="BusinessEnroll"
         component={BusinessEnroll}
         options={{
           title: "BusinessEnroll",
@@ -220,7 +220,7 @@ const StackNavigator = () => {
       />
 
       <Stack.Screen
-        name='Category'
+        name="Category"
         component={CategoryScreen}
         options={{
           title: "Category",
@@ -228,7 +228,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='GoogleSearch'
+        name="GoogleSearch"
         component={GoogleSearch}
         options={{
           title: "GoogleSearch",
@@ -236,7 +236,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Slider'
+        name="Slider"
         component={Slider}
         options={{
           title: "Slider",
@@ -244,7 +244,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Transfer'
+        name="Transfer"
         component={TransferScreen}
         options={{
           title: "Transfer",
@@ -252,7 +252,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Pay'
+        name="Pay"
         component={PayScreen}
         options={{
           title: "Pay",
@@ -260,7 +260,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Categories'
+        name="Categories"
         component={CategoriesScreen}
         options={{
           title: "Categories",
@@ -268,7 +268,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='AccountSettings'
+        name="AccountSettings"
         component={AccountSettings}
         options={{
           title: "AccountSettings",
@@ -276,7 +276,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='ImageScreen'
+        name="ImageScreen"
         component={ImageScreen}
         options={{
           title: "ImageScreen",
@@ -284,7 +284,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Fund'
+        name="Fund"
         component={FundScreen}
         options={{
           title: "Fund",
@@ -292,7 +292,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='PayStatus'
+        name="PayStatus"
         component={PayStatScreen}
         options={{
           title: "PayStatus",
@@ -300,16 +300,16 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Transaction History'
+        name="Transaction History"
         component={TransactionHistory}
         options={{
-          title: "Transaction His",
+          title: "Transaction History",
           headerShown: false,
         }}
       />
       <Stack.Screen
-        name='Transaction details'
-        component ={TransactionDetailsScreen as any}
+        name="Transaction details"
+        component={TransactionDetailsScreen as any}
         options={{
           title: "Transaction details",
           headerShown: false,
