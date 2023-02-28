@@ -26,7 +26,8 @@ import {
   withdrawMoneyIcon,
 } from "../../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
-import { Ipayment, Idetails } from "./interface";
+import Transactions from "../../components/Transactions";
+
 
 const PaymentsScreen = ({ navigation }: any) => {
   const [User] = useAuthState(auth);
@@ -43,23 +44,7 @@ const PaymentsScreen = ({ navigation }: any) => {
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
 
-  const details: Idetails = {
-    status: "success",
-    date: "12 feb, 2023",
-    time: "09:32am",
-    // "recipient name": "oha specialist",
-    "depositor name": "susan eneanya",
-    // "depositor acc no": "0192356782",
-    "bank name": "wema bank",
-    "transaction number": "48084841380",
-    "paid with": "balancePayment",
-  };
-  const payment: Ipayment = {
-    price: "+₦9000",
-    actionType: "deposit",
-    fee: "100",
-  };
-
+  
   return (
     <>
       <HeaderTitle title='Payments' profileURL='' user='' />
@@ -85,8 +70,8 @@ const PaymentsScreen = ({ navigation }: any) => {
                 styles.balVal,
                 balVisible
                   ? {
-                      marginTop: 5,
-                    }
+                    marginTop: 5,
+                  }
                   : null,
               ]}
             >
@@ -145,20 +130,13 @@ const PaymentsScreen = ({ navigation }: any) => {
             Transaction History
           </Text>
 
-          <Text style={styles.viewAll}>View all</Text>
-
-          <Pressable
-            onPress={() =>
-              navigation.navigate("Transaction details", {
-                details: details,
-                payment: payment,
-              })
-            }
-          >
-            <Text>details</Text>
-          </Pressable>
+          <TouchableOpacity onPress={() => navigation.navigate("Transaction History")}>
+            <Text style={styles.viewAll}>View all</Text>
+          </TouchableOpacity>
         </View>
 
+        {Array(20).fill(null).map((_, i) => (<Transactions key={i} />
+        ))}
         <StatusBar style={theme ? "dark" : "light"} />
       </View>
     </>

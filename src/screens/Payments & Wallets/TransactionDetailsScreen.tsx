@@ -18,7 +18,7 @@ import { PaymentType } from "./components/PaymentType";
 import { TranssctionDetails } from "./components/TranssctionDetails";
 import { ShareButton } from "./components/ShareButton";
 import { Idetails, Ipayment } from "./interface";
-import { useNavigation } from "@react-navigation/native";
+import NavigationBar from "./components/NavigationBar";
 const TransactionDetailsScreen = ({
   route,
 }: {
@@ -27,20 +27,10 @@ const TransactionDetailsScreen = ({
   const { details, payment } = route.params;
   const { actionType } = payment;
   let debit = actionType === "transfer";
-  const navigate = useNavigation();
   return (
     <>
-      <View style={styles.nav}>
-        <TouchableOpacity
-          style={{ zIndex: 1000 }}
-          onPress={() => {
-            return navigate.goBack();
-          }}
-        >
-          <SvgXml xml={arrowIcon()} width={24} height={24} />
-        </TouchableOpacity>
-        <Text style={styles.navText}>Transaction details</Text>
-      </View>
+      <NavigationBar title="Transaction details"/>
+
       <SafeAreaView>
         <View style={styles.container}>
           <View style={styles.statusContainer}>
@@ -172,25 +162,7 @@ const styles = StyleSheet.create({
     display: "flex",
     top: "7%",
   },
-  navText: {
-    alignSelf: "center",
-    justifyContent: "center",
-    fontWeight: "600",
-    fontSize: 20,
-    fontFamily: "PrimaryRegular",
-    lineHeight: 32,
-    left: 50,
-  },
-  nav: {
-    display: "flex",
-    flex: 1,
-    top: "10%",
-    flexDirection: "row",
-    position: "relative",
-    paddingHorizontal: 20,
-    alignContent: "center",
-    alignItems: "center",
-  },
+
   transsactionDetails: {
     paddingBottom: 10,
   },
