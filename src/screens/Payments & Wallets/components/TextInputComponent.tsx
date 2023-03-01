@@ -1,18 +1,24 @@
 import React from 'react'
-import { View, Text, TextInput,StyleSheet } from "react-native"
+import { View, Text, TextInput, StyleSheet } from "react-native"
 
 
-interface Props{
+interface Props {
     title: string
     placeholder: string
+    value: string
+    onChangeText: any
 }
-const TextInputComponent = ({title, placeholder} : Props) => {
+const TextInputComponent = ({ title, onChangeText, value, placeholder }: Props) => {
     return (
         <>
             <View style={styles.cardContainer}>
-                <Text style={styles.textContainer}>{title}</Text>
+                <Text style={styles.textContainer}>{title}
+                    <Text style={{ color: "red" }} >*</Text>
+                </Text>
                 <TextInput style={styles.inputContainer}
-                placeholder= {placeholder}   
+                    placeholder={placeholder}
+                    value={value}
+                    onChangeText={onChangeText}
                 />
             </View>
         </>
@@ -26,18 +32,18 @@ const styles = StyleSheet.create({
         marginTop: 30,
         paddingLeft: 20,
     },
-    textContainer:{
+    textContainer: {
         marginBottom: 5,
-        fontFamily:"PrimaryRegular",
+        fontFamily: "PrimaryRegular",
         fontSize: 20,
-        fontWeight:"400"
+        fontWeight: "400"
     },
     inputContainer: {
-        borderWidth:1,
+        borderWidth: 1,
         borderColor: "1px solid rgba(147, 187, 245, 0.24)",
         borderRadius: 8,
         width: 340,
-        padding:10,
-        height:60,
+        padding: 10,
+        height: 60,
     }
 })

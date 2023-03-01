@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import { Text, StyleSheet, View } from 'react-native'
 
 interface Props{
-    title : string
+    title : string,
+    backgroundColor: string
 }
 
-const NextButton = ({ title } : Props) => {
+const NextButton = ({ title, backgroundColor } : Props) => {
   return (
     <>
-        <View style={styles.btn}>
+        <View style={[styles.btn, {backgroundColor}]}>
             <Text style={styles.textBtn}>
                {title}
             </Text>
@@ -25,7 +26,6 @@ const styles = StyleSheet.create({
         alignItems:"center",
         justifyContent:"center",
         borderRadius: 8,
-        backgroundColor:"#2776EA",
         width: 340,
         height: 56,
     },

@@ -48,6 +48,7 @@
     "react-native-geolocation-service": "^5.3.1",
     "react-native-gesture-handler": "~2.5.0",
     "react-native-google-places-autocomplete": "^2.5.1",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-maps": "0.31.1",
     "react-native-modal-datetime-picker": "^14.0.1",
     "react-native-phone-number-input": "^2.1.0",

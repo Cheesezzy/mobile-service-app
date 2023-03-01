@@ -42,7 +42,7 @@ import PayStatScreen from "../screens/Payments & Wallets/PayStatScreen";
 import TransactionHistory from "../screens/Payments & Wallets/TransactionHistory";
 import RecentOrderScreen from "../screens/RecentOrderScreen";
 import TransactionDetailsScreen from "../screens/Payments & Wallets/TransactionDetailsScreen";
-import AddNewCard from "../screens/Payments & Wallets/AddNewCard";
+import AddNewCardScreen from "../screens/Payments & Wallets/AddNewCardScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -311,7 +311,7 @@ const StackNavigator = () => {
       />
       <Stack.Screen 
           name='Add New Card'
-          component={AddNewCard}
+          component={AddNewCardScreen}
           options={{
             title: "Add New Card",
             headerShown: false,
