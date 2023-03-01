@@ -4,6 +4,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ScrollView,
 } from "react-native";
 import React, { useState } from "react";
 import colors from "../../config/colors";
@@ -27,6 +28,8 @@ import {
 } from "../../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
 import Transactions from "../../components/Transactions";
+import { Thsnip1 } from "../../../assets/svgs/svgs";
+import { Thsnip2 } from "../../../assets/svgs/svgs";
 
 
 const PaymentsScreen = ({ navigation }: any) => {
@@ -44,7 +47,7 @@ const PaymentsScreen = ({ navigation }: any) => {
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
 
-  
+
   return (
     <>
       <HeaderTitle title='Payments' profileURL='' user='' />
@@ -134,9 +137,14 @@ const PaymentsScreen = ({ navigation }: any) => {
             <Text style={styles.viewAll}>View all</Text>
           </TouchableOpacity>
         </View>
+        <ScrollView>
+          <Transactions image={Thsnip1()} title="Beauty’s Hairs And Nails" date="5, feb 2023" price="4500" />
+          <Transactions image={Thsnip2()} title="Wema Bank" date="5, feb 2023" price="10,000" />
+          <Transactions image={Thsnip1()} title="Lucy’s Catering Service" date="5, feb 2023" price="5,500" />
+          <Transactions image={Thsnip1()} title="Lucy’s Catering Service" date="5, feb 2023" price="5,500" />
 
-        {Array(20).fill(null).map((_, i) => (<Transactions key={i} />
-        ))}
+
+        </ScrollView>
         <StatusBar style={theme ? "dark" : "light"} />
       </View>
     </>
