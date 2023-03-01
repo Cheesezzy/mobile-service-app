@@ -60,7 +60,9 @@ const PaymentsScreen = ({ navigation }: any) => {
         ]}
       >
         <View style={{}}>
-          <TouchableOpacity style={styles.addCard}>
+          <TouchableOpacity style={styles.addCard}
+           onPress={() => navigation.navigate("Add New Card")} 
+          >
             <Text style={styles.addCardTxt}>Add Card</Text>
           </TouchableOpacity>
         </View>
