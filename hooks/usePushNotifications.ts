@@ -6,7 +6,6 @@ import { Alert, Platform } from "react-native";
 export const usePushNotification = () => {
   useEffect(() => {
     async function registerForPushNotificationsAsync() {
-      // let token;
       if (Device.isDevice) {
         const { status: existingStatus } =
           await Notifications.getPermissionsAsync();

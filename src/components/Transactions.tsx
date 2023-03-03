@@ -1,36 +1,43 @@
-import {Text,View, StyleSheet } from "react-native"
+import { Text, View, StyleSheet } from "react-native"
 import { Avatar } from "@rneui/base";
 import { ColorSpace } from "react-native-reanimated";
 import colors from "../config/colors";
+import { Thsnip1 } from "../../assets/svgs/svgs";
+import { SvgXml } from "react-native-svg";
 
+interface Props {
+    title : string,
+    date : string,
+    price : string,
+    image : any
+}
 
-const Transactions = () => {
+const Transactions = ({title, date, price, image} : Props) => {
 
-    return(
+    return (
         <>
             <View style={styles.transactionContainer}>
                 <View style={styles.transactionSection}>
-                    <Avatar
-                        size={31}
-                        rounded
-                        source={require("../../assets/blankProfilePic.png")
-                        }
-                    />
+                    
+                    <View style={styles.imageContainer}>
+                        <SvgXml xml={image} width={22} height={22} />
+
+                    </View>
 
                     <View style={styles.transactionBody}>
                         <Text style={styles.transactionName}>
-                            Beauty's Hairs And Nails
+                            {title}
                         </Text>
                         <Text style={styles.transactionDate}>
-                            5, Feb 2023
+                            {date}
                         </Text>
                     </View>
 
                 </View>
 
-                    <Text style={styles.transactionPrice}>
-                        {'\u20A6'}4500
-                    </Text>
+                <Text style={styles.transactionPrice}>
+                    {'\u20A6'} {price}
+                </Text>
 
 
 
@@ -45,9 +52,10 @@ const styles = StyleSheet.create({
     transactionContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
+        alignItems:"center",
         padding: 15,
         margin: 1,
-
+        paddingTop: 20,
     },
     transactionSection: {
         flexDirection: 'row',
@@ -55,9 +63,20 @@ const styles = StyleSheet.create({
     },
     transactionBody: {
         marginLeft: 10,
+        flexDirection:"column",
+        justifyContent:"space-around",
+        alignItems:"flex-start", 
+    },
+    imageContainer: {
+        backgroundColor: "#F1F1F1",
+        borderRadius: 24,
+        justifyContent: "center",
+        alignItems:"center",
+        width: 40,
+        height:40,
 
     },
-    transactionName:{
+    transactionName: {
         fontSize: 16,
     },
     transactionDate: {
