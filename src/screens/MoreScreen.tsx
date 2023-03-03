@@ -15,6 +15,7 @@ import {
   frontIcon,
   inviteIcon,
   payAndWalletIcon,
+  redoIcon,
   settingsIcon,
   supportIcon,
 } from "../../assets/icons/icons";
@@ -442,7 +443,7 @@ const MoreScreen = ({ navigation }: any) => {
                       <View style={styles.iconCon}>
                         <SvgXml
                           style={styles.icon}
-                          xml={supportIcon()}
+                          xml={redoIcon()}
                           width="18"
                           height="18"
                         />

@@ -22,6 +22,7 @@ import {
 } from "../../../assets/svgs/svgs";
 import { categories } from "../../../provider/categoryData/categories";
 import { searchIcon } from "../../../assets/icons/icons";
+import RecentOrder from "../../components/RecentOrder";
 
 interface Props {
   navigation: any;
@@ -65,13 +66,19 @@ const ProviderHome = ({ navigation, theme, business }: Props) => {
 
         <View style={styles.titleCon}>
           <Text style={styles.title}>Recent Orders</Text>
-          <TouchableOpacity onPress={() => navigation.navigate("Categories")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Recent Order")}>
             <Text style={styles.viewAll}>View All</Text>
           </TouchableOpacity>
         </View>
       </>
 
-      <View style={{ height: 100, width: "100%" }} />
+      <View style={{ height: 70, width: "100%" }}>
+
+        {Array(4).fill(null).map((_, i) => (
+          <RecentOrder key={i} name="Ayoola Ayolola" minutes="32 minutes ago" />
+        ))}
+      </View>
+
     </>
   );
 };
