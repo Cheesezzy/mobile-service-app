@@ -24,6 +24,7 @@ export default function App() {
     PrimarySemiBold: require("./assets/fonts/Poppins/Poppins-SemiBold.ttf"),
     PrimaryRegular: require("./assets/fonts/Poppins/Poppins-Regular.ttf"),
     PrimaryLight: require("./assets/fonts/Poppins/Poppins-Light.ttf"),
+    PrimaryMedium: require("./assets/fonts/Poppins/Poppins-Medium.ttf"),
     Lato: require("./assets/fonts/Lato/Lato-Black.ttf"),
     LatoRegular: require("./assets/fonts/Lato/Lato-Regular.ttf"),
     LatoLight: require("./assets/fonts/Lato/Lato-Light.ttf"),

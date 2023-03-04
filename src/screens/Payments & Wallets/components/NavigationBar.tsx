@@ -14,7 +14,9 @@ const NavigationBar = ({title} : Props) => {
     
         <View style={styles.nav}>
             <TouchableOpacity
-                style={{ zIndex: 1000 }}
+                style={{ 
+                    zIndex: 1000, 
+                }}
                 onPress={() => {
                 return navigate.goBack();
                 }}>
@@ -34,7 +36,7 @@ const styles = StyleSheet.create({
         display: "flex",
         alignSelf: "center",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
     },
     navText: {
         fontWeight: "600",

@@ -42,6 +42,7 @@ import PayStatScreen from "../screens/Payments & Wallets/PayStatScreen";
 import TransactionHistory from "../screens/Payments & Wallets/TransactionHistory";
 import RecentOrderScreen from "../screens/RecentOrderScreen";
 import TransactionDetailsScreen from "../screens/Payments & Wallets/TransactionDetailsScreen";
+import AddNewCardScreen from "../screens/Payments & Wallets/AddNewCardScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -53,7 +54,6 @@ const StackNavigator = () => {
   const selector = useSelector(handleAllUsers);
   const usersRef = collection(db, "users");
   const userbizInformedRef = doc(db, "users", user?.uid!);
-
   const allUsers = selector.payload.users.value;
 
   const [bizData, loading] = useDocumentData(userbizInformedRef);
@@ -308,14 +308,11 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="Recent Order"
-        component={RecentOrderScreen}
-        options={{
-          title: "Recent Order",
-          headerShown: false,
-        }}
-      />
+      <Stack.Screen 
+          name='Add New Card'
+          component={AddNewCardScreen}
+          options={{
+            title: "Add New Card",     />
       <Stack.Screen
         name="Transaction details"
         component={TransactionDetailsScreen as any}
