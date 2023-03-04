@@ -82,7 +82,7 @@ const PayScreen = ({ route }: any) => {
           },
         ]}
       >
-        Pay
+        Fund
       </Text>
       <TextInput
         keyboardType="numeric"
@@ -101,11 +101,11 @@ const PayScreen = ({ route }: any) => {
         onRedirect={handleOnRedirect}
         options={{
           tx_ref: generateTransactionRef(10),
-          authorization: "FLWPUBK_TEST-5a9b8099b909d9da2e00473ebb3de3bb-X",
+          authorization: "FLWPUBK-9a55f753a536178d29daacf845465d3a-X",
           customer: {
             email: "etukudo@gmail.com",
             phonenumber: "08012345678",
-            name: "Takeshi Kovacs",
+            name: user?.name,
           },
           amount,
           currency: "NGN",
