@@ -7,7 +7,6 @@ import { StatusBar } from "expo-status-bar";
 import {
   callUsIcon,
   chatUsIcon,
-  earningIcon,
   emailUsIcon,
   frontIcon,
 } from "../../assets/icons/icons";
