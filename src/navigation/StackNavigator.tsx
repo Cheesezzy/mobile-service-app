@@ -308,11 +308,14 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen 
-          name='Add New Card'
-          component={AddNewCardScreen}
-          options={{
-            title: "Add New Card",     />
+      <Stack.Screen
+        name="Add New Card"
+        component={AddNewCardScreen}
+        options={{
+          title: "Add New Card",
+          headerShown: false,
+        }}
+      />
       <Stack.Screen
         name="Transaction details"
         component={TransactionDetailsScreen as any}

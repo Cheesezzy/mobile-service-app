@@ -1,6 +1,5 @@
 import {
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -14,7 +13,7 @@ import { doc } from "firebase/firestore";
 import { auth, db } from "../../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
-import { hideString } from "../../../api/customHooks/generalHooks";
+import { hideString } from "../../../api/hooks/generalHooks";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../../provider/themeSlice";
 import { StatusBar } from "expo-status-bar";
@@ -59,8 +58,9 @@ const PaymentsScreen = ({ navigation }: any) => {
         ]}
       >
         <View style={{}}>
-          <TouchableOpacity style={styles.addCard}
-           onPress={() => navigation.navigate("Add New Card")} 
+          <TouchableOpacity
+            style={styles.addCard}
+            onPress={() => navigation.navigate("Add New Card")}
           >
             <Text style={styles.addCardTxt}>Add Card</Text>
           </TouchableOpacity>
@@ -141,13 +141,30 @@ const PaymentsScreen = ({ navigation }: any) => {
           </TouchableOpacity>
         </View>
         <ScrollView>
-          <Transactions image={Thsnip1()} title="Beauty’s Hairs And Nails" date="5, feb 2023" price="4500" />
-          <Transactions image={Thsnip2()} title="Wema Bank" date="5, feb 2023" price="10,000" />
-          <Transactions image={Thsnip1()} title="Lucy’s Catering Service" date="5, feb 2023" price="5,500" />
-          <Transactions image={Thsnip1()} title="Lucy’s Catering Service" date="5, feb 2023" price="5,500" />
-
-
-
+          <Transactions
+            image={Thsnip1()}
+            title="Beauty’s Hairs And Nails"
+            date="5, feb 2023"
+            price="4500"
+          />
+          <Transactions
+            image={Thsnip2()}
+            title="Wema Bank"
+            date="5, feb 2023"
+            price="10,000"
+          />
+          <Transactions
+            image={Thsnip1()}
+            title="Lucy’s Catering Service"
+            date="5, feb 2023"
+            price="5,500"
+          />
+          <Transactions
+            image={Thsnip1()}
+            title="Lucy’s Catering Service"
+            date="5, feb 2023"
+            price="5,500"
+          />
         </ScrollView>
         <StatusBar style={theme ? "dark" : "light"} />
       </ScrollView>
