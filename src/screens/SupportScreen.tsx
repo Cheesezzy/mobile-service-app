@@ -14,7 +14,7 @@ import {
 import { SvgXml } from "react-native-svg";
 import HeaderTitle from "../components/HeaderTitle";
 
-const SupportScreen = () => {
+const SupportScreen = ({ navigation }: any) => {
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
 
@@ -70,7 +70,7 @@ const SupportScreen = () => {
         <TouchableOpacity
           activeOpacity={0.6}
           // @ts-ignore
-          onPress={() => navigation.navigate("Earnings")}
+          onPress={() => navigation.navigate("Negotiations")}
         >
           <View style={styles.itemContainer}>
             <View style={styles.iconFlex}>
