@@ -182,6 +182,16 @@ export async function sendMessage(
   });
 }
 
+export async function deleteMessages(senderId: any, receiverId: any) {
+  // for deleting the present chats
+  const senderNegoRef = doc(db, "users", senderId, "negotiating", receiverId);
+  deleteDoc(senderNegoRef);
+
+  // for deleting the messages
+  const senderRef = doc(db, "users", senderId, "messages", receiverId);
+  deleteDoc(senderRef);
+}
+
 // update user role
 export function updateUserRole(userId: any, role: string) {
   const userRoleRef = doc(db, "users", userId);
