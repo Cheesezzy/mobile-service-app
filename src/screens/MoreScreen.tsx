@@ -72,7 +72,14 @@ const MoreScreen = ({ navigation }: any) => {
     <>
       <HeaderTitle title="More" profileURL={user?.profilePic} user={user} />
 
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          {
+            backgroundColor: theme ? colors.secondarySmoke : colors.black,
+          },
+        ]}
+      >
         {user && user.role && (
           <ScrollView style={styles.body}>
             {!loading && checkRole(user) && (

@@ -46,7 +46,6 @@ const WelcomeScreen = ({ navigation }: any) => {
   const scrollTo = () => {
     const nextSlideIndex = currSlideIndex + 1;
     if (nextSlideIndex !== slides.length) {
-      console.log("end of slides");
       const offset = nextSlideIndex * width;
       slidesRef?.current?.scrollToOffset({ offset });
       setCurrSlideIndex(nextSlideIndex);
