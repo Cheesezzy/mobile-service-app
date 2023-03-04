@@ -1,5 +1,6 @@
 import {
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -31,7 +32,6 @@ import Transactions from "../../components/Transactions";
 import { Thsnip1 } from "../../../assets/svgs/svgs";
 import { Thsnip2 } from "../../../assets/svgs/svgs";
 
-
 const PaymentsScreen = ({ navigation }: any) => {
   const [User] = useAuthState(auth);
 
@@ -47,11 +47,10 @@ const PaymentsScreen = ({ navigation }: any) => {
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
 
-
   return (
     <>
-      <HeaderTitle title='Payments' profileURL='' user='' />
-      <View
+      <HeaderTitle title="Payments" profileURL="" user="" />
+      <ScrollView
         style={[
           styles.container,
           {
@@ -75,8 +74,8 @@ const PaymentsScreen = ({ navigation }: any) => {
                 styles.balVal,
                 balVisible
                   ? {
-                    marginTop: 5,
-                  }
+                      marginTop: 5,
+                    }
                   : null,
               ]}
             >
@@ -95,8 +94,8 @@ const PaymentsScreen = ({ navigation }: any) => {
                   ? showPassIcon(colors.darkTxt)
                   : hidePassIcon(colors.darkTxt)
               }
-              width='30'
-              height='30'
+              width="30"
+              height="30"
             />
           </TouchableOpacity>
         </View>
@@ -106,7 +105,7 @@ const PaymentsScreen = ({ navigation }: any) => {
             style={[styles.moneyOptionBtnWire, { marginRight: 10 }]}
             onPress={() => navigation.navigate("PayStatus")}
           >
-            <SvgXml xml={withdrawMoneyIcon()} width='18' height='18' />
+            <SvgXml xml={withdrawMoneyIcon()} width="18" height="18" />
             <Text style={[styles.moneyOptionTxt, { color: colors.primary }]}>
               Withdraw
             </Text>
@@ -116,7 +115,7 @@ const PaymentsScreen = ({ navigation }: any) => {
             style={styles.moneyOptionBtn}
             onPress={() => navigation.navigate("Fund")}
           >
-            <SvgXml xml={receiveMoneyIcon()} width='18' height='18' />
+            <SvgXml xml={receiveMoneyIcon()} width="18" height="18" />
             <Text style={[styles.moneyOptionTxt, { color: colors.darkTxt }]}>
               Fund
             </Text>
@@ -135,7 +134,9 @@ const PaymentsScreen = ({ navigation }: any) => {
             Transaction History
           </Text>
 
-          <TouchableOpacity onPress={() => navigation.navigate("Transaction History")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Transaction History")}
+          >
             <Text style={styles.viewAll}>View all</Text>
           </TouchableOpacity>
         </View>
@@ -146,9 +147,10 @@ const PaymentsScreen = ({ navigation }: any) => {
           <Transactions image={Thsnip1()} title="Lucy’s Catering Service" date="5, feb 2023" price="5,500" />
 
 
+
         </ScrollView>
         <StatusBar style={theme ? "dark" : "light"} />
-      </View>
+      </ScrollView>
     </>
   );
 };

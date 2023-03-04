@@ -1,28 +1,8 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import colors from "../../config/colors";
 import { SvgXml } from "react-native-svg";
-import {
-  creative,
-  design,
-  events,
-  health,
-  infotech,
-  knowledge,
-  professional,
-  shieldCheck,
-  shopping,
-  social,
-  sport,
-} from "../../../assets/svgs/svgs";
-import { categories } from "../../../provider/categoryData/categories";
-import { searchIcon } from "../../../assets/icons/icons";
 import RecentOrder from "../../components/RecentOrder";
+import { shieldCheck, shopping } from "../../../assets/svgs/svgs";
 
 interface Props {
   navigation: any;
@@ -46,39 +26,74 @@ const ProviderHome = ({ navigation, theme, business }: Props) => {
         </View>
 
         <View style={styles.orderStats}>
-          <View style={styles.completed}>
+          <View
+            style={[
+              styles.completed,
+              {
+                backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+              },
+            ]}
+          >
             <View style={styles.completedIcon}>
               <SvgXml xml={shieldCheck()} width="21" height="21" />
             </View>
 
             <Text style={styles.completedTxt}>Completed Orders</Text>
-            <Text style={styles.completedVal}>137</Text>
+            <Text style={styles.completedVal}>
+              {business && business.completedBookings
+                ? business.completedBookings
+                : 0}
+            </Text>
           </View>
-          <View style={styles.pending}>
+          <View
+            style={[
+              styles.pending,
+              {
+                backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+              },
+            ]}
+          >
             <View style={styles.pendingIcon}>
               <SvgXml xml={shopping()} width="21" height="21" />
             </View>
 
             <Text style={styles.pendingTxt}>Pending Orders</Text>
-            <Text style={styles.pendingVal}>12</Text>
+            <Text style={styles.pendingVal}>
+              {business && business.pendingBookings
+                ? business.pendingBookings
+                : 0}
+            </Text>
           </View>
         </View>
 
         <View style={styles.titleCon}>
-          <Text style={styles.title}>Recent Orders</Text>
+          <Text
+            style={[
+              styles.title,
+              {
+                color: theme ? colors.black : colors.darkTxt,
+              },
+            ]}
+          >
+            Recent Orders
+          </Text>
           <TouchableOpacity onPress={() => navigation.navigate("Recent Order")}>
             <Text style={styles.viewAll}>View All</Text>
           </TouchableOpacity>
         </View>
       </>
 
-      <View style={{ height: 70, width: "100%" }}>
-
-        {Array(4).fill(null).map((_, i) => (
-          <RecentOrder key={i} name="Ayoola Ayolola" minutes="32 minutes ago" />
-        ))}
+      <View style={{ width: "100%" }}>
+        {Array(4)
+          .fill(null)
+          .map((_, i) => (
+            <RecentOrder
+              key={i}
+              name="Ayoola Ayolola"
+              minutes="32 minutes ago"
+            />
+          ))}
       </View>
-
     </>
   );
 };
@@ -132,7 +147,6 @@ const styles = StyleSheet.create({
   completed: {
     height: 110,
     width: "48%",
-    backgroundColor: colors.secondary,
     padding: 10,
     borderRadius: 5,
   },
@@ -158,7 +172,6 @@ const styles = StyleSheet.create({
   pending: {
     height: 110,
     width: "48%",
-    backgroundColor: colors.secondary,
     padding: 10,
     borderRadius: 5,
   },

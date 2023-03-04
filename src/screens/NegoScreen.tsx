@@ -86,7 +86,7 @@ const NegoScreen = ({ navigation }: any) => {
   };
 
   const handleClick = (msg: any) => {
-    navigation.navigate("NegoDisplay", {
+    navigation.navigate("ChatScreen", {
       personId: checkingPerson(msg)?.id,
       name: checkingPerson(msg)?.name,
       personPic: checkingPerson(msg)?.pic,

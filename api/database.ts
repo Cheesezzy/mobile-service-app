@@ -8,6 +8,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
+import { AppointmentDate } from "../src/components/Appointment";
 
 export function clearAllUsers() {
   const userRef = doc(db, "users/");
@@ -204,6 +205,8 @@ export function addBusiness(userId: any) {
     manager: "",
     chargeRate: 0,
     level: "Start-up",
+    completedBookings: 0,
+    pendingBookings: 0,
     earnings: {
       avgBookingPrice: 0,
       activeBookings: 0,
@@ -295,6 +298,44 @@ export function updateGallery(bizId: any, url: any, img: string) {
 
   setDoc(businessRef, {
     url,
+  });
+}
+
+export function addAppointment(
+  bizId: any,
+  name: any,
+  time: any,
+  date: AppointmentDate,
+  location: any
+) {
+  const businessRef = doc(db, "businesses", bizId, "appointment", name);
+
+  setDoc(businessRef, {
+    name,
+    time,
+    date,
+    location,
+  });
+}
+
+export function blockUser(userId: any, email: string) {
+  const blocklistRef = collection(db, "users/" + `${userId}/blocklist`);
+
+  addDoc(blocklistRef, {
+    id: "",
+    email,
+  }).then((blockedUser) => {
+    const blockedUserRef = doc(
+      db,
+      "users",
+      userId,
+      "blocklist",
+      blockedUser.id
+    );
+
+    updateDoc(blockedUserRef, {
+      id: blockedUser.id,
+    });
   });
 }
 
