@@ -54,7 +54,6 @@ const StackNavigator = () => {
   const selector = useSelector(handleAllUsers);
   const usersRef = collection(db, "users");
   const userbizInformedRef = doc(db, "users", user?.uid!);
-
   const allUsers = selector.payload.users.value;
 
   const [bizData, loading] = useDocumentData(userbizInformedRef);
