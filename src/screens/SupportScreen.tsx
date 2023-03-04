@@ -13,7 +13,7 @@ import {
 } from "../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
 import HeaderTitle from "../components/HeaderTitle";
-
+import { Linking } from "react-native";
 const SupportScreen = ({ navigation }: any) => {
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
@@ -33,7 +33,7 @@ const SupportScreen = ({ navigation }: any) => {
         <TouchableOpacity
           activeOpacity={0.6}
           // @ts-ignore
-          onPress={() => navigation.navigate("Earnings")}
+          onPress={() => Linking.openURL(`tel:090566848848`)}
         >
           <View style={styles.itemContainer}>
             <View style={styles.iconFlex}>
@@ -107,7 +107,7 @@ const SupportScreen = ({ navigation }: any) => {
         <TouchableOpacity
           activeOpacity={0.6}
           // @ts-ignore
-          onPress={() => navigation.navigate("Earnings")}
+          onPress={() => Linking.openURL("mailto:support@example.com")}
         >
           <View style={styles.itemContainer}>
             <View style={styles.iconFlex}>
