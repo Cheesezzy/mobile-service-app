@@ -33,7 +33,7 @@ const SupportScreen = ({ navigation }: any) => {
         <TouchableOpacity
           activeOpacity={0.6}
           // @ts-ignore
-          onPress={() => Linking.openURL(`tel:090566848848`)}
+          onPress={() => Linking.openURL(`tel:09071400408`)}
         >
           <View style={styles.itemContainer}>
             <View style={styles.iconFlex}>
@@ -107,7 +107,7 @@ const SupportScreen = ({ navigation }: any) => {
         <TouchableOpacity
           activeOpacity={0.6}
           // @ts-ignore
-          onPress={() => Linking.openURL("mailto:support@example.com")}
+          onPress={() => Linking.openURL("mailto:support@rete.africa")}
         >
           <View style={styles.itemContainer}>
             <View style={styles.iconFlex}>
