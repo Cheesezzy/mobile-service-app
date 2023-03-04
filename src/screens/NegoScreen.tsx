@@ -39,8 +39,8 @@ import {
 } from "react-firebase-hooks/firestore";
 import HeaderTitle from "../components/HeaderTitle";
 import { StatusBar } from "expo-status-bar";
-import { getTime } from "../../api/customHooks/convertTimestamp";
-import { trimText } from "../../api/customHooks/generalHooks";
+import { getTime } from "../../api/hooks/convertTimestamp";
+import { trimText } from "../../api/hooks/generalHooks";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 import { waiting } from "../../assets/svgs/svgs";
 import { SvgXml } from "react-native-svg";

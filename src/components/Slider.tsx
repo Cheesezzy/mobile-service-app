@@ -24,7 +24,7 @@ import Page from "./Page";
 import { pages } from "../../provider/pages/pages";
 import { goNextIcon } from "../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
-import { checkRole } from "../../api/customHooks/generalHooks";
+import { checkRole } from "../../api/hooks/generalHooks";
 
 const { width } = Dimensions.get("window");
 

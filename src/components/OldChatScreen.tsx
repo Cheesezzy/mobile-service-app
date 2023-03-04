@@ -39,7 +39,7 @@ import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
-import { getTime } from "../../api/customHooks/convertTimestamp";
+import { getTime } from "../../api/hooks/convertTimestamp";
 import {
   scrollTo,
   useAnimatedRef,

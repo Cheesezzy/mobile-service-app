@@ -38,7 +38,7 @@ import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
-import { getTime } from "../../api/customHooks/convertTimestamp";
+import { getTime } from "../../api/hooks/convertTimestamp";
 import { useAnimatedRef } from "react-native-reanimated";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";

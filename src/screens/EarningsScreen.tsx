@@ -17,7 +17,7 @@ import { handleSwitchTheme } from "../../provider/themeSlice";
 import { StatusBar } from "expo-status-bar";
 import { SvgXml } from "react-native-svg";
 import { hidePassIcon, showPassIcon } from "../../assets/icons/icons";
-import { hideString } from "../../api/customHooks/generalHooks";
+import { hideString } from "../../api/hooks/generalHooks";
 
 const EarningsScreen = () => {
   const [User] = useAuthState(auth);

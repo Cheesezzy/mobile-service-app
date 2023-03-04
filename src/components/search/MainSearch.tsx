@@ -34,7 +34,7 @@ import { auth, db } from "../../../firebaseConfig";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { SvgXml } from "react-native-svg";
 import { star } from "../../../assets/svgs/svgs";
-import { roundDistance } from "../../../api/customHooks/generalHooks";
+import { roundDistance } from "../../../api/hooks/generalHooks";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../../provider/themeSlice";
 
