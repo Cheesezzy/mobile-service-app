@@ -6,6 +6,10 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "notification": {
+      "icon": "./assets/icon.png"
+    },
+    
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -40,13 +44,23 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+   
     "plugins": [
       [
         "expo-image-picker",
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#ffffff"
+         
+        }
       ]
+      
     ],
     "extra": {
       "eas": {

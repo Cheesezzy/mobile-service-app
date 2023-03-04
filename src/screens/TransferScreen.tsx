@@ -15,7 +15,7 @@ import { doc } from "firebase/firestore";
 import { auth, db } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
-import { addCommas, checkRole } from "../../api/customHooks/generalHooks";
+import { addCommas, checkRole } from "../../api/hooks/generalHooks";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 import { transferFunds } from "../../api/database";

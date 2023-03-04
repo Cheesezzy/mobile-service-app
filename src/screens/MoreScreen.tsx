@@ -25,7 +25,7 @@ import { doc } from "firebase/firestore";
 import { auth, db } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
-import { checkRole } from "../../api/customHooks/generalHooks";
+import { checkRole } from "../../api/hooks/generalHooks";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 import { useSelector, useDispatch } from "react-redux";
 import HeaderTitle from "../components/HeaderTitle";
@@ -72,7 +72,14 @@ const MoreScreen = ({ navigation }: any) => {
     <>
       <HeaderTitle title="More" profileURL={user?.profilePic} user={user} />
 
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          {
+            backgroundColor: theme ? colors.secondarySmoke : colors.black,
+          },
+        ]}
+      >
         {user && user.role && (
           <ScrollView style={styles.body}>
             {!loading && checkRole(user) && (

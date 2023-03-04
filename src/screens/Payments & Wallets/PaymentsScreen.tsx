@@ -13,7 +13,7 @@ import { doc } from "firebase/firestore";
 import { auth, db } from "../../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
-import { hideString } from "../../../api/customHooks/generalHooks";
+import { hideString } from "../../../api/hooks/generalHooks";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../../provider/themeSlice";
 import { StatusBar } from "expo-status-bar";
@@ -31,7 +31,6 @@ import Transactions from "../../components/Transactions";
 import { Thsnip1 } from "../../../assets/svgs/svgs";
 import { Thsnip2 } from "../../../assets/svgs/svgs";
 
-
 const PaymentsScreen = ({ navigation }: any) => {
   const [User] = useAuthState(auth);
 
@@ -47,11 +46,10 @@ const PaymentsScreen = ({ navigation }: any) => {
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
 
-
   return (
     <>
-      <HeaderTitle title='Payments' profileURL='' user='' />
-      <View
+      <HeaderTitle title="Payments" profileURL="" user="" />
+      <ScrollView
         style={[
           styles.container,
           {
@@ -60,8 +58,9 @@ const PaymentsScreen = ({ navigation }: any) => {
         ]}
       >
         <View style={{}}>
-          <TouchableOpacity style={styles.addCard}
-           onPress={() => navigation.navigate("Add New Card")} 
+          <TouchableOpacity
+            style={styles.addCard}
+            onPress={() => navigation.navigate("Add New Card")}
           >
             <Text style={styles.addCardTxt}>Add Card</Text>
           </TouchableOpacity>
@@ -75,8 +74,8 @@ const PaymentsScreen = ({ navigation }: any) => {
                 styles.balVal,
                 balVisible
                   ? {
-                    marginTop: 5,
-                  }
+                      marginTop: 5,
+                    }
                   : null,
               ]}
             >
@@ -95,8 +94,8 @@ const PaymentsScreen = ({ navigation }: any) => {
                   ? showPassIcon(colors.darkTxt)
                   : hidePassIcon(colors.darkTxt)
               }
-              width='30'
-              height='30'
+              width="30"
+              height="30"
             />
           </TouchableOpacity>
         </View>
@@ -106,7 +105,7 @@ const PaymentsScreen = ({ navigation }: any) => {
             style={[styles.moneyOptionBtnWire, { marginRight: 10 }]}
             onPress={() => navigation.navigate("PayStatus")}
           >
-            <SvgXml xml={withdrawMoneyIcon()} width='18' height='18' />
+            <SvgXml xml={withdrawMoneyIcon()} width="18" height="18" />
             <Text style={[styles.moneyOptionTxt, { color: colors.primary }]}>
               Withdraw
             </Text>
@@ -116,7 +115,7 @@ const PaymentsScreen = ({ navigation }: any) => {
             style={styles.moneyOptionBtn}
             onPress={() => navigation.navigate("Fund")}
           >
-            <SvgXml xml={receiveMoneyIcon()} width='18' height='18' />
+            <SvgXml xml={receiveMoneyIcon()} width="18" height="18" />
             <Text style={[styles.moneyOptionTxt, { color: colors.darkTxt }]}>
               Fund
             </Text>
@@ -135,20 +134,40 @@ const PaymentsScreen = ({ navigation }: any) => {
             Transaction History
           </Text>
 
-          <TouchableOpacity onPress={() => navigation.navigate("Transaction History")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Transaction History")}
+          >
             <Text style={styles.viewAll}>View all</Text>
           </TouchableOpacity>
         </View>
         <ScrollView>
-          <Transactions image={Thsnip1()} title="Beauty’s Hairs And Nails" date="5, feb 2023" price="4500" />
-          <Transactions image={Thsnip2()} title="Wema Bank" date="5, feb 2023" price="10,000" />
-          <Transactions image={Thsnip1()} title="Lucy’s Catering Service" date="5, feb 2023" price="5,500" />
-          <Transactions image={Thsnip1()} title="Lucy’s Catering Service" date="5, feb 2023" price="5,500" />
-
-
+          <Transactions
+            image={Thsnip1()}
+            title="Beauty’s Hairs And Nails"
+            date="5, feb 2023"
+            price="4500"
+          />
+          <Transactions
+            image={Thsnip2()}
+            title="Wema Bank"
+            date="5, feb 2023"
+            price="10,000"
+          />
+          <Transactions
+            image={Thsnip1()}
+            title="Lucy’s Catering Service"
+            date="5, feb 2023"
+            price="5,500"
+          />
+          <Transactions
+            image={Thsnip1()}
+            title="Lucy’s Catering Service"
+            date="5, feb 2023"
+            price="5,500"
+          />
         </ScrollView>
         <StatusBar style={theme ? "dark" : "light"} />
-      </View>
+      </ScrollView>
     </>
   );
 };

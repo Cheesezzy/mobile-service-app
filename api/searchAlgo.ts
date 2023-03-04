@@ -45,7 +45,6 @@ export function searchAndRank(
     return distanceToA - distanceToB;
   });
 
-  //console.log(sortedByProximity, "found ny promotion!");
   // Return the sorted list of businesses
   return sortedByProximity;
 }

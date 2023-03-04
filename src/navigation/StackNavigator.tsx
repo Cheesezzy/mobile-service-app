@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { handleAllUsers } from "../../provider/allUsersSlice";
-import { NegoDisplay } from "../components/NegoDisplay";
+import { ChatScreen } from "../components/ChatScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import AnalyticsScreen from "../screens/AnalyticsScreen";
 import PaymentsScreen from "../screens/Payments & Wallets/PaymentsScreen";
@@ -55,7 +55,6 @@ const StackNavigator = () => {
   const selector = useSelector(handleAllUsers);
   const usersRef = collection(db, "users");
   const userbizInformedRef = doc(db, "users", user?.uid!);
-
   const allUsers = selector.payload.users.value;
 
   const [bizData, loading] = useDocumentData(userbizInformedRef);
@@ -214,8 +213,8 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="NegoDisplay"
-        component={NegoDisplay}
+        name="ChatScreen"
+        component={ChatScreen}
         options={{
           title: "NegoDisplay",
           headerShown: false,
@@ -323,14 +322,6 @@ const StackNavigator = () => {
         component={AddNewCardScreen}
         options={{
           title: "Add New Card",
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="Recent Order"
-        component={RecentOrderScreen}
-        options={{
-          title: "Recent Order",
           headerShown: false,
         }}
       />

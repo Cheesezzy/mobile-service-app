@@ -5,7 +5,7 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
-import { checkRole } from "../../api/customHooks/generalHooks";
+import { checkRole } from "../../api/hooks/generalHooks";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../../firebaseConfig";
 import { doc } from "firebase/firestore";

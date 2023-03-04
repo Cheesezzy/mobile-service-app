@@ -26,7 +26,7 @@ import {
 } from "react-firebase-hooks/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { createNotification, updateGallery } from "../../api/database";
-import { checkRole, checkUser } from "../../api/customHooks/generalHooks";
+import { checkRole, checkUser } from "../../api/hooks/generalHooks";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 import * as Location from "expo-location";

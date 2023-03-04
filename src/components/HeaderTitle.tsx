@@ -12,7 +12,7 @@ import { SvgXml } from "react-native-svg";
 import { backIcon, notifIcon, searchIcon } from "../../assets/icons/icons";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 import { useSelector } from "react-redux";
-import { trimAfterSpace } from "../../api/customHooks/generalHooks";
+import { trimAfterSpace } from "../../api/hooks/generalHooks";
 import { useEffect, useState } from "react";
 import {
   useCollectionData,

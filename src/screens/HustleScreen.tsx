@@ -31,7 +31,7 @@ import { doc } from "firebase/firestore";
 import { auth, db, store } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
-import { addCommas, checkRole } from "../../api/customHooks/generalHooks";
+import { addCommas, checkRole } from "../../api/hooks/generalHooks";
 import * as ImagePicker from "expo-image-picker";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { updateProfilePic } from "../../api/database";

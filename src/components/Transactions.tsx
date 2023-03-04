@@ -5,6 +5,7 @@ import colors from "../config/colors";
 import { Thsnip1 } from "../../assets/svgs/svgs";
 import { SvgXml } from "react-native-svg";
 
+
 interface Props {
     title : string,
     date : string,
