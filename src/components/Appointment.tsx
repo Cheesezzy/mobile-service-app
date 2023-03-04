@@ -13,6 +13,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { frontIcon } from "../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
 import { addAppointment } from "../../api/database";
+import DateTimePicker from "react-native-modal-datetime-picker";
 
 export interface AppointmentDate {
   day: number;
@@ -74,6 +75,11 @@ const Appointment = ({ isVisible, setIsVisible, business, sender }: Props) => {
     setIsVisible(false);
   };
 
+  const disableButton = () => {
+    if (name && selectedTime && selectedDate) return false;
+    return true;
+  };
+
   return (
     <>
       <Dialog
@@ -110,6 +116,7 @@ const Appointment = ({ isVisible, setIsVisible, business, sender }: Props) => {
               mode="date"
               onConfirm={handleConfirmDate}
               onCancel={hideDatePicker}
+              isDarkModeEnabled
             />
 
             <SvgXml xml={frontIcon()} width="14" height="14" />
@@ -147,8 +154,14 @@ const Appointment = ({ isVisible, setIsVisible, business, sender }: Props) => {
           </View>
 
           <TouchableOpacity
-            style={[styles.doneBtn]}
+            style={[
+              styles.doneBtn,
+              {
+                opacity: disableButton() ? 0.5 : 1,
+              },
+            ]}
             onPress={handleSubmitAppointment}
+            disabled={disableButton()}
           >
             <Text style={styles.doneBtnTxt}>Done</Text>
           </TouchableOpacity>
