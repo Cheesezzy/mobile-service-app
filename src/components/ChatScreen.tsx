@@ -698,7 +698,7 @@ const styles = StyleSheet.create({
     color: colors.lightGrey,
   },
   messagesCon: {
-    paddingBottom: 120,
+    paddingBottom: 160,
   },
   messages: {},
   day: {

@@ -15,10 +15,11 @@ import {
 } from "../../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
 import { PaymentType } from "./components/PaymentType";
-import { TranssctionDetails } from "./components/TranssctionDetails";
+import { TransactionDetails } from "./components/TransactionDetails";
 import { ShareButton } from "./components/ShareButton";
 import { Idetails, Ipayment } from "./interface";
-import NavigationBar from "./components/NavigationBar";
+import HeaderTitle from "../../components/HeaderTitle";
+
 const TransactionDetailsScreen = ({
   route,
 }: {
@@ -29,7 +30,7 @@ const TransactionDetailsScreen = ({
   let debit = actionType === "transfer";
   return (
     <>
-      <NavigationBar title="Transaction details"/>
+      <HeaderTitle user="" title="" profileURL="" />
 
       <SafeAreaView>
         <View style={styles.container}>
@@ -81,7 +82,7 @@ const TransactionDetailsScreen = ({
           </View>
 
           <View style={styles.transsactionDetails}>
-            <TranssctionDetails details={details} />
+            <TransactionDetails details={details} />
           </View>
         </View>
         <View style={styles.btn}>

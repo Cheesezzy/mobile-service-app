@@ -769,6 +769,82 @@ function HeaderTitle({ title, profileURL }: Props) {
           </TouchableOpacity>
         </View>
       )}
+      {route.name === "Transaction History" && (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            paddingHorizontal: 10,
+          }}
+        >
+          <TouchableOpacity style={{}}>
+            <SvgXml
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
+              width="22"
+              height="22"
+              onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "PrimarySemiBold",
+                fontSize: 20,
+                alignSelf: "center",
+                color: theme ? colors.black : colors.darkTxt,
+              }}
+            >
+              Transaction History
+            </Text>
+          </View>
+        </View>
+      )}
+      {route.name === "Transaction Details" && (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            paddingHorizontal: 10,
+          }}
+        >
+          <TouchableOpacity style={{}}>
+            <SvgXml
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
+              width="22"
+              height="22"
+              onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "PrimarySemiBold",
+                fontSize: 20,
+                alignSelf: "center",
+                color: theme ? colors.black : colors.darkTxt,
+              }}
+            >
+              Transaction Details
+            </Text>
+          </View>
+        </View>
+      )}
     </View>
   );
 }
