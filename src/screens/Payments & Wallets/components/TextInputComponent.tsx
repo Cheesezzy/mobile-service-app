@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TextInput, StyleSheet } from "react-native"
+import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions } from "react-native"
 
 
 interface Props {
@@ -7,8 +7,11 @@ interface Props {
     placeholder: string
     value: string
     onChangeText: any
+    keyboardType : KeyboardTypeOptions
+    onFocus : () => void
+    maxLength : any
 }
-const TextInputComponent = ({ title, onChangeText, value, placeholder }: Props) => {
+const TextInputComponent = ({ title, maxLength, onFocus, keyboardType, onChangeText, value, placeholder }: Props) => {
     return (
         <>
             <View style={styles.cardContainer}>
@@ -17,8 +20,11 @@ const TextInputComponent = ({ title, onChangeText, value, placeholder }: Props) 
                 </Text>
                 <TextInput style={styles.inputContainer}
                     placeholder={placeholder}
+                    keyboardType = {keyboardType}
                     value={value}
                     onChangeText={onChangeText}
+                    onFocus = {onFocus}
+                    maxLength = {maxLength}
                 />
             </View>
         </>

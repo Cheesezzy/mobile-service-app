@@ -43,6 +43,7 @@ import TransactionHistory from "../screens/Payments & Wallets/TransactionHistory
 import RecentOrderScreen from "../screens/RecentOrderScreen";
 import TransactionDetailsScreen from "../screens/Payments & Wallets/TransactionDetailsScreen";
 import AddNewCardScreen from "../screens/Payments & Wallets/AddNewCardScreen";
+import PhoneScreen from "../screens/PhoneScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -105,6 +106,14 @@ const StackNavigator = () => {
       <Stack.Screen
         name="Negotiations"
         component={NegoScreen}
+        options={{
+          title: "Negotiations",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Phone"
+        component={PhoneScreen}
         options={{
           title: "Negotiations",
           headerShown: false,
