@@ -46,7 +46,7 @@ const EarningsScreen = () => {
         ]}
       >
         <View style={styles.balCon}>
-          <View>
+          <View style={{ alignSelf: "center" }}>
             <Text style={styles.balTxt}>Balance</Text>
             <Text
               style={[
@@ -70,8 +70,8 @@ const EarningsScreen = () => {
             <SvgXml
               xml={
                 balVisible
-                  ? showPassIcon(colors.black)
-                  : hidePassIcon(colors.black)
+                  ? showPassIcon(colors.darkTxt)
+                  : hidePassIcon(colors.darkTxt)
               }
               width="30"
               height="30"
@@ -320,6 +320,7 @@ const EarningsScreen = () => {
             </View>
           </View>
         </View>
+        <View style={{ height: 50, width: "100%" }} />
         <StatusBar style={theme ? "dark" : "light"} />
       </ScrollView>
     </>
@@ -340,36 +341,31 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "center",
     justifyContent: "space-between",
-    backgroundColor: colors.lightPrimary,
+    backgroundColor: colors.black,
     borderRadius: 10,
     padding: 20,
     marginVertical: 20,
   },
   balVal: {
     fontSize: 23,
-    fontFamily: "Lato",
-    color: colors.primary,
+    fontFamily: "PrimarySemiBold",
+    color: colors.darkTxt,
   },
   balTxt: {
     fontSize: 16,
-    fontFamily: "LatoRegular",
-    color: colors.lightGrey,
+    fontFamily: "PrimaryRegular",
+    color: colors.darkTxt,
   },
   showHideToggle: {
     alignSelf: "center",
   },
   analytics: {},
   analyticsHead: {
-    fontFamily: "LatoRegular",
-    color: colors.lightGrey,
-    paddingBottom: 10,
+    fontFamily: "PrimarySemiBold",
+    fontSize: 16,
   },
   analyticsCon: {
     paddingVertical: 20,
-    borderTopColor: colors.grey,
-    borderTopWidth: 1,
-    borderBottomColor: colors.grey,
-    borderBottomWidth: 1,
   },
   analyticsItem: {
     flexDirection: "row",
@@ -382,41 +378,35 @@ const styles = StyleSheet.create({
   },
   analyticsItemTxtA: {
     fontSize: 13,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
   },
   analyticsItemTxtB: {
     fontSize: 13,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
   },
 
   revenues: {
     marginTop: 25,
   },
   revenuesHead: {
-    fontFamily: "LatoRegular",
-    color: colors.lightGrey,
-    paddingBottom: 10,
+    fontFamily: "PrimarySemiBold",
+    fontSize: 16,
   },
   revenuesCon: {
     paddingVertical: 20,
-    borderTopColor: colors.grey,
-    borderTopWidth: 1,
   },
   revenuesItem: {
     flexDirection: "row",
     width: "100%",
     justifyContent: "space-between",
     paddingBottom: 20,
-    marginTop: 15,
-    borderBottomColor: colors.grey,
-    borderBottomWidth: 1,
   },
   revenuesItemTxtA: {
     fontSize: 13,
-    fontFamily: "Lato",
+    fontFamily: "PrimarySemiBold",
   },
   revenuesItemTxtB: {
     fontSize: 13,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
   },
 });

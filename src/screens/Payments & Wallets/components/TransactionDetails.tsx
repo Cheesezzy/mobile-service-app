@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { Idetails } from "../interface";
-export const TranssctionDetails: Function = ({
+export const TransactionDetails: Function = ({
   details,
 }: {
   details: Idetails;
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: "column",
+    justifyContent: "space-between",
     paddingBottom: 10,
   },
 });

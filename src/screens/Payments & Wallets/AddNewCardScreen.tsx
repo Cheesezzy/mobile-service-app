@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import NavigationBar from './components/NavigationBar'
 import { View, Text, StyleSheet } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import TextInputComponent from './components/TextInputComponent'
@@ -8,6 +7,11 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker'
 
 
 const AddNewCard = () => {
+  const [cardNumber, setCardNumber] = useState("");
+  const [bank, setBank] = useState("");
+  const [expireDate, setExpireDate] = useState("");
+  const [cvv, setCvv] = useState("");
+  const [buttonColor, setButtonColor] = useState("#a8ceed");
 
     const [cardNumber, setCardNumber] = useState('');
     const [bank, setBank] = useState('');
@@ -49,7 +53,6 @@ const AddNewCard = () => {
     return (
         <KeyboardAwareScrollView
         >
-            <NavigationBar title='Add New Card' />
 
             <View style={styles.container}>
                 <Text style={styles.textContainer}>
@@ -105,32 +108,42 @@ const AddNewCard = () => {
                     />
             </View>
 
-            <View style={styles.btn}>
-                <NextButton
-                    backgroundColor={buttonColor}
-                    title='Next' />
-            </View>
+        <TextInputComponent
+          title="expiration date"
+          value={expireDate}
+          onChangeText={setExpireDate}
+          placeholder="enter valid date"
+        />
 
+        <TextInputComponent
+          title="CVV"
+          value={cvv}
+          onChangeText={setCvv}
+          placeholder="enter CVV"
+        />
+      </View>
 
-        </KeyboardAwareScrollView>
-    )
-}
+      <View style={styles.btn}>
+        <NextButton backgroundColor={buttonColor} title="Next" />
+      </View>
+    </KeyboardAwareScrollView>
+  );
+};
 
-export default AddNewCard
+export default AddNewCard;
 
 const styles = StyleSheet.create({
-    container: {
-        marginTop: 60,
-    },
-    textContainer: {
-        fontSize: 21,
-        fontFamily: "PrimaryMedium",
-        fontWeight: "600",
-        paddingLeft: 20,
-    },
-    btn: {
-        marginTop: 35,
-        alignItems: "center"
-
-    }
-})
+  container: {
+    marginTop: 60,
+  },
+  textContainer: {
+    fontSize: 21,
+    fontFamily: "PrimaryMedium",
+    fontWeight: "600",
+    paddingLeft: 20,
+  },
+  btn: {
+    marginTop: 35,
+    alignItems: "center",
+  },
+});
