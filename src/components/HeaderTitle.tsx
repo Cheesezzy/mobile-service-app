@@ -134,7 +134,7 @@ function HeaderTitle({ title, profileURL }: Props) {
             // @ts-ignore
             onPress={() => navigation.navigate("Notifications")}
           >
-            <SvgXml xml={notifIcon()} width="21" height="21" />
+            <SvgXml xml={notifIcon()} width='21' height='21' />
             {notifUnread ? (
               <View
                 style={[
@@ -162,8 +162,8 @@ function HeaderTitle({ title, profileURL }: Props) {
           <TouchableOpacity style={{}}>
             <SvgXml
               xml={backIcon(theme ? colors.black : colors.darkTxt)}
-              width="22"
-              height="22"
+              width='22'
+              height='22'
               onPress={() => navigation.goBack()}
             />
           </TouchableOpacity>
@@ -190,7 +190,7 @@ function HeaderTitle({ title, profileURL }: Props) {
             // @ts-ignore
             onPress={() => navigation.navigate("Notifications")}
           >
-            <SvgXml xml={notifIcon()} width="21" height="21" />
+            <SvgXml xml={notifIcon()} width='21' height='21' />
             {notifUnread ? (
               <View
                 style={[
@@ -218,8 +218,8 @@ function HeaderTitle({ title, profileURL }: Props) {
           <TouchableOpacity style={{}}>
             <SvgXml
               xml={backIcon(theme ? colors.black : colors.darkTxt)}
-              width="22"
-              height="22"
+              width='22'
+              height='22'
               onPress={() => navigation.goBack()}
             />
           </TouchableOpacity>
@@ -246,7 +246,7 @@ function HeaderTitle({ title, profileURL }: Props) {
             // @ts-ignore
             onPress={() => navigation.navigate("Notifications")}
           >
-            <SvgXml xml={notifIcon()} width="21" height="21" />
+            <SvgXml xml={notifIcon()} width='21' height='21' />
             {notifUnread ? (
               <View
                 style={[
@@ -292,8 +292,8 @@ function HeaderTitle({ title, profileURL }: Props) {
           <TouchableOpacity style={{}}>
             <SvgXml
               xml={backIcon(theme ? colors.black : colors.darkTxt)}
-              width="22"
-              height="22"
+              width='22'
+              height='22'
               onPress={() => navigation.goBack()}
             />
           </TouchableOpacity>
@@ -330,8 +330,8 @@ function HeaderTitle({ title, profileURL }: Props) {
           <TouchableOpacity style={{}}>
             <SvgXml
               xml={backIcon(theme ? colors.black : colors.darkTxt)}
-              width="22"
-              height="22"
+              width='22'
+              height='22'
               onPress={() => navigation.goBack()}
             />
           </TouchableOpacity>
@@ -358,7 +358,7 @@ function HeaderTitle({ title, profileURL }: Props) {
             // @ts-ignore
             onPress={() => navigation.navigate("Notifications")}
           >
-            <SvgXml xml={notifIcon()} width="21" height="21" />
+            <SvgXml xml={notifIcon()} width='21' height='21' />
             {notifUnread ? (
               <View
                 style={[
@@ -386,8 +386,8 @@ function HeaderTitle({ title, profileURL }: Props) {
           <TouchableOpacity style={{}}>
             <SvgXml
               xml={backIcon(theme ? colors.black : colors.darkTxt)}
-              width="22"
-              height="22"
+              width='22'
+              height='22'
               onPress={() => navigation.goBack()}
             />
           </TouchableOpacity>
@@ -424,8 +424,8 @@ function HeaderTitle({ title, profileURL }: Props) {
           <TouchableOpacity style={{}}>
             <SvgXml
               xml={backIcon(theme ? colors.black : colors.darkTxt)}
-              width="22"
-              height="22"
+              width='22'
+              height='22'
               onPress={() => navigation.goBack()}
             />
           </TouchableOpacity>
@@ -452,7 +452,7 @@ function HeaderTitle({ title, profileURL }: Props) {
             // @ts-ignore
             onPress={() => navigation.navigate("Notifications")}
           >
-            <SvgXml xml={notifIcon()} width="21" height="21" />
+            <SvgXml xml={notifIcon()} width='21' height='21' />
             {notifUnread ? (
               <View
                 style={[
@@ -480,8 +480,8 @@ function HeaderTitle({ title, profileURL }: Props) {
           <TouchableOpacity style={{}}>
             <SvgXml
               xml={backIcon(theme ? colors.black : colors.darkTxt)}
-              width="22"
-              height="22"
+              width='22'
+              height='22'
               onPress={() => navigation.goBack()}
             />
           </TouchableOpacity>
@@ -508,7 +508,7 @@ function HeaderTitle({ title, profileURL }: Props) {
             // @ts-ignore
             onPress={() => navigation.navigate("Notifications")}
           >
-            <SvgXml xml={notifIcon()} width="21" height="21" />
+            <SvgXml xml={notifIcon()} width='21' height='21' />
             {notifUnread ? (
               <View
                 style={[
@@ -536,8 +536,8 @@ function HeaderTitle({ title, profileURL }: Props) {
           <TouchableOpacity style={{}}>
             <SvgXml
               xml={backIcon(theme ? colors.black : colors.darkTxt)}
-              width="22"
-              height="22"
+              width='22'
+              height='22'
               onPress={() => navigation.goBack()}
             />
           </TouchableOpacity>
@@ -564,7 +564,7 @@ function HeaderTitle({ title, profileURL }: Props) {
             // @ts-ignore
             onPress={() => navigation.navigate("Notifications")}
           >
-            <SvgXml xml={notifIcon()} width="21" height="21" />
+            <SvgXml xml={notifIcon()} width='21' height='21' />
             {notifUnread ? (
               <View
                 style={[
@@ -592,8 +592,8 @@ function HeaderTitle({ title, profileURL }: Props) {
           <TouchableOpacity style={{}}>
             <SvgXml
               xml={backIcon(theme ? colors.black : colors.darkTxt)}
-              width="22"
-              height="22"
+              width='22'
+              height='22'
               onPress={() => navigation.goBack()}
             />
           </TouchableOpacity>
@@ -620,7 +620,7 @@ function HeaderTitle({ title, profileURL }: Props) {
             // @ts-ignore
             onPress={() => navigation.navigate("Notifications")}
           >
-            <SvgXml xml={notifIcon()} width="21" height="21" />
+            <SvgXml xml={notifIcon()} width='21' height='21' />
             {notifUnread ? (
               <View
                 style={[
@@ -649,8 +649,8 @@ function HeaderTitle({ title, profileURL }: Props) {
           >
             <SvgXml
               xml={searchIcon(theme ? colors.blackSmoke : colors.darkTxt)}
-              width="21"
-              height="21"
+              width='21'
+              height='21'
             />
           </TouchableOpacity>
         </>
@@ -669,8 +669,8 @@ function HeaderTitle({ title, profileURL }: Props) {
           <TouchableOpacity style={{}}>
             <SvgXml
               xml={backIcon(theme ? colors.black : colors.darkTxt)}
-              width="22"
-              height="22"
+              width='22'
+              height='22'
               onPress={() => navigation.goBack()}
             />
           </TouchableOpacity>
@@ -697,7 +697,7 @@ function HeaderTitle({ title, profileURL }: Props) {
             // @ts-ignore
             onPress={() => navigation.navigate("Notifications")}
           >
-            <SvgXml xml={notifIcon()} width="21" height="21" />
+            <SvgXml xml={notifIcon()} width='21' height='21' />
             {notifUnread ? (
               <View
                 style={[
@@ -725,8 +725,8 @@ function HeaderTitle({ title, profileURL }: Props) {
           <TouchableOpacity style={{}}>
             <SvgXml
               xml={backIcon(theme ? colors.black : colors.darkTxt)}
-              width="22"
-              height="22"
+              width='22'
+              height='22'
               onPress={() => navigation.goBack()}
             />
           </TouchableOpacity>
@@ -753,7 +753,7 @@ function HeaderTitle({ title, profileURL }: Props) {
             // @ts-ignore
             onPress={() => navigation.navigate("Notifications")}
           >
-            <SvgXml xml={notifIcon()} width="21" height="21" />
+            <SvgXml xml={notifIcon()} width='21' height='21' />
             {notifUnread ? (
               <View
                 style={[
@@ -781,8 +781,8 @@ function HeaderTitle({ title, profileURL }: Props) {
           <TouchableOpacity style={{}}>
             <SvgXml
               xml={backIcon(theme ? colors.black : colors.darkTxt)}
-              width="22"
-              height="22"
+              width='22'
+              height='22'
               onPress={() => navigation.goBack()}
             />
           </TouchableOpacity>
@@ -819,8 +819,8 @@ function HeaderTitle({ title, profileURL }: Props) {
           <TouchableOpacity style={{}}>
             <SvgXml
               xml={backIcon(theme ? colors.black : colors.darkTxt)}
-              width="22"
-              height="22"
+              width='22'
+              height='22'
               onPress={() => navigation.goBack()}
             />
           </TouchableOpacity>
