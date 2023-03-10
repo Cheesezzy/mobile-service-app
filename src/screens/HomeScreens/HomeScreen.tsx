@@ -18,6 +18,7 @@ import ClientHome from "./ClientHome";
 import ProviderHome from "./ProviderHome";
 import { sendEmailVerification } from "firebase/auth";
 import { useEffect } from "react";
+import EmailNotVerfied from "./components/EmailNotVerified";
 
 const HomeScreen = ({ navigation }: any) => {
   const [User] = useAuthState(auth);
@@ -56,7 +57,7 @@ const HomeScreen = ({ navigation }: any) => {
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
 
-  const sendVerfication = () => {
+  const sendVerification = () => {
     if (User)
       sendEmailVerification(User).then(() => {
         console.log("verfication sent!");
@@ -69,7 +70,9 @@ const HomeScreen = ({ navigation }: any) => {
 
   return (
     <>
-      <HeaderTitle title="Home" profileURL={user?.profilePic} user={user} />
+      {!User?.emailVerified ? (
+        <HeaderTitle title="Home" profileURL={user?.profilePic} user={user} />
+      ) : null}
 
       <View
         style={[
@@ -80,22 +83,7 @@ const HomeScreen = ({ navigation }: any) => {
         ]}
       >
         {User?.emailVerified ? (
-          <>
-            <TouchableOpacity
-              onPress={sendVerfication}
-              style={{
-                position: "absolute",
-                alignSelf: "center",
-                top: 300,
-                backgroundColor: colors.primary,
-                zIndex: 100,
-                width: 300,
-                height: 100,
-              }}
-            >
-              <Text>Verify</Text>
-            </TouchableOpacity>
-          </>
+          <EmailNotVerfied verify={sendVerification} />
         ) : null}
 
         {user && user?.role === "Provider" ? (
