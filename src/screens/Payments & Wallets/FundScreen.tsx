@@ -32,42 +32,12 @@ const FundScreen = ({ navigation }: any) => {
               },
             ]}
           >
-            Pick A Suitable Method To Fund Wallet*
+            You can change to any payment method*
           </Text>
 
           <TouchableOpacity
-            style={styles.fundBank}
-            onPress={() =>
-              navigation.navigate("Pay", {
-                method: "account_bank",
-              })
-            }
-          >
-            <SvgXml
-              style={styles.icon}
-              xml={bankIcon("")}
-              width="21"
-              height="21"
-            />
-            <Text
-              style={[
-                styles.pmTxt,
-                {
-                  color: theme ? colors.black : colors.darkTxt,
-                },
-              ]}
-            >
-              Bank Transfer
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
             style={styles.fundCard}
-            onPress={() =>
-              navigation.navigate("Pay", {
-                method: "card",
-              })
-            }
+            onPress={() => navigation.navigate("Pay")}
           >
             <SvgXml
               style={styles.icon}
@@ -83,7 +53,7 @@ const FundScreen = ({ navigation }: any) => {
                 },
               ]}
             >
-              Debit/Credit card
+              Proceed to fund wallet
             </Text>
           </TouchableOpacity>
         </View>

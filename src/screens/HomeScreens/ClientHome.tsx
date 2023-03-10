@@ -69,7 +69,16 @@ const ClientHome = ({ navigation, theme }: Props) => {
         </View>
 
         <View style={styles.titleCon}>
-          <Text style={styles.title}>Categories</Text>
+          <Text
+            style={[
+              styles.title,
+              {
+                color: theme ? colors.black : colors.darkTxt,
+              },
+            ]}
+          >
+            Categories
+          </Text>
           <TouchableOpacity onPress={() => navigation.navigate("Categories")}>
             <Text style={styles.viewAll}>View All</Text>
           </TouchableOpacity>

@@ -1,11 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import colors from "../../config/colors";
 import Navigation from "../../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
@@ -13,29 +7,18 @@ import { useSelector } from "react-redux";
 import { auth, db } from "../../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import HeaderTitle from "../../components/HeaderTitle";
-import { SvgXml } from "react-native-svg";
-import {
-  creative,
-  design,
-  events,
-  health,
-  infotech,
-  knowledge,
-  professional,
-  social,
-  sport,
-} from "../../../assets/svgs/svgs";
 import { collection, doc } from "firebase/firestore";
 import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
 import SetLocationPopup from "../../components/SetLocationPopup";
-import { categories } from "../../../provider/categoryData/categories";
 import { handleSwitchTheme } from "../../../provider/themeSlice";
-import { searchIcon } from "../../../assets/icons/icons";
 import ClientHome from "./ClientHome";
 import ProviderHome from "./ProviderHome";
+import { sendEmailVerification } from "firebase/auth";
+import { useEffect } from "react";
+import EmailNotVerfied from "./components/EmailNotVerified";
 
 const HomeScreen = ({ navigation }: any) => {
   const [User] = useAuthState(auth);
@@ -74,9 +57,22 @@ const HomeScreen = ({ navigation }: any) => {
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
 
+  const sendVerification = () => {
+    if (User)
+      sendEmailVerification(User).then(() => {
+        console.log("verfication sent!");
+      });
+  };
+
+  useEffect(() => {
+    //console.log(user, User?.emailVerified);
+  });
+
   return (
     <>
-      <HeaderTitle title="Home" profileURL={user?.profilePic} user={user} />
+      {!User?.emailVerified ? (
+        <HeaderTitle title="Home" profileURL={user?.profilePic} user={user} />
+      ) : null}
 
       <View
         style={[
@@ -86,6 +82,10 @@ const HomeScreen = ({ navigation }: any) => {
           },
         ]}
       >
+        {User?.emailVerified ? (
+          <EmailNotVerfied verify={sendVerification} />
+        ) : null}
+
         {user && user?.role === "Provider" ? (
           !business?.location && loading ? null : business?.location ? null : (
             <SetLocationPopup />

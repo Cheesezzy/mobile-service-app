@@ -23,9 +23,8 @@ interface RedirectParams {
   tx_ref: string;
 }
 
-const PayScreen = ({ route }: any) => {
+const PayScreen = () => {
   const [amount, setAmount] = useState<any>("");
-  const { method } = route.params;
   const [User] = useAuthState(auth);
   const userRef = doc(db, "users", User?.uid!);
 
@@ -49,7 +48,7 @@ const PayScreen = ({ route }: any) => {
       newQuery.includes(".") &&
       newQuery.includes("-")
     ) {
-      setAmount("");
+      setAmount(0);
     } else setAmount(newQuery);
   };
 
@@ -82,7 +81,7 @@ const PayScreen = ({ route }: any) => {
           },
         ]}
       >
-        Pay
+        Fund
       </Text>
       <TextInput
         keyboardType="numeric"
@@ -99,18 +98,33 @@ const PayScreen = ({ route }: any) => {
       />
       <PayWithFlutterwave
         onRedirect={handleOnRedirect}
-        options={{
-          tx_ref: generateTransactionRef(10),
-          authorization: "FLWPUBK_TEST-5a9b8099b909d9da2e00473ebb3de3bb-X",
-          customer: {
-            email: "etukudo@gmail.com",
-            phonenumber: "08012345678",
-            name: "Takeshi Kovacs",
-          },
-          amount,
-          currency: "NGN",
-          payment_options: method,
-        }}
+        options={
+          amount
+            ? {
+                tx_ref: generateTransactionRef(10),
+                authorization: "FLWPUBK-9a55f753a536178d29daacf845465d3a-X",
+                customer: {
+                  email: "etukudo@gmail.com",
+                  phonenumber: "08012345678",
+                  name: user?.name,
+                },
+                amount,
+                currency: "NGN",
+                payment_options: "card",
+              }
+            : {
+                tx_ref: generateTransactionRef(10),
+                authorization: "FLWPUBK-9a55f753a536178d29daacf845465d3a-X",
+                customer: {
+                  email: "etukudo@gmail.com",
+                  phonenumber: "08012345678",
+                  name: user?.name,
+                },
+                amount: 0,
+                currency: "NGN",
+                payment_options: "card",
+              }
+        }
         customButton={(props: any) => (
           <TouchableOpacity
             style={[

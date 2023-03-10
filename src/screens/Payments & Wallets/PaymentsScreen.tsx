@@ -13,7 +13,7 @@ import { doc } from "firebase/firestore";
 import { auth, db } from "../../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
-import { hideString } from "../../../api/customHooks/generalHooks";
+import { hideString } from "../../../api/hooks/generalHooks";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../../provider/themeSlice";
 import { StatusBar } from "expo-status-bar";
@@ -31,7 +31,6 @@ import Transactions from "../../components/Transactions";
 import { Thsnip1 } from "../../../assets/svgs/svgs";
 import { Thsnip2 } from "../../../assets/svgs/svgs";
 
-
 const PaymentsScreen = ({ navigation }: any) => {
   const [User] = useAuthState(auth);
 
@@ -47,11 +46,10 @@ const PaymentsScreen = ({ navigation }: any) => {
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
 
-
   return (
     <>
-      <HeaderTitle title='Payments' profileURL='' user='' />
-      <View
+      <HeaderTitle title="Payments" profileURL="" user="" />
+      <ScrollView
         style={[
           styles.container,
           {
@@ -59,68 +57,66 @@ const PaymentsScreen = ({ navigation }: any) => {
           },
         ]}
       >
-        <View style={{}}>
-          <TouchableOpacity style={styles.addCard}
-           onPress={() => navigation.navigate("Add New Card")} 
-          >
-            <Text style={styles.addCardTxt}>Add Card</Text>
-          </TouchableOpacity>
-        </View>
-
         <View style={styles.balCon}>
-          <View style={{ alignSelf: "center" }}>
-            <Text style={styles.balTxt}>Balance</Text>
-            <Text
-              style={[
-                styles.balVal,
-                balVisible
-                  ? {
-                    marginTop: 5,
-                  }
-                  : null,
-              ]}
+          <View style={styles.balValCon}>
+            <View style={{ alignSelf: "center" }}>
+              <Text style={styles.balTxt}>Balance</Text>
+              <Text
+                style={[
+                  styles.balVal,
+                  balVisible
+                    ? {
+                        marginTop: 5,
+                      }
+                    : null,
+                ]}
+              >
+                {balVisible ? "*" : "₦"}
+                {user && hideString(user?.balance, balVisible)}
+              </Text>
+            </View>
+
+            <TouchableOpacity
+              style={styles.showHideToggle}
+              onPress={() => setBalVisible(!balVisible)}
             >
-              {balVisible ? "*" : "₦"}
-              {user && hideString(user?.balance, balVisible)}
-            </Text>
+              <SvgXml
+                xml={
+                  balVisible
+                    ? showPassIcon(colors.darkTxt)
+                    : hidePassIcon(colors.darkTxt)
+                }
+                width="30"
+                height="30"
+              />
+            </TouchableOpacity>
           </View>
 
-          <TouchableOpacity
-            style={styles.showHideToggle}
-            onPress={() => setBalVisible(!balVisible)}
-          >
-            <SvgXml
-              xml={
-                balVisible
-                  ? showPassIcon(colors.darkTxt)
-                  : hidePassIcon(colors.darkTxt)
-              }
-              width='30'
-              height='30'
-            />
-          </TouchableOpacity>
-        </View>
+          <View style={styles.moneyOptions}>
+            <TouchableOpacity
+              style={[styles.moneyOptionBtnWire, { marginRight: 10 }]}
+              onPress={() => navigation.navigate("PayStatus")}
+            >
+              <SvgXml
+                xml={withdrawMoneyIcon(colors.darkTxt)}
+                width="18"
+                height="18"
+              />
+              <Text style={[styles.moneyOptionTxt, { color: colors.darkTxt }]}>
+                Withdraw
+              </Text>
+            </TouchableOpacity>
 
-        <View style={styles.moneyOptions}>
-          <TouchableOpacity
-            style={[styles.moneyOptionBtnWire, { marginRight: 10 }]}
-            onPress={() => navigation.navigate("PayStatus")}
-          >
-            <SvgXml xml={withdrawMoneyIcon()} width='18' height='18' />
-            <Text style={[styles.moneyOptionTxt, { color: colors.primary }]}>
-              Withdraw
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.moneyOptionBtn}
-            onPress={() => navigation.navigate("Fund")}
-          >
-            <SvgXml xml={receiveMoneyIcon()} width='18' height='18' />
-            <Text style={[styles.moneyOptionTxt, { color: colors.darkTxt }]}>
-              Fund
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.moneyOptionBtn}
+              onPress={() => navigation.navigate("Fund")}
+            >
+              <SvgXml xml={receiveMoneyIcon()} width="18" height="18" />
+              <Text style={[styles.moneyOptionTxt, { color: colors.black }]}>
+                Fund
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.history}>
@@ -135,20 +131,41 @@ const PaymentsScreen = ({ navigation }: any) => {
             Transaction History
           </Text>
 
-          <TouchableOpacity onPress={() => navigation.navigate("Transaction History")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Transaction History")}
+          >
             <Text style={styles.viewAll}>View all</Text>
           </TouchableOpacity>
         </View>
-        <ScrollView>
-          <Transactions image={Thsnip1()} title="Beauty’s Hairs And Nails" date="5, feb 2023" price="4500" />
-          <Transactions image={Thsnip2()} title="Wema Bank" date="5, feb 2023" price="10,000" />
-          <Transactions image={Thsnip1()} title="Lucy’s Catering Service" date="5, feb 2023" price="5,500" />
-          <Transactions image={Thsnip1()} title="Lucy’s Catering Service" date="5, feb 2023" price="5,500" />
-
-
-        </ScrollView>
+        <View>
+          <Transactions
+            image={Thsnip1()}
+            title="Beauty’s Hairs And Nails"
+            date="5, feb 2023"
+            price="4500"
+          />
+          <Transactions
+            image={Thsnip2()}
+            title="Wema Bank"
+            date="5, feb 2023"
+            price="10,000"
+          />
+          <Transactions
+            image={Thsnip1()}
+            title="Lucy’s Catering Service"
+            date="5, feb 2023"
+            price="5,500"
+          />
+          <Transactions
+            image={Thsnip1()}
+            title="Lucy’s Catering Service"
+            date="5, feb 2023"
+            price="5,500"
+          />
+        </View>
+        <View style={{ height: 80, width: "100%" }} />
         <StatusBar style={theme ? "dark" : "light"} />
-      </View>
+      </ScrollView>
     </>
   );
 };
@@ -174,15 +191,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   balCon: {
-    height: 80,
-    width: "100%",
-    flexDirection: "row",
-    alignSelf: "center",
-    justifyContent: "space-between",
     backgroundColor: colors.black,
     borderRadius: 10,
     padding: 20,
     marginVertical: 20,
+  },
+  balValCon: {
+    width: "100%",
+    flexDirection: "row",
+    alignSelf: "center",
+    justifyContent: "space-between",
   },
   balVal: {
     fontSize: 23,
@@ -200,12 +218,12 @@ const styles = StyleSheet.create({
   moneyOptions: {
     width: "100%",
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
   },
   moneyOptionBtn: {
-    width: 90,
+    width: "45%",
     height: 30,
-    backgroundColor: colors.black,
+    backgroundColor: colors.secondary,
     borderRadius: 5,
     flexDirection: "row",
     justifyContent: "center",
@@ -214,10 +232,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   moneyOptionBtnWire: {
-    width: 90,
+    width: "45%",
     height: 30,
     borderWidth: 1,
-    borderColor: colors.black,
+    borderColor: colors.secondary,
     borderRadius: 5,
     flexDirection: "row",
     justifyContent: "center",

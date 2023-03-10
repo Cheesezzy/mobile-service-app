@@ -12,17 +12,26 @@ import colors from "../config/colors";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { frontIcon } from "../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
+import { addAppointment } from "../../api/database";
+import DateTimePicker from "react-native-modal-datetime-picker";
 
-const { width, height } = Dimensions.get("window");
+export interface AppointmentDate {
+  day: number;
+  month: number;
+  year: number;
+}
 
 interface Props {
   isVisible: boolean;
   setIsVisible: any;
+  business: any;
+  sender: any;
 }
 
-const Appointment = ({ isVisible, setIsVisible }: Props) => {
-  const [selectedDate, setSelectedDate] = useState();
-  const [selectedTime, setSelectedTime] = useState();
+const Appointment = ({ isVisible, setIsVisible, business, sender }: Props) => {
+  const [name, setName] = useState<string>();
+  const [selectedDate, setSelectedDate] = useState<AppointmentDate>();
+  const [selectedTime, setSelectedTime] = useState<number>();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
 
@@ -34,26 +43,50 @@ const Appointment = ({ isVisible, setIsVisible }: Props) => {
     setTimePickerVisibility(false);
   };
 
-  const handleConfirmDate = (date: any) => {
-    console.log("A date has been picked: ", date);
-    setSelectedDate(date);
+  const handleConfirmDate = (dateString: any) => {
+    const newDate = new Date(dateString);
+
+    const day = newDate.getDate();
+    const month = newDate.getMonth() + 1;
+    const year = newDate.getFullYear();
+
+    const date = {
+      day,
+      month,
+      year,
+    };
+
+    if (date) setSelectedDate(date);
     hideDatePicker();
   };
 
   const handleConfirmTime = (time: any) => {
-    console.log("A time has been picked: ", time);
-    setSelectedTime(time);
+    const date = new Date(time);
+
+    const timestamp = date.getTime();
+
+    if (timestamp) setSelectedTime(timestamp);
     hideDatePicker();
+  };
+
+  const handleSubmitAppointment = () => {
+    if (sender && sender.bizId && name && selectedTime && selectedDate)
+      addAppointment(sender.bizId, name, selectedTime, selectedDate, "");
+    setIsVisible(false);
+  };
+
+  const disableButton = () => {
+    if (name && selectedTime && selectedDate) return false;
+    return true;
   };
 
   return (
     <>
       <Dialog
-        overlayStyle={
-          {
-            //backgroundColor: theme ? colors.secondary : colors.blackSmoke,
-          }
-        }
+        overlayStyle={{
+          //backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+          width: "90%",
+        }}
         isVisible={isVisible}
       >
         <View style={styles.container}>
@@ -63,10 +96,10 @@ const Appointment = ({ isVisible, setIsVisible }: Props) => {
             <Text style={styles.label}>Appointment Title</Text>
 
             <TextInput
-              keyboardType="email-address"
+              onChangeText={(newName) => setName(newName)}
               style={[styles.inputBox]}
               placeholder="Title"
-              autoCapitalize="none"
+              autoCapitalize="words"
               autoCorrect={false}
               placeholderTextColor={colors.lightGrey}
             />
@@ -83,6 +116,7 @@ const Appointment = ({ isVisible, setIsVisible }: Props) => {
               mode="date"
               onConfirm={handleConfirmDate}
               onCancel={hideDatePicker}
+              isDarkModeEnabled
             />
 
             <SvgXml xml={frontIcon()} width="14" height="14" />
@@ -120,8 +154,14 @@ const Appointment = ({ isVisible, setIsVisible }: Props) => {
           </View>
 
           <TouchableOpacity
-            style={[styles.doneBtn]}
-            onPress={() => setIsVisible(false)}
+            style={[
+              styles.doneBtn,
+              {
+                opacity: disableButton() ? 0.5 : 1,
+              },
+            ]}
+            onPress={handleSubmitAppointment}
+            disabled={disableButton()}
           >
             <Text style={styles.doneBtnTxt}>Done</Text>
           </TouchableOpacity>

@@ -23,11 +23,12 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
+  sendEmailVerification,
 } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 import { AuthErrorCodes } from "firebase/auth";
 import { createUser } from "../../api/database";
-import { sendEmailVerification } from "../../api/verify";
+//import { sendEmailVerification } from "../../api/verify";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 
@@ -40,10 +41,6 @@ const SignupScreen = ({ navigation }: any) => {
   const [authLoading, setAuthLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
 
-  useEffect(() => {
-    console.log(name);
-  }, [name]);
-
   const createAcctWithGoogle = async () => {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
@@ -54,7 +51,7 @@ const SignupScreen = ({ navigation }: any) => {
         createUser(
           user.uid,
           name,
-          "",
+          "Consumer",
           {},
           mobOrEmail,
           password,
@@ -92,7 +89,7 @@ const SignupScreen = ({ navigation }: any) => {
       createUser(
         userCredential.user.uid,
         name,
-        "",
+        "Consumer",
         {},
         mobOrEmail,
         password,

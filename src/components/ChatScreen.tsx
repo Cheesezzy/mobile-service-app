@@ -1,5 +1,5 @@
-import { Avatar } from "@rneui/themed";
-import { useEffect, useRef, useState } from "react";
+import { Avatar, Overlay } from "@rneui/themed";
+import { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -10,55 +10,70 @@ import {
   TextInput,
   useWindowDimensions,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import colors from "../config/colors";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db } from "../../firebaseConfig";
+import { auth, db, store } from "../../firebaseConfig";
 import { SvgXml } from "react-native-svg";
-import { sendIcon } from "../../assets/icons/icons";
+import {
+  attachIcon,
+  sendIcon,
+  closeIcon,
+  optionIcon,
+  backIcon,
+} from "../../assets/icons/icons";
 import {
   collection,
   doc,
-  FieldValue,
-  getDoc,
-  getDocs,
-  limit,
-  onSnapshot,
   orderBy,
   query,
   serverTimestamp,
-  setDoc,
-  Timestamp,
   updateDoc,
 } from "firebase/firestore";
 import { sendMessage } from "../../api/database";
-import { useDispatch, useSelector } from "react-redux";
-import { handleUser, updateMessages } from "../../provider/userSlice";
-import { uuidv4 } from "@firebase/util";
+import { useSelector } from "react-redux";
+import { handleUser } from "../../provider/userSlice";
 import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
-import { getTime } from "../../api/customHooks/convertTimestamp";
-import {
-  scrollTo,
-  useAnimatedRef,
-  useDerivedValue,
-  useSharedValue,
-} from "react-native-reanimated";
+import { getTime } from "../../api/hooks/convertTimestamp";
+import { useAnimatedRef } from "react-native-reanimated";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import * as ImagePicker from "expo-image-picker";
+import { StatusBar } from "expo-status-bar";
+import { uuidv4 } from "@firebase/util";
+import Appointment from "./Appointment";
 
-export const ChatScreen = ({ route }: any) => {
-  const key = uuidv4();
+export const ChatScreen = ({ navigation, route }: any) => {
   const selector = useSelector(handleUser);
-  const dispatch = useDispatch();
-  const { name, personId } = route.params;
+  const { name, personId, personPic } = route.params;
   const [user] = useAuthState(auth);
   const [typedMessage, setTypedMessage] = useState("");
-  const [messager, setMessager] = useState<any>("");
+  const [image, setImage] = useState<any>(null);
   const User = selector.payload.user.value;
   const userRef = doc(db, "users", user?.uid!);
   const senderRef = doc(db, "users", personId);
-  const messagesRef = collection(
+  const [messages, setMessages]: any[] = useState([]);
+  const [messagesLoading, setMessagesLoading] = useState(true);
+  const scrollViewRef = useAnimatedRef<any>();
+  const [headerVisible, setHeaderVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [showDropDown, setShowDropDown] = useState(false);
+
+  {
+    /* const handleScroll = (event: any) => {
+    const scrollY = event.nativeEvent.contentOffset.y;
+    if (scrollY > 20) {
+      setHeaderVisible(true);
+    } else if (scrollY < 20) {
+      setHeaderVisible(false);
+    }
+  }; */
+  }
+
+  const sentMessagesRef = collection(
     db,
     "users",
     user?.uid!,
@@ -66,85 +81,158 @@ export const ChatScreen = ({ route }: any) => {
     personId,
     "chats"
   );
-  const q = query(messagesRef, orderBy("createdAt"), limit(25));
-  const [messages, loading] = useCollectionData(q);
+
+  const receivedMessagesRef = collection(
+    db,
+    "users",
+    personId,
+    "messages",
+    user?.uid!,
+    "chats"
+  );
+  const sentQ = query(sentMessagesRef, orderBy("createdAt"));
+  const receivedQ = query(receivedMessagesRef, orderBy("createdAt"));
+
+  const [sentMessages, sentLoading] = useCollectionData(sentQ);
+  const [receivedMessages, receivedLoading] = useCollectionData(receivedQ);
+
   const [sender] = useDocumentData(senderRef);
   const businessRef = sender?.bizId && doc(db, "businesses", sender?.bizId);
   const [business] = useDocumentData(businessRef);
 
   const updateSeen = (id: any) => {
     if (id) {
-      const chatRef = doc(messagesRef, id);
-
+      const chatRef = doc(receivedMessagesRef, id);
       updateDoc(chatRef, {
         seen: true,
       });
     }
   };
 
-  //console.log(user?.bizId, "user");
-
-  //const allUsers = selector.payload.users.value;
-
   const handleSendMessage = () => {
     sendMessage(
       user?.uid,
       personId,
       typedMessage,
-      "",
+      null,
       User?.name,
-      "",
-      "",
+      User?.profilePic ? User?.profilePic : null,
       name,
+      personPic ? personPic : null,
       serverTimestamp()
     );
 
     setTypedMessage("");
-    dummy.current.scrollTo({ x: 0, y: height * 2, animated: true });
+    scrollViewRef.current?.scrollToEnd({ animated: true });
   };
 
-  {
-    /*const handleSendAttachment = (attachment: any) => {
-  const attachmentUrl = await firebase
-    .storage()
-    .ref(`attachments/${attachment.name}`)
-    .put(attachment)
-    .then((snapshot) => snapshot.ref.getDownloadURL());
+  const handleSendAttachment = async () => {
+    const fileRef = ref(store, `messagePics/${user?.uid}/${uuidv4()}.jpg`);
 
-  db.collection('messages').add({
-    sentBy: {
-      id: user?.uid,
-      name: User?.name,
-    },
-    text: '',
-    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    attachments: [
-      {
-        url: attachmentUrl,
-        name: attachment.name,
-      },
-    ],
-  });
-};setAttachment(null);
-};*/
-  }
+    const response = await fetch(image);
+    const blob = await response.blob();
+    const fileName = image.substring(image.lastIndexOf("/") + 1);
 
-  const dummy = useAnimatedRef<any>();
+    uploadBytesResumable(fileRef, blob)
+      .then((snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+        getDownloadURL(snapshot.ref).then((url: any) => {
+          sendMessage(
+            user?.uid,
+            personId,
+            typedMessage,
+            url,
+            User?.name,
+            User?.profilePic ? User?.profilePic : null,
+            name,
+            personPic ? personPic : null,
+            serverTimestamp()
+          );
+        });
+      })
+      .catch((error: any) => {
+        console.error(error);
+      });
+
+    setImage(null);
+    setTypedMessage("");
+    scrollViewRef.current?.scrollToEnd({ animated: true });
+  };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      aspect: [4, 4],
+      quality: 1,
+    });
+
+    if (result && !result?.cancelled) {
+      setImage(result?.uri);
+    }
+  };
+
+  useEffect(() => {
+    if (sentMessages && receivedMessages) {
+      const allMessages = [...sentMessages, ...receivedMessages].sort(
+        (a, b) => a.createdAt - b.createdAt
+      );
+      setMessages(allMessages);
+      setMessagesLoading(false);
+    }
+  }, [sentMessages, receivedMessages]);
+
   const { height } = useWindowDimensions();
 
   useEffect(() => {
-    console.log(sender);
+    if (!messagesLoading) {
+      scrollViewRef.current.scrollTo({
+        x: 0,
+        y: height * messages.length,
+        animated: true,
+      });
+    }
+  }, [messagesLoading]);
 
-    if (!loading)
-      dummy.current.scrollTo({ x: 0, y: height * 2, animated: true });
-  }, [loading]);
+  const today = new Date();
+  const messagesByDay = messages?.reduce((acc: any, message: any) => {
+    const messageDate = message?.createdAt?.toDate();
+    let day;
 
-  if (loading) {
+    if (
+      messageDate &&
+      messageDate?.getDay() === today?.getDay() &&
+      messageDate?.getDate() === today?.getDate()
+    ) {
+      day = "Today";
+    } else if (
+      (messageDate &&
+        messageDate?.getDay() === today?.getDay() - 1 &&
+        messageDate?.getDate() === today?.getDate()) ||
+      (messageDate?.getDay() === 6 && today?.getDay() === 0)
+    ) {
+      day = "Yesterday";
+    } else {
+      day = messageDate?.toLocaleDateString();
+    }
+
+    if (!acc[day]) {
+      acc[day] = [];
+    }
+
+    acc[day].push(message);
+    return acc;
+  }, {});
+
+  const theme = selector.payload.theme.value;
+
+  if (sentLoading && receivedLoading && messagesLoading) {
     return (
       <View
         style={{
           flex: 1,
-          backgroundColor: colors.secondary,
+          backgroundColor: theme ? colors.secondary : colors.blackSmoke,
           justifyContent: "center",
         }}
       >
@@ -153,19 +241,133 @@ export const ChatScreen = ({ route }: any) => {
     );
   }
 
+  const showSend = () => {
+    if (typedMessage.length > 0 || image) return true;
+    else return false;
+  };
+
+  const handleDropDown = () => {};
+
   return (
     <>
-      <ScrollView ref={dummy} style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.profilePicAndName}
+          onPress={() =>
+            navigation.navigate("ImageScreen", {
+              image: personPic,
+            })
+          }
+        >
+          <TouchableOpacity
+            style={{
+              marginRight: 10,
+            }}
+          >
+            <SvgXml
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
+              width="22"
+              height="22"
+              onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              marginRight: 5,
+            }}
+          >
+            <Avatar
+              size={30}
+              rounded
+              source={
+                personPic
+                  ? {
+                      uri: personPic,
+                    }
+                  : require("../../assets/blankProfilePic.png")
+              }
+            />
+          </TouchableOpacity>
+
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text style={styles.headerName}>{name}</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          // @ts-ignore
+          onPress={() => setShowDropDown(!showDropDown)}
+        >
+          <SvgXml xml={optionIcon()} width="21" height="21" />
+        </TouchableOpacity>
+        <Appointment
+          isVisible={isVisible}
+          setIsVisible={setIsVisible}
+          business={business}
+          sender={sender}
+        />
+      </View>
+
+      <Overlay
+        isVisible={showDropDown}
+        overlayStyle={styles.dropdown}
+        onBackdropPress={() => setShowDropDown(false)}
+      >
+        <TouchableOpacity onPress={() => setIsVisible(true)}>
+          <Text style={styles.dropdownItem}>Schedule</Text>
+        </TouchableOpacity>
+        <Text style={styles.dropdownItem}>See Profile</Text>
+        <Text style={styles.dropdownItem}>Delete</Text>
+        <Text style={styles.dropdownItem}>Report</Text>
+      </Overlay>
+      <ScrollView
+        ref={scrollViewRef}
+        style={[
+          styles.container,
+          {
+            backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+          },
+        ]}
+      >
         <View style={styles.profile}>
-          <View style={styles.profilePic}>
+          <TouchableOpacity
+            style={styles.profilePic}
+            onPress={() =>
+              navigation.navigate("ImageScreen", {
+                image: personPic,
+              })
+            }
+          >
             <Avatar
               size={50}
               rounded
-              source={{ uri: "https://picsum.photos/200" }}
+              source={
+                personPic
+                  ? {
+                      uri: personPic,
+                    }
+                  : require("../../assets/blankProfilePic.png")
+              }
             />
-          </View>
+          </TouchableOpacity>
           <View>
-            <Text style={styles.name}>{name}</Text>
+            <Text
+              style={[
+                styles.name,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              {name}
+            </Text>
           </View>
 
           <View>
@@ -180,70 +382,242 @@ export const ChatScreen = ({ route }: any) => {
         </View>
 
         <View style={styles.messagesCon}>
-          <View style={styles.messages}>
-            <Text style={styles.day}>Today</Text>
+          {Object.keys(messagesByDay).map((day, i) => {
+            if (!messagesByDay[day][messagesByDay[day].length - 1]?.createdAt)
+              return;
 
-            {messages &&
-              messages.map((msg: any) => {
-                if (!msg.seen) {
-                  updateSeen(msg.msgId);
-                }
-                return (
-                  <View style={styles.msgBox} key={msg.msgId}>
-                    <View
-                      style={
-                        msg?.sentBy?.id === user?.uid
-                          ? styles.msgSent
-                          : styles.msgReceived
-                      }
-                    >
-                      <Text
-                        style={
-                          msg?.sentBy?.id === user?.uid
-                            ? styles.msgSentTxt
-                            : styles.msgReceivedTxt
-                        }
-                      >
-                        {msg?.text}
-                      </Text>
-                    </View>
-                    <Text
-                      style={
-                        msg?.sentBy?.id === user?.uid
-                          ? styles.msgSentTime
-                          : styles.msgRecTime
-                      }
-                    >
-                      {msg.createdAt &&
-                        getTime(
-                          msg?.createdAt?.seconds,
-                          msg?.createdAt?.nanoseconds
-                        )}
-                    </Text>
-                  </View>
-                );
-              })}
-          </View>
+            return (
+              <View style={styles.messages} key={day}>
+                {day && (
+                  <Text
+                    style={[
+                      styles.day,
+                      {
+                        color: theme ? colors.black : colors.darkTxt,
+                      },
+                    ]}
+                  >
+                    {day}
+                  </Text>
+                )}
+                {messagesByDay[day].map((msg: any) => {
+                  if (!msg.seen) {
+                    updateSeen(
+                      msg?.sentBy?.id !== user?.uid ? msg.msgId : null
+                    );
+                  }
+
+                  return (
+                    msg.createdAt &&
+                    (msg?.attachment ? (
+                      msg?.text?.length > 0 ? (
+                        <View key={msg.msgId}>
+                          <TouchableOpacity
+                            style={
+                              msg?.sentBy?.id === user?.uid
+                                ? [styles.msgSentImg]
+                                : styles.msgReceivedImg
+                            }
+                            onPress={() =>
+                              navigation.navigate("ImageScreen", {
+                                image: msg.attachment,
+                              })
+                            }
+                          >
+                            <Image
+                              style={styles.msgImg}
+                              source={{
+                                uri: msg.attachment,
+                              }}
+                              resizeMode="contain"
+                            />
+                          </TouchableOpacity>
+                          <View style={styles.msgBox}>
+                            <View
+                              style={
+                                msg?.sentBy?.id === user?.uid
+                                  ? [styles.msgSent, { marginTop: 2 }]
+                                  : [styles.msgReceived, , { marginTop: 2 }]
+                              }
+                            >
+                              <Text
+                                style={
+                                  msg?.sentBy?.id === user?.uid
+                                    ? styles.msgSentTxt
+                                    : styles.msgReceivedTxt
+                                }
+                              >
+                                {msg?.text}
+                              </Text>
+                            </View>
+                            <Text
+                              style={
+                                msg?.sentBy?.id === user?.uid
+                                  ? styles.msgSentTime
+                                  : styles.msgRecTime
+                              }
+                            >
+                              {msg.createdAt &&
+                                getTime(
+                                  msg?.createdAt?.seconds,
+                                  msg?.createdAt?.nanoseconds
+                                )}
+                              {msg?.sentBy?.id === user?.uid
+                                ? msg?.seen
+                                  ? " . Seen"
+                                  : " . Sent"
+                                : null}
+                            </Text>
+                          </View>
+                        </View>
+                      ) : (
+                        <TouchableOpacity
+                          style={
+                            msg?.sentBy?.id === user?.uid
+                              ? styles.msgSentImg
+                              : styles.msgReceivedImg
+                          }
+                          key={msg.msgId}
+                          onPress={() =>
+                            navigation.navigate("ImageScreen", {
+                              image: msg.attachment,
+                            })
+                          }
+                        >
+                          <Image
+                            style={styles.msgImg}
+                            source={{
+                              uri: msg.attachment,
+                            }}
+                            resizeMode="contain"
+                          />
+                          <Text
+                            style={
+                              msg?.sentBy?.id === user?.uid
+                                ? styles.msgSentTime
+                                : styles.msgRecTime
+                            }
+                          >
+                            {msg.createdAt &&
+                              getTime(
+                                msg?.createdAt?.seconds,
+                                msg?.createdAt?.nanoseconds
+                              )}
+                            {msg?.sentBy?.id === user?.uid
+                              ? msg?.seen
+                                ? " . Seen"
+                                : " . Sent"
+                              : null}
+                          </Text>
+                        </TouchableOpacity>
+                      )
+                    ) : (
+                      msg?.createdAt && (
+                        <View style={styles.msgBox} key={msg.msgId}>
+                          <View
+                            style={
+                              msg?.sentBy?.id === user?.uid
+                                ? styles.msgSent
+                                : styles.msgReceived
+                            }
+                          >
+                            <Text
+                              style={
+                                msg?.sentBy?.id === user?.uid
+                                  ? styles.msgSentTxt
+                                  : styles.msgReceivedTxt
+                              }
+                            >
+                              {msg?.text}
+                            </Text>
+                          </View>
+                          <Text
+                            style={
+                              msg?.sentBy?.id === user?.uid
+                                ? styles.msgSentTime
+                                : styles.msgRecTime
+                            }
+                          >
+                            {msg.createdAt &&
+                              getTime(
+                                msg?.createdAt?.seconds,
+                                msg?.createdAt?.nanoseconds
+                              )}
+                            {msg?.sentBy?.id === user?.uid
+                              ? msg?.seen
+                                ? " . Seen"
+                                : " . Sent"
+                              : null}
+                          </Text>
+                        </View>
+                      )
+                    ))
+                  );
+                })}
+              </View>
+            );
+          })}
           <View />
         </View>
       </ScrollView>
-      <View style={styles.sendMsgCon}>
+
+      <View style={styles.sendCon}>
+        {image && (
+          <>
+            <TouchableOpacity
+              style={styles.sendImgExitCon}
+              onPress={() => setImage(null)}
+            >
+              <SvgXml xml={closeIcon()} width="9" height="9" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.sendImgCon}
+              onPress={() => navigation.navigate("ImageScreen", { image })}
+            >
+              <Image
+                style={{
+                  height: 80,
+                  borderRadius: 15,
+                }}
+                source={{
+                  uri: image,
+                }}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
+
+      <View
+        style={
+          showSend()
+            ? [styles.sendMsgCon, { paddingRight: 75 }]
+            : styles.sendMsgCon
+        }
+      >
         <TextInput
           style={styles.typeMsg}
           placeholder="Write your message"
           onChangeText={(newMsg) => setTypedMessage(newMsg)}
           defaultValue={typedMessage}
         />
-        <TouchableOpacity
-          style={
-            typedMessage.length > 0
-              ? [styles.sendIcon, { opacity: 1 }]
-              : styles.sendIcon
-          }
-          onPress={handleSendMessage}
-        >
-          <SvgXml xml={sendIcon()} width="24" height="24" />
-        </TouchableOpacity>
+
+        <View style={styles.sendMsgIcons}>
+          <TouchableOpacity style={styles.attachIcon} onPress={pickImage}>
+            <SvgXml xml={attachIcon()} width="21" height="21" />
+          </TouchableOpacity>
+
+          {showSend() && (
+            <TouchableOpacity
+              style={styles.sendIcon}
+              onPress={image ? handleSendAttachment : handleSendMessage}
+            >
+              <SvgXml xml={sendIcon()} width="21" height="21" />
+            </TouchableOpacity>
+          )}
+        </View>
+        <StatusBar style={theme ? "dark" : "light"} />
       </View>
     </>
   );
@@ -253,8 +627,42 @@ const styles = StyleSheet.create({
   container: {
     height: "100%",
     width: "100%",
+    paddingTop: 80,
+  },
+  dropdown: {
     backgroundColor: colors.secondary,
+    width: 120,
+    position: "absolute",
+    top: 65,
+    right: 20,
+    padding: 20,
+    borderRadius: 5,
+    zIndex: 150,
+  },
+  dropdownItem: {
+    padding: 5,
+    fontFamily: "PrimaryRegular",
+    fontSize: 12,
+  },
+  header: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "white",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
     paddingTop: 40,
+    paddingBottom: 15,
+    zIndex: 1,
+  },
+  headerName: {
+    left: 30,
+    width: 150,
+    fontFamily: "PrimarySemiBold",
+    fontSize: 15,
   },
   profile: {
     width: "90%",
@@ -264,32 +672,37 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.4,
     borderBottomColor: colors.lightGrey,
   },
+  profilePicAndName: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: 100,
+  },
   profilePic: {
     marginBottom: 10,
   },
   name: {
-    fontFamily: "Lato",
+    fontFamily: "PrimarySemiBold",
     fontSize: 15,
     marginBottom: 10,
   },
   desc: {
     width: 200,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     marginBottom: 10,
     color: colors.lightBlack,
     textAlign: "center",
   },
   joined: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     fontSize: 12,
     color: colors.lightGrey,
   },
   messagesCon: {
-    paddingBottom: 70,
+    paddingBottom: 160,
   },
   messages: {},
   day: {
-    fontFamily: "Lato",
+    fontFamily: "PrimarySemiBold",
     fontSize: 12,
     textAlign: "center",
     margin: 10,
@@ -297,8 +710,8 @@ const styles = StyleSheet.create({
   msgBox: {},
   msgSent: {
     maxWidth: "80%",
-    padding: 12,
-    paddingHorizontal: 15,
+    padding: 7,
+    paddingHorizontal: 10,
     borderRadius: 20,
     borderBottomRightRadius: 0,
     backgroundColor: colors.primary,
@@ -309,8 +722,8 @@ const styles = StyleSheet.create({
   },
   msgReceived: {
     maxWidth: "80%",
-    padding: 12,
-    paddingHorizontal: 15,
+    padding: 7,
+    paddingHorizontal: 10,
     borderRadius: 20,
     borderBottomLeftRadius: 0,
     backgroundColor: colors.lightPrimary,
@@ -319,15 +732,18 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 0,
   },
+
   msgSentTxt: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
+    fontSize: 12,
     color: colors.secondary,
   },
   msgReceivedTxt: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
+    fontSize: 12,
   },
   msgSentTime: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     fontSize: 9.5,
     alignSelf: "flex-end",
     color: colors.lightGrey,
@@ -335,12 +751,49 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   msgRecTime: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     fontSize: 9.5,
     alignSelf: "flex-start",
     color: colors.lightGrey,
     marginLeft: 10,
     marginTop: 5,
+  },
+  msgSentImg: {
+    alignSelf: "flex-end",
+    marginTop: 10,
+  },
+  msgReceivedImg: {
+    alignSelf: "flex-start",
+    marginTop: 10,
+  },
+  msgImg: {
+    minHeight: 150,
+    width: 150,
+    borderRadius: 15,
+    marginHorizontal: 10,
+  },
+  sendCon: {
+    position: "absolute",
+    bottom: 50,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignSelf: "flex-end",
+    padding: 15,
+  },
+  sendImgExitCon: {
+    position: "absolute",
+    backgroundColor: "black",
+    top: 23,
+    right: 36,
+    zIndex: 10,
+    padding: 8,
+    borderRadius: 15,
+  },
+  sendImgCon: {
+    height: 80,
+    width: 80,
+    borderRadius: 22,
+    marginRight: 15,
   },
   sendMsgCon: {
     height: 50,
@@ -356,11 +809,19 @@ const styles = StyleSheet.create({
     paddingRight: 38,
   },
   typeMsg: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
+    fontSize: 13,
     width: "100%",
+  },
+  sendMsgIcons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  attachIcon: {
+    alignSelf: "flex-end",
   },
   sendIcon: {
     alignSelf: "flex-end",
-    opacity: 0,
+    marginLeft: 12,
   },
 });

@@ -12,7 +12,7 @@ import { SvgXml } from "react-native-svg";
 import { backIcon, notifIcon, searchIcon } from "../../assets/icons/icons";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 import { useSelector } from "react-redux";
-import { trimAfterSpace } from "../../api/customHooks/generalHooks";
+import { trimAfterSpace } from "../../api/hooks/generalHooks";
 import { useEffect, useState } from "react";
 import {
   useCollectionData,
@@ -68,7 +68,7 @@ function HeaderTitle({ title, profileURL }: Props) {
         backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
       }}
     >
-      {route.name === "Home" ? (
+      {route.name === "Home" && (
         <>
           <View
             style={{
@@ -149,8 +149,6 @@ function HeaderTitle({ title, profileURL }: Props) {
             ) : null}
           </TouchableOpacity>
         </>
-      ) : (
-        ""
       )}
       {route.name === "More" && (
         <View
@@ -374,6 +372,44 @@ function HeaderTitle({ title, profileURL }: Props) {
               />
             ) : null}
           </TouchableOpacity>
+        </View>
+      )}
+      {route.name === "AccountSettings" && (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            paddingHorizontal: 10,
+          }}
+        >
+          <TouchableOpacity style={{}}>
+            <SvgXml
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
+              width="22"
+              height="22"
+              onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "PrimarySemiBold",
+                fontSize: 20,
+                alignSelf: "center",
+                color: theme ? colors.black : colors.darkTxt,
+              }}
+            >
+              Edit Profile
+            </Text>
+          </View>
         </View>
       )}
       {route.name === "Fund" && (
@@ -731,6 +767,82 @@ function HeaderTitle({ title, profileURL }: Props) {
               />
             ) : null}
           </TouchableOpacity>
+        </View>
+      )}
+      {route.name === "Transaction History" && (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            paddingHorizontal: 10,
+          }}
+        >
+          <TouchableOpacity style={{}}>
+            <SvgXml
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
+              width="22"
+              height="22"
+              onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "PrimarySemiBold",
+                fontSize: 20,
+                alignSelf: "center",
+                color: theme ? colors.black : colors.darkTxt,
+              }}
+            >
+              Transaction History
+            </Text>
+          </View>
+        </View>
+      )}
+      {route.name === "Transaction Details" && (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            paddingHorizontal: 10,
+          }}
+        >
+          <TouchableOpacity style={{}}>
+            <SvgXml
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
+              width="22"
+              height="22"
+              onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "PrimarySemiBold",
+                fontSize: 20,
+                alignSelf: "center",
+                color: theme ? colors.black : colors.darkTxt,
+              }}
+            >
+              Transaction Details
+            </Text>
+          </View>
         </View>
       )}
     </View>

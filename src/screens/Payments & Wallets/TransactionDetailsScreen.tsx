@@ -15,10 +15,11 @@ import {
 } from "../../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
 import { PaymentType } from "./components/PaymentType";
-import { TranssctionDetails } from "./components/TranssctionDetails";
+import { TransactionDetails } from "./components/TransactionDetails";
 import { ShareButton } from "./components/ShareButton";
 import { Idetails, Ipayment } from "./interface";
-import NavigationBar from "./components/NavigationBar";
+import HeaderTitle from "../../components/HeaderTitle";
+
 const TransactionDetailsScreen = ({
   route,
 }: {
@@ -29,36 +30,36 @@ const TransactionDetailsScreen = ({
   let debit = actionType === "transfer";
   return (
     <>
-      <NavigationBar title="Transaction details"/>
+      <HeaderTitle user="" title="" profileURL="" />
 
       <SafeAreaView>
         <View style={styles.container}>
           <View style={styles.statusContainer}>
             <CircleStatus
-              color='#2776EA'
-              text='Transaction Submitted'
-              textColor='#000000'
-              outline='#2776EA'
+              color="#2776EA"
+              text="Transaction Submitted"
+              textColor="#000000"
+              outline="#2776EA"
             />
             <View style={{ width: 33 }}>
-              <SvgXml xml={tikLine("#2776EA")} width='100%' height={40} />
+              <SvgXml xml={tikLine("#2776EA")} width="100%" height={40} />
             </View>
             <CircleStatus
-              color='#2776EA'
-              text='Payment Successful'
-              textColor='#000000'
-              outline='#2776EA'
+              color="#2776EA"
+              text="Payment Successful"
+              textColor="#000000"
+              outline="#2776EA"
             />
             <View style={{ width: 33 }}>
               <SvgXml
                 xml={tikLine(`${debit ? "#E9E7E7" : "#2776EA"}`)}
-                width='100%'
+                width="100%"
                 height={40}
               />
             </View>
             <CircleStatus
               color={debit ? "#F9F9F9" : "#2776EA"}
-              text='Money Received'
+              text="Money Received"
               outline={debit ? "#E9E7E7" : "#2776EA"}
               textColor={debit ? "#838B97" : "#000000"}
             />
@@ -77,11 +78,11 @@ const TransactionDetailsScreen = ({
             <PaymentType payment={payment} />
           </View>
           <View style={styles.horizontalRull}>
-            <SvgXml xml={horizontalRull()} width='100%' height={70} />
+            <SvgXml xml={horizontalRull()} width="100%" height={70} />
           </View>
 
           <View style={styles.transsactionDetails}>
-            <TranssctionDetails details={details} />
+            <TransactionDetails details={details} />
           </View>
         </View>
         <View style={styles.btn}>
