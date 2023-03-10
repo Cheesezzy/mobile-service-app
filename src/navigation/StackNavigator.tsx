@@ -43,6 +43,8 @@ import TransactionHistory from "../screens/Payments & Wallets/TransactionHistory
 import RecentOrderScreen from "../screens/RecentOrderScreen";
 import TransactionDetailsScreen from "../screens/Payments & Wallets/TransactionDetailsScreen";
 import AddNewCardScreen from "../screens/Payments & Wallets/AddNewCardScreen";
+import AdsScreen from "../screens/AdsScreen";
+import AdsComponent from "../screens/Payments & Wallets/components/AdsComponent";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -307,17 +309,17 @@ const StackNavigator = () => {
         options={{
           title: "Transaction His",
           headerShown: false,
-        }}    
+        }}
       />
-      <Stack.Screen 
-          name='Add New Card'
-          component={AddNewCardScreen}
-          options={{
-            title: "Add New Card",
-            headerShown: false,
-          }}
+      <Stack.Screen
+        name='Add New Card'
+        component={AddNewCardScreen}
+        options={{
+          title: "Add New Card",
+          headerShown: false,
+        }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="Recent Order"
         component={RecentOrderScreen}
         options={{
@@ -327,9 +329,27 @@ const StackNavigator = () => {
       />
       <Stack.Screen
         name='Transaction details'
-        component ={TransactionDetailsScreen as any}
+        component={TransactionDetailsScreen as any}
         options={{
           title: "Transaction details",
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name='Ads Screen'
+        component={AdsScreen as any}
+        options={{
+          title: "Ads",
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name='Ads Component'
+        component={AdsComponent as any}
+        options={{
+          title: "Ads Component",
           headerShown: false,
         }}
       />

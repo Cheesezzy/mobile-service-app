@@ -13,7 +13,6 @@ const TransactionHistory = () => {
 
     <>
       <NavigationBar title="Transaction history" />
-      <View style={styles.transactionHistoryContainer}></View>
 
       <ScrollView>
         <Transactions image={Thsnip1()} title="Beauty’s Hairs And Nails" date="5, feb 2023" price="4500" />
@@ -33,8 +32,5 @@ const TransactionHistory = () => {
 export default TransactionHistory;
 
 const styles = StyleSheet.create({
-  transactionHistoryContainer: {
-    marginTop: 0,
-    marginBottom: 50,
-  },
+  
 });

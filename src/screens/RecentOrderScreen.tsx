@@ -16,9 +16,6 @@ const RecentOrderScreen = () => {
             <NavigationBar title="Recent Order" />
 
             <SafeAreaView>
-                <View style={styles.container}>
-                </View>
-
                 <FlatList
                     data={transactions}
                     renderItem={renderItem}
@@ -32,9 +29,6 @@ const RecentOrderScreen = () => {
 export default RecentOrderScreen;
 
 const styles = StyleSheet.create({
-    container: {
-        marginTop: 50,
-    },
     heading: {
         fontFamily: "PrimaryBold",
         textAlign: "center",
