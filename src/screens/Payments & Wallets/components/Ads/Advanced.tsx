@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { FlipInEasyX } from 'react-native-reanimated'
 import { Check } from '../../../../../assets/svgs/svgs'
 import { SvgXml } from "react-native-svg";
@@ -7,40 +7,60 @@ import colors from '../../../../config/colors';
 
 
 const Advanced = () => {
+
+    const [backgroundColor, setBackgroundColor] = useState("#F1F1F1");
+    const [textColor, setTextColor] = useState("#454647");
+    const [isPressed, setIsPressed] = useState(false);
+
+    const handleOnPress = () => {
+        setIsPressed(true);
+        setBackgroundColor("#2776EA");
+        setTextColor("#FFFFFF");
+    };
+    const handleOnRelease = () => {
+        setIsPressed(false);
+        setBackgroundColor("#F1F1F1");
+        setTextColor("#454647");
+    }
+
     return (
         <>
-            <View style={styles.container}>
-                <View style={styles.subContainer}>
-                    <Text style={styles.fontStyle}>
-                        Advanced
-                    </Text>
+            <Pressable onPressIn={handleOnPress} onPressOut={handleOnRelease}>
 
-                    <Text style={styles.textStyle}>
-                        #6,000/month
-                    </Text>
-                </View>
+                <View style={[styles.container, { backgroundColor }]}>
+                    <View style={styles.subContainer}>
+                        <Text style={[styles.fontStyle, { color: textColor }]}>
+                            Advanced
+                        </Text>
 
-                <View style={styles.check}>
-                    <SvgXml xml={Check()} width={24} height={24} />
-                    <Text style={styles.text}>
-                        Appear in posters
-                    </Text>
-                </View>
+                        <Text style={[styles.textStyle, { color: textColor }]}>
+                            #6,000/month
+                        </Text>
+                    </View>
 
-                <View style={styles.check}>
-                    <SvgXml xml={Check()} width={24} height={24} />
-                    <Text style={styles.text}>
-                        Rank higher in search results
-                    </Text>
-                </View>
+                    <View style={styles.check}>
+                        <SvgXml xml={Check()} width={24} height={24} />
+                        <Text style={[styles.text, { color: textColor }]}>
+                            Appear in posters
+                        </Text>
+                    </View>
 
-                <View style={styles.check}>
-                    <SvgXml xml={Check()} width={24} height={24} />
-                    <Text style={styles.text}>
-                        Increase your search appearance range
-                    </Text>
+                    <View style={styles.check}>
+                        <SvgXml xml={Check()} width={24} height={24} />
+                        <Text style={[styles.text, { color: textColor }]}>
+                            Rank higher in search results
+                        </Text>
+                    </View>
+
+                    <View style={styles.check}>
+                        <SvgXml xml={Check()} width={24} height={24} />
+                        <Text style={[styles.text, { color: textColor }]}>
+                            Increase your search appearance range
+                        </Text>
+                    </View>
                 </View>
-            </View>
+            </Pressable>
+
         </>
     )
 }
@@ -52,20 +72,18 @@ const styles = StyleSheet.create({
         padding: 24,
         width: 342,
         Height: 242,
-        backgroundColor: "#2776EA",
         marginTop: 24,
         borderRadius: 8,
     },
     fontStyle: {
         fontSize: 20,
         fontWeight: "600",
-        fontFamily: "PrimarySemiBold", 
-        color: "white",       
+        fontFamily: "PrimarySemiBold",
     },
     textStyle: {
-        fontSize : 16,
+        fontSize: 16,
         fontWeight: "400",
-        color: "white",       
+        color: "white",
     },
     subContainer: {
         display: "flex",
@@ -79,7 +97,6 @@ const styles = StyleSheet.create({
     },
     text: {
         marginLeft: 20,
-        fontSize : 14,
-        color: "white",  
+        fontSize: 14,
     }
 })

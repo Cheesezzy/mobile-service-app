@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, StyleSheet, Text, ScrollView } from 'react-native'
+import React, { useState } from 'react'
+import { View, StyleSheet, Text, ScrollView, Pressable } from 'react-native'
 import Advanced from './Payments & Wallets/components/Ads/Advanced'
 import Basic from './Payments & Wallets/components/Ads/Basic'
 import NavigationBar from './Payments & Wallets/components/NavigationBar'
@@ -8,7 +8,9 @@ import colors from '../config/colors'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 
-const AdsScreen = ({navigation} : any) => {
+const AdsScreen = ({ navigation }: any) => {
+
+
 
     return (
         <ScrollView>
@@ -24,10 +26,10 @@ const AdsScreen = ({navigation} : any) => {
 
                 <Basic />
 
-                <TouchableOpacity onPress={() => {
-                    navigation.navigate("Ads Component")}}>
+                {/* <TouchableOpacity onPress={() => navigation.navigate("Ads Component")}> */}
                     <Advanced />
-                </TouchableOpacity>
+
+                {/* </TouchableOpacity> */}
 
                 <Premium />
 

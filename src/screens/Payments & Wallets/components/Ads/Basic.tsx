@@ -1,44 +1,60 @@
-import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { FlipInEasyX } from 'react-native-reanimated'
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Pressable } from 'react-native'
 import { Check } from '../../../../../assets/svgs/svgs'
 import { SvgXml } from "react-native-svg";
 import colors from '../../../../config/colors';
 
 
+
 const Basic = () => {
+
+    const [backgroundColor, setBackgroundColor] = useState("#F1F1F1");
+    const [textColor, setTextColor] = useState("#454647");
+    const [isPressed, setIsPressed] = useState(false);
+
+    const handleOnPress = () => {
+        setIsPressed(true);
+        setBackgroundColor("#2776EA");
+        setTextColor("#FFFFFF");
+    };
+    const handleOnRelease = () => {
+        setIsPressed(false);
+        setBackgroundColor("#F1F1F1");
+        setTextColor("#454647");
+    }
     return (
         <>
-            <View style={styles.container}>
-                <View style={styles.subContainer}>
-                    <Text style={styles.fontStyle}>
-                        Basic
-                    </Text>
+            <Pressable onPressIn={handleOnPress} onPressOut={handleOnRelease}>
 
-                    <Text style={styles.textStyle}>
-                        #2,000/month
-                    </Text>
+                <View style={[styles.container, { backgroundColor }]}>
+                    <View style={styles.subContainer}>
+                        <Text style={[styles.fontStyle, { color: textColor }]}>
+                            Basic
+                        </Text>
 
+                        <Text style={[styles.textStyle, { color: textColor }]}>
+                            #2,000/month
+                        </Text>
+
+                    </View>
+
+                    <View style={styles.check}>
+                        <SvgXml xml={Check()} width={24} height={24} />
+                        <Text style={[styles.text, { color: textColor }]}>
+                            Appear in posters
+                        </Text>
+
+                    </View>
+
+                    <View style={styles.check}>
+                        <SvgXml xml={Check()} width={24} height={24} />
+                        <Text style={[styles.text, { color: textColor }]}>
+                            Rank higher in search results
+                        </Text>
+
+                    </View>
                 </View>
-
-                <View style={styles.check}>
-                    <SvgXml xml={Check()} width={24} height={24} />
-                    <Text style={styles.text}>
-                        Appear in posters
-                    </Text>
-
-                </View>
-
-                <View style={styles.check}>
-                    <SvgXml xml={Check()} width={24} height={24} />
-                    <Text style={styles.text}>
-                        Rank higher in search results
-                    </Text>
-
-                </View>
-            </View>
-
-
+            </Pressable>
 
         </>
     )
@@ -51,7 +67,6 @@ const styles = StyleSheet.create({
         padding: 24,
         width: 342,
         Height: 179,
-        backgroundColor: colors.greyLight,
         marginTop: 16,
         borderRadius: 8,
         fontFamily: "PrimarySemiBold",
@@ -59,13 +74,11 @@ const styles = StyleSheet.create({
     fontStyle: {
         fontSize: 20,
         fontWeight: "600",
-        fontFamily: "PrimarySemiBold", 
-        color: colors.greyMidDark,       
+        fontFamily: "PrimarySemiBold",
     },
     textStyle: {
-        fontSize : 16,
+        fontSize: 16,
         fontWeight: "400",
-        color: colors.greyMidDark,       
     },
     subContainer: {
         display: "flex",
@@ -79,7 +92,6 @@ const styles = StyleSheet.create({
     },
     text: {
         marginLeft: 20,
-        fontSize : 14,
-        color: colors.greyMidDark,       
+        fontSize: 14,
     }
 })

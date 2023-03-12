@@ -1,14 +1,29 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { SvgXml } from 'react-native-svg'
 import { Check } from '../../../../assets/svgs/svgs'
 import colors from '../../../config/colors'
 import NextButton from './NextButton'
+import { useNavigation } from "@react-navigation/native";
+import { arrowIcon } from '../../../../assets/icons/icons'
+
 
 const AdsComponent = () => {
+    const navigate = useNavigation();
+
     return (
         <>
             <View style={styles.container}>
+                <TouchableOpacity
+                    style={{
+                        zIndex: 1000,
+                    }}
+                    onPress={() => {
+                        return navigate.goBack();
+                    }}>
+                    <SvgXml xml={arrowIcon()} width={24} height={24} />
+                </TouchableOpacity>
+
                 <Text style={styles.fontStyle}>
                     Rete <Text style={styles.midContainer}>Advanced</Text> Ads
                 </Text>
@@ -17,6 +32,8 @@ const AdsComponent = () => {
                 </Text>
 
                 <Text style={styles.plan}> Select your plan</Text>
+
+                <View style={styles.topText}><Text style={styles.smallText}>You save 10%</Text></View>
 
                 <View style={styles.planContainer}>
                     <View style={styles.annualContainer}>
@@ -98,6 +115,7 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         width: 276,
         height: 40,
+        marginTop: 20,
     },
     paragraph: {
         color: colors.greyMain,
@@ -137,8 +155,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
 
-    planContainer:{
-        flexDirection:"row",
+    planContainer: {
+        flexDirection: "row",
         justifyContent: "space-around",
     },
     annualContainer: {
@@ -164,7 +182,7 @@ const styles = StyleSheet.create({
     month: {
         fontSize: 12,
     },
-    monthlyContainer:{
+    monthlyContainer: {
         marginTop: 20,
         padding: 20,
         borderRadius: 8,
@@ -174,5 +192,22 @@ const styles = StyleSheet.create({
         height: 120,
         justifyContent: "space-around",
         alignItems: "center",
+    },
+    topText :{
+        borderRadius: 8,
+        backgroundColor: "#2776EA",
+        width: 79,
+        height:20,
+        color: "white",
+        justifyContent: "center",
+        position: "relative",
+        left: 50,
+        top: 30,
+        zIndex: 1,
+    },
+    smallText: {
+        color: "white", 
+        fontSize: 10,
+        alignSelf: "center",
     }
 })
