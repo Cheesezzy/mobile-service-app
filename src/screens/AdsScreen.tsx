@@ -5,54 +5,70 @@ import Basic from './Payments & Wallets/components/Ads/Basic'
 import NavigationBar from './Payments & Wallets/components/NavigationBar'
 import Premium from './Payments & Wallets/components/Ads/Premium'
 import colors from '../config/colors'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { useSelector } from 'react-redux'
+import { handleSwitchTheme } from '../../provider/themeSlice'
 
 
 const AdsScreen = ({ navigation }: any) => {
 
-
+    const selector: any = useSelector(handleSwitchTheme);
+    const theme = selector.payload.theme.value;
 
     return (
-        <ScrollView>
-            <View style={styles.nav}>
+        <>
+
+            <View style={[styles.nav, {
+                backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+            }]}>
                 <NavigationBar title='Ads' />
             </View>
 
-            <View style={styles.container}>
+            <ScrollView style={{
+                backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+                flex: 1
+            }}>
 
-                <Text style={styles.text}>
-                    Select the ad package that suit your business and  goes along with your business goals
-                </Text>
 
-                <Basic />
+                <View style={[styles.container]}>
 
-                {/* <TouchableOpacity onPress={() => navigation.navigate("Ads Component")}> */}
-                    <Advanced />
+                    <Text style={[styles.text, {
+                        color: theme ? colors.black : colors.darkTxt,
 
-                {/* </TouchableOpacity> */}
+                    }
 
-                <Premium />
+                    ]}>
+                        Select the ad package that suit your business and  goes along with your business goals
+                    </Text>
 
-            </View>
-        </ScrollView>
+                    <Basic />
+
+                    <Advanced onPress={() => navigation.navigate("Ads Component")} />
+
+                    <Premium />
+
+                </View>
+            </ScrollView>
+        </>
+
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 10,
-        margin: 24,
+        paddingTop: 10,
+        alignItems: "center",
+        paddingHorizontal: 20,
     },
     nav: {
         justifyContent: "center",
     },
     text: {
         color: colors.greyMidDark,
-        width: 342,
+        width: "100%",
         height: 48,
         fontWeight: "400",
-        fontSize: 16,
-        lineHeight: 24,
+        fontSize: 14,
+        lineHeight: 20,
     }
 
 })

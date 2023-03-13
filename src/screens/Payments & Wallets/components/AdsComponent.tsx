@@ -6,89 +6,138 @@ import colors from '../../../config/colors'
 import NextButton from './NextButton'
 import { useNavigation } from "@react-navigation/native";
 import { arrowIcon } from '../../../../assets/icons/icons'
+import { handleSwitchTheme } from '../../../../provider/themeSlice'
+import { useSelector } from 'react-redux'
 
 
 const AdsComponent = () => {
     const navigate = useNavigation();
+    const selector: any = useSelector(handleSwitchTheme);
+    const theme = selector.payload.theme.value;
 
     return (
         <>
-            <View style={styles.container}>
-                <TouchableOpacity
-                    style={{
-                        zIndex: 1000,
-                    }}
-                    onPress={() => {
-                        return navigate.goBack();
-                    }}>
-                    <SvgXml xml={arrowIcon()} width={24} height={24} />
-                </TouchableOpacity>
+            <View style={[styles.container, {
+                backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+                flex: 1
+            }]}>
 
-                <Text style={styles.fontStyle}>
-                    Rete <Text style={styles.midContainer}>Advanced</Text> Ads
-                </Text>
-                <Text style={styles.paragraph}>
-                    subscribe and grow your business
-                </Text>
+                <View style={{ width: "90%" }}>
+                    <TouchableOpacity
+                        style={{
+                            zIndex: 1000,
+                        }}
+                        onPress={() => {
+                            return navigate.goBack();
+                        }}>
+                        <SvgXml xml={arrowIcon()} width={24} height={24} />
+                    </TouchableOpacity>
 
-                <Text style={styles.plan}> Select your plan</Text>
+                    <Text style={[styles.fontStyle, {
+                        color: theme ? colors.black : colors.darkTxt,
+                    }]}>
+                        Rete <Text style={styles.midContainer}>Advanced</Text> Ads
+                    </Text>
 
-                <View style={styles.topText}><Text style={styles.smallText}>You save 10%</Text></View>
 
-                <View style={styles.planContainer}>
-                    <View style={styles.annualContainer}>
-                        <Text style={styles.annual}> Annual </Text>
-                        <Text style={styles.price}> #70,000/year </Text>
-                        <Text style={styles.month}> (#5,833/month) </Text>
+                    <Text style={[styles.paragraph, {
+                        color: theme ? colors.black : colors.darkTxt,
+                    }]}>
+                        subscribe and grow your business
+                    </Text>
+
+                    <Text style={[styles.plan, {
+                        color: theme ? colors.black : colors.darkTxt,
+                    }]}> Select your plan</Text>
+
+
+
+                    <View style={styles.planContainer}>
+                        <View style={styles.annualContainer}>
+                            <View style={{ width: "100%", alignItems: "center" }}>
+                                <View style={styles.topText}><Text style={styles.smallText}>You save 10%</Text></View>
+                            </View>
+                            <Text style={[styles.annual, {
+                                color: theme ? colors.black : colors.darkTxt,
+                            }]}> Annual </Text>
+                            <Text style={[styles.price, {
+                                color: theme ? colors.black : colors.darkTxt,
+
+                            }]}> #70,000/year </Text>
+                            <Text style={[styles.month, {
+                                color: theme ? colors.black : colors.darkTxt,
+
+                            }]}> (#5,833/month) </Text>
+
+                        </View>
+
+                        <View style={styles.monthlyContainer}>
+                            <Text style={[styles.annual, {
+                                color: theme ? colors.black : colors.darkTxt,
+
+                            }]}> Monthly </Text>
+                            <Text style={[styles.price, {
+                                color: theme ? colors.black : colors.darkTxt,
+
+                            }]}> #6,000/year </Text>
+                            <Text style={[styles.month, {
+                                color: theme ? colors.black : colors.darkTxt,
+
+                            }]}> (#6,000/month) </Text>
+
+                        </View>
+                    </View>
+
+
+                    <Text style={[styles.plan, {
+                        color: theme ? colors.black : colors.darkTxt,
+                    }]}> Features </Text>
+
+                    <View style={styles.check}>
+                        <SvgXml xml={Check()} width={24} height={24} />
+                        <Text style={[styles.text, {
+                            color: theme ? colors.black : colors.darkTxt,
+                        }]}>
+                            Appear in posters
+                        </Text>
 
                     </View>
 
-                    <View style={styles.monthlyContainer}>
-                        <Text style={styles.annual}> Monthly </Text>
-                        <Text style={styles.price}> #6,000/year </Text>
-                        <Text style={styles.month}> (#6,000/month) </Text>
+                    <View style={styles.check}>
+                        <SvgXml xml={Check()} width={24} height={24} />
+                        <Text style={[styles.text, {
+                            color: theme ? colors.black : colors.darkTxt,
+
+                        }]}>
+                            Rank higher in search results
+                        </Text>
 
                     </View>
-                </View>
 
+                    <View style={styles.check}>
+                        <SvgXml xml={Check()} width={24} height={24} />
+                        <Text style={[styles.text, {
+                            color: theme ? colors.black : colors.darkTxt,
 
-                <Text style={styles.plan}> Features </Text>
+                        }]}>
+                            Increase your search appearance range
+                        </Text>
 
-                <View style={styles.check}>
-                    <SvgXml xml={Check()} width={24} height={24} />
-                    <Text style={styles.text}>
-                        Appear in posters
-                    </Text>
+                    </View>
 
-                </View>
+                    <View style={styles.button}>
+                        <NextButton
+                            backgroundColor="#2776EA"
+                            title='Start your 7-days trial'
+                        />
+                    </View>
 
-                <View style={styles.check}>
-                    <SvgXml xml={Check()} width={24} height={24} />
-                    <Text style={styles.text}>
-                        Rank higher in search results
-                    </Text>
+                    <Text style={styles.bill}> Billed yearly, cancel anytime </Text>
 
-                </View>
-
-                <View style={styles.check}>
-                    <SvgXml xml={Check()} width={24} height={24} />
-                    <Text style={styles.text}>
-                        Increase your search appearance range
-                    </Text>
 
                 </View>
-
-                <View style={styles.button}>
-                    <NextButton
-                        backgroundColor="#2776EA"
-                        title='Start your 7-days trial'
-                    />
-                </View>
-
-                <Text style={styles.bill}> Billed yearly, cancel anytime </Text>
-
-
             </View>
+
 
 
         </>
@@ -101,10 +150,9 @@ export default AdsComponent
 
 const styles = StyleSheet.create({
     container: {
-        margin: 24,
-        marginTop: 50,
+        paddingTop: 50,
         lineHeight: 40,
-
+        alignItems: "center",
     },
     midContainer: {
         color: "#2776EA",
@@ -193,20 +241,19 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         alignItems: "center",
     },
-    topText :{
+    topText: {
         borderRadius: 8,
         backgroundColor: "#2776EA",
         width: 79,
-        height:20,
+        height: 20,
         color: "white",
         justifyContent: "center",
-        position: "relative",
-        left: 50,
-        top: 30,
+        position: "absolute",
         zIndex: 1,
+        top: -35,
     },
     smallText: {
-        color: "white", 
+        color: "white",
         fontSize: 10,
         alignSelf: "center",
     }

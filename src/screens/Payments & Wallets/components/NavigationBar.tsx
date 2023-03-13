@@ -1,7 +1,10 @@
 import React, { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import { SvgXml } from "react-native-svg";
-import { arrowIcon } from '../../../../assets/icons/icons';
+import { backIcon } from '../../../../assets/icons/icons';
+import { handleSwitchTheme } from '../../../../provider/themeSlice';
+import { useSelector } from 'react-redux';
+import colors from '../../../config/colors';
 
 interface Props {
     title: string;
@@ -9,7 +12,11 @@ interface Props {
 
 const NavigationBar = ({ title }: Props) => {
 
+    const selector: any = useSelector(handleSwitchTheme);
+    const theme = selector.payload.theme.value;
+
     const navigate = useNavigation();
+
     return (
 
         <View style={styles.nav}>
@@ -20,11 +27,16 @@ const NavigationBar = ({ title }: Props) => {
                 onPress={() => {
                     return navigate.goBack();
                 }}>
-                <SvgXml xml={arrowIcon()} width={24} height={24} />
+                <SvgXml
+                    xml={backIcon(theme ? colors.black : colors.darkTxt)}
+                    width={24} height={24} />
             </TouchableOpacity>
 
             <View style={styles.text}>
-                <Text style={styles.navText}>{title}</Text>
+                <Text style={[styles.navText, {
+                    color: theme ? colors.black : colors.darkTxt,
+
+                }]}>{title}</Text>
             </View>
         </View>
     );

@@ -3,13 +3,19 @@ import { View, Text, StyleSheet, TouchableOpacity, Pressable } from 'react-nativ
 import { Check } from '../../../../../assets/svgs/svgs'
 import { SvgXml } from "react-native-svg";
 import colors from '../../../../config/colors';
+import { handleSwitchTheme } from '../../../../../provider/themeSlice';
+import { useSelector } from 'react-redux';
 
 
 
 const Basic = () => {
 
-    const [backgroundColor, setBackgroundColor] = useState("#F1F1F1");
-    const [textColor, setTextColor] = useState("#454647");
+
+    const selector: any = useSelector(handleSwitchTheme);
+    const theme = selector.payload.theme.value;
+    
+    const [backgroundColor, setBackgroundColor] = useState(theme ? colors.secondarySmoke : colors.blackSmoke);
+    const [textColor, setTextColor] = useState(theme ? colors.black : colors.darkTxt);
     const [isPressed, setIsPressed] = useState(false);
 
     const handleOnPress = () => {
@@ -19,14 +25,14 @@ const Basic = () => {
     };
     const handleOnRelease = () => {
         setIsPressed(false);
-        setBackgroundColor("#F1F1F1");
-        setTextColor("#454647");
+        setBackgroundColor(theme ? colors.secondarySmoke : colors.blackSmoke);
+        setTextColor(theme ? colors.black : colors.darkTxt);
     }
     return (
         <>
-            <Pressable onPressIn={handleOnPress} onPressOut={handleOnRelease}>
+            <Pressable onPressIn={handleOnPress} onPressOut={handleOnRelease} style={{width: "100%"}}>
 
-                <View style={[styles.container, { backgroundColor }]}>
+                <View style={[styles.container, { backgroundColor, }]}>
                     <View style={styles.subContainer}>
                         <Text style={[styles.fontStyle, { color: textColor }]}>
                             Basic
@@ -65,8 +71,8 @@ export default Basic
 const styles = StyleSheet.create({
     container: {
         padding: 24,
-        width: 342,
-        Height: 179,
+        width: "100%",
+        height: 179,
         marginTop: 16,
         borderRadius: 8,
         fontFamily: "PrimarySemiBold",
@@ -77,7 +83,7 @@ const styles = StyleSheet.create({
         fontFamily: "PrimarySemiBold",
     },
     textStyle: {
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: "400",
     },
     subContainer: {
