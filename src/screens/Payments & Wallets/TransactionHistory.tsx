@@ -6,13 +6,24 @@ import { Thsnip1 } from "../../../assets/svgs/svgs";
 import { Thsnip2 } from "../../../assets/svgs/svgs";
 import { ScrollView } from "react-native-gesture-handler";
 import HeaderTitle from "../../components/HeaderTitle";
+import { handleSwitchTheme } from "../../../provider/themeSlice";
+import { useSelector } from "react-redux";
 
 const TransactionHistory = () => {
+  const selector: any = useSelector(handleSwitchTheme);
+  const theme = selector.payload.theme.value;
   return (
     <>
       <HeaderTitle user="" title="" profileURL="" />
 
-      <ScrollView style={styles.container}>
+      <ScrollView
+        style={[
+          styles.container,
+          {
+            backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+          },
+        ]}
+      >
         <Transactions
           image={Thsnip1()}
           title="Beauty’s Hairs And Nails"
