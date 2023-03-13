@@ -23,6 +23,10 @@ const ProviderHome = ({ navigation, theme, business }: Props) => {
           <TouchableOpacity style={styles.pricingBtn}>
             <Text style={styles.pricingBtnTxt}>Change price</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate("Ads Screen")} style={styles.pricingBtn}>
+            <Text style={styles.pricingBtnTxt}>Ads</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.orderStats}>

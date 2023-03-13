@@ -5,6 +5,7 @@ import TextInputComponent from "./components/TextInputComponent";
 import NextButton from "./components/NextButton";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
+
 const AddNewCard = () => {
   const [cardNumber, setCardNumber] = useState("");
   const [bank, setBank] = useState("");
