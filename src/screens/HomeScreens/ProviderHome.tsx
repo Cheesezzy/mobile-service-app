@@ -42,8 +42,24 @@ const ProviderHome = ({ navigation, theme, business }: Props) => {
               <SvgXml xml={shieldCheck()} width="21" height="21" />
             </View>
 
-            <Text style={styles.completedTxt}>Completed Orders</Text>
-            <Text style={styles.completedVal}>
+            <Text
+              style={[
+                styles.completedTxt,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              Completed Orders
+            </Text>
+            <Text
+              style={[
+                styles.completedVal,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
               {business && business.completedBookings
                 ? business.completedBookings
                 : 0}
@@ -61,8 +77,24 @@ const ProviderHome = ({ navigation, theme, business }: Props) => {
               <SvgXml xml={shopping()} width="21" height="21" />
             </View>
 
-            <Text style={styles.pendingTxt}>Pending Orders</Text>
-            <Text style={styles.pendingVal}>
+            <Text
+              style={[
+                styles.pendingTxt,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              Pending Orders
+            </Text>
+            <Text
+              style={[
+                styles.pendingVal,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
               {business && business.pendingBookings
                 ? business.pendingBookings
                 : 0}
