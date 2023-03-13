@@ -101,6 +101,7 @@ function HeaderTitle({ title, profileURL }: Props) {
                   style={{
                     fontSize: 14,
                     fontFamily: "PrimaryRegular",
+                    color: theme ? colors.black : colors.darkTxt,
                   }}
                 >
                   Yo{" "}
@@ -119,7 +120,7 @@ function HeaderTitle({ title, profileURL }: Props) {
                   style={{
                     fontSize: 11,
                     fontFamily: "PrimaryRegular",
-                    color: colors.greyMidDark,
+                    color: theme ? colors.greyMidDark : colors.darkTxt,
                   }}
                 >
                   {user && user?.role === "Consumer"

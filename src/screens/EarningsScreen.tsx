@@ -80,7 +80,16 @@ const EarningsScreen = () => {
         </View>
 
         <View style={styles.analytics}>
-          <Text style={styles.analyticsHead}>Analytics</Text>
+          <Text
+            style={[
+              styles.analyticsHead,
+              {
+                color: theme ? colors.black : colors.darkTxt,
+              },
+            ]}
+          >
+            Analytics
+          </Text>
           <View style={styles.analyticsCon}>
             <View style={[styles.analyticsItem, styles.firstStat]}>
               <Text
@@ -201,7 +210,16 @@ const EarningsScreen = () => {
         </View>
 
         <View style={styles.revenues}>
-          <Text style={styles.revenuesHead}>Revenues</Text>
+          <Text
+            style={[
+              styles.revenuesHead,
+              {
+                color: theme ? colors.black : colors.darkTxt,
+              },
+            ]}
+          >
+            Revenues
+          </Text>
           <View style={styles.revenuesCon}>
             <View style={[styles.revenuesItem, styles.firstStat]}>
               <Text

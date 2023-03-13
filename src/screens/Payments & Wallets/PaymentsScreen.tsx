@@ -134,7 +134,16 @@ const PaymentsScreen = ({ navigation }: any) => {
           <TouchableOpacity
             onPress={() => navigation.navigate("Transaction History")}
           >
-            <Text style={styles.viewAll}>View all</Text>
+            <Text
+              style={[
+                styles.viewAll,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              View all
+            </Text>
           </TouchableOpacity>
         </View>
         <View>

@@ -147,7 +147,16 @@ const NegoScreen = ({ navigation }: any) => {
           </Text>
         </View>
 
-        <Text style={styles.header}>Negotiations</Text>
+        <Text
+          style={[
+            styles.header,
+            {
+              color: theme ? colors.black : colors.darkTxt,
+            },
+          ]}
+        >
+          Negotiations
+        </Text>
 
         <View
           style={{
