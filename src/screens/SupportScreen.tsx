@@ -48,7 +48,7 @@ const SupportScreen = ({ navigation }: any) => {
                 style={[
                   styles.menuItem,
                   {
-                    color: theme ? colors.black : colors.darkTxt,
+                    color: colors.black,
                   },
                 ]}
               >
@@ -85,7 +85,7 @@ const SupportScreen = ({ navigation }: any) => {
                 style={[
                   styles.menuItem,
                   {
-                    color: theme ? colors.black : colors.darkTxt,
+                    color: colors.black,
                   },
                 ]}
               >
@@ -122,7 +122,7 @@ const SupportScreen = ({ navigation }: any) => {
                 style={[
                   styles.menuItem,
                   {
-                    color: theme ? colors.black : colors.darkTxt,
+                    color: colors.black,
                   },
                 ]}
               >

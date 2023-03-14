@@ -116,7 +116,7 @@ const MoreScreen = ({ navigation }: any) => {
                           style={[
                             styles.menuItemBig,
                             {
-                              color: theme ? colors.black : colors.darkTxt,
+                              color: colors.black,
                             },
                           ]}
                         >
@@ -126,7 +126,7 @@ const MoreScreen = ({ navigation }: any) => {
                           style={[
                             styles.menuItemSm,
                             {
-                              color: theme ? colors.greyMain : colors.darkTxt,
+                              color: colors.greyMain,
                             },
                           ]}
                         >
@@ -165,7 +165,7 @@ const MoreScreen = ({ navigation }: any) => {
                           style={[
                             styles.menuItemBig,
                             {
-                              color: theme ? colors.black : colors.darkTxt,
+                              color: colors.black,
                             },
                           ]}
                         >
@@ -175,7 +175,7 @@ const MoreScreen = ({ navigation }: any) => {
                           style={[
                             styles.menuItemSm,
                             {
-                              color: theme ? colors.greyMain : colors.darkTxt,
+                              color: colors.greyMain,
                             },
                           ]}
                         >
@@ -214,7 +214,7 @@ const MoreScreen = ({ navigation }: any) => {
                           style={[
                             styles.menuItemBig,
                             {
-                              color: theme ? colors.black : colors.darkTxt,
+                              color: colors.black,
                             },
                           ]}
                         >
@@ -224,7 +224,7 @@ const MoreScreen = ({ navigation }: any) => {
                           style={[
                             styles.menuItemSm,
                             {
-                              color: theme ? colors.greyMain : colors.darkTxt,
+                              color: colors.greyMain,
                             },
                           ]}
                         >
@@ -276,7 +276,7 @@ const MoreScreen = ({ navigation }: any) => {
                         style={[
                           styles.menuItemBig,
                           {
-                            color: theme ? colors.black : colors.darkTxt,
+                            color: colors.black,
                           },
                         ]}
                       >
@@ -286,7 +286,7 @@ const MoreScreen = ({ navigation }: any) => {
                         style={[
                           styles.menuItemSm,
                           {
-                            color: theme ? colors.greyMain : colors.darkTxt,
+                            color: colors.greyMain,
                           },
                         ]}
                       >
@@ -325,7 +325,7 @@ const MoreScreen = ({ navigation }: any) => {
                         style={[
                           styles.menuItemBig,
                           {
-                            color: theme ? colors.black : colors.darkTxt,
+                            color: colors.black,
                           },
                         ]}
                       >
@@ -335,7 +335,7 @@ const MoreScreen = ({ navigation }: any) => {
                         style={[
                           styles.menuItemSm,
                           {
-                            color: theme ? colors.greyMain : colors.darkTxt,
+                            color: colors.greyMain,
                           },
                         ]}
                       >
@@ -374,7 +374,7 @@ const MoreScreen = ({ navigation }: any) => {
                         style={[
                           styles.menuItemBig,
                           {
-                            color: theme ? colors.black : colors.darkTxt,
+                            color: colors.black,
                           },
                         ]}
                       >
@@ -384,7 +384,7 @@ const MoreScreen = ({ navigation }: any) => {
                         style={[
                           styles.menuItemSm,
                           {
-                            color: theme ? colors.greyMain : colors.darkTxt,
+                            color: colors.greyMain,
                           },
                         ]}
                       >
@@ -415,7 +415,7 @@ const MoreScreen = ({ navigation }: any) => {
                         style={[
                           styles.menuItemBig,
                           {
-                            color: theme ? colors.black : colors.darkTxt,
+                            color: colors.black,
                           },
                         ]}
                       >
@@ -425,7 +425,7 @@ const MoreScreen = ({ navigation }: any) => {
                         style={[
                           styles.menuItemSm,
                           {
-                            color: theme ? colors.greyMain : colors.darkTxt,
+                            color: colors.greyMain,
                           },
                         ]}
                       >
@@ -461,7 +461,7 @@ const MoreScreen = ({ navigation }: any) => {
                           style={[
                             styles.menuItemBig,
                             {
-                              color: theme ? colors.black : colors.darkTxt,
+                              color: colors.black,
                             },
                           ]}
                         >
@@ -471,7 +471,7 @@ const MoreScreen = ({ navigation }: any) => {
                           style={[
                             styles.menuItemSm,
                             {
-                              color: theme ? colors.greyMain : colors.darkTxt,
+                              color: colors.greyMain,
                             },
                           ]}
                         >

@@ -4,6 +4,8 @@ import { ColorSpace } from "react-native-reanimated";
 import colors from "../config/colors";
 import { Thsnip1 } from "../../assets/svgs/svgs";
 import { SvgXml } from "react-native-svg";
+import { handleSwitchTheme } from "../../provider/themeSlice";
+import { useSelector } from "react-redux";
 
 interface Props {
   title: string;
@@ -13,6 +15,8 @@ interface Props {
 }
 
 const Transactions = ({ title, date, price, image }: Props) => {
+  const selector: any = useSelector(handleSwitchTheme);
+  const theme = selector.payload.theme.value;
   return (
     <>
       <View style={styles.transactionContainer}>
@@ -22,12 +26,28 @@ const Transactions = ({ title, date, price, image }: Props) => {
           </View>
 
           <View style={styles.transactionBody}>
-            <Text style={styles.transactionName}>{title}</Text>
+            <Text
+              style={[
+                styles.transactionName,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              {title}
+            </Text>
             <Text style={styles.transactionDate}>{date}</Text>
           </View>
         </View>
 
-        <Text style={styles.transactionPrice}>
+        <Text
+          style={[
+            styles.transactionPrice,
+            {
+              color: theme ? colors.black : colors.darkTxt,
+            },
+          ]}
+        >
           {"\u20A6"} {price}
         </Text>
       </View>

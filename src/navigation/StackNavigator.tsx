@@ -43,6 +43,8 @@ import TransactionHistory from "../screens/Payments & Wallets/TransactionHistory
 import RecentOrderScreen from "../screens/RecentOrderScreen";
 import TransactionDetailsScreen from "../screens/Payments & Wallets/TransactionDetailsScreen";
 import AddNewCardScreen from "../screens/Payments & Wallets/AddNewCardScreen";
+import AdsScreen from "../screens/AdsScreen";
+import AdsComponent from "../screens/Payments & Wallets/components/AdsComponent";
 import PhoneScreen from "../screens/PhoneScreen";
 import SearchResults from "../screens/Search/SearchResults";
 
@@ -319,7 +321,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="Add New Card"
+        name='Add New Card'
         component={AddNewCardScreen}
         options={{
           title: "Add New Card",
@@ -327,18 +329,45 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="Transaction details"
+        name="Recent Order"
+        component={RecentOrderScreen}
+        options={{
+          title: "Add New Card",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name='Transaction details'
         component={TransactionDetailsScreen as any}
         options={{
           title: "Transaction details",
           headerShown: false,
         }}
       />
+
       <Stack.Screen
         name="Search Results"
         component={SearchResults}
         options={{
           title: "Search Results",
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name='Ads Screen'
+        component={AdsScreen as any}
+        options={{
+          title: "Ads",
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name='Ads Component'
+        component={AdsComponent as any}
+        options={{
+          title: "Ads Component",
           headerShown: false,
         }}
       />
