@@ -100,26 +100,6 @@ const SettingsScreen = ({ navigation }: any) => {
                 },
               ]}
             >
-              Security
-            </Text>
-            <View style={styles.goTo}>
-              <SvgXml
-                style={styles.icon}
-                xml={frontIcon()}
-                width="14"
-                height="14"
-              />
-            </View>
-          </View>
-          <View style={styles.settingsItem}>
-            <Text
-              style={[
-                styles.settingsItemTxt,
-                {
-                  color: theme ? colors.black : colors.darkTxt,
-                },
-              ]}
-            >
               Terms of service
             </Text>
             <View style={styles.goTo}>

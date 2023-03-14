@@ -1,23 +1,9 @@
 import { Avatar } from "@rneui/themed";
-import {
-  collection,
-  doc,
-  FieldValue,
-  getDoc,
-  getDocs,
-  limit,
-  onSnapshot,
-  orderBy,
-  query,
-  serverTimestamp,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, doc, updateDoc } from "firebase/firestore";
 import {
   View,
   StyleSheet,
   Text,
-  Dimensions,
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
@@ -26,18 +12,7 @@ import Navigation from "../components/Navigation";
 import colors from "../config/colors";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { handleAllUsers } from "../../provider/allUsersSlice";
-import {
-  refreshUser,
-  updateMessages,
-  updateNegotiating,
-} from "../../provider/userSlice";
-import { useEffect, useState } from "react";
-import {
-  useCollectionData,
-  useDocumentData,
-} from "react-firebase-hooks/firestore";
-import HeaderTitle from "../components/HeaderTitle";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import { StatusBar } from "expo-status-bar";
 import { getTime } from "../../api/hooks/convertTimestamp";
 import { trimText } from "../../api/hooks/generalHooks";
@@ -59,15 +34,6 @@ const NegoScreen = ({ navigation }: any) => {
       return msg?.receivedBy;
     }
     return msg?.sentBy;
-  };
-
-  const getPerson = async (id: any) => {
-    try {
-      const userData = await getDoc(doc(db, "users", id));
-      return userData.data();
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   const checkAttachmentTxt = (msg: any) => {

@@ -9,7 +9,7 @@ import AboutScreen from "../screens/AboutScreen";
 import PromotionScreen from "../screens/PromotionScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import SupportScreen from "../screens/SupportScreen";
-import SearchScreen from "../screens/SearchScreen";
+import SearchScreen from "../screens/Search/SearchScreen";
 import { auth, db } from "../../firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
@@ -44,6 +44,7 @@ import RecentOrderScreen from "../screens/RecentOrderScreen";
 import TransactionDetailsScreen from "../screens/Payments & Wallets/TransactionDetailsScreen";
 import AddNewCardScreen from "../screens/Payments & Wallets/AddNewCardScreen";
 import PhoneScreen from "../screens/PhoneScreen";
+import SearchResults from "../screens/Search/SearchResults";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -330,6 +331,14 @@ const StackNavigator = () => {
         component={TransactionDetailsScreen as any}
         options={{
           title: "Transaction details",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Search Results"
+        component={SearchResults}
+        options={{
+          title: "Search Results",
           headerShown: false,
         }}
       />

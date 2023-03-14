@@ -42,6 +42,7 @@ const MoreScreen = ({ navigation }: any) => {
   const [user, loading] = useDocumentData(userRef);
 
   const businessRef = user?.bizId && doc(db, "businesses", user?.bizId);
+  const [business] = useDocumentData(businessRef);
 
   const dispatch = useDispatch();
   const selector: any = useSelector(handleSwitchTheme);
@@ -443,7 +444,7 @@ const MoreScreen = ({ navigation }: any) => {
                 </View>
               </TouchableOpacity>
 
-              {user.role && (
+              {user.role && business && (
                 <View>
                   <View style={styles.itemContainer}>
                     <View style={styles.iconFlex}>
