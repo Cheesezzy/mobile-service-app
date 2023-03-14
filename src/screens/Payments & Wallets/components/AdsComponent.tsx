@@ -5,7 +5,7 @@ import { Check } from '../../../../assets/svgs/svgs'
 import colors from '../../../config/colors'
 import NextButton from './NextButton'
 import { useNavigation } from "@react-navigation/native";
-import { arrowIcon } from '../../../../assets/icons/icons'
+import { backIcon } from '../../../../assets/icons/icons'
 import { handleSwitchTheme } from '../../../../provider/themeSlice'
 import { useSelector } from 'react-redux'
 
@@ -30,7 +30,10 @@ const AdsComponent = () => {
                         onPress={() => {
                             return navigate.goBack();
                         }}>
-                        <SvgXml xml={arrowIcon()} width={24} height={24} />
+                        <SvgXml
+                            xml={backIcon(theme ? colors.black : colors.darkTxt)}
+                            width={24}
+                            height={24} />
                     </TouchableOpacity>
 
                     <Text style={[styles.fontStyle, {

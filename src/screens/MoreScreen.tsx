@@ -101,7 +101,10 @@ const MoreScreen = ({ navigation }: any) => {
                   // @ts-ignore
                   onPress={() => navigation.navigate("Earnings")}
                 >
-                  <View style={styles.itemContainer}>
+                  <View style={[styles.itemContainer, {
+                    backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+
+                  }]}>
                     <View style={styles.iconFlex}>
                       <View style={styles.iconCon}>
                         <SvgXml
@@ -111,12 +114,13 @@ const MoreScreen = ({ navigation }: any) => {
                           height="18"
                         />
                       </View>
-                      <View style={styles.menuItem}>
+                      <View style={[styles.menuItem, {
+                      }]}>
                         <Text
                           style={[
                             styles.menuItemBig,
                             {
-                              color: colors.black,
+                              color: theme ? colors.black : colors.darkTxt,
                             },
                           ]}
                         >
@@ -150,7 +154,10 @@ const MoreScreen = ({ navigation }: any) => {
                   // @ts-ignore
                   onPress={() => navigation.navigate("Analytics")}
                 >
-                  <View style={styles.itemContainer}>
+                  <View style={[styles.itemContainer, {
+                    backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+
+                  }]}>
                     <View style={styles.iconFlex}>
                       <View style={styles.iconCon}>
                         <SvgXml
@@ -165,7 +172,7 @@ const MoreScreen = ({ navigation }: any) => {
                           style={[
                             styles.menuItemBig,
                             {
-                              color: colors.black,
+                              color: theme ? colors.black : colors.darkTxt,
                             },
                           ]}
                         >
@@ -199,7 +206,10 @@ const MoreScreen = ({ navigation }: any) => {
                   // @ts-ignore
                   onPress={() => navigation.navigate("Promotion")}
                 >
-                  <View style={styles.itemContainer}>
+                  <View style={[styles.itemContainer, {
+                    backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+
+                  }]}>
                     <View style={styles.iconFlex}>
                       <View style={styles.iconCon}>
                         <SvgXml
@@ -214,7 +224,7 @@ const MoreScreen = ({ navigation }: any) => {
                           style={[
                             styles.menuItemBig,
                             {
-                              color: colors.black,
+                              color: theme ? colors.black : colors.darkTxt,
                             },
                           ]}
                         >
@@ -261,7 +271,10 @@ const MoreScreen = ({ navigation }: any) => {
                 // @ts-ignore
                 onPress={() => navigation.navigate("Settings")}
               >
-                <View style={styles.itemContainer}>
+                <View style={[styles.itemContainer, {
+                  backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+
+                }]}>
                   <View style={styles.iconFlex}>
                     <View style={styles.iconCon}>
                       <SvgXml
@@ -276,7 +289,7 @@ const MoreScreen = ({ navigation }: any) => {
                         style={[
                           styles.menuItemBig,
                           {
-                            color: colors.black,
+                            color: theme ? colors.black : colors.darkTxt,
                           },
                         ]}
                       >
@@ -310,7 +323,10 @@ const MoreScreen = ({ navigation }: any) => {
                 // @ts-ignore
                 onPress={() => navigation.navigate("Payments")}
               >
-                <View style={styles.itemContainer}>
+                <View style={[styles.itemContainer, {
+                  backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+
+                }]}>
                   <View style={styles.iconFlex}>
                     <View style={styles.iconCon}>
                       <SvgXml
@@ -325,7 +341,7 @@ const MoreScreen = ({ navigation }: any) => {
                         style={[
                           styles.menuItemBig,
                           {
-                            color: colors.black,
+                            color: theme ? colors.black : colors.darkTxt,
                           },
                         ]}
                       >
@@ -356,9 +372,11 @@ const MoreScreen = ({ navigation }: any) => {
 
               <TouchableOpacity
                 activeOpacity={0.6}
-                // @ts-ignore
+              // @ts-ignore
               >
-                <View style={styles.itemContainer}>
+                <View style={[styles.itemContainer, {
+                  backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+                }]}>
                   <View style={styles.iconFlex}>
                     <View style={styles.iconCon}>
                       <SvgXml
@@ -374,7 +392,7 @@ const MoreScreen = ({ navigation }: any) => {
                         style={[
                           styles.menuItemBig,
                           {
-                            color: colors.black,
+                            color: theme ? colors.black : colors.darkTxt,
                           },
                         ]}
                       >
@@ -400,7 +418,10 @@ const MoreScreen = ({ navigation }: any) => {
                 // @ts-ignore
                 onPress={() => navigation.navigate("Support")}
               >
-                <View style={styles.itemContainer}>
+                <View style={[styles.itemContainer, {
+                  backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+
+                }]}>
                   <View style={styles.iconFlex}>
                     <View style={styles.iconCon}>
                       <SvgXml
@@ -415,7 +436,7 @@ const MoreScreen = ({ navigation }: any) => {
                         style={[
                           styles.menuItemBig,
                           {
-                            color: colors.black,
+                            color: theme ? colors.black : colors.darkTxt,
                           },
                         ]}
                       >
@@ -446,7 +467,9 @@ const MoreScreen = ({ navigation }: any) => {
 
               {user.role && business && (
                 <View>
-                  <View style={styles.itemContainer}>
+                  <View style={[styles.itemContainer, {
+                    backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+                  }]}>
                     <View style={styles.iconFlex}>
                       <View style={styles.iconCon}>
                         <SvgXml
@@ -461,7 +484,7 @@ const MoreScreen = ({ navigation }: any) => {
                           style={[
                             styles.menuItemBig,
                             {
-                              color: colors.black,
+                              color: theme ? colors.black : colors.darkTxt,
                             },
                           ]}
                         >

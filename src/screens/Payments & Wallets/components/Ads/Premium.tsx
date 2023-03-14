@@ -30,7 +30,7 @@ const Premium = () => {
 
     return (
         <>
-            <Pressable onPressIn={handleOnPress} onPressOut={handleOnRelease}>
+            <Pressable onPressIn={handleOnPress} onPressOut={handleOnRelease} style={{ width: "100%" }}>
                 <View style={[styles.container, { backgroundColor }]}>
 
                     <View style={styles.subContainer}>

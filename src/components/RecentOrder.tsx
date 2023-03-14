@@ -13,7 +13,9 @@ const RecentOrder = ({ name, minutes }: Props) => {
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
   return (
-    <View style={styles.orderContainer}>
+    <View style={[styles.orderContainer, {
+      backgroundColor: theme ? colors.secondarySmoke : colors.black,
+    }]}>
       <View style={styles.order}>
         <Avatar
           size={31}
