@@ -245,7 +245,7 @@ const ProfileScreen = ({ navigation, route }: any) => {
                 >
                   Manager:{" "}
                 </Text>
-                {user?.name}
+                {businessUser?.name}
               </Text>
             )}
 
@@ -283,49 +283,34 @@ const ProfileScreen = ({ navigation, route }: any) => {
           </View>
         </View>
 
-        {checkRole(user) ? (
-          business && business.userId !== User?.uid ? (
-            <View style={styles.choiceBtnCon}>
-              <TouchableOpacity
-                style={[styles.choiceBtnWire, { marginRight: 10 }]}
-                onPress={() =>
-                  navigation.navigate("NegoDisplay", {
-                    personId: business.userId,
-                    name: businessUser?.name,
-                  })
-                }
-              >
-                <Text style={[styles.choiceBtnTxt, { color: colors.primary }]}>
-                  Negotiate
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.choiceBtn}
-                onPress={() =>
-                  navigation.navigate("Transfer", {
-                    business: business,
-                    businessUser,
-                  })
-                }
-              >
-                <Text style={styles.choiceBtnTxt}>Hire</Text>
-              </TouchableOpacity>
-            </View>
-          ) : (
+        {business && business.userId !== User?.uid ? (
+          <View style={styles.choiceBtnCon}>
             <TouchableOpacity
-              style={styles.choiceBtnWire}
+              style={[styles.choiceBtnWire, { marginRight: 10 }]}
               onPress={() =>
-                navigation.navigate("AccountSettings", {
-                  user,
+                navigation.navigate("ChatScreen", {
+                  personId: business.userId,
+                  name: businessUser?.name,
                 })
               }
             >
               <Text style={[styles.choiceBtnTxt, { color: colors.primary }]}>
-                Edit profile
+                Negotiate
               </Text>
             </TouchableOpacity>
-          )
+
+            <TouchableOpacity
+              style={styles.choiceBtn}
+              onPress={() =>
+                navigation.navigate("Transfer", {
+                  business: business,
+                  businessUser,
+                })
+              }
+            >
+              <Text style={styles.choiceBtnTxt}>Hire</Text>
+            </TouchableOpacity>
+          </View>
         ) : (
           <TouchableOpacity
             style={styles.choiceBtnWire}

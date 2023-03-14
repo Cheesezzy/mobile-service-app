@@ -55,7 +55,7 @@ const Navigation = ({ navigation }: any) => {
       setNegoUnread(
         negotiating.some((msg: any) => msg?.type === "received" && !msg?.seen)
       );
-  }, [negotiating, notifications]);
+  }, [negotiating]);
 
   const route = useRoute();
 

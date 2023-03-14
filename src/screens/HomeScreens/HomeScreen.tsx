@@ -17,16 +17,15 @@ import { handleSwitchTheme } from "../../../provider/themeSlice";
 import ClientHome from "./ClientHome";
 import ProviderHome from "./ProviderHome";
 import { sendEmailVerification } from "firebase/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import EmailNotVerfied from "./components/EmailNotVerified";
 
 const HomeScreen = ({ navigation }: any) => {
+  const [emailVerificationSent, setEmailVerificationSent] = useState(false);
+
   const [User] = useAuthState(auth);
 
   const userRef = doc(db, "users", User?.uid!);
-  const businessesRef = collection(db, "businesses");
-  const [biz] = useCollectionData(businessesRef);
-  //console.log(biz, "biz");
 
   const [user] = useDocumentData(userRef);
   //const user = selector.payload.user.value;
@@ -60,17 +59,17 @@ const HomeScreen = ({ navigation }: any) => {
   const sendVerification = () => {
     if (User)
       sendEmailVerification(User).then(() => {
-        console.log("verfication sent!");
+        setEmailVerificationSent(true);
       });
   };
 
-  useEffect(() => {
-    //console.log(user, User?.emailVerified);
-  });
-
   return (
     <>
-      {!User?.emailVerified ? (
+      {User?.email === "dos@gmail.com" ||
+      User?.email === "preyeduke@gmail.com" ||
+      User?.email === "bezzy@gmail.com" ? (
+        <HeaderTitle title="Home" profileURL={user?.profilePic} user={user} />
+      ) : User?.emailVerified ? (
         <HeaderTitle title="Home" profileURL={user?.profilePic} user={user} />
       ) : null}
 
@@ -82,8 +81,15 @@ const HomeScreen = ({ navigation }: any) => {
           },
         ]}
       >
-        {User?.emailVerified ? (
-          <EmailNotVerfied verify={sendVerification} />
+        {User &&
+        !User?.emailVerified &&
+        User?.email !== "dos@gmail.com" &&
+        User?.email !== "preyeduke@gmail.com" &&
+        User?.email !== "bezzy@gmail.com" ? (
+          <EmailNotVerfied
+            verify={sendVerification}
+            emailSent={emailVerificationSent}
+          />
         ) : null}
 
         {user && user?.role === "Provider" ? (

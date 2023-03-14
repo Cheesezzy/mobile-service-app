@@ -63,7 +63,6 @@ const SigninScreen = ({ navigation }: any) => {
           if (User.email === user.email) {
             setError("");
             dispatch(handleUser(user));
-            console.log(user.name, "signed in successfully");
           }
         }
       })
@@ -111,7 +110,6 @@ const SigninScreen = ({ navigation }: any) => {
         if (user?.email === email && user?.password === password) {
           setError("");
           dispatch(handleUser(user));
-          console.log(user.name, "signed in successfully");
           loginEmailPassword();
         } else if (user?.password === password && user.email !== email) {
           setError("Your email does not seem to be correct");
