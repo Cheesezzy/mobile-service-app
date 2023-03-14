@@ -710,11 +710,11 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   statsItem: {
-    height: 75,
-    width: 80,
+    width: "30%",
     alignItems: "center",
     backgroundColor: colors.secondary,
     padding: 10,
+    paddingVertical: 18,
     margin: 5,
     borderRadius: 5,
   },
