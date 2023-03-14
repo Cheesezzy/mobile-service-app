@@ -44,11 +44,8 @@ import TransactionDetailsScreen from "../screens/Payments & Wallets/TransactionD
 import AddNewCardScreen from "../screens/Payments & Wallets/AddNewCardScreen";
 import AdsComponent from "../screens/Payments & Wallets/components/AdsComponent";
 import PhoneScreen from "../screens/PhoneScreen";
-<<<<<<< HEAD
 import PromotionScreen from "../screens/PromotionScreen";
-=======
 import SearchResults from "../screens/Search/SearchResults";
->>>>>>> 915898c86d6cab53bb341510a42d9a064f6b1485
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -346,28 +343,6 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
-<<<<<<< HEAD
-=======
-
-      <Stack.Screen
-        name="Search Results"
-        component={SearchResults}
-        options={{
-          title: "Search Results",
-          headerShown: false,
-        }}
-      />
-
-      <Stack.Screen
-        name='Ads Screen'
-        component={AdsScreen as any}
-        options={{
-          title: "Ads",
-          headerShown: false,
-        }}
-      />
-
->>>>>>> 915898c86d6cab53bb341510a42d9a064f6b1485
       <Stack.Screen
         name='Ads Component'
         component={AdsComponent as any}

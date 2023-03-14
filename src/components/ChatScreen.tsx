@@ -275,7 +275,9 @@ export const ChatScreen = ({ navigation, route }: any) => {
 
   return (
     <>
-      <View style={styles.header}>
+      <View style={[styles.header, {
+        backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+      }]}>
         <TouchableOpacity
           style={styles.profilePicAndName}
           onPress={() =>
@@ -307,8 +309,8 @@ export const ChatScreen = ({ navigation, route }: any) => {
               source={
                 personPic
                   ? {
-                      uri: personPic,
-                    }
+                    uri: personPic,
+                  }
                   : require("../../assets/blankProfilePic.png")
               }
             />
@@ -322,7 +324,9 @@ export const ChatScreen = ({ navigation, route }: any) => {
               alignItems: "center",
             }}
           >
-            <Text style={styles.headerName}>{name}</Text>
+            <Text style={[styles.headerName, {
+              color: theme ? colors.black : colors.darkTxt,
+            }]}>{name}</Text>
           </View>
         </TouchableOpacity>
 
@@ -330,7 +334,7 @@ export const ChatScreen = ({ navigation, route }: any) => {
           // @ts-ignore
           onPress={() => setShowDropDown(!showDropDown)}
         >
-          <SvgXml xml={optionIcon()} width="21" height="21" />
+          <SvgXml xml={optionIcon(theme ? colors.black : colors.darkTxt)} width="21" height="21" />
         </TouchableOpacity>
         <Appointment
           isVisible={isVisible}
@@ -401,8 +405,8 @@ export const ChatScreen = ({ navigation, route }: any) => {
               source={
                 personPic
                   ? {
-                      uri: personPic,
-                    }
+                    uri: personPic,
+                  }
                   : require("../../assets/blankProfilePic.png")
               }
             />

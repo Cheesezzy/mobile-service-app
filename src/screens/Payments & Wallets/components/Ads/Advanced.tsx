@@ -7,11 +7,11 @@ import colors from '../../../../config/colors';
 import { useSelector } from 'react-redux';
 import { handleSwitchTheme } from '../../../../../provider/themeSlice';
 
-interface Props{
-    onPress : () => void;
+interface Props {
+    onPress: () => void;
 }
 
-const Advanced = ({onPress} : Props) => {
+const Advanced = ({ onPress }: Props) => {
 
     const selector: any = useSelector(handleSwitchTheme);
     const theme = selector.payload.theme.value;
@@ -33,7 +33,7 @@ const Advanced = ({onPress} : Props) => {
 
     return (
         <>
-            <Pressable onPressIn={handleOnPress} onPressOut={handleOnRelease} onPress={onPress}>
+            <Pressable onPressIn={handleOnPress} onPressOut={handleOnRelease} onPress={onPress} style={{ width: "100%" }}>
 
                 <View style={[styles.container, { backgroundColor }]}>
                     <View style={styles.subContainer}>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         padding: 24,
         width: '100%',
         Height: 242,
-        marginTop: 24,
+        marginTop: 16,
         borderRadius: 8,
     },
     fontStyle: {

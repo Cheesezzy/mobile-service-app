@@ -16,19 +16,22 @@ const RecentOrderScreen = () => {
 
   return (
     <>
-      <NavigationBar title="Recent Order" />
+      <View style={{
+        backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+      }}>
+        <NavigationBar title="Recent Order" />
 
-      <SafeAreaView>
-        <View style={[styles.container, {
-          backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
-        }]}></View>
+        <SafeAreaView>
+          <View style={styles.container}></View>
 
-        <FlatList
-          data={transactions}
-          renderItem={renderItem}
-          keyExtractor={(_, index) => index.toString()}
-        />
-      </SafeAreaView>
+          <FlatList
+            data={transactions}
+            renderItem={renderItem}
+            keyExtractor={(_, index) => index.toString()}
+          />
+        </SafeAreaView>
+      </View>
+
     </>
   );
 };
@@ -37,7 +40,7 @@ export default RecentOrderScreen;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 50,
+    marginTop: 20,
   },
   heading: {
     fontFamily: "PrimaryBold",

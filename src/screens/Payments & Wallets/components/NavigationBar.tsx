@@ -19,7 +19,9 @@ const NavigationBar = ({ title }: Props) => {
 
     return (
 
-        <View style={styles.nav}>
+        <View style={[styles.nav, {
+            backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+        }]}>
             <TouchableOpacity
                 style={{
                     zIndex: 1000,

@@ -24,7 +24,7 @@ const PromotionScreen = ({ navigation }: any) => {
             </View>
 
             <ScrollView style={{
-                backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+                backgroundColor: theme ? colors.secondarySmoke : colors.black,
                 flex: 1
             }}>
 
@@ -33,10 +33,7 @@ const PromotionScreen = ({ navigation }: any) => {
 
                     <Text style={[styles.text, {
                         color: theme ? colors.black : colors.darkTxt,
-
-                    }
-
-                    ]}>
+                    }]}>
                         Select the ad package that suit your business and  goes along with your business goals
                     </Text>
 
