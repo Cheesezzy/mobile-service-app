@@ -28,15 +28,19 @@ import Paginator from "./Paginator";
 import { useNavigation } from "@react-navigation/native";
 import { SvgXml } from "react-native-svg";
 import { backIcon, locationIcon, searchIcon } from "../../assets/icons/icons";
-import { updateLocation } from "../../api/database";
+import { updateLocation, updateSearchLocation } from "../../api/database";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../../firebaseConfig";
 import { doc } from "firebase/firestore";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 import { useSelector } from "react-redux";
+import * as Location from "expo-location";
 
-export const GoogleSearch = () => {
+export const GoogleSearch = ({ route }: any) => {
+  const [errMsg, setErrorMsg] = useState("");
+
+  const { locationType } = route.params;
   const [user] = useAuthState(auth);
   const navigation = useNavigation();
 
@@ -47,10 +51,40 @@ export const GoogleSearch = () => {
   const [showBtn, setShowBtn] = useState(false);
   const [location, setLocation] = useState<any>(null);
 
+  const usePresentLocation = () => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.BestForNavigation,
+      });
+
+      if (locationType === "Business")
+        updateLocation(
+          User?.bizId,
+          location.coords?.latitude,
+          location.coords?.longitude
+        );
+      else if (locationType === "Search")
+        updateLocation(
+          user?.uid,
+          location.coords?.latitude,
+          location.coords?.longitude
+        );
+      navigation.goBack();
+    })();
+  };
+
   const handleSubmit = () => {
     if (location.lat && location.lng)
-      updateLocation(User?.bizId, location?.lat, location?.lng);
-    console.log(location);
+      if (locationType === "Business")
+        updateLocation(User?.bizId, location?.lat, location?.lng);
+      else if (locationType === "search")
+        updateSearchLocation(user?.uid, location?.lat, location?.lng);
     navigation.goBack();
   };
 
@@ -59,13 +93,13 @@ export const GoogleSearch = () => {
 
   return (
     <KeyboardAvoidingView
-      style={{
-        flex: 1,
-        paddingTop: 50,
-        paddingVertical: 15,
-        backgroundColor: theme ? colors.secondary : colors.blackSmoke,
-      }}
+      style={[
+        styles.container,
+        { backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke },
+      ]}
     >
+      <Text style={styles.headerTxt}>Find location.</Text>
+      <Text style={styles.headerSubTxt}>Set your {locationType} location</Text>
       <View
         style={[
           styles.searchCon,
@@ -138,16 +172,11 @@ export const GoogleSearch = () => {
               const address = rowData.structured_formatting.secondary_text;
               return (
                 <View style={styles.resultItem}>
-                  <View
-                    style={{
-                      marginRight: 8,
-                      justifyContent: "center",
-                    }}
-                  >
+                  <View style={styles.iconCon}>
                     <SvgXml
                       xml={locationIcon(colors.lightGrey)}
-                      width="15"
-                      height="15"
+                      width="19"
+                      height="19"
                     />
                   </View>
                   <View>
@@ -170,6 +199,20 @@ export const GoogleSearch = () => {
         </View>
       </View>
 
+      <TouchableOpacity
+        style={[
+          styles.choiceBtnWire,
+          {
+            marginTop: 80,
+            position: "absolute",
+            bottom: showBtn ? 90 : 30,
+          },
+        ]}
+        onPress={usePresentLocation}
+      >
+        <Text style={styles.choiceBtnWireTxt}>Use your present location</Text>
+      </TouchableOpacity>
+
       {showBtn ? (
         <TouchableOpacity
           style={[
@@ -186,6 +229,22 @@ export const GoogleSearch = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 50,
+    paddingVertical: 15,
+  },
+  headerTxt: {
+    fontFamily: "PrimarySemiBold",
+    fontSize: 22,
+    marginHorizontal: 20,
+  },
+  headerSubTxt: {
+    fontFamily: "PrimaryRegular",
+    fontSize: 12,
+    marginHorizontal: 20,
+    marginBottom: 20,
+  },
   choiceBtn: {
     width: Dimensions.get("window").width * 0.8,
     alignSelf: "center",
@@ -197,7 +256,22 @@ const styles = StyleSheet.create({
   choiceBtnTxt: {
     color: colors.secondary,
     fontSize: 12,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
+    textAlign: "center",
+  },
+  choiceBtnWire: {
+    width: Dimensions.get("window").width * 0.8,
+    alignSelf: "center",
+    padding: 12,
+    paddingVertical: 11,
+    borderColor: colors.primary,
+    borderWidth: 1,
+    borderRadius: 20,
+  },
+  choiceBtnWireTxt: {
+    color: colors.primary,
+    fontSize: 12,
+    fontFamily: "PrimaryRegular",
     textAlign: "center",
   },
   inputBox: {
@@ -207,20 +281,20 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 50,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
   },
   image: {
     flex: 0.7,
     justifyContent: "center",
   },
   title: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     fontWeight: "600",
     fontSize: 18,
     color: colors.primary,
   },
   desc: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     fontSize: 12,
     marginVertical: 10,
     letterSpacing: 1,
@@ -229,8 +303,8 @@ const styles = StyleSheet.create({
   },
   searchCon: {
     flexDirection: "row",
-    width: "80%",
-    fontFamily: "LatoRegular",
+    width: "90%",
+    fontFamily: "PrimaryRegular",
     fontSize: 12,
     color: colors.black,
     borderRadius: 20,
@@ -241,11 +315,21 @@ const styles = StyleSheet.create({
   search: {
     height: "100%",
     width: "75%",
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     fontSize: 12,
     color: colors.black,
     alignSelf: "center",
     marginLeft: 10,
+  },
+  iconCon: {
+    width: 34,
+    height: 34,
+    padding: 10,
+    marginRight: 15,
+    borderRadius: 34,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.greyLight,
   },
   resultItem: {
     flexDirection: "row",
@@ -255,12 +339,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   resultTitle: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     fontSize: 14,
     marginBottom: 4,
   },
   resultAddr: {
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     fontSize: 11,
     color: colors.lightGrey,
   },

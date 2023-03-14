@@ -47,3 +47,9 @@ export const trimAfterSpace = (str: string) => {
     return index === -1 ? str : str.substring(0, index);
   }
 };
+
+export const addPoint = (str: string) => {
+  if (str == "5" || str == "4" || str == "3" || str == "2" || str == "1") {
+    return `${str}.0`;
+  } else return str;
+};

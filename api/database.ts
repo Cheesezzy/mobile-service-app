@@ -4,11 +4,16 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
+  getDocs,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { AppointmentDate } from "../src/components/Appointment";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 export function clearAllUsers() {
   const userRef = doc(db, "users/");
@@ -287,6 +292,18 @@ export function updateLocation(bizId: any, lat: any, lng: any) {
   });
 }
 
+// specifically for the search functionality
+export function updateSearchLocation(userId: any, lat: any, lng: any) {
+  const businessRef = doc(db, "users", userId);
+
+  updateDoc(businessRef, {
+    searchLocation: {
+      lat,
+      lng,
+    },
+  });
+}
+
 export function updateCategory(bizId: any, category: any) {
   const businessRef = doc(db, "businesses", bizId);
 
@@ -328,11 +345,12 @@ export function addAppointment(
   });
 }
 
-export function blockUser(userId: any, email: string) {
+export function blockUser(userId: any, name: string, email: string) {
   const blocklistRef = collection(db, "users/" + `${userId}/blocklist`);
 
   addDoc(blocklistRef, {
     id: "",
+    name,
     email,
   }).then((blockedUser) => {
     const blockedUserRef = doc(
@@ -345,6 +363,22 @@ export function blockUser(userId: any, email: string) {
 
     updateDoc(blockedUserRef, {
       id: blockedUser.id,
+    });
+  });
+}
+
+export function unBlockUser(userId: any, email: string) {
+  const blocklistRef = collection(db, "users/" + `${userId}/blocklist`);
+
+  const blocklistQ = query(blocklistRef, where("email", "==", email));
+
+  getDocs(blocklistQ).then((blockedUsers) => {
+    blockedUsers.forEach((blockedUser) => {
+      const blocklistRef = doc(
+        db,
+        "users/" + `${userId}/blocklist/${blockedUser.id}`
+      );
+      deleteDoc(blocklistRef);
     });
   });
 }
@@ -420,53 +454,18 @@ export async function fundAccount(
   }
 }
 
-// destination specific functions (update)
-export function updateUser(userId: any, name: string, bio: string) {
-  const userRef = doc(db, "users/" + `${userId}`);
+export async function withdrawFunds(
+  userId: any,
+  userBalance: any,
+  amount: number
+) {
+  const userRef = doc(db, "users", userId);
 
-  {
-    /*if (name.length > 0) {
-    update(userRef, {
-      name,
+  await userBalance;
+
+  if (userBalance) {
+    updateDoc(userRef, {
+      balance: userBalance - amount,
     });
-  }
-
-  if (bio.length > 0) {
-    update(userRef, {
-      bio,
-    });
-  }*/
-  }
-}
-
-export function changeDP(userId: any, imageUrl: string) {
-  const userRef = doc(db, "users/" + `${userId}/`);
-
-  {
-    /*if (imageUrl !== "") {
-    update(userRef, {
-      profile_pic: imageUrl,
-    });
-  }*/
-  }
-}
-
-export function refreshCount(userId: any) {
-  const userRef = doc(db, "users/" + `${userId}/`);
-
-  {
-    /*update(userRef, {
-    notifCount: 0,
-  });*/
-  }
-}
-
-export function switchBg(userId: any, background: any) {
-  const userRef = doc(db, "users/" + `${userId}/`);
-
-  {
-    /*update(userRef, {
-    background,
-  });*/
   }
 }

@@ -13,9 +13,10 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface Props {
   verify: () => void;
+  emailSent: boolean;
 }
 
-const EmailNotVerfied = ({ verify }: Props) => {
+const EmailNotVerfied = ({ verify, emailSent }: Props) => {
   const [sending, setSending] = useState<boolean>();
 
   const handleVerify = () => {
@@ -48,7 +49,13 @@ const EmailNotVerfied = ({ verify }: Props) => {
         disabled={sending}
       >
         <Text style={styles.verifyBtnTxt}>
-          {sending ? <ActivityIndicator color="#fff" /> : "Verify"}
+          {sending ? (
+            <ActivityIndicator color="#fff" />
+          ) : emailSent ? (
+            "Try again"
+          ) : (
+            "Verify"
+          )}
         </Text>
       </TouchableOpacity>
     </View>

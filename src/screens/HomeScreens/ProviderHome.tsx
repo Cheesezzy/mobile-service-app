@@ -135,9 +135,9 @@ export default ProviderHome;
 const styles = StyleSheet.create({
   pricing: {
     flex: 1,
-    height: 120,
     backgroundColor: colors.primary,
     padding: 12,
+    paddingVertical: 15,
     margin: 4,
     marginVertical: 20,
     marginHorizontal: 16,

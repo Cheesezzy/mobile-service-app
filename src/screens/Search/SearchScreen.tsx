@@ -2,11 +2,11 @@ import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { SvgXml } from "react-native-svg";
-import { backIcon, searchIcon } from "../../assets/icons/icons";
-import MainSearch from "../components/search/MainSearch";
-import colors from "../config/colors";
+import { backIcon, searchIcon } from "../../../assets/icons/icons";
+import MainSearch from "../../components/search/MainSearch";
+import colors from "../../config/colors";
 import { useSelector } from "react-redux";
-import { handleSwitchTheme } from "../../provider/themeSlice";
+import { handleSwitchTheme } from "../../../provider/themeSlice";
 
 const SearchScreen = ({ navigation }: any) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -26,6 +26,7 @@ const SearchScreen = ({ navigation }: any) => {
     >
       <MainSearch
         searchQuery={searchQuery.toLowerCase()}
+        queryUntouched={searchQuery}
         searchFilled={searchFilled}
         setSearchFilled={setSearchFilled}
         navigation={navigation}
