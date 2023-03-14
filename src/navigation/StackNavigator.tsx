@@ -6,7 +6,6 @@ import NotifScreen from "../screens/NotifScreen";
 import NegoScreen from "../screens/NegoScreen";
 import HustleScreen from "../screens/HustleScreen";
 import AboutScreen from "../screens/AboutScreen";
-import PromotionScreen from "../screens/PromotionScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import SupportScreen from "../screens/SupportScreen";
 import SearchScreen from "../screens/SearchScreen";
@@ -43,9 +42,9 @@ import TransactionHistory from "../screens/Payments & Wallets/TransactionHistory
 import RecentOrderScreen from "../screens/RecentOrderScreen";
 import TransactionDetailsScreen from "../screens/Payments & Wallets/TransactionDetailsScreen";
 import AddNewCardScreen from "../screens/Payments & Wallets/AddNewCardScreen";
-import AdsScreen from "../screens/AdsScreen";
 import AdsComponent from "../screens/Payments & Wallets/components/AdsComponent";
 import PhoneScreen from "../screens/PhoneScreen";
+import PromotionScreen from "../screens/PromotionScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -343,16 +342,6 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
-
-      <Stack.Screen
-        name='Ads Screen'
-        component={AdsScreen as any}
-        options={{
-          title: "Ads",
-          headerShown: false,
-        }}
-      />
-
       <Stack.Screen
         name='Ads Component'
         component={AdsComponent as any}

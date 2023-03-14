@@ -12,6 +12,8 @@ import { useSelector } from "react-redux";
 const TransactionHistory = () => {
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
+
+  
   return (
     <>
       <HeaderTitle user="" title="" profileURL="" />

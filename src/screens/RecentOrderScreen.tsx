@@ -2,9 +2,13 @@ import RecentOrder from "../components/RecentOrder";
 import { View, StyleSheet, Text, FlatList, SafeAreaView } from "react-native";
 import colors from "../config/colors";
 import NavigationBar from "./Payments & Wallets/components/NavigationBar";
+import { handleSwitchTheme } from "../../provider/themeSlice";
+import { useSelector } from "react-redux";
 
 const RecentOrderScreen = () => {
   const transactions = Array(20).fill(null);
+  const selector: any = useSelector(handleSwitchTheme);
+  const theme = selector.payload.theme.value;
 
   const renderItem = () => {
     return <RecentOrder name="Ayoola Ayolola" minutes="32 minutes ago" />;
@@ -15,7 +19,9 @@ const RecentOrderScreen = () => {
       <NavigationBar title="Recent Order" />
 
       <SafeAreaView>
-        <View style={styles.container}></View>
+        <View style={[styles.container, {
+          backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+        }]}></View>
 
         <FlatList
           data={transactions}
