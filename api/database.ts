@@ -206,6 +206,14 @@ export function updateUserRole(userId: any, role: string) {
   });
 }
 
+export function updateUserPassword(userId: any, password: string) {
+  const userPasswordRef = doc(db, "users", userId);
+
+  updateDoc(userPasswordRef, {
+    password,
+  });
+}
+
 // add business to database
 export function addBusiness(userId: any) {
   const businessRef = collection(db, "businesses");

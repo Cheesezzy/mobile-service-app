@@ -320,7 +320,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Add New Card'
+        name="Add New Card"
         component={AddNewCardScreen}
         options={{
           title: "Add New Card",
@@ -336,7 +336,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Transaction details'
+        name="Transaction details"
         component={TransactionDetailsScreen as any}
         options={{
           title: "Transaction details",
@@ -344,7 +344,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Ads Component'
+        name="Ads Component"
         component={AdsComponent as any}
         options={{
           title: "Ads Component",

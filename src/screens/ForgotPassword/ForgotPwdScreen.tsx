@@ -1,38 +1,22 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
-} from "react-native";
+import React, { useState, useRef } from "react";
+import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import colors from "../../config/colors";
-import { SvgXml } from "react-native-svg";
-import { hidePassIcon, showPassIcon } from "../../../assets/icons/icons";
-import { useSelector } from "react-redux";
+import PhoneInput from "react-native-phone-number-input";
+import { sendSmsVerification } from "../../../api/verify";
 import { handleAllUsers } from "../../../provider/allUsersSlice";
-import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const ForgotPwdScreen = ({ navigation }: any) => {
-  const [password, setPassword] = useState("");
-  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [value, setValue] = useState("");
+  const [formattedValue, setFormattedValue] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const phoneInput = useRef<PhoneInput>(null);
 
   const selector = useSelector(handleAllUsers);
   const theme = selector.payload.theme.value;
 
-  const handleChangePassword = () => {};
-
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: theme ? colors.secondary : colors.blackSmoke,
-        },
-      ]}
-    >
+    <View style={styles.container}>
       <View>
         <Text
           style={[
@@ -42,147 +26,93 @@ const ForgotPwdScreen = ({ navigation }: any) => {
             },
           ]}
         >
-          Change Password
+          Forgot password?
+        </Text>
+        <Text style={[styles.titleSmall]}>
+          Enter your phone number to reset your password
         </Text>
       </View>
-
-      <View style={styles.password}>
-        <TextInput
-          onChangeText={(newPass) => setPassword(newPass)}
-          style={[
-            styles.inputBox,
-            {
-              borderBottomWidth: 0,
-              color: theme ? colors.black : colors.darkTxt,
-            },
-          ]}
-          placeholder="New Password"
-          secureTextEntry={!passwordVisible}
-          autoCapitalize="none"
-          autoCorrect={false}
-          placeholderTextColor={colors.lightGrey}
+      <View style={{ alignSelf: "center" }}>
+        <PhoneInput
+          ref={phoneInput}
+          defaultValue={value}
+          defaultCode="NG"
+          layout="first"
+          onChangeText={(text) => {
+            setValue(text);
+          }}
+          onChangeFormattedText={(text) => {
+            setFormattedValue(text);
+          }}
+          countryPickerProps={{ withAlphaFilter: true }}
+          withShadow
+          autoFocus
         />
-        <TouchableOpacity
-          style={styles.showHideToggle}
-          onPress={() => setPasswordVisible(!passwordVisible)}
-        >
-          <SvgXml
-            xml={
-              passwordVisible
-                ? showPassIcon(theme ? colors.black : colors.darkTxt)
-                : hidePassIcon(theme ? colors.black : colors.darkTxt)
-            }
-            width="19"
-            height="19"
-          />
-        </TouchableOpacity>
       </View>
-
-      <View style={styles.password}>
-        <TextInput
-          onChangeText={(newPass) => setPassword(newPass)}
-          style={[
-            styles.inputBox,
-            {
-              borderBottomWidth: 0,
-              color: theme ? colors.black : colors.darkTxt,
-            },
-          ]}
-          placeholder="Confirm Password"
-          secureTextEntry={!passwordVisible}
-          autoCapitalize="none"
-          autoCorrect={false}
-          placeholderTextColor={colors.lightGrey}
-        />
-        <TouchableOpacity
-          style={styles.showHideToggle}
-          onPress={() => setPasswordVisible(!passwordVisible)}
-        >
-          <SvgXml
-            xml={
-              passwordVisible
-                ? showPassIcon(theme ? colors.black : colors.darkTxt)
-                : hidePassIcon(theme ? colors.black : colors.darkTxt)
-            }
-            width="19"
-            height="19"
-          />
-        </TouchableOpacity>
-      </View>
-
-      <Text style={styles.err}>{error}</Text>
-
       <TouchableOpacity
-        style={[
-          styles.inputBtn,
-          {
-            opacity: loading ? 0.5 : 1,
-          },
-        ]}
-        onPress={handleChangePassword}
+        style={styles.button}
         disabled={loading}
+        onPress={() => {
+          setLoading(true);
+          sendSmsVerification(formattedValue)
+            .then((sent) => {
+              navigation.navigate("OTP", {
+                userChannel: formattedValue,
+                type: "sms",
+              });
+              setLoading(false);
+            })
+            .catch((e) => {
+              console.log(e);
+              setLoading(false);
+            });
+        }}
       >
-        <Text style={styles.inputBtnTxt}>
-          {loading ? <ActivityIndicator color="#fff" /> : "Submit"}
-        </Text>
+        <Text style={styles.buttonText}>Send OTP</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default ForgotPwdScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    justifyContent: "center",
   },
   title: {
     fontSize: 22,
-    fontFamily: "Lato",
-    textAlign: "center",
-    marginBottom: 20,
+    fontFamily: "PrimarySemiBold",
+    marginTop: 30,
+    marginBottom: 5,
   },
-  inputBox: {
-    height: 45,
-    width: "100%",
-    borderColor: "lightgrey",
-    borderBottomWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginTop: 10,
-    fontFamily: "LatoRegular",
+  titleSmall: {
+    fontSize: 12,
+    fontFamily: "PrimaryRegular",
+    color: colors.greyMain,
+    marginBottom: 30,
   },
-  password: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    borderColor: "lightgrey",
-    paddingRight: 30,
-    borderBottomWidth: 1,
-    borderRadius: 5,
-  },
-  showHideToggle: {
-    alignSelf: "center",
-    marginTop: 8,
-  },
-  inputBtn: {
+  button: {
     height: 48,
     backgroundColor: colors.primary,
     borderRadius: 5,
-    marginTop: 10,
+    marginTop: 40,
     justifyContent: "center",
     alignItems: "center",
   },
-  inputBtnTxt: {
-    color: colors.secondary,
-    fontSize: 15,
-    fontFamily: "LatoRegular",
+  buttonText: {
+    color: "white",
+    fontSize: 14,
   },
-  err: {
-    color: "#ff3333",
-    fontSize: 12,
-    textAlign: "center",
-    margin: 4,
+  welcome: {
+    padding: 20,
+  },
+  status: {
+    padding: 20,
+    marginBottom: 20,
+    justifyContent: "center",
+    alignItems: "flex-start",
+    color: "gray",
   },
 });
+
+export default ForgotPwdScreen;
