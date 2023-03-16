@@ -46,6 +46,8 @@ import AdsComponent from "../screens/Payments & Wallets/components/AdsComponent"
 import PhoneScreen from "../screens/PhoneScreen";
 import PromotionScreen from "../screens/PromotionScreen";
 import SearchResults from "../screens/Search/SearchResults";
+import Terms from "../screens/policy-and-terms/Terms";
+import Privacy from "../screens/policy-and-terms/Privacy";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -345,7 +347,23 @@ const StackNavigator = () => {
       />
       <Stack.Screen
         name="Ads Component"
-        component={AdsComponent as any}
+        component={AdsComponent}
+        options={{
+          title: "Ads Component",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Terms"
+        component={Terms}
+        options={{
+          title: "Ads Component",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Privacy-Policy"
+        component={Privacy}
         options={{
           title: "Ads Component",
           headerShown: false,
