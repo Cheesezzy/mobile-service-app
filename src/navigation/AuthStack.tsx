@@ -19,7 +19,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import PhoneScreen from "../screens/PhoneScreen";
 import OTPScreen from "../screens/OTPScreen";
 import GatedScreen from "../screens/GatedScreen";
-import ForgotPwdScreen from "../screens/ForgotPwdScreen";
+import ForgotPwdScreen from "../screens/ForgotPassword/ForgotPwdScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
