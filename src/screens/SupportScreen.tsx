@@ -139,6 +139,46 @@ const SupportScreen = ({ navigation }: any) => {
             </View>
           </View>
         </TouchableOpacity>
+
+
+        <TouchableOpacity
+          activeOpacity={0.6}
+          // @ts-ignore
+          onPress={() => navigation.navigate("Contact Support")}
+        >
+          <View style={styles.itemContainer}>
+            <View style={styles.iconFlex}>
+              <View style={styles.iconCon}>
+                <SvgXml
+                  style={styles.icon}
+                  xml={chatUsIcon()}
+                  width="16"
+                  height="16"
+                />
+              </View>
+              <Text
+                style={[
+                  styles.menuItem,
+                  {
+                    color: colors.black,
+                  },
+                ]}
+              >
+                FAQ's
+              </Text>
+            </View>
+            <View style={styles.goTo}>
+              <SvgXml
+                style={styles.icon}
+                xml={frontIcon()}
+                width="14"
+                height="14"
+              />
+            </View>
+          </View>
+        </TouchableOpacity>
+
+
         <StatusBar style={theme ? "dark" : "light"} />
       </View>
     </>
