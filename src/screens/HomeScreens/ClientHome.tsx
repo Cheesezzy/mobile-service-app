@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
   },
   category: {
     height: 90,
-    width: 90,
+    width: "29%",
     margin: 4,
     marginBottom: 10,
     borderRadius: 5,
@@ -410,10 +410,10 @@ const styles = StyleSheet.create({
   },
   bannerBtn: {
     position: "absolute",
+    left: 10,
     bottom: 50,
     padding: 8,
     paddingHorizontal: 18,
-    marginLeft: 10,
     backgroundColor: colors.primary,
     borderRadius: 8,
   },

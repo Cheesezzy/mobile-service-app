@@ -222,17 +222,13 @@ export function addBusiness(userId: any) {
     level: "Start-up",
     completedBookings: 0,
     pendingBookings: 0,
-    earnings: {
-      avgBookingPrice: 0,
-      activeBookings: 0,
-      completedBookings: 0,
-      monthlyEarnings: 0,
-      cancelledBookings: 0,
-      pendingClearance: 0,
-      withdrawn: 0,
-      usedToHire: 0,
-      cleared: 0,
-    },
+    avgBookingPrice: 0,
+    pendingBookingsPrice: 0,
+    completedBookingsPrice: 0,
+    monthlyEarnings: 0,
+    cancelledBookingsPrice: 0,
+    withdrawn: 0,
+    amountUsedToHire: 0,
     totalEarnings: 0,
     category: "",
     gallery: {
@@ -438,6 +434,22 @@ export async function transferFunds(
   }
 }
 
+export async function updateAmountUsedToHire(
+  bizId: any,
+  amountUsedToHire: any,
+  amount: number
+) {
+  const businessRef = doc(db, "businesses", bizId);
+
+  await amountUsedToHire;
+
+  if (amountUsedToHire) {
+    updateDoc(businessRef, {
+      amountUsedToHire: amountUsedToHire + amount,
+    });
+  }
+}
+
 export async function fundAccount(
   userId: any,
   userBalance: any,
@@ -456,16 +468,126 @@ export async function fundAccount(
 
 export async function withdrawFunds(
   userId: any,
+  bizId: any,
   userBalance: any,
+  withdrawn: any,
   amount: number
 ) {
   const userRef = doc(db, "users", userId);
+  const businessRef = doc(db, "businesses", bizId);
 
   await userBalance;
+  await withdrawn;
 
   if (userBalance) {
     updateDoc(userRef, {
       balance: userBalance - amount,
     });
   }
+
+  if (withdrawn) {
+    updateDoc(businessRef, {
+      withdrawn: withdrawn + amount,
+    });
+  }
 }
+
+export function updateRatingG(bizId: any, rating: any) {
+  const businessRef = doc(db, "businesses", bizId);
+
+  updateDoc(businessRef, {
+    rating,
+  });
+}
+
+export const updateTotalEarnings = async (
+  bizId: string,
+  totalEarnings: any,
+  amount: number
+) => {
+  const businessRef = doc(db, "businesses", bizId);
+
+  await totalEarnings;
+
+  if (totalEarnings) {
+    updateDoc(businessRef, {
+      pendingBookings: totalEarnings + amount,
+    });
+  }
+};
+
+export const updatePendingBooking = async (
+  bizId: any,
+  pendingBookings: any,
+  pendingBookingsPrice: any,
+  amount: any
+) => {
+  const businessRef = doc(db, "businesses", bizId);
+
+  await pendingBookings;
+  await pendingBookingsPrice;
+
+  if (pendingBookings) {
+    updateDoc(businessRef, {
+      pendingBookings: pendingBookings + 1,
+    });
+  }
+
+  if (pendingBookingsPrice) {
+    updateDoc(businessRef, {
+      pendingBookingsPrice: pendingBookingsPrice + amount,
+    });
+  }
+};
+
+const updateCompletedBooking = async (
+  bizId: any,
+  completedBookings: any,
+  completedBookingsPrice: any,
+  amount: any
+) => {
+  const businessRef = doc(db, "businesses", bizId);
+
+  await completedBookings;
+  await completedBookingsPrice;
+
+  if (completedBookings) {
+    updateDoc(businessRef, {
+      completedBookings: completedBookings + 1,
+    });
+  }
+
+  if (completedBookingsPrice) {
+    updateDoc(businessRef, {
+      completedBookingsPrice: completedBookingsPrice + amount,
+    });
+  }
+};
+
+const obj = {
+  name: "",
+  desc: "",
+  userId: "userId",
+  location: "",
+  rating: 0,
+  manager: "",
+  chargeRate: 0,
+  level: "Start-up",
+  halfdonecompletedBookings: 0,
+  donependingBookings: 0,
+  avgBookingPrice: 0,
+  donependingBookingsPrice: 0,
+  halfdonecompletedBookingsPrice: 0,
+  monthlyEarnings: 0,
+  cancelledBookingsPrice: 0,
+  donewithdrawn: 0,
+  doneamountUsedToHire: 0,
+  donetotalEarnings: 0,
+  category: "",
+  gallery: {
+    imgOne: null,
+    imgTwo: null,
+    imgThree: null,
+    imgFour: null,
+  },
+};

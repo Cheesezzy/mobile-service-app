@@ -6,16 +6,11 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import colors from "../config/colors";
+import colors from "../../config/colors";
 import { SvgXml } from "react-native-svg";
-import {
-  facebookicon,
-  googleIcon,
-  hidePassIcon,
-  showPassIcon,
-} from "../../assets/icons/icons";
+import { hidePassIcon, showPassIcon } from "../../../assets/icons/icons";
 import { useSelector } from "react-redux";
-import { handleAllUsers } from "../../provider/allUsersSlice";
+import { handleAllUsers } from "../../../provider/allUsersSlice";
 import { useState } from "react";
 
 const ForgotPwdScreen = ({ navigation }: any) => {

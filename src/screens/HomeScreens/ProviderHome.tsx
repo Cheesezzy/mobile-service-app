@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     padding: 12,
     paddingVertical: 15,
+    paddingBottom: 18,
     margin: 4,
     marginVertical: 20,
     marginHorizontal: 16,

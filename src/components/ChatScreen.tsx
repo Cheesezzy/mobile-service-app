@@ -45,7 +45,7 @@ import * as ImagePicker from "expo-image-picker";
 import { StatusBar } from "expo-status-bar";
 import { uuidv4 } from "@firebase/util";
 import Appointment from "./Appointment";
-import MessagingOptionsPopup from "../MessagingOptionsPopup";
+import MessagingOptionsPopup from "./MessagingOptionsPopup";
 
 export const ChatScreen = ({ navigation, route }: any) => {
   const selector = useSelector(handleUser);
@@ -275,9 +275,14 @@ export const ChatScreen = ({ navigation, route }: any) => {
 
   return (
     <>
-      <View style={[styles.header, {
-        backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
-      }]}>
+      <View
+        style={[
+          styles.header,
+          {
+            backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+          },
+        ]}
+      >
         <TouchableOpacity
           style={styles.profilePicAndName}
           onPress={() =>
@@ -309,8 +314,8 @@ export const ChatScreen = ({ navigation, route }: any) => {
               source={
                 personPic
                   ? {
-                    uri: personPic,
-                  }
+                      uri: personPic,
+                    }
                   : require("../../assets/blankProfilePic.png")
               }
             />
@@ -324,9 +329,16 @@ export const ChatScreen = ({ navigation, route }: any) => {
               alignItems: "center",
             }}
           >
-            <Text style={[styles.headerName, {
-              color: theme ? colors.black : colors.darkTxt,
-            }]}>{name}</Text>
+            <Text
+              style={[
+                styles.headerName,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              {name}
+            </Text>
           </View>
         </TouchableOpacity>
 
@@ -334,7 +346,11 @@ export const ChatScreen = ({ navigation, route }: any) => {
           // @ts-ignore
           onPress={() => setShowDropDown(!showDropDown)}
         >
-          <SvgXml xml={optionIcon(theme ? colors.black : colors.darkTxt)} width="21" height="21" />
+          <SvgXml
+            xml={optionIcon(theme ? colors.black : colors.darkTxt)}
+            width="21"
+            height="21"
+          />
         </TouchableOpacity>
         <Appointment
           isVisible={isVisible}
@@ -405,8 +421,8 @@ export const ChatScreen = ({ navigation, route }: any) => {
               source={
                 personPic
                   ? {
-                    uri: personPic,
-                  }
+                      uri: personPic,
+                    }
                   : require("../../assets/blankProfilePic.png")
               }
             />
@@ -696,11 +712,11 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     backgroundColor: colors.secondary,
-    width: 120,
     position: "absolute",
-    top: 65,
+    top: 60,
     right: 20,
     padding: 20,
+    paddingHorizontal: 25,
     borderRadius: 5,
     zIndex: 150,
   },

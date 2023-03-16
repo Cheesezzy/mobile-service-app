@@ -5,7 +5,7 @@ import Navigation from "../../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
 import { auth, db } from "../../../firebaseConfig";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useAuthState, useUpdatePassword } from "react-firebase-hooks/auth";
 import HeaderTitle from "../../components/HeaderTitle";
 import { collection, doc } from "firebase/firestore";
 import {
@@ -60,8 +60,11 @@ const HomeScreen = ({ navigation }: any) => {
     if (User)
       sendEmailVerification(User).then(() => {
         setEmailVerificationSent(true);
+        User?.reload();
       });
   };
+
+  //useUpdatePassword(auth)
 
   return (
     <>
