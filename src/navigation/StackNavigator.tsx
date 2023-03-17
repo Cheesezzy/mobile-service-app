@@ -46,6 +46,12 @@ import AdsComponent from "../screens/Payments & Wallets/components/AdsComponent"
 import PhoneScreen from "../screens/PhoneScreen";
 import PromotionScreen from "../screens/PromotionScreen";
 import SearchResults from "../screens/Search/SearchResults";
+import JakeScreen from "../screens/JakeScreen";
+import BusinessDetails from "../screens/JakeScreen/BusinessDetails";
+import BusinessCategory from "../screens/JakeScreen/BusinessCategory";
+import BusinessLocation from "../screens/JakeScreen/BusinessLocation";
+import BusinessEnrollment from "../screens/JakeScreen/BusinessEnrollment";
+import KycVerification from "../screens/JakeScreen/KycVerification";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -230,6 +236,57 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="JakeScreen"
+        component={JakeScreen}
+        options={{
+          title: "JakeScreen",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="BusinessDetails"
+        component={BusinessDetails}
+        options={{
+          title: "BusinessDetails",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="BusinessCategory"
+        component={BusinessCategory}
+        options={{
+          title: "BusinessCategory",
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="BusinessLocation"
+        component={BusinessLocation}
+        options={{
+          title: "BusinessLocation",
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="BusinessEnrollment"
+        component={BusinessEnrollment}
+        options={{
+          title: "BusinessEnrollment",
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="KycVerification"
+        component={KycVerification}
+        options={{
+          title: "KycVerification",
+          headerShown: false,
+        }}
+      />
 
       <Stack.Screen
         name="Category"
@@ -320,7 +377,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Add New Card'
+        name="Add New Card"
         component={AddNewCardScreen}
         options={{
           title: "Add New Card",
@@ -336,7 +393,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Transaction details'
+        name="Transaction details"
         component={TransactionDetailsScreen as any}
         options={{
           title: "Transaction details",
@@ -344,7 +401,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Ads Component'
+        name="Ads Component"
         component={AdsComponent as any}
         options={{
           title: "Ads Component",

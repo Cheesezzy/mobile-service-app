@@ -17,7 +17,7 @@ import { handleSwitchTheme } from "../../../provider/themeSlice";
 import ClientHome from "./ClientHome";
 import ProviderHome from "./ProviderHome";
 import { sendEmailVerification } from "firebase/auth";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import EmailNotVerfied from "./components/EmailNotVerified";
 
 const HomeScreen = ({ navigation }: any) => {
