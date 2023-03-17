@@ -47,19 +47,14 @@ import PhoneScreen from "../screens/PhoneScreen";
 import PromotionScreen from "../screens/PromotionScreen";
 import SearchResults from "../screens/Search/SearchResults";
 import JakeScreen from "../screens/BusinessEnrollScreen";
+import Terms from "../screens/policy-and-terms/Terms";
+import Privacy from "../screens/policy-and-terms/Privacy";
+// import BusinessEnrollScreen from "../screens/BusinessEnrollScreen";
 // import BusinessDetails from "../screens/BusinessEnrollScreen/BusinessDetails";
 // import BusinessCategory from "../screens/BusinessEnrollScreen/BusinessCategory";
 // import BusinessLocation from "../screens/BusinessEnrollScreen/BusinessLocation";
 // import BusinessEnrollment from "../screens/BusinessEnrollScreen/BusinessEnrollment";
 // import KycVerification from "../screens/BusinessEnrollScreen/KycVerification";
-import Terms from "../screens/policy-and-terms/Terms";
-import Privacy from "../screens/policy-and-terms/Privacy";
-import BusinessEnrollScreen from "../screens/BusinessEnrollScreen";
-import BusinessDetails from "../screens/BusinessEnrollScreen/BusinessDetails";
-import BusinessCategory from "../screens/BusinessEnrollScreen/BusinessCategory";
-import BusinessLocation from "../screens/BusinessEnrollScreen/BusinessLocation";
-import BusinessEnrollment from "../screens/BusinessEnrollScreen/BusinessEnrollment";
-import KycVerification from "../screens/BusinessEnrollScreen/KycVerification";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -244,7 +239,7 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="BusinessEnrollScreen"
         component={BusinessEnrollScreen}
         options={{
@@ -294,7 +289,7 @@ const StackNavigator = () => {
           title: "KycVerification",
           headerShown: false,
         }}
-      />
+      /> */}
 
       <Stack.Screen
         name="Category"
