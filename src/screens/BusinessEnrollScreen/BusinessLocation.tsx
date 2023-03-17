@@ -13,23 +13,17 @@ import {
   sendLocationIcon,
 } from "../../../assets/icons/icons";
 import colors from "../../config/colors";
-import BusinessConfirmLocation from "../../components/BusinessConfirmLocation";
+import BusinessConfirmLocation from "../../components/businessEnroll/BusinessConfirmLocation";
 
 const BusinessLocation = ({ navigation, route }: any) => {
   const [showLocationPopup, setLocationPopup] = useState(false);
   const [search, setSearch] = useState("");
-  const enrollmentData = route.params.allData;
-  const data = route.params.businessData;
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.mainContainer}>
         {showLocationPopup ? (
-          <BusinessConfirmLocation
-            navigation={navigation}
-            search={search}
-            enrollmentData={enrollmentData}
-            data={data}
-          />
+          <BusinessConfirmLocation navigation={navigation} search={search} />
         ) : (
           <>
             <Text style={styles.header}>Find business location.</Text>

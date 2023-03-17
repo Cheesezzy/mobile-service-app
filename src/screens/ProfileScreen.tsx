@@ -678,7 +678,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   choiceBtn: {
-    width: 70,
+    width: "30%",
     height: 30,
     backgroundColor: colors.primary,
     borderRadius: 5,
@@ -688,7 +688,18 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   choiceBtnWire: {
-    width: 70,
+    width: "30%",
+    height: 30,
+    borderWidth: 1,
+    borderColor: colors.primary,
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    marginTop: 10,
+  },
+  choiceBtnWirez: {
+    width: "30%",
     height: 30,
     borderWidth: 1,
     borderColor: colors.primary,

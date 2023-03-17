@@ -1,14 +1,12 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import React from "react";
-import { ScrollView } from "react-native-gesture-handler";
+import React, { useState } from "react";
 import colors from "../../config/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const JakeScreen = ({ navigation }: any) => {
-  // const { backgroundColor, color, theme } = useTheme();
+const BusinessEnrollScreen = ({ navigation }: any) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.mainContainer}>
+      <View style={[styles.mainContainer]}>
         <Image
           source={require("../../../assets/businessEnroll/rete_logo.png")}
         />
@@ -40,7 +38,7 @@ const JakeScreen = ({ navigation }: any) => {
   );
 };
 
-export default JakeScreen;
+export default BusinessEnrollScreen;
 
 const styles = StyleSheet.create({
   mainContainer: {

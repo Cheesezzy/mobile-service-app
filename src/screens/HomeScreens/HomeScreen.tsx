@@ -5,14 +5,14 @@ import Navigation from "../../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
 import { auth, db } from "../../../firebaseConfig";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useAuthState, useUpdatePassword } from "react-firebase-hooks/auth";
 import HeaderTitle from "../../components/HeaderTitle";
 import { collection, doc } from "firebase/firestore";
 import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
-import SetLocationPopup from "../../components/SetLocationPopup";
+import SetLocationPopup from "../../components/businessEnroll/SetLocationPopup";
 import { handleSwitchTheme } from "../../../provider/themeSlice";
 import ClientHome from "./ClientHome";
 import ProviderHome from "./ProviderHome";
@@ -60,8 +60,11 @@ const HomeScreen = ({ navigation }: any) => {
     if (User)
       sendEmailVerification(User).then(() => {
         setEmailVerificationSent(true);
+        User?.reload();
       });
   };
+
+  //useUpdatePassword(auth)
 
   return (
     <>

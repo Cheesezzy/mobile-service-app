@@ -17,14 +17,16 @@ const VerificationSelectType = ({
       <Text style={styles.header}>Select the type of ID you prefer </Text>
 
       <View>
-        {verificationType.map((item: string) => (
+        {verificationType.map((item: string, index) => (
           <TouchableOpacity
             onPress={() => {
               setVerifyData(item);
               setShowType(false);
             }}
           >
-            <Text style={styles.text}>{item}</Text>
+            <Text key={index} style={styles.text}>
+              {item}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>

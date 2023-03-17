@@ -1,8 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Overlay } from "@rneui/themed";
-import colors from "./config/colors";
-import { blockUser, deleteMessages } from "../api/database";
+import colors from "../config/colors";
+import { blockUser, deleteMessages } from "../../api/database";
 
 interface Props {
   userId: any;

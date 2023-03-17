@@ -12,10 +12,6 @@ import React from "react";
 import colors from "../../config/colors";
 
 const BusinessEnrollment = ({ navigation, route }: any) => {
-  const enrollmentData = route.params.enrollmentData;
-  const data = route.params.data;
-  const selectedData = data.filter((item: any) => item.isSelected);
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -31,9 +27,10 @@ const BusinessEnrollment = ({ navigation, route }: any) => {
                 <Text>Business name</Text>
               </View>
               <TextInput
-                value={enrollmentData.businessName}
                 style={styles.inputs}
                 placeholder="Oha specialist"
+                editable={false}
+                selectTextOnFocus={false}
               />
             </View>
 
@@ -42,9 +39,10 @@ const BusinessEnrollment = ({ navigation, route }: any) => {
                 <Text>Business email</Text>
               </View>
               <TextInput
-                value={enrollmentData.businessEmail}
                 style={styles.inputs}
                 placeholder="Oha specialist"
+                editable={false}
+                selectTextOnFocus={false}
               />
             </View>
 
@@ -54,8 +52,9 @@ const BusinessEnrollment = ({ navigation, route }: any) => {
               </View>
               <TextInput
                 style={styles.inputs}
-                value={enrollmentData.businessContact}
                 placeholder="Oha specialist"
+                editable={false}
+                selectTextOnFocus={false}
               />
             </View>
 
@@ -64,10 +63,7 @@ const BusinessEnrollment = ({ navigation, route }: any) => {
                 <Text>Business category</Text>
               </View>
               <View style={styles.inputContainer}>
-                <TextInput
-                  value={selectedData[0].title}
-                  placeholder="123, Adeyemi drive"
-                />
+                <TextInput placeholder="123, Adeyemi drive" />
                 <Pressable
                   onPress={() => navigation.navigate("BusinessCategory")}
                 >

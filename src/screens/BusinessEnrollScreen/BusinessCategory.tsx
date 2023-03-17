@@ -12,19 +12,10 @@ import React, { useState } from "react";
 import colors from "../../config/colors";
 import { ScrollView } from "react-native-gesture-handler";
 import { category } from "../../../utils/businessCategory";
-import BusinessCategoryList from "../../components/BusinessCategoryList";
+import BusinessCategoryList from "../../components/businessEnroll/BusinessCategoryList";
 
 const BusinessCategory = ({ navigation, route }: any) => {
   const [businessData, setBusinessData] = useState(category);
-
-  const allBusinessData = route.params.businessData;
-  console.log(allBusinessData);
-
-  const allData = {
-    ...allBusinessData,
-  };
-
-  console.log(businessData);
 
   const handleCheckbox = (id: number) => {
     setBusinessData((prevState) =>
@@ -60,12 +51,7 @@ const BusinessCategory = ({ navigation, route }: any) => {
         />
 
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("BusinessLocation", {
-              allData,
-              businessData,
-            })
-          }
+          onPress={() => navigation.navigate("BusinessLocation")}
         >
           <View style={styles.btn}>
             <Text style={styles.btnText}>Proceed</Text>

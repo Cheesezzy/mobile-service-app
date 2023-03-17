@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
-import colors from "../config/colors";
+import colors from "../../config/colors";
 
 const BusinessConfirmLocation = ({
   navigation,
@@ -16,13 +16,11 @@ const BusinessConfirmLocation = ({
         your details.{" "}
       </Text>
 
-      <Text style={styles.location}>{search}</Text>
+      <Text style={styles.location}>123,adeyemi drive </Text>
 
       <View>
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("BusinessEnrollment", { enrollmentData, data })
-          }
+          onPress={() => navigation.navigate("BusinessEnrollment")}
         >
           <View style={styles.btn}>
             <Text style={styles.btnText}>Confirm</Text>

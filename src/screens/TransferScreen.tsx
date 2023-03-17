@@ -18,7 +18,12 @@ import { useDocumentData } from "react-firebase-hooks/firestore";
 import { addCommas, checkRole } from "../../api/hooks/generalHooks";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../provider/themeSlice";
-import { transferFunds } from "../../api/database";
+import {
+  transferFunds,
+  updateAmountUsedToHire,
+  updatePendingBooking,
+  updateTotalEarnings,
+} from "../../api/database";
 
 const buttonSize = Dimensions.get("window").width * 0.18;
 
@@ -45,11 +50,14 @@ const TransferScreen = ({ route, navigation }: any) => {
 
   const [user] = useDocumentData(userRef);
 
+  const senderBusinessRef = user?.bizId && doc(db, "businesses", user?.bizId);
+
+  const [senderBusiness] = useDocumentData(senderBusinessRef);
+
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
 
   const handleTransfer = () => {
-    console.log("clicked");
     if (
       User?.uid &&
       business.userId &&
@@ -64,6 +72,24 @@ const TransferScreen = ({ route, navigation }: any) => {
         businessUser.balance,
         +displayAmount
       );
+      updateTotalEarnings(
+        business.userId,
+        +business.totalEarnings,
+        +displayAmount
+      );
+      updatePendingBooking(
+        business.userId,
+        +business.pendingBookings,
+        +business.pendingBookings,
+        +displayAmount
+      );
+      if (senderBusiness) {
+        updateAmountUsedToHire(
+          user?.bizId,
+          senderBusiness.amountUsedToHire,
+          +displayAmount
+        );
+      }
     }
   };
 

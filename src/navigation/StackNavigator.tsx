@@ -46,12 +46,20 @@ import AdsComponent from "../screens/Payments & Wallets/components/AdsComponent"
 import PhoneScreen from "../screens/PhoneScreen";
 import PromotionScreen from "../screens/PromotionScreen";
 import SearchResults from "../screens/Search/SearchResults";
-import JakeScreen from "../screens/JakeScreen";
-import BusinessDetails from "../screens/JakeScreen/BusinessDetails";
-import BusinessCategory from "../screens/JakeScreen/BusinessCategory";
-import BusinessLocation from "../screens/JakeScreen/BusinessLocation";
-import BusinessEnrollment from "../screens/JakeScreen/BusinessEnrollment";
-import KycVerification from "../screens/JakeScreen/KycVerification";
+import JakeScreen from "../screens/BusinessEnrollScreen";
+// import BusinessDetails from "../screens/BusinessEnrollScreen/BusinessDetails";
+// import BusinessCategory from "../screens/BusinessEnrollScreen/BusinessCategory";
+// import BusinessLocation from "../screens/BusinessEnrollScreen/BusinessLocation";
+// import BusinessEnrollment from "../screens/BusinessEnrollScreen/BusinessEnrollment";
+// import KycVerification from "../screens/BusinessEnrollScreen/KycVerification";
+import Terms from "../screens/policy-and-terms/Terms";
+import Privacy from "../screens/policy-and-terms/Privacy";
+import BusinessEnrollScreen from "../screens/BusinessEnrollScreen";
+import BusinessDetails from "../screens/BusinessEnrollScreen/BusinessDetails";
+import BusinessCategory from "../screens/BusinessEnrollScreen/BusinessCategory";
+import BusinessLocation from "../screens/BusinessEnrollScreen/BusinessLocation";
+import BusinessEnrollment from "../screens/BusinessEnrollScreen/BusinessEnrollment";
+import KycVerification from "../screens/BusinessEnrollScreen/KycVerification";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -237,10 +245,10 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="JakeScreen"
-        component={JakeScreen}
+        name="BusinessEnrollScreen"
+        component={BusinessEnrollScreen}
         options={{
-          title: "JakeScreen",
+          title: "BusinessEnrollScreen",
           headerShown: false,
         }}
       />
@@ -402,7 +410,23 @@ const StackNavigator = () => {
       />
       <Stack.Screen
         name="Ads Component"
-        component={AdsComponent as any}
+        component={AdsComponent}
+        options={{
+          title: "Ads Component",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Terms"
+        component={Terms}
+        options={{
+          title: "Ads Component",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Privacy-Policy"
+        component={Privacy}
         options={{
           title: "Ads Component",
           headerShown: false,

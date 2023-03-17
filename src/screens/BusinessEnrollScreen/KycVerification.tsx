@@ -9,7 +9,7 @@ import {
 import React, { useState } from "react";
 import { SvgXml } from "react-native-svg";
 import { arrowIcon, arrowLeftIcon } from "../../../assets/icons/icons";
-import VerificationSelectType from "../../components/VerificationSelectType";
+import VerificationSelectType from "../../components/businessEnroll/VerificationSelectType";
 
 const verificationType = [
   "nin",
