@@ -91,66 +91,55 @@ const SettingsScreen = ({ navigation }: any) => {
               />
             </View>
           </View>
-          <View style={styles.settingsItem}>
-            <Text
-              style={[
-                styles.settingsItemTxt,
-                {
-                  color: theme ? colors.black : colors.darkTxt,
-                },
-              ]}
-            >
-              Security
-            </Text>
-            <View style={styles.goTo}>
-              <SvgXml
-                style={styles.icon}
-                xml={frontIcon()}
-                width="14"
-                height="14"
-              />
+
+          <TouchableOpacity onPress={() => navigation.navigate("Terms")}>
+            <View style={styles.settingsItem}>
+              <Text
+                style={[
+                  styles.settingsItemTxt,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                Terms of service
+              </Text>
+              <View style={styles.goTo}>
+                <SvgXml
+                  style={styles.icon}
+                  xml={frontIcon()}
+                  width="14"
+                  height="14"
+                />
+              </View>
             </View>
-          </View>
-          <View style={styles.settingsItem}>
-            <Text
-              style={[
-                styles.settingsItemTxt,
-                {
-                  color: theme ? colors.black : colors.darkTxt,
-                },
-              ]}
-            >
-              Terms of service
-            </Text>
-            <View style={styles.goTo}>
-              <SvgXml
-                style={styles.icon}
-                xml={frontIcon()}
-                width="14"
-                height="14"
-              />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Privacy-Policy")}
+          >
+            <View style={styles.settingsItem}>
+              <Text
+                style={[
+                  styles.settingsItemTxt,
+                  {
+                    color: theme ? colors.black : colors.darkTxt,
+                  },
+                ]}
+              >
+                Privacy policy
+              </Text>
+              <View style={styles.goTo}>
+                <SvgXml
+                  style={styles.icon}
+                  xml={frontIcon()}
+                  width="14"
+                  height="14"
+                />
+              </View>
             </View>
-          </View>
-          <View style={styles.settingsItem}>
-            <Text
-              style={[
-                styles.settingsItemTxt,
-                {
-                  color: theme ? colors.black : colors.darkTxt,
-                },
-              ]}
-            >
-              Privacy policy
-            </Text>
-            <View style={styles.goTo}>
-              <SvgXml
-                style={styles.icon}
-                xml={frontIcon()}
-                width="14"
-                height="14"
-              />
-            </View>
-          </View>
+          </TouchableOpacity>
+
           <View
             style={[
               styles.settingsItem,

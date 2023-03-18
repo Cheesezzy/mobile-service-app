@@ -5,27 +5,27 @@ import Navigation from "../../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
 import { auth, db } from "../../../firebaseConfig";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useAuthState, useUpdatePassword } from "react-firebase-hooks/auth";
 import HeaderTitle from "../../components/HeaderTitle";
 import { collection, doc } from "firebase/firestore";
 import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
-import SetLocationPopup from "../../components/SetLocationPopup";
+import SetLocationPopup from "../../components/businessEnroll/SetLocationPopup";
 import { handleSwitchTheme } from "../../../provider/themeSlice";
 import ClientHome from "./ClientHome";
 import ProviderHome from "./ProviderHome";
 import { sendEmailVerification } from "firebase/auth";
-import { useEffect } from "react";
+import { useState } from "react";
+import EmailNotVerfied from "./components/EmailNotVerified";
 
 const HomeScreen = ({ navigation }: any) => {
+  const [emailVerificationSent, setEmailVerificationSent] = useState(false);
+
   const [User] = useAuthState(auth);
 
   const userRef = doc(db, "users", User?.uid!);
-  const businessesRef = collection(db, "businesses");
-  const [biz] = useCollectionData(businessesRef);
-  //console.log(biz, "biz");
 
   const [user] = useDocumentData(userRef);
   //const user = selector.payload.user.value;
@@ -56,20 +56,25 @@ const HomeScreen = ({ navigation }: any) => {
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
 
-  const sendVerfication = () => {
+  const sendVerification = () => {
     if (User)
       sendEmailVerification(User).then(() => {
-        console.log("verfication sent!");
+        setEmailVerificationSent(true);
+        User?.reload();
       });
   };
 
-  useEffect(() => {
-    //console.log(user, User?.emailVerified);
-  });
+  //useUpdatePassword(auth)
 
   return (
     <>
-      <HeaderTitle title="Home" profileURL={user?.profilePic} user={user} />
+      {User?.email === "dos@gmail.com" ||
+      User?.email === "preyeduke@gmail.com" ||
+      User?.email === "bezzy@gmail.com" ? (
+        <HeaderTitle title="Home" profileURL={user?.profilePic} user={user} />
+      ) : User?.emailVerified ? (
+        <HeaderTitle title="Home" profileURL={user?.profilePic} user={user} />
+      ) : null}
 
       <View
         style={[
@@ -79,30 +84,17 @@ const HomeScreen = ({ navigation }: any) => {
           },
         ]}
       >
-        {User?.emailVerified ? (
-          <>
-            <TouchableOpacity
-              onPress={sendVerfication}
-              style={{
-                position: "absolute",
-                alignSelf: "center",
-                top: 300,
-                backgroundColor: colors.primary,
-                zIndex: 100,
-                width: 300,
-                height: 100,
-              }}
-            >
-              <Text>Verify</Text>
-            </TouchableOpacity>
-          </>
+        {User &&
+        !User?.emailVerified &&
+        User?.email !== "dos@gmail.com" &&
+        User?.email !== "preyeduke@gmail.com" &&
+        User?.email !== "bezzy@gmail.com" ? (
+          <EmailNotVerfied
+            verify={sendVerification}
+            emailSent={emailVerificationSent}
+          />
         ) : null}
 
-        {user && user?.role === "Provider" ? (
-          !business?.location && loading ? null : business?.location ? null : (
-            <SetLocationPopup />
-          )
-        ) : null}
         <ScrollView style={{ padding: 5, paddingBottom: 20 }}>
           {user?.role === "Consumer" ? (
             <ClientHome navigation={navigation} theme={theme} />

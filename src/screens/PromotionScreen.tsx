@@ -1,285 +1,76 @@
-import { View, Text, StyleSheet } from "react-native";
-import React from "react";
+import React, { useState } from "react";
+import { View, StyleSheet, Text, ScrollView, Pressable } from "react-native";
+import Advanced from "./Payments & Wallets/components/Ads/Advanced";
+import Basic from "./Payments & Wallets/components/Ads/Basic";
+import NavigationBar from "./Payments & Wallets/components/NavigationBar";
+import Premium from "./Payments & Wallets/components/Ads/Premium";
+import colors from "../config/colors";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../provider/themeSlice";
-import colors from "../config/colors";
-import { StatusBar } from "expo-status-bar";
-import HeaderTitle from "../components/HeaderTitle";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { SvgXml } from "react-native-svg";
-import { frontIcon, supportIcon } from "../../assets/icons/icons";
 
-const PromotionScreen = () => {
+const PromotionScreen = ({ navigation }: any) => {
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
 
   return (
     <>
-      <HeaderTitle title="Profile" profileURL="" user="" />
-
       <View
         style={[
-          styles.container,
+          styles.nav,
           {
             backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
           },
         ]}
       >
-        <Text style={styles.headerTxt}>
-          Select the promotion package that best suits your business and goes
-          along with your business goals
-        </Text>
-        <TouchableOpacity
-          activeOpacity={0.6}
-          // @ts-ignore
-          onPress={() => navigation.navigate("Support")}
-        >
-          <View style={styles.itemContainer}>
-            <View style={styles.iconFlex}>
-              <View style={styles.iconCon}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={supportIcon()}
-                  width="16"
-                  height="16"
-                />
-              </View>
-
-              <View style={styles.menuItem}>
-                <Text
-                  style={[
-                    styles.menuItemBig,
-                    {
-                      color: theme ? colors.black : colors.darkTxt,
-                    },
-                  ]}
-                >
-                  Silver Package
-                </Text>
-                <Text
-                  style={[
-                    styles.menuItemSm,
-                    {
-                      color: theme ? colors.greyMain : colors.darkTxt,
-                    },
-                  ]}
-                >
-                  Get support and send feedback
-                </Text>
-              </View>
-            </View>
-            <View>
-              <SvgXml
-                style={styles.icon}
-                xml={frontIcon()}
-                width="16"
-                height="16"
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          activeOpacity={0.6}
-          // @ts-ignore
-          onPress={() => navigation.navigate("Support")}
-        >
-          <View style={styles.itemContainer}>
-            <View style={styles.iconFlex}>
-              <View style={styles.iconCon}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={supportIcon()}
-                  width="16"
-                  height="16"
-                />
-              </View>
-              <View style={styles.menuItem}>
-                <Text
-                  style={[
-                    styles.menuItemBig,
-                    {
-                      color: theme ? colors.black : colors.darkTxt,
-                    },
-                  ]}
-                >
-                  Gold Package
-                </Text>
-                <Text
-                  style={[
-                    styles.menuItemSm,
-                    {
-                      color: theme ? colors.greyMain : colors.darkTxt,
-                    },
-                  ]}
-                >
-                  Get support and send feedback
-                </Text>
-              </View>
-            </View>
-            <View>
-              <SvgXml
-                style={styles.icon}
-                xml={frontIcon()}
-                width="16"
-                height="16"
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          activeOpacity={0.6}
-          // @ts-ignore
-          onPress={() => navigation.navigate("Support")}
-        >
-          <View style={styles.itemContainer}>
-            <View style={styles.iconFlex}>
-              <View style={styles.iconCon}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={supportIcon()}
-                  width="16"
-                  height="16"
-                />
-              </View>
-              <View style={styles.menuItem}>
-                <Text
-                  style={[
-                    styles.menuItemBig,
-                    {
-                      color: theme ? colors.black : colors.darkTxt,
-                    },
-                  ]}
-                >
-                  Platinum Package
-                </Text>
-                <Text
-                  style={[
-                    styles.menuItemSm,
-                    {
-                      color: theme ? colors.greyMain : colors.darkTxt,
-                    },
-                  ]}
-                >
-                  Get support and send feedback
-                </Text>
-              </View>
-            </View>
-            <View>
-              <SvgXml
-                style={styles.icon}
-                xml={frontIcon()}
-                width="16"
-                height="16"
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          activeOpacity={0.6}
-          // @ts-ignore
-          onPress={() => navigation.navigate("Support")}
-        >
-          <View style={styles.itemContainer}>
-            <View style={styles.iconFlex}>
-              <View style={styles.iconCon}>
-                <SvgXml
-                  style={styles.icon}
-                  xml={supportIcon()}
-                  width="16"
-                  height="16"
-                />
-              </View>
-              <View style={styles.menuItem}>
-                <Text
-                  style={[
-                    styles.menuItemBig,
-                    {
-                      color: theme ? colors.black : colors.darkTxt,
-                    },
-                  ]}
-                >
-                  About Promotions
-                </Text>
-                <Text
-                  style={[
-                    styles.menuItemSm,
-                    {
-                      color: theme ? colors.greyMain : colors.darkTxt,
-                    },
-                  ]}
-                >
-                  Get support and send feedback
-                </Text>
-              </View>
-            </View>
-            <View>
-              <SvgXml
-                style={styles.icon}
-                xml={frontIcon()}
-                width="16"
-                height="16"
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
-        <StatusBar style={theme ? "dark" : "light"} />
+        <NavigationBar title="Promotions" />
       </View>
+
+      <ScrollView
+        style={{
+          backgroundColor: theme ? colors.secondarySmoke : colors.black,
+          flex: 1,
+        }}
+      >
+        <View style={[styles.container]}>
+          <Text
+            style={[
+              styles.text,
+              {
+                color: theme ? colors.black : colors.darkTxt,
+              },
+            ]}
+          >
+            Select the promotion package that suits your business and goes along
+            with your business goals
+          </Text>
+
+          <Basic />
+
+          <Advanced onPress={() => navigation.navigate("Ads Component")} />
+
+          <Premium />
+        </View>
+      </ScrollView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 15,
-  },
-  headerTxt: {
-    fontFamily: "PrimaryRegular",
-    color: colors.greyMain,
-    marginBottom: 20,
-  },
-  itemContainer: {
-    flexDirection: "row",
-    backgroundColor: colors.secondary,
-    justifyContent: "space-between",
+    paddingTop: 10,
     alignItems: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-    marginBottom: 10,
-    borderRadius: 10,
+    paddingHorizontal: 20,
   },
-  iconFlex: {
-    flexDirection: "row",
-  },
-  menuItem: {
-    position: "relative",
-  },
-  menuItemBig: {
-    fontFamily: "PrimaryRegular",
-    fontSize: 14,
-    fontWeight: "600",
-  },
-  menuItemSm: {
-    fontFamily: "PrimaryRegular",
-    fontSize: 10.5,
-    fontWeight: "600",
-    color: colors.greyMid,
-  },
-  iconCon: {
-    width: 34,
-    height: 34,
-    padding: 10,
-    marginRight: 15,
-    borderRadius: 34,
-    alignItems: "center",
+  nav: {
     justifyContent: "center",
-    backgroundColor: colors.greyLight,
   },
-  icon: {
-    alignSelf: "center",
+  text: {
+    color: colors.greyMidDark,
+    width: "100%",
+    height: 48,
+    fontWeight: "400",
+    fontSize: 14,
+    lineHeight: 20,
   },
 });
 

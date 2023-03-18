@@ -1,6 +1,8 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import colors from "../config/colors";
 import { Avatar } from "@rneui/base";
+import { handleSwitchTheme } from "../../provider/themeSlice";
+import { useSelector } from "react-redux";
 
 interface Props {
   name: string;
@@ -8,8 +10,12 @@ interface Props {
 }
 
 const RecentOrder = ({ name, minutes }: Props) => {
+  const selector: any = useSelector(handleSwitchTheme);
+  const theme = selector.payload.theme.value;
   return (
-    <View style={styles.orderContainer}>
+    <View style={[styles.orderContainer, {
+      backgroundColor: theme ? colors.secondarySmoke : colors.black,
+    }]}>
       <View style={styles.order}>
         <Avatar
           size={31}
@@ -18,12 +24,39 @@ const RecentOrder = ({ name, minutes }: Props) => {
         />
 
         <View style={styles.orderSub}>
-          <Text style={styles.orderName}>{name}</Text>
-          <Text style={styles.orderMinutes}>{minutes}</Text>
+          <Text
+            style={[
+              styles.orderName,
+              {
+                color: theme ? colors.black : colors.darkTxt,
+              },
+            ]}
+          >
+            {name}
+          </Text>
+          <Text
+            style={[
+              styles.orderMinutes,
+              {
+                color: theme ? colors.black : colors.darkTxt,
+              },
+            ]}
+          >
+            {minutes}
+          </Text>
         </View>
       </View>
 
-      <Text style={styles.orderPrice}>{"\u20A6"}7500</Text>
+      <Text
+        style={[
+          styles.orderPrice,
+          {
+            color: theme ? colors.black : colors.darkTxt,
+          },
+        ]}
+      >
+        {"\u20A6"}7500
+      </Text>
     </View>
   );
 };
@@ -46,13 +79,11 @@ const styles = StyleSheet.create({
   },
 
   orderName: {
-    color: colors.greyMidDark,
     fontFamily: "PrimarySemiBold",
     fontSize: 16,
   },
   orderMinutes: {
     fontFamily: "PrimarySemiBold",
-    color: colors.greyMain,
     fontSize: 12,
     marginTop: 2,
   },

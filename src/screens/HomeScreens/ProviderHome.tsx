@@ -38,8 +38,24 @@ const ProviderHome = ({ navigation, theme, business }: Props) => {
               <SvgXml xml={shieldCheck()} width="21" height="21" />
             </View>
 
-            <Text style={styles.completedTxt}>Completed Orders</Text>
-            <Text style={styles.completedVal}>
+            <Text
+              style={[
+                styles.completedTxt,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              Completed Orders
+            </Text>
+            <Text
+              style={[
+                styles.completedVal,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
               {business && business.completedBookings
                 ? business.completedBookings
                 : 0}
@@ -57,8 +73,24 @@ const ProviderHome = ({ navigation, theme, business }: Props) => {
               <SvgXml xml={shopping()} width="21" height="21" />
             </View>
 
-            <Text style={styles.pendingTxt}>Pending Orders</Text>
-            <Text style={styles.pendingVal}>
+            <Text
+              style={[
+                styles.pendingTxt,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              Pending Orders
+            </Text>
+            <Text
+              style={[
+                styles.pendingVal,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
               {business && business.pendingBookings
                 ? business.pendingBookings
                 : 0}
@@ -103,9 +135,10 @@ export default ProviderHome;
 const styles = StyleSheet.create({
   pricing: {
     flex: 1,
-    height: 120,
     backgroundColor: colors.primary,
     padding: 12,
+    paddingVertical: 15,
+    paddingBottom: 18,
     margin: 4,
     marginVertical: 20,
     marginHorizontal: 16,

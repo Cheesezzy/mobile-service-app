@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         alignItems:"center",
         justifyContent:"center",
         borderRadius: 8,
-        width: 340,
+        width: "100%",
         height: 56,
     },
     textBtn:{

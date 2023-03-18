@@ -80,7 +80,16 @@ const EarningsScreen = () => {
         </View>
 
         <View style={styles.analytics}>
-          <Text style={styles.analyticsHead}>Analytics</Text>
+          <Text
+            style={[
+              styles.analyticsHead,
+              {
+                color: theme ? colors.black : colors.darkTxt,
+              },
+            ]}
+          >
+            Analytics
+          </Text>
           <View style={styles.analyticsCon}>
             <View style={[styles.analyticsItem, styles.firstStat]}>
               <Text
@@ -91,7 +100,7 @@ const EarningsScreen = () => {
                   },
                 ]}
               >
-                Earnings in December
+                Earnings this month
               </Text>
 
               <Text
@@ -102,7 +111,7 @@ const EarningsScreen = () => {
                   },
                 ]}
               >
-                ₦{business?.earnings?.monthlyEarnings}
+                ₦{business?.monthlyEarnings}
               </Text>
             </View>
             <View style={styles.analyticsItem}>
@@ -125,7 +134,7 @@ const EarningsScreen = () => {
                   },
                 ]}
               >
-                ₦{business?.earnings?.avgBookingPrice}
+                ₦{business?.avgBookingPrice}
               </Text>
             </View>
             <View style={styles.analyticsItem}>
@@ -137,7 +146,7 @@ const EarningsScreen = () => {
                   },
                 ]}
               >
-                Active bookings
+                Pending bookings
               </Text>
 
               <Text
@@ -148,7 +157,7 @@ const EarningsScreen = () => {
                   },
                 ]}
               >
-                ₦{business?.earnings?.activeBookings}
+                ₦{business?.pendingBookingsPrice}
               </Text>
             </View>
             <View style={styles.analyticsItem}>
@@ -194,14 +203,23 @@ const EarningsScreen = () => {
                   },
                 ]}
               >
-                ₦{business?.earnings?.completedBookings}
+                ₦{business?.completedBookings}
               </Text>
             </View>
           </View>
         </View>
 
         <View style={styles.revenues}>
-          <Text style={styles.revenuesHead}>Revenues</Text>
+          <Text
+            style={[
+              styles.revenuesHead,
+              {
+                color: theme ? colors.black : colors.darkTxt,
+              },
+            ]}
+          >
+            Revenues
+          </Text>
           <View style={styles.revenuesCon}>
             <View style={[styles.revenuesItem, styles.firstStat]}>
               <Text
@@ -223,30 +241,7 @@ const EarningsScreen = () => {
                   },
                 ]}
               >
-                ₦{business?.earnings?.cancelledBookings}
-              </Text>
-            </View>
-            <View style={styles.revenuesItem}>
-              <Text
-                style={[
-                  styles.revenuesItemTxtA,
-                  {
-                    color: theme ? colors.black : colors.darkTxt,
-                  },
-                ]}
-              >
-                Pending clearance
-              </Text>
-
-              <Text
-                style={[
-                  styles.revenuesItemTxtB,
-                  {
-                    color: theme ? colors.black : colors.darkTxt,
-                  },
-                ]}
-              >
-                ₦{business?.earnings?.pendingClearance}
+                ₦{business?.cancelledBookingsPrice}
               </Text>
             </View>
             <View style={styles.revenuesItem}>
@@ -269,7 +264,7 @@ const EarningsScreen = () => {
                   },
                 ]}
               >
-                ₦{business?.earnings?.withdrawn}
+                ₦{business?.withdrawn}
               </Text>
             </View>
             <View style={styles.revenuesItem}>
@@ -292,7 +287,7 @@ const EarningsScreen = () => {
                   },
                 ]}
               >
-                ₦{business?.earnings?.usedToHire}
+                ₦{business?.amountUsedToHire}
               </Text>
             </View>
             <View style={styles.revenuesItem}>
@@ -315,7 +310,7 @@ const EarningsScreen = () => {
                   },
                 ]}
               >
-                ₦{business?.earnings?.cleared}
+                ₦{business?.completedBookingsPrice}
               </Text>
             </View>
           </View>

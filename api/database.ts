@@ -4,11 +4,16 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
+  getDocs,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { AppointmentDate } from "../src/components/Appointment";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 export function clearAllUsers() {
   const userRef = doc(db, "users/");
@@ -30,7 +35,6 @@ export function createUser(
   email: string | null,
   password: string | null,
   description: string | null,
-  favorites: any,
   joined: any,
   messages: any,
   onBoard: boolean,
@@ -41,13 +45,13 @@ export function createUser(
 ) {
   const userRef = doc(db, "users", userId);
   setDoc(userRef, {
+    id: userId,
     name,
     role,
     business,
     email,
     password,
     description,
-    favorites,
     joined,
     messages,
     onBoard,
@@ -201,6 +205,14 @@ export function updateUserRole(userId: any, role: string) {
   });
 }
 
+export function updateUserPassword(userId: any, password: string) {
+  const userPasswordRef = doc(db, "users", userId);
+
+  updateDoc(userPasswordRef, {
+    password,
+  });
+}
+
 // add business to database
 export function addBusiness(userId: any) {
   const businessRef = collection(db, "businesses");
@@ -217,17 +229,13 @@ export function addBusiness(userId: any) {
     level: "Start-up",
     completedBookings: 0,
     pendingBookings: 0,
-    earnings: {
-      avgBookingPrice: 0,
-      activeBookings: 0,
-      completedBookings: 0,
-      monthlyEarnings: 0,
-      cancelledBookings: 0,
-      pendingClearance: 0,
-      withdrawn: 0,
-      usedToHire: 0,
-      cleared: 0,
-    },
+    avgBookingPrice: 0,
+    pendingBookingsPrice: 0,
+    completedBookingsPrice: 0,
+    monthlyEarnings: 0,
+    cancelledBookingsPrice: 0,
+    withdrawn: 0,
+    amountUsedToHire: 0,
     totalEarnings: 0,
     category: "",
     gallery: {
@@ -287,6 +295,18 @@ export function updateLocation(bizId: any, lat: any, lng: any) {
   });
 }
 
+// specifically for the search functionality
+export function updateSearchLocation(userId: any, lat: any, lng: any) {
+  const businessRef = doc(db, "users", userId);
+
+  updateDoc(businessRef, {
+    searchLocation: {
+      lat,
+      lng,
+    },
+  });
+}
+
 export function updateCategory(bizId: any, category: any) {
   const businessRef = doc(db, "businesses", bizId);
 
@@ -300,6 +320,31 @@ export function updateRating(bizId: any, rating: any) {
 
   updateDoc(businessRef, {
     rating,
+  });
+}
+
+export function updateRatingsAndReviews(
+  userId: any,
+  name: any,
+  date: any,
+  bizId: any,
+  rating: any,
+  review: any
+) {
+  const ratingsAndReviewsRef = doc(
+    db,
+    "businesses",
+    bizId,
+    "ratingsAndReviews",
+    userId
+  );
+
+  updateDoc(ratingsAndReviewsRef, {
+    id: userId,
+    name,
+    date,
+    rating,
+    review,
   });
 }
 
@@ -318,21 +363,23 @@ export function addAppointment(
   date: AppointmentDate,
   location: any
 ) {
-  const businessRef = doc(db, "businesses", bizId, "appointment", name);
+  const appointmentsRef = doc(db, "businesses", bizId, "appointments", name);
 
-  setDoc(businessRef, {
+  setDoc(appointmentsRef, {
     name,
     time,
     date,
     location,
+    completed: false,
   });
 }
 
-export function blockUser(userId: any, email: string) {
+export function blockUser(userId: any, name: string, email: string) {
   const blocklistRef = collection(db, "users/" + `${userId}/blocklist`);
 
   addDoc(blocklistRef, {
     id: "",
+    name,
     email,
   }).then((blockedUser) => {
     const blockedUserRef = doc(
@@ -345,6 +392,22 @@ export function blockUser(userId: any, email: string) {
 
     updateDoc(blockedUserRef, {
       id: blockedUser.id,
+    });
+  });
+}
+
+export function unBlockUser(userId: any, email: string) {
+  const blocklistRef = collection(db, "users/" + `${userId}/blocklist`);
+
+  const blocklistQ = query(blocklistRef, where("email", "==", email));
+
+  getDocs(blocklistQ).then((blockedUsers) => {
+    blockedUsers.forEach((blockedUser) => {
+      const blocklistRef = doc(
+        db,
+        "users/" + `${userId}/blocklist/${blockedUser.id}`
+      );
+      deleteDoc(blocklistRef);
     });
   });
 }
@@ -404,6 +467,22 @@ export async function transferFunds(
   }
 }
 
+export async function updateAmountUsedToHire(
+  bizId: any,
+  amountUsedToHire: any,
+  amount: number
+) {
+  const businessRef = doc(db, "businesses", bizId);
+
+  await amountUsedToHire;
+
+  if (amountUsedToHire) {
+    updateDoc(businessRef, {
+      amountUsedToHire: amountUsedToHire + amount,
+    });
+  }
+}
+
 export async function fundAccount(
   userId: any,
   userBalance: any,
@@ -420,53 +499,128 @@ export async function fundAccount(
   }
 }
 
-// destination specific functions (update)
-export function updateUser(userId: any, name: string, bio: string) {
-  const userRef = doc(db, "users/" + `${userId}`);
+export async function withdrawFunds(
+  userId: any,
+  bizId: any,
+  userBalance: any,
+  withdrawn: any,
+  amount: number
+) {
+  const userRef = doc(db, "users", userId);
+  const businessRef = doc(db, "businesses", bizId);
 
-  {
-    /*if (name.length > 0) {
-    update(userRef, {
-      name,
+  await userBalance;
+  await withdrawn;
+
+  if (userBalance) {
+    updateDoc(userRef, {
+      balance: userBalance - amount,
     });
   }
 
-  if (bio.length > 0) {
-    update(userRef, {
-      bio,
+  if (withdrawn) {
+    updateDoc(businessRef, {
+      withdrawn: withdrawn + amount,
     });
-  }*/
   }
 }
 
-export function changeDP(userId: any, imageUrl: string) {
-  const userRef = doc(db, "users/" + `${userId}/`);
+export function updateRatingG(bizId: any, rating: any) {
+  const businessRef = doc(db, "businesses", bizId);
 
-  {
-    /*if (imageUrl !== "") {
-    update(userRef, {
-      profile_pic: imageUrl,
+  updateDoc(businessRef, {
+    rating,
+  });
+}
+
+export const updateTotalEarnings = async (
+  bizId: string,
+  totalEarnings: any,
+  amount: number
+) => {
+  const businessRef = doc(db, "businesses", bizId);
+
+  await totalEarnings;
+
+  if (totalEarnings) {
+    updateDoc(businessRef, {
+      pendingBookings: totalEarnings + amount,
     });
-  }*/
   }
-}
+};
 
-export function refreshCount(userId: any) {
-  const userRef = doc(db, "users/" + `${userId}/`);
+export const updatePendingBooking = async (
+  bizId: any,
+  pendingBookings: any,
+  pendingBookingsPrice: any,
+  amount: any
+) => {
+  const businessRef = doc(db, "businesses", bizId);
 
-  {
-    /*update(userRef, {
-    notifCount: 0,
-  });*/
+  await pendingBookings;
+  await pendingBookingsPrice;
+
+  if (pendingBookings) {
+    updateDoc(businessRef, {
+      pendingBookings: pendingBookings + 1,
+    });
   }
-}
 
-export function switchBg(userId: any, background: any) {
-  const userRef = doc(db, "users/" + `${userId}/`);
-
-  {
-    /*update(userRef, {
-    background,
-  });*/
+  if (pendingBookingsPrice) {
+    updateDoc(businessRef, {
+      pendingBookingsPrice: pendingBookingsPrice + amount,
+    });
   }
-}
+};
+
+const updateCompletedBooking = async (
+  bizId: any,
+  completedBookings: any,
+  completedBookingsPrice: any,
+  amount: any
+) => {
+  const businessRef = doc(db, "businesses", bizId);
+
+  await completedBookings;
+  await completedBookingsPrice;
+
+  if (completedBookings) {
+    updateDoc(businessRef, {
+      completedBookings: completedBookings + 1,
+    });
+  }
+
+  if (completedBookingsPrice) {
+    updateDoc(businessRef, {
+      completedBookingsPrice: completedBookingsPrice + amount,
+    });
+  }
+};
+
+const obj = {
+  name: "",
+  desc: "",
+  userId: "userId",
+  location: "",
+  rating: 0,
+  manager: "",
+  chargeRate: 0,
+  level: "Start-up",
+  halfdonecompletedBookings: 0,
+  donependingBookings: 0,
+  avgBookingPrice: 0,
+  donependingBookingsPrice: 0,
+  halfdonecompletedBookingsPrice: 0,
+  monthlyEarnings: 0,
+  cancelledBookingsPrice: 0,
+  donewithdrawn: 0,
+  doneamountUsedToHire: 0,
+  donetotalEarnings: 0,
+  category: "",
+  gallery: {
+    imgOne: null,
+    imgTwo: null,
+    imgThree: null,
+    imgFour: null,
+  },
+};

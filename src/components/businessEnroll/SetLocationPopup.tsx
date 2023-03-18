@@ -6,14 +6,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
-import colors from "../config/colors";
+import colors from "../../config/colors";
 import { SvgXml } from "react-native-svg";
-import { location } from "../../assets/svgs/svgs";
+import { location } from "../../../assets/svgs/svgs";
 import { Dialog } from "@rneui/themed";
 import * as Location from "expo-location";
-import { updateLocation } from "../../api/database";
+import { updateLocation } from "../../../api/database";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db } from "../../firebaseConfig";
+import { auth, db } from "../../../firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 import { collection, doc } from "firebase/firestore";
 import {
@@ -21,7 +21,7 @@ import {
   useDocumentData,
 } from "react-firebase-hooks/firestore";
 import { useSelector } from "react-redux";
-import { handleSwitchTheme } from "../../provider/themeSlice";
+import { handleSwitchTheme } from "../../../provider/themeSlice";
 
 const SetLocationPopup = () => {
   const [user] = useAuthState(auth);

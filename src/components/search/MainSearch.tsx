@@ -28,35 +28,43 @@ import Animated, {
 import colors from "../../config/colors";
 import * as Location from "expo-location";
 import { calculateDistance, searchAndRank } from "../../../api/searchAlgo";
-import { collection } from "firebase/firestore";
+import { collection, doc, getDoc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../../../firebaseConfig";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import {
+  useCollectionData,
+  useDocumentData,
+} from "react-firebase-hooks/firestore";
 import { SvgXml } from "react-native-svg";
 import { star } from "../../../assets/svgs/svgs";
-import { roundDistance } from "../../../api/hooks/generalHooks";
+import { addPoint, roundDistance } from "../../../api/hooks/generalHooks";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../../provider/themeSlice";
+import { Avatar } from "@rneui/base";
+import { locationIcon } from "../../../assets/icons/icons";
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
 
 interface Props {
   searchQuery: string;
+  queryUntouched: string;
   searchFilled: boolean;
   setSearchFilled: React.Dispatch<React.SetStateAction<boolean>>;
   navigation: any;
 }
 
-const MainSearch = ({
-  searchQuery,
-  searchFilled,
-  setSearchFilled,
-  navigation,
-}: Props) => {
+const MainSearch = ({ searchQuery, queryUntouched, navigation }: Props) => {
   const [userLocation, setUserLocation] = useState<any>(null);
   const [errMsg, setErrorMsg] = useState<any>(null);
   const gpa = useRef<any>(null);
+  const [user] = useAuthState(auth);
+
+  const userSRef = collection(db, "users");
+  const [users] = useCollectionData(userSRef);
+  const userRef = doc(db, "users", user?.uid!);
+
+  const [User] = useDocumentData(userRef);
 
   useEffect(() => {
     (async () => {
@@ -110,18 +118,28 @@ const MainSearch = ({
     };
   });
 
-  const [user] = useAuthState(auth);
-
   const businessesRef = collection(db, "businesses");
   const [businesses] = useCollectionData(businessesRef);
 
   //businesses.map((location) => {});
 
+  const getPerson = (id: any) => {
+    console.log(id);
+  };
+
   let results =
     searchQuery && searchQuery.length > 0
       ? searchAndRank(searchQuery, businesses, {
-          lat: parseFloat(userLocation?.coords.latitude),
-          lng: parseFloat(userLocation?.coords.longitude),
+          lat: parseFloat(
+            User && User.searchLocation && User.searchLocation.lat
+              ? User.searchLocation.lat
+              : userLocation?.coords.latitude
+          ),
+          lng: parseFloat(
+            User && User.searchLocation && User.searchLocation.lng
+              ? User.searchLocation.lng
+              : userLocation?.coords.longitude
+          ),
         })
       : null;
 
@@ -138,6 +156,18 @@ const MainSearch = ({
           },
         ]}
       >
+        <View style={styles.locationBtnCon}>
+          <TouchableOpacity
+            style={styles.locationBtn}
+            onPress={() =>
+              navigation.navigate("GoogleSearch", {
+                locationType: "search",
+              })
+            }
+          >
+            <Text style={styles.locationBtnTxt}>Change Location</Text>
+          </TouchableOpacity>
+        </View>
         {userLocation && (
           <MapView
             provider={PROVIDER_GOOGLE}
@@ -145,8 +175,16 @@ const MainSearch = ({
             customMapStyle={mapStyle}
             initialRegion={
               userLocation && {
-                latitude: parseFloat(userLocation?.coords?.latitude),
-                longitude: parseFloat(userLocation?.coords?.longitude),
+                latitude: parseFloat(
+                  User && User.searchLocation && User.searchLocation.lat
+                    ? User.searchLocation.lat
+                    : userLocation?.coords.latitude
+                ),
+                longitude: parseFloat(
+                  User && User.searchLocation && User.searchLocation.lng
+                    ? User.searchLocation.lng
+                    : userLocation?.coords.longitude
+                ),
                 latitudeDelta: 0.02,
                 longitudeDelta: 0.02,
               }
@@ -155,8 +193,16 @@ const MainSearch = ({
             followsUserLocation={true}
             region={
               userLocation && {
-                latitude: parseFloat(userLocation?.coords?.latitude),
-                longitude: parseFloat(userLocation?.coords?.longitude),
+                latitude: parseFloat(
+                  User && User.searchLocation && User.searchLocation.lat
+                    ? User.searchLocation.lat
+                    : userLocation?.coords.latitude
+                ),
+                longitude: parseFloat(
+                  User && User.searchLocation && User.searchLocation.lng
+                    ? User.searchLocation.lng
+                    : userLocation?.coords.longitude
+                ),
                 latitudeDelta: 0.02,
                 longitudeDelta: 0.02,
               }
@@ -164,13 +210,6 @@ const MainSearch = ({
             loadingEnabled={false}
             //loadingIndicatorColor={colors.primary}
           >
-            {userLocation && (
-              <Marker
-                coordinate={userLocation?.coords}
-                image={require("../../.././assets/map/user.png")}
-                title="You"
-              />
-            )}
             {results &&
               results
                 .filter((business: any) => {
@@ -192,7 +231,7 @@ const MainSearch = ({
                     userLocation &&
                     business?.location && (
                       <Marker
-                        key={business?.location?.lat}
+                        key={business?.userId}
                         coordinate={coord}
                         pinColor={colors.primary}
                         image={require("../../.././assets/map/business.png")}
@@ -209,14 +248,14 @@ const MainSearch = ({
               rSearchConStyle,
               styles.searchCon,
               {
-                backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+                backgroundColor: theme
+                  ? colors.secondarySmoke
+                  : colors.blackSmoke,
               },
             ]}
           >
             <View style={styles.line}></View>
-            <TouchableOpacity style={styles.locationBtn} onPress={() => null}>
-              <Text style={styles.locationBtnTxt}>Use another location</Text>
-            </TouchableOpacity>
+
             <View
               style={{
                 height: "100%",
@@ -234,7 +273,10 @@ const MainSearch = ({
                       if (business.userId !== user?.uid && i < 4)
                         return business;
                     })
+
                     .map((business: any, i: number) => {
+                      let userProfilePic;
+                      getPerson(business);
                       return (
                         <TouchableOpacity
                           style={styles.business}
@@ -244,50 +286,19 @@ const MainSearch = ({
                           }
                         >
                           <View style={styles.imgCon}>
-                            <Image
-                              source={require("../../.././assets/placeholder.jpg")}
-                              style={styles.img}
+                            <Avatar
+                              size={60}
+                              rounded={false}
+                              source={
+                                business && business.userId && false
+                                  ? {
+                                      uri: "",
+                                    }
+                                  : require("../../../assets/blankProfilePic.png")
+                              }
                             />
                           </View>
                           <View style={styles.txtCon}>
-                            <Text
-                              style={[
-                                styles.disTxt,
-                                {
-                                  color: theme ? colors.darkTxt : colors.black,
-                                  backgroundColor: theme
-                                    ? colors.blackSmoke
-                                    : colors.secondary,
-                                },
-                              ]}
-                            >
-                              {userLocation?.coords &&
-                                business?.location &&
-                                roundDistance(
-                                  calculateDistance(
-                                    {
-                                      lat: parseFloat(
-                                        userLocation?.coords?.latitude
-                                      ),
-                                      lng: parseFloat(
-                                        userLocation?.coords?.longitude
-                                      ),
-                                    },
-                                    {
-                                      lat: business?.location?.lat,
-                                      lng: business?.location?.lng,
-                                    }
-                                  )
-                                )}
-                              km
-                            </Text>
-                            <View style={styles.ratingCon}>
-                              <SvgXml xml={star()} width="11.5" height="11.5" />
-                              <Text style={styles.ratingTxt}>
-                                {business.rating}
-                              </Text>
-                            </View>
-
                             <Text
                               style={[
                                 styles.txt,
@@ -298,34 +309,89 @@ const MainSearch = ({
                             >
                               {business.name}
                             </Text>
+
+                            <Text style={styles.disTxt}>
+                              <View>
+                                <SvgXml
+                                  style={{
+                                    top: 1,
+                                    marginRight: 2,
+                                  }}
+                                  xml={locationIcon()}
+                                  width="11"
+                                  height="11"
+                                />
+                              </View>
+                              {userLocation?.coords &&
+                                business?.location &&
+                                roundDistance(
+                                  calculateDistance(
+                                    {
+                                      lat: parseFloat(
+                                        User &&
+                                          User.searchLocation &&
+                                          User.searchLocation.lat
+                                          ? User.searchLocation.lat
+                                          : userLocation?.coords.latitude
+                                      ),
+                                      lng: parseFloat(
+                                        User &&
+                                          User.searchLocation &&
+                                          User.searchLocation.lng
+                                          ? User.searchLocation.lng
+                                          : userLocation?.coords.longitude
+                                      ),
+                                    },
+                                    {
+                                      lat: business?.location?.lat,
+                                      lng: business?.location?.lng,
+                                    }
+                                  )
+                                )}
+                              km away
+                            </Text>
+
+                            <View style={styles.ratingCon}>
+                              <SvgXml xml={star()} width="11.5" height="11.5" />
+                              <Text style={styles.ratingTxt}>
+                                {addPoint(business.rating)}
+                              </Text>
+                            </View>
+                          </View>
+                          <Text style={styles.chargeTxt}>
                             <Text
                               style={[
-                                styles.chargeTxt,
-                                ,
+                                styles.chargeTxtSm,
                                 {
                                   color: theme ? colors.black : colors.darkTxt,
                                 },
                               ]}
                             >
-                              <Text
-                                style={[
-                                  styles.chargeTxtSm,
-                                  {
-                                    color: theme
-                                      ? colors.black
-                                      : colors.darkTxt,
-                                  },
-                                ]}
-                              >
-                                From
-                              </Text>{" "}
-                              ₦{business.chargeRate}
-                            </Text>
-                          </View>
+                              From
+                            </Text>{" "}
+                            ₦{business.chargeRate}
+                          </Text>
                         </TouchableOpacity>
                       );
                     })}
-                {results ? <Text style={styles.more}>See more...</Text> : null}
+                {results ? (
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("Search Results", {
+                        query: queryUntouched,
+                        results,
+                        userId: user?.uid,
+                        userLocation,
+                        userSearchLocation:
+                          User && User.searchLocation
+                            ? User.searchLocation
+                            : null,
+                      })
+                    }
+                  >
+                    <Text style={styles.more}>See more...</Text>
+                  </TouchableOpacity>
+                ) : null}
               </ScrollView>
             </View>
           </Animated.View>
@@ -340,7 +406,7 @@ const mapStyle = [
     elementType: "geometry.stroke",
     stylers: [
       {
-        color: "#2776ea",
+        color: "red",
       },
       {
         lightness: -40,
@@ -351,7 +417,7 @@ const mapStyle = [
     elementType: "labels.text.fill",
     stylers: [
       {
-        color: "#2776ea",
+        color: "red",
       },
     ],
   },
@@ -377,12 +443,21 @@ const styles = StyleSheet.create({
     height: 5,
     backgroundColor: "#d7e0f085",
     alignSelf: "center",
-    marginVertical: 15,
+    marginTop: 15,
+    marginBottom: 10,
     borderRadius: 2,
   },
+  locationBtnCon: {
+    position: "absolute",
+    bottom: 10,
+    zIndex: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+  },
   locationBtn: {
-    width: "40%",
-    height: 35,
+    width: SCREEN_WIDTH * 0.9,
+    height: 45,
     backgroundColor: colors.primary,
     borderRadius: 5,
     justifyContent: "center",
@@ -391,73 +466,64 @@ const styles = StyleSheet.create({
   },
   locationBtnTxt: {
     color: colors.secondary,
-    fontSize: 12,
-    fontFamily: "LatoRegular",
+    fontSize: 13,
+    fontFamily: "PrimaryRegular",
   },
   business: {
-    width: "100%",
+    width: "95%",
     height: 80,
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    alignSelf: "center",
+    backgroundColor: colors.secondary,
     borderRadius: 8,
-    marginTop: 10,
+    padding: 15,
+    marginBottom: 12,
   },
   imgCon: {
-    width: "50%",
+    marginRight: 10,
   },
   img: {
     width: "100%",
     height: "100%",
-    borderTopLeftRadius: 8,
-    borderBottomLeftRadius: 8,
   },
   ratingCon: {
     flexDirection: "row",
   },
   txtCon: {
     width: "50%",
-    padding: 15,
-    borderColor: colors.grey,
-    borderWidth: 1,
-    borderLeftWidth: 0,
-    borderTopRightRadius: 8,
-    borderBottomRightRadius: 8,
   },
   disTxt: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    fontFamily: "LatoRegular",
-    fontSize: 10,
-    padding: 3,
-    paddingHorizontal: 5,
-    borderTopRightRadius: 8,
+    fontFamily: "PrimaryRegular",
+    fontSize: 10.5,
+    paddingRight: 5,
+    color: colors.greyMain,
   },
   txt: {
-    fontFamily: "Lato",
-    fontSize: 13,
+    fontFamily: "PrimarySemiBold",
+    fontSize: 14,
     marginTop: 5,
   },
   ratingTxt: {
-    fontFamily: "Lato",
-    fontSize: 11.5,
-    color: colors.primary,
-    marginLeft: 5,
+    fontFamily: "PrimaryRegular",
+    fontSize: 11,
+    marginLeft: 2,
   },
   chargeTxt: {
-    fontFamily: "Lato",
-    fontSize: 12,
+    fontFamily: "PrimarySemiBold",
+    fontSize: 14.5,
+    color: colors.primary,
     marginTop: 5,
   },
   chargeTxtSm: {
-    fontFamily: "Lato",
-    fontSize: 11,
-    color: colors.lightBlack,
-    marginTop: 5,
+    fontFamily: "PrimaryRegular",
+    fontSize: 10,
+    color: colors.greyLight,
   },
   more: {
     alignSelf: "center",
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     fontSize: 13,
     color: colors.primary,
     marginTop: 25,

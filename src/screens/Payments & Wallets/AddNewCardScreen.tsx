@@ -55,6 +55,26 @@ const AddNewCard = () => {
         </Text>
 
         <TextInputComponent
+          title="card number"
+          value={cardNumber}
+          onChangeText={setCardNumber}
+          placeholder="enter card number  (16-19 digits)"
+          keyboardType="number-pad"
+          onFocus={hideDatePicker}
+          maxLength={19}
+        />
+
+        <TextInputComponent
+          title="bank"
+          value={bank}
+          onChangeText={setBank}
+          placeholder="select bank"
+          keyboardType="default"
+          onFocus={hideDatePicker}
+          maxLength={null}
+        />
+
+        <TextInputComponent
           title='card number'
           value={cardNumber}
           onChangeText={setCardNumber}
@@ -78,15 +98,15 @@ const AddNewCard = () => {
           title='expiration date'
           value={expireDate}
           onChangeText={setExpireDate}
-          placeholder='enter valid date'
+          placeholder="enter valid date"
           onFocus={showDatePicker}
-          keyboardType='default'
+          keyboardType="default"
           maxLength={null}
         />
 
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
-          mode='date'
+          mode="date"
           onConfirm={handleDateConfirm}
           onCancel={hideDatePicker}
         />
@@ -95,8 +115,8 @@ const AddNewCard = () => {
           title='CVV'
           value={cvv}
           onChangeText={setCvv}
-          placeholder='enter CVV'
-          keyboardType='number-pad'
+          placeholder="enter CVV"
+          keyboardType="number-pad"
           onFocus={hideDatePicker}
           maxLength={3}
         />

@@ -31,7 +31,7 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
-import { sendMessage } from "../../api/database";
+import { sendMessage, unBlockUser } from "../../api/database";
 import { useSelector } from "react-redux";
 import { handleUser } from "../../provider/userSlice";
 import {
@@ -45,11 +45,13 @@ import * as ImagePicker from "expo-image-picker";
 import { StatusBar } from "expo-status-bar";
 import { uuidv4 } from "@firebase/util";
 import Appointment from "./Appointment";
+import MessagingOptionsPopup from "./MessagingOptionsPopup";
 
 export const ChatScreen = ({ navigation, route }: any) => {
   const selector = useSelector(handleUser);
   const { name, personId, personPic } = route.params;
   const [user] = useAuthState(auth);
+  const [popupType, setPopupType] = useState("");
   const [typedMessage, setTypedMessage] = useState("");
   const [image, setImage] = useState<any>(null);
   const User = selector.payload.user.value;
@@ -61,6 +63,30 @@ export const ChatScreen = ({ navigation, route }: any) => {
   const [headerVisible, setHeaderVisible] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [showDropDown, setShowDropDown] = useState(false);
+  const [showBlockedMsg, setShowBlockedMsg] = useState(false);
+  const [iWasBlocked, setIWasBlocked] = useState(false);
+
+  const blocklistRef = collection(db, "users", user?.uid!, "blocklist");
+  const [blocklist] = useCollectionData(blocklistRef);
+
+  const senderBlocklistRef = collection(db, "users", personId, "blocklist");
+  const [senderBlocklist] = useCollectionData(senderBlocklistRef);
+
+  useEffect(() => {
+    if (blocklist && senderBlocklist) {
+      setShowBlockedMsg(
+        blocklist.some((user: any) => user?.email === sender?.email)
+      );
+      setIWasBlocked(
+        senderBlocklist.some((user: any) => user?.email === User?.email)
+      );
+    }
+  }, [blocklist, senderBlocklist]);
+
+  const handleUnblockUser = () => {
+    if (sender && user && user.uid && sender.email)
+      unBlockUser(user.uid, sender.email);
+  };
 
   {
     /* const handleScroll = (event: any) => {
@@ -242,15 +268,21 @@ export const ChatScreen = ({ navigation, route }: any) => {
   }
 
   const showSend = () => {
+    if (showBlockedMsg || iWasBlocked) return;
     if (typedMessage.length > 0 || image) return true;
     else return false;
   };
 
-  const handleDropDown = () => {};
-
   return (
     <>
-      <View style={styles.header}>
+      <View
+        style={[
+          styles.header,
+          {
+            backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+          },
+        ]}
+      >
         <TouchableOpacity
           style={styles.profilePicAndName}
           onPress={() =>
@@ -297,7 +329,16 @@ export const ChatScreen = ({ navigation, route }: any) => {
               alignItems: "center",
             }}
           >
-            <Text style={styles.headerName}>{name}</Text>
+            <Text
+              style={[
+                styles.headerName,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              {name}
+            </Text>
           </View>
         </TouchableOpacity>
 
@@ -305,7 +346,11 @@ export const ChatScreen = ({ navigation, route }: any) => {
           // @ts-ignore
           onPress={() => setShowDropDown(!showDropDown)}
         >
-          <SvgXml xml={optionIcon()} width="21" height="21" />
+          <SvgXml
+            xml={optionIcon(theme ? colors.black : colors.darkTxt)}
+            width="21"
+            height="21"
+          />
         </TouchableOpacity>
         <Appointment
           isVisible={isVisible}
@@ -315,17 +360,43 @@ export const ChatScreen = ({ navigation, route }: any) => {
         />
       </View>
 
+      {popupType && (
+        <MessagingOptionsPopup
+          business={business}
+          popupType={popupType}
+          clearType={setPopupType}
+          userId={user?.uid}
+          personId={personId}
+          person={sender}
+        />
+      )}
+
       <Overlay
         isVisible={showDropDown}
         overlayStyle={styles.dropdown}
         onBackdropPress={() => setShowDropDown(false)}
+        statusBarTranslucent
       >
         <TouchableOpacity onPress={() => setIsVisible(true)}>
           <Text style={styles.dropdownItem}>Schedule</Text>
         </TouchableOpacity>
-        <Text style={styles.dropdownItem}>See Profile</Text>
-        <Text style={styles.dropdownItem}>Delete</Text>
-        <Text style={styles.dropdownItem}>Report</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Profile", { business })}
+        >
+          <Text style={styles.dropdownItem}>View Profile</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setPopupType("Report")}>
+          <Text style={styles.dropdownItem}>Report</Text>
+        </TouchableOpacity>
+        {showBlockedMsg ? (
+          <TouchableOpacity onPress={handleUnblockUser}>
+            <Text style={styles.dropdownItem}>Unblock</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => setPopupType("Block")}>
+            <Text style={styles.dropdownItem}>Block</Text>
+          </TouchableOpacity>
+        )}
       </Overlay>
       <ScrollView
         ref={scrollViewRef}
@@ -558,6 +629,17 @@ export const ChatScreen = ({ navigation, route }: any) => {
             );
           })}
           <View />
+
+          {showBlockedMsg && (
+            <TouchableOpacity
+              style={styles.blockedMsg}
+              onPress={handleUnblockUser}
+            >
+              <Text style={styles.blockedMsgTxt}>
+                You blocked this person. Tap to unblock.
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </ScrollView>
 
@@ -631,11 +713,11 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     backgroundColor: colors.secondary,
-    width: 120,
     position: "absolute",
-    top: 65,
+    top: 60,
     right: 20,
     padding: 20,
+    paddingHorizontal: 25,
     borderRadius: 5,
     zIndex: 150,
   },
@@ -771,6 +853,18 @@ const styles = StyleSheet.create({
     width: 150,
     borderRadius: 15,
     marginHorizontal: 10,
+  },
+  blockedMsg: {
+    margin: 20,
+    alignSelf: "center",
+    backgroundColor: colors.primary,
+    padding: 5,
+    borderRadius: 5,
+  },
+  blockedMsgTxt: {
+    fontFamily: "PrimaryRegular",
+    fontSize: 10,
+    color: colors.secondary,
   },
   sendCon: {
     position: "absolute",
