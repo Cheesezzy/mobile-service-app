@@ -47,6 +47,7 @@ import PhoneScreen from "../screens/PhoneScreen";
 import PromotionScreen from "../screens/PromotionScreen";
 import SearchResults from "../screens/Search/SearchResults";
 import ContactSupport from "../screens/ContactSupport/ContactSupport";
+import FAQs from "../screens/ContactSupport/FAQs";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -120,6 +121,15 @@ const StackNavigator = () => {
         component={ContactSupport}
         options={{
           title: "Contact Support",
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="FAQs"
+        component={FAQs}
+        options={{
+          title: "FAQs",
           headerShown: false,
         }}
       />
