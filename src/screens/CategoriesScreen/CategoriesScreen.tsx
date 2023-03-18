@@ -3,15 +3,11 @@ import React from "react";
 import HeaderTitle from "../../components/HeaderTitle";
 import { categories } from "../../../provider/categoryData/categories";
 import { ScrollView } from "react-native-gesture-handler";
-// import { useSelector } from "react-redux";
-// import { handleSwitchTheme } from "../../../provider/themeSlice";
 import Navigation from "../../components/Navigation";
 import Category from "./component/Category";
 import { ICategory } from "./interface";
 
 const CategoriesScreen = ({ navigation }: any) => {
-  // const selector: any = useSelector(handleSwitchTheme);
-  // const theme = selector.payload.theme.value;
   return (
     <>
       <HeaderTitle title='categoryItem' profileURL='' user='' />
