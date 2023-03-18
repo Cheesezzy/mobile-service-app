@@ -48,6 +48,7 @@ export const sendEmailVerification = async (email: string) => {
 };
 
 export const checkVerification = async (userChannel: string, code: string) => {
+  console.log("");
   try {
     const data = JSON.stringify({
       to: userChannel,

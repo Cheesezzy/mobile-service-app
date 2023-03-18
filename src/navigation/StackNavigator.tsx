@@ -5,15 +5,13 @@ import HomeScreen from "../screens/HomeScreens/HomeScreen";
 import NotifScreen from "../screens/NotifScreen";
 import NegoScreen from "../screens/NegoScreen";
 import HustleScreen from "../screens/HustleScreen";
-import AboutScreen from "../screens/AboutScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import SupportScreen from "../screens/SupportScreen";
 import SearchScreen from "../screens/Search/SearchScreen";
 import { auth, db } from "../../firebaseConfig";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs } from "firebase/firestore";
 import { handleAllUsers } from "../../provider/allUsersSlice";
 import { ChatScreen } from "../components/ChatScreen";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -21,11 +19,7 @@ import AnalyticsScreen from "../screens/AnalyticsScreen";
 import PaymentsScreen from "../screens/Payments & Wallets/PaymentsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import EarningsScreen from "../screens/EarningsScreen";
-import {
-  useDocumentData,
-  useCollectionData,
-} from "react-firebase-hooks/firestore";
-import colors from "../config/colors";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 import CategoryScreen from "../screens/CategoryScreen";
 import { GoogleSearch } from "../components/GoogleSearch";
 import BusinessEnroll from "../components/BusinessEnroll";
@@ -46,8 +40,21 @@ import AdsComponent from "../screens/Payments & Wallets/components/AdsComponent"
 import PhoneScreen from "../screens/PhoneScreen";
 import PromotionScreen from "../screens/PromotionScreen";
 import SearchResults from "../screens/Search/SearchResults";
+<<<<<<< HEAD
 import ContactSupport from "../screens/ContactSupport/ContactSupport";
 import FAQs from "../screens/ContactSupport/FAQs";
+=======
+import JakeScreen from "../screens/BusinessEnrollScreen";
+import Terms from "../screens/policy-and-terms/Terms";
+import Privacy from "../screens/policy-and-terms/Privacy";
+// import BusinessEnrollScreen from "../screens/BusinessEnrollScreen";
+// import BusinessDetails from "../screens/BusinessEnrollScreen/BusinessDetails";
+// import BusinessCategory from "../screens/BusinessEnrollScreen/BusinessCategory";
+// import BusinessLocation from "../screens/BusinessEnrollScreen/BusinessLocation";
+// import BusinessEnrollment from "../screens/BusinessEnrollScreen/BusinessEnrollment";
+// import KycVerification from "../screens/BusinessEnrollScreen/KycVerification";
+import ServiceConfirmationScreen from "../screens/ServiceConfirmationScreen";
+>>>>>>> 5ad34e4d9b16a28b2a5d980293e8ab7d90935eb5
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -159,14 +166,6 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="About"
-        component={AboutScreen}
-        options={{
-          title: "About",
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
         name="Promotion"
         component={PromotionScreen}
         options={{
@@ -251,6 +250,57 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
+      {/* <Stack.Screen
+        name="BusinessEnrollScreen"
+        component={BusinessEnrollScreen}
+        options={{
+          title: "BusinessEnrollScreen",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="BusinessDetails"
+        component={BusinessDetails}
+        options={{
+          title: "BusinessDetails",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="BusinessCategory"
+        component={BusinessCategory}
+        options={{
+          title: "BusinessCategory",
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="BusinessLocation"
+        component={BusinessLocation}
+        options={{
+          title: "BusinessLocation",
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="BusinessEnrollment"
+        component={BusinessEnrollment}
+        options={{
+          title: "BusinessEnrollment",
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="KycVerification"
+        component={KycVerification}
+        options={{
+          title: "KycVerification",
+          headerShown: false,
+        }}
+      /> */}
 
       <Stack.Screen
         name="Category"
@@ -341,7 +391,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Add New Card'
+        name="Add New Card"
         component={AddNewCardScreen}
         options={{
           title: "Add New Card",
@@ -357,7 +407,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Transaction details'
+        name="Transaction details"
         component={TransactionDetailsScreen as any}
         options={{
           title: "Transaction details",
@@ -365,10 +415,42 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='Ads Component'
-        component={AdsComponent as any}
+        name="Ads Component"
+        component={AdsComponent}
         options={{
           title: "Ads Component",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Terms"
+        component={Terms}
+        options={{
+          title: "Terms",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Privacy-Policy"
+        component={Privacy}
+        options={{
+          title: "Privacy-Policy",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Service Confirmation"
+        component={ServiceConfirmationScreen}
+        options={{
+          title: "Service Confirmation",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Search Results"
+        component={SearchResults}
+        options={{
+          title: "Search Results",
           headerShown: false,
         }}
       />
