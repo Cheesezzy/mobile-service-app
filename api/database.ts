@@ -12,7 +12,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
-import { AppointmentDate } from "../src/components/Appointment";
+import { AppointmentDate } from "../src/components/appointment/Appointment";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 export function clearAllUsers() {

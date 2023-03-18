@@ -161,7 +161,7 @@ const MainSearch = ({ searchQuery, queryUntouched, navigation }: Props) => {
             style={styles.locationBtn}
             onPress={() =>
               navigation.navigate("GoogleSearch", {
-                locationType: "search",
+                locationType: "Search",
               })
             }
           >

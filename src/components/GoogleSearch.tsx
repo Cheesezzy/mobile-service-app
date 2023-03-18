@@ -81,9 +81,9 @@ export const GoogleSearch = ({ route }: any) => {
 
   const handleSubmit = () => {
     if (location.lat && location.lng)
-      if (locationType === "Business")
+      if (locationType === "Business") {
         updateLocation(User?.bizId, location?.lat, location?.lng);
-      else if (locationType === "search")
+      } else if (locationType === "Search")
         updateSearchLocation(user?.uid, location?.lat, location?.lng);
     navigation.goBack();
   };

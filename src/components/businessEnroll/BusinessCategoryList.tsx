@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
   //   },
 
   imageBoxText: {
+    fontFamily: "PrimaryRegular",
     marginLeft: 8,
     color: "white",
   },
@@ -75,8 +76,7 @@ const styles = StyleSheet.create({
   checkbox: {
     width: 21.5,
     height: 21.5,
-
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "white",
     alignSelf: "center",
     borderRadius: 4,

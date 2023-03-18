@@ -3,6 +3,7 @@ import colors from "../../config/colors";
 import { SvgXml } from "react-native-svg";
 import RecentOrder from "../../components/RecentOrder";
 import { shieldCheck, shopping } from "../../../assets/svgs/svgs";
+import { useEffect } from "react";
 
 interface Props {
   navigation: any;
