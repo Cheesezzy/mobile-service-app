@@ -5,9 +5,14 @@ import TextInputComponent from "./components/TextInputComponent";
 import NextButton from "./components/NextButton";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-
 const AddNewCard = () => {
   const [cardNumber, setCardNumber] = useState("");
+  // const [bank, setBank] = useState("");
+  // const [expireDate, setExpireDate] = useState("");
+  // const [cvv, setCvv] = useState("");
+  // const [buttonColor, setButtonColor] = useState("#a8ceed");
+
+  // const [cardNumber, setCardNumber] = useState('');
   const [bank, setBank] = useState("");
   const [expireDate, setExpireDate] = useState("");
   const [cvv, setCvv] = useState("");
@@ -70,7 +75,27 @@ const AddNewCard = () => {
         />
 
         <TextInputComponent
-          title="expiration date"
+          title='card number'
+          value={cardNumber}
+          onChangeText={setCardNumber}
+          placeholder='enter card number  (16-19 digits)'
+          keyboardType='number-pad'
+          onFocus={hideDatePicker}
+          maxLength={19}
+        />
+
+        <TextInputComponent
+          title='bank'
+          value={bank}
+          onChangeText={setBank}
+          placeholder='select bank'
+          keyboardType='default'
+          onFocus={hideDatePicker}
+          maxLength={null}
+        />
+
+        <TextInputComponent
+          title='expiration date'
           value={expireDate}
           onChangeText={setExpireDate}
           placeholder="enter valid date"
@@ -87,7 +112,7 @@ const AddNewCard = () => {
         />
 
         <TextInputComponent
-          title="CVV"
+          title='CVV'
           value={cvv}
           onChangeText={setCvv}
           placeholder="enter CVV"
@@ -96,9 +121,33 @@ const AddNewCard = () => {
           maxLength={3}
         />
       </View>
+      <View>
+        <TextInputComponent
+          title='expiration date'
+          value={expireDate}
+          onChangeText={setExpireDate}
+          placeholder='enter valid date'
+          keyboardType={"default"}
+          onFocus={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+          maxLength={undefined}
+        />
 
+        <TextInputComponent
+          title='CVV'
+          value={cvv}
+          onChangeText={setCvv}
+          placeholder='enter CVV'
+          keyboardType={"default"}
+          onFocus={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+          maxLength={undefined}
+        />
+      </View>
       <View style={styles.btn}>
-        <NextButton backgroundColor={buttonColor} title="Next" />
+        <NextButton backgroundColor={buttonColor} title='Next' />
       </View>
     </KeyboardAwareScrollView>
   );
