@@ -215,12 +215,14 @@ export function updateUserPassword(userId: any, password: string) {
 
 // add business to database
 export function addBusiness(userId: any) {
-  const businessRef = collection(db, "businesses");
+  const businessesRef = collection(db, "businesses");
   const userRef = doc(db, "users", userId);
 
-  addDoc(businessRef, {
+  addDoc(businessesRef, {
+    id: "",
     name: "",
     desc: "",
+    businessDP: "",
     userId: userId,
     location: "",
     rating: 0,
@@ -244,9 +246,15 @@ export function addBusiness(userId: any) {
       imgThree: null,
       imgFour: null,
     },
-  }).then((doc) => {
+  }).then((data) => {
+    const businessRef = doc(db, "businesses", data.id);
+
     updateDoc(userRef, {
-      bizId: doc.id,
+      id: data.id,
+    });
+
+    updateDoc(userRef, {
+      bizId: data.id,
     });
   });
 }
@@ -322,6 +330,14 @@ export function updateRating(bizId: any, rating: any) {
     rating,
   });
 }
+
+export const updateBusinessDP = (bizId: any, imageUrl: string) => {
+  const businessesRef = doc(db, "businesses", bizId);
+
+  updateDoc(businessesRef, {
+    businessDP: imageUrl,
+  });
+};
 
 export function updateRatingsAndReviews(
   userId: any,
