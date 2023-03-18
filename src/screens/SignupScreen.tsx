@@ -31,6 +31,7 @@ import { createUser } from "../../api/database";
 //import { sendEmailVerification } from "../../api/verify";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../provider/themeSlice";
+import date from "date-and-time";
 
 const SignupScreen = ({ navigation }: any) => {
   const googleProvider = new GoogleAuthProvider();
@@ -40,6 +41,9 @@ const SignupScreen = ({ navigation }: any) => {
   const [password, setPassword] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const now = new Date();
+  const pattern = date.compile("MMM, DD YYYY");
 
   const createAcctWithGoogle = async () => {
     signInWithPopup(auth, googleProvider)
@@ -56,8 +60,7 @@ const SignupScreen = ({ navigation }: any) => {
           mobOrEmail,
           password,
           "",
-          "",
-          "",
+          date.format(now, pattern),
           "",
           false,
           false,
@@ -94,8 +97,7 @@ const SignupScreen = ({ navigation }: any) => {
         mobOrEmail,
         password,
         null,
-        null,
-        null,
+        date.format(now, pattern),
         null,
         false,
         false,

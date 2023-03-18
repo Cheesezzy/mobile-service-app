@@ -375,6 +375,7 @@ export const ChatScreen = ({ navigation, route }: any) => {
         isVisible={showDropDown}
         overlayStyle={styles.dropdown}
         onBackdropPress={() => setShowDropDown(false)}
+        statusBarTranslucent
       >
         <TouchableOpacity onPress={() => setIsVisible(true)}>
           <Text style={styles.dropdownItem}>Schedule</Text>
