@@ -34,7 +34,8 @@ const BusinessConfirmLocation = ({ navigation, location }: any) => {
 
       <View>
         <TouchableOpacity
-          onPress={() => navigation.navigate("KycVerification")}
+          //onPress={() => navigation.navigate("KycVerification")}
+          onPress={() => navigation.navigate("Home")}
         >
           <View style={styles.btn}>
             <Text style={styles.btnText}>Confirm</Text>
