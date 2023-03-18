@@ -46,9 +46,9 @@ const SearchResults = ({ route, navigation }: any) => {
                     size={60}
                     rounded={false}
                     source={
-                      business && business.userId && false
+                      business?.businessDP
                         ? {
-                            uri: "",
+                            uri: business?.businessDP,
                           }
                         : require("../../../assets/blankProfilePic.png")
                     }
