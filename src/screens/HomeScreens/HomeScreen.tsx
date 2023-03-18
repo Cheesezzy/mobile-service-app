@@ -95,11 +95,6 @@ const HomeScreen = ({ navigation }: any) => {
           />
         ) : null}
 
-        {user && user?.role === "Provider" ? (
-          !business?.location && loading ? null : business?.location ? null : (
-            <SetLocationPopup />
-          )
-        ) : null}
         <ScrollView style={{ padding: 5, paddingBottom: 20 }}>
           {user?.role === "Consumer" ? (
             <ClientHome navigation={navigation} theme={theme} />

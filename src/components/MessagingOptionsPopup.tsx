@@ -44,7 +44,11 @@ const MessagingOptionsPopup = ({
   };
 
   return (
-    <Overlay isVisible={true} overlayStyle={styles.container}>
+    <Overlay
+      isVisible={true}
+      overlayStyle={styles.container}
+      statusBarTranslucent
+    >
       <Text style={styles.txt}>
         {popupType} {business.name}
       </Text>

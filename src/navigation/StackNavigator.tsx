@@ -48,6 +48,7 @@ import PromotionScreen from "../screens/PromotionScreen";
 import SearchResults from "../screens/Search/SearchResults";
 import Terms from "../screens/policy-and-terms/Terms";
 import Privacy from "../screens/policy-and-terms/Privacy";
+import ServiceConfirmationScreen from "../screens/ServiceConfirmationScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -357,7 +358,7 @@ const StackNavigator = () => {
         name="Terms"
         component={Terms}
         options={{
-          title: "Ads Component",
+          title: "Terms",
           headerShown: false,
         }}
       />
@@ -365,7 +366,15 @@ const StackNavigator = () => {
         name="Privacy-Policy"
         component={Privacy}
         options={{
-          title: "Ads Component",
+          title: "Privacy-Policy",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Service Confirmation"
+        component={ServiceConfirmationScreen}
+        options={{
+          title: "Service Confirmation",
           headerShown: false,
         }}
       />
