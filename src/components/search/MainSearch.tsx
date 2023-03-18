@@ -210,13 +210,6 @@ const MainSearch = ({ searchQuery, queryUntouched, navigation }: Props) => {
             loadingEnabled={false}
             //loadingIndicatorColor={colors.primary}
           >
-            {userLocation && (
-              <Marker
-                coordinate={userLocation?.coords}
-                image={require("../../.././assets/map/user.png")}
-                title="You"
-              />
-            )}
             {results &&
               results
                 .filter((business: any) => {
