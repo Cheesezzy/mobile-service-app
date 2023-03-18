@@ -44,7 +44,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
 import { StatusBar } from "expo-status-bar";
 import { uuidv4 } from "@firebase/util";
-import Appointment from "./Appointment";
+import Appointment from "./appointment/Appointment";
 import MessagingOptionsPopup from "./MessagingOptionsPopup";
 
 export const ChatScreen = ({ navigation, route }: any) => {

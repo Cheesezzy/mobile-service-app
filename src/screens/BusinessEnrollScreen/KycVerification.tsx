@@ -34,7 +34,7 @@ const KycVerification = ({ navigation }: any) => {
           />
         ) : (
           <>
-            <Text style={styles.header}>KYC verification.</Text>
+            <Text style={styles.header}>KYC Verification.</Text>
             <Text style={styles.headerDesc}>
               Choose your preferred method of verification.
             </Text>
@@ -42,12 +42,18 @@ const KycVerification = ({ navigation }: any) => {
             <View>
               <View>
                 <View style={styles.verificationLabel}>
-                  <Text>Identification method</Text>
+                  <Text
+                    style={{
+                      fontFamily: "PrimaryRegular",
+                    }}
+                  >
+                    Identification method
+                  </Text>
                   <Text
                     style={{
                       color: "#D41111",
                       marginLeft: 1,
-                      fontWeight: "400",
+                      fontFamily: "PrimaryRegular",
                       fontSize: 16,
                       lineHeight: 18,
                     }}
@@ -67,12 +73,18 @@ const KycVerification = ({ navigation }: any) => {
 
             <View>
               <View style={styles.inputLabel}>
-                <Text>identification number</Text>
+                <Text
+                  style={{
+                    fontFamily: "PrimaryRegular",
+                  }}
+                >
+                  Identification number
+                </Text>
                 <Text
                   style={{
                     color: "#D41111",
                     marginLeft: 1,
-                    fontWeight: "400",
+                    fontFamily: "PrimaryRegular",
                     fontSize: 16,
                     lineHeight: 18,
                   }}
@@ -102,12 +114,12 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   header: {
-    fontWeight: "600",
+    fontFamily: "PrimarySemiBold",
     fontSize: 24,
   },
   headerDesc: {
     marginTop: 4,
-    fontWeight: "400",
+    fontFamily: "PrimaryRegular",
     fontSize: 12,
     lineHeight: 20,
   },
@@ -115,7 +127,7 @@ const styles = StyleSheet.create({
   verificationLabel: {
     marginTop: 24,
     flexDirection: "row",
-    fontWeight: "400",
+    fontFamily: "PrimaryRegular",
     fontSize: 16,
   },
   verificationContainer: {
@@ -123,7 +135,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginTop: 6,
     borderColor: "rgba(147, 187, 245, 0.24)",
-    paddingVertical: 17,
+    paddingVertical: 12,
     paddingHorizontal: 10,
     borderRadius: 8,
     alignItems: "center",
@@ -134,14 +146,14 @@ const styles = StyleSheet.create({
   inputLabel: {
     marginTop: 33,
     flexDirection: "row",
-    fontWeight: "400",
+    fontFamily: "PrimaryRegular",
     fontSize: 16,
   },
   input: {
     borderWidth: 1,
     marginTop: 6,
     borderColor: "rgba(147, 187, 245, 0.24)",
-    paddingVertical: 17,
+    paddingVertical: 12,
     paddingHorizontal: 10,
     borderRadius: 8,
   },

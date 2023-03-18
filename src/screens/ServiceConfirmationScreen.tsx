@@ -77,7 +77,6 @@ const LeaveFeedback = ({
           style={styles.reviewBox}
           placeholder="Type your comment here"
           numberOfLines={10}
-          showSoftInputOnFocus
           textAlignVertical="top"
           onChangeText={(review) => setReview(review)}
         />
