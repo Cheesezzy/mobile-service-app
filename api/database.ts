@@ -35,7 +35,6 @@ export function createUser(
   email: string | null,
   password: string | null,
   description: string | null,
-  favorites: any,
   joined: any,
   messages: any,
   onBoard: boolean,
@@ -46,13 +45,13 @@ export function createUser(
 ) {
   const userRef = doc(db, "users", userId);
   setDoc(userRef, {
+    id: userId,
     name,
     role,
     business,
     email,
     password,
     description,
-    favorites,
     joined,
     messages,
     onBoard,
@@ -324,6 +323,31 @@ export function updateRating(bizId: any, rating: any) {
   });
 }
 
+export function updateRatingsAndReviews(
+  userId: any,
+  name: any,
+  date: any,
+  bizId: any,
+  rating: any,
+  review: any
+) {
+  const ratingsAndReviewsRef = doc(
+    db,
+    "businesses",
+    bizId,
+    "ratingsAndReviews",
+    userId
+  );
+
+  updateDoc(ratingsAndReviewsRef, {
+    id: userId,
+    name,
+    date,
+    rating,
+    review,
+  });
+}
+
 export function updateGallery(bizId: any, url: any, img: string) {
   const businessRef = doc(db, "businesses", bizId, "gallery", img);
 
@@ -339,13 +363,14 @@ export function addAppointment(
   date: AppointmentDate,
   location: any
 ) {
-  const businessRef = doc(db, "businesses", bizId, "appointment", name);
+  const appointmentsRef = doc(db, "businesses", bizId, "appointments", name);
 
-  setDoc(businessRef, {
+  setDoc(appointmentsRef, {
     name,
     time,
     date,
     location,
+    completed: false,
   });
 }
 

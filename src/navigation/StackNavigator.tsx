@@ -55,6 +55,7 @@ import Privacy from "../screens/policy-and-terms/Privacy";
 // import BusinessLocation from "../screens/BusinessEnrollScreen/BusinessLocation";
 // import BusinessEnrollment from "../screens/BusinessEnrollScreen/BusinessEnrollment";
 // import KycVerification from "../screens/BusinessEnrollScreen/KycVerification";
+import ServiceConfirmationScreen from "../screens/ServiceConfirmationScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -415,7 +416,7 @@ const StackNavigator = () => {
         name="Terms"
         component={Terms}
         options={{
-          title: "Ads Component",
+          title: "Terms",
           headerShown: false,
         }}
       />
@@ -423,7 +424,15 @@ const StackNavigator = () => {
         name="Privacy-Policy"
         component={Privacy}
         options={{
-          title: "Ads Component",
+          title: "Privacy-Policy",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Service Confirmation"
+        component={ServiceConfirmationScreen}
+        options={{
+          title: "Service Confirmation",
           headerShown: false,
         }}
       />

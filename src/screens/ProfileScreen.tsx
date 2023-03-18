@@ -698,17 +698,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: 10,
   },
-  choiceBtnWirez: {
-    width: "30%",
-    height: 30,
-    borderWidth: 1,
-    borderColor: colors.primary,
-    borderRadius: 5,
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center",
-    marginTop: 10,
-  },
   choiceBtnTxt: {
     color: colors.secondary,
     fontSize: 12,
