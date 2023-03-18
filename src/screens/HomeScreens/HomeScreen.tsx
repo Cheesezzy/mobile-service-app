@@ -12,12 +12,12 @@ import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
-import SetLocationPopup from "../../components/SetLocationPopup";
+import SetLocationPopup from "../../components/businessEnroll/SetLocationPopup";
 import { handleSwitchTheme } from "../../../provider/themeSlice";
 import ClientHome from "./ClientHome";
 import ProviderHome from "./ProviderHome";
 import { sendEmailVerification } from "firebase/auth";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import EmailNotVerfied from "./components/EmailNotVerified";
 
 const HomeScreen = ({ navigation }: any) => {

@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Button,
   Dimensions,
   StyleSheet,
   Text,

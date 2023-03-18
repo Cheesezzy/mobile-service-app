@@ -79,6 +79,7 @@ const ClientHome = ({ navigation, theme }: Props) => {
           >
             Categories
           </Text>
+          {/* <TouchableOpacity onPress={() => navigation.navigate("Categories")}> */}
           <TouchableOpacity onPress={() => navigation.navigate("Categories")}>
             <Text style={styles.viewAll}>View All</Text>
           </TouchableOpacity>
