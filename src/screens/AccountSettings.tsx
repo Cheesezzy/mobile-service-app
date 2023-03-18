@@ -42,8 +42,6 @@ const AccountSettings = ({ route }: any) => {
   const [clicked, setClicked] = useState(false);
   const [image, setImage] = useState<any>(null);
 
-  console.log(user?.bizId);
-
   async function changeProfilePic(user: any) {
     if (image) {
       const fileRef = ref(store, `profilePics/${user?.uid}`);

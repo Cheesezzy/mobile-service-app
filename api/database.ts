@@ -7,6 +7,7 @@ import {
   getDoc,
   getDocs,
   query,
+  serverTimestamp,
   setDoc,
   updateDoc,
   where,
@@ -612,6 +613,70 @@ const updateCompletedBooking = async (
     });
   }
 };
+
+export function addRecentOrder(
+  bizId: any,
+  name: any,
+  profilePic: any,
+  createdAt: any,
+  price: any
+) {
+  const recentOrdersRef = collection(db, "businesses", bizId, "recentOrders");
+
+  addDoc(recentOrdersRef, {
+    name,
+    profilePic,
+    createdAt,
+    price,
+  });
+}
+
+export function addTransaction(
+  senderId: any,
+  receiverId: any,
+  senderName: any,
+  receiverName: any,
+  date: any,
+  amount: any,
+  ref: any
+) {
+  const senderRef = collection(db, "users", senderId, "transactionHistory");
+  const receiverRef = collection(db, "users", receiverId, "transactionHistory");
+
+  addDoc(senderRef, {
+    ref,
+    type: "sent",
+    sentBy: {
+      id: senderId,
+      name: senderName,
+    },
+    receivedBy: {
+      id: receiverId,
+      name: receiverName,
+    },
+    date,
+    createdAt: serverTimestamp(),
+    status: "submitted",
+    amount,
+  });
+
+  addDoc(receiverRef, {
+    ref,
+    type: "sent",
+    sentBy: {
+      id: senderId,
+      name: senderName,
+    },
+    receivedBy: {
+      id: receiverId,
+      name: receiverName,
+    },
+    date,
+    createdAt: serverTimestamp(),
+    status: "submitted",
+    amount,
+  });
+}
 
 const obj = {
   name: "",

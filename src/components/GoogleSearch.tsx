@@ -4,27 +4,11 @@ import {
   Text,
   View,
   TouchableOpacity,
-  useWindowDimensions,
-  Image,
-  Button,
   KeyboardAvoidingView,
 } from "react-native";
-import React, { useEffect, useRef } from "react";
 import colors from "../config/colors";
 import { useState } from "react";
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  Easing,
-} from "react-native-reanimated";
-import {
-  TextInput,
-  TouchableWithoutFeedback,
-} from "react-native-gesture-handler";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import Paginator from "./Paginator";
 import { useNavigation } from "@react-navigation/native";
 import { SvgXml } from "react-native-svg";
 import { backIcon, locationIcon, searchIcon } from "../../assets/icons/icons";
