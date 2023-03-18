@@ -5,15 +5,13 @@ import HomeScreen from "../screens/HomeScreens/HomeScreen";
 import NotifScreen from "../screens/NotifScreen";
 import NegoScreen from "../screens/NegoScreen";
 import HustleScreen from "../screens/HustleScreen";
-import AboutScreen from "../screens/AboutScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import SupportScreen from "../screens/SupportScreen";
 import SearchScreen from "../screens/Search/SearchScreen";
 import { auth, db } from "../../firebaseConfig";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs } from "firebase/firestore";
 import { handleAllUsers } from "../../provider/allUsersSlice";
 import { ChatScreen } from "../components/ChatScreen";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -21,11 +19,7 @@ import AnalyticsScreen from "../screens/AnalyticsScreen";
 import PaymentsScreen from "../screens/Payments & Wallets/PaymentsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import EarningsScreen from "../screens/EarningsScreen";
-import {
-  useDocumentData,
-  useCollectionData,
-} from "react-firebase-hooks/firestore";
-import colors from "../config/colors";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 import CategoryScreen from "../screens/CategoryScreen";
 import { GoogleSearch } from "../components/GoogleSearch";
 import BusinessEnroll from "../components/BusinessEnroll";
@@ -137,14 +131,6 @@ const StackNavigator = () => {
         component={HustleScreen}
         options={{
           title: "Hustle",
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="About"
-        component={AboutScreen}
-        options={{
-          title: "About",
           headerShown: false,
         }}
       />
@@ -375,6 +361,14 @@ const StackNavigator = () => {
         component={ServiceConfirmationScreen}
         options={{
           title: "Service Confirmation",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Search Results"
+        component={SearchResults}
+        options={{
+          title: "Search Results",
           headerShown: false,
         }}
       />
