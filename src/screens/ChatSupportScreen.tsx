@@ -31,7 +31,7 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
-import { sendMessage, unBlockUser } from "../../api/database";
+import { sendSupportMessage, unBlockUser } from "../../api/database";
 import { useSelector } from "react-redux";
 import { handleUser } from "../../provider/userSlice";
 import {
@@ -122,7 +122,7 @@ export const ChatSupportScreen = ({ navigation }: any) => {
   };
 
   const handleSendMessage = () => {
-    sendMessage(
+    sendSupportMessage(
       user?.uid,
       personId,
       typedMessage,
@@ -151,7 +151,7 @@ export const ChatSupportScreen = ({ navigation }: any) => {
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
         getDownloadURL(snapshot.ref).then((url: any) => {
-          sendMessage(
+          sendSupportMessage(
             user?.uid,
             personId,
             typedMessage,
