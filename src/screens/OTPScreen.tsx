@@ -15,7 +15,7 @@ import { handleAllUsers } from "../../provider/allUsersSlice";
 import colors from "../config/colors";
 
 const OTPScreen = ({ route, navigation }: any) => {
-  const { userChannel, type } = route.params;
+  const { userChannel, type, id } = route.params;
   const [invalidCode, setInvalidCode] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -59,14 +59,21 @@ const OTPScreen = ({ route, navigation }: any) => {
               setInvalidCode(true);
               setLoading(false);
             }
-            success && navigation.replace("Change Password");
+            success &&
+              navigation.replace("Change Password", {
+                id,
+              });
             success && setLoading(false);
           });
         }}
       />
 
       {invalidCode && <Text style={styles.error}>Incorrect code.</Text>}
-      {loading ? <ActivityIndicator color="#fff" /> : "Change Password"}
+      {loading && (
+        <Text style={{ alignSelf: "center" }}>
+          <ActivityIndicator color={colors.primary} />
+        </Text>
+      )}
     </SafeAreaView>
   );
 };
@@ -120,6 +127,7 @@ const styles = StyleSheet.create({
   },
   error: {
     color: colors.errorMain,
+    alignSelf: "center",
   },
 });
 

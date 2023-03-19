@@ -2,7 +2,11 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import colors from "../../config/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { addBusiness, updateUserRole } from "../../../api/database";
+import {
+  addBusiness,
+  updateBizInformedStat,
+  updateUserRole,
+} from "../../../api/database";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { doc } from "firebase/firestore";
 import { auth, db } from "../../../firebaseConfig";
@@ -11,11 +15,12 @@ const BusinessEnrollScreen = ({ navigation }: any) => {
   const [user] = useAuthState(auth);
 
   const handleNavigation = (role: string) => {
-    //user?.uid && updateUserRole(user?.uid, role);
+    user?.uid && updateUserRole(user?.uid, role);
     if (role === "Provider") {
-      //addBusiness(user?.uid);
+      addBusiness(user?.uid);
       navigation.navigate("BusinessDetails");
     } else if (role === "Consumer") {
+      updateBizInformedStat(user?.uid);
       navigation.navigate("Home");
     }
   };
@@ -24,6 +29,7 @@ const BusinessEnrollScreen = ({ navigation }: any) => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={[styles.mainContainer]}>
         <Image
+          style={{ width: 342, height: 256, alignSelf: "center" }}
           source={require("../../../assets/businessEnroll/rete_logo.png")}
         />
         <View>

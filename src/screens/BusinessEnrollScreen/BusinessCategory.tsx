@@ -39,7 +39,7 @@ const BusinessCategory = ({ navigation }: any) => {
   const handleNavigation = () => {
     businessData.map((item) => {
       if (item.isSelected) {
-        //updateCategory(user?.bizId, item.title);
+        updateCategory(user?.bizId, item.title);
         navigation.navigate("BusinessLocation");
       }
     });

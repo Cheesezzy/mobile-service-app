@@ -9,11 +9,14 @@ import {
 } from "react-native";
 import colors from "../config/colors";
 import {
+  callUsIcon,
   emailIcon,
   facebookicon,
   googleIcon,
   hidePassIcon,
   lockIcon,
+  profileIcon,
+  profileNormalIcon,
   showPassIcon,
 } from "../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
@@ -25,22 +28,28 @@ import {
   signInWithPopup,
   sendEmailVerification,
 } from "firebase/auth";
-import { auth } from "../../firebaseConfig";
+import { auth, db } from "../../firebaseConfig";
 import { AuthErrorCodes } from "firebase/auth";
 import { createUser } from "../../api/database";
 //import { sendEmailVerification } from "../../api/verify";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 import date from "date-and-time";
+import { collection } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 const SignupScreen = ({ navigation }: any) => {
   const googleProvider = new GoogleAuthProvider();
   const [error, setError] = useState("");
   const [name, setName] = useState("");
-  const [mobOrEmail, setMobOrEmail] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const usersRef = collection(db, "users");
+  const [users, loading] = useCollectionData(usersRef);
 
   const now = new Date();
   const pattern = date.compile("MMM, DD YYYY");
@@ -57,7 +66,8 @@ const SignupScreen = ({ navigation }: any) => {
           name,
           "Consumer",
           {},
-          mobOrEmail,
+          email,
+          phone,
           password,
           "",
           date.format(now, pattern),
@@ -85,7 +95,7 @@ const SignupScreen = ({ navigation }: any) => {
 
       const userCredential = await createUserWithEmailAndPassword(
         auth,
-        mobOrEmail,
+        email,
         password
       );
 
@@ -94,7 +104,8 @@ const SignupScreen = ({ navigation }: any) => {
         name,
         "Consumer",
         {},
-        mobOrEmail,
+        email,
+        phone,
         password,
         null,
         date.format(now, pattern),
@@ -134,7 +145,7 @@ const SignupScreen = ({ navigation }: any) => {
     e.preventDefault();
 
     // check if all fields are filled in
-    if (name === "" || mobOrEmail === "") {
+    if (name === "" || email === "") {
       setError("Please fill in all fields");
       console.log(error);
       return;
@@ -145,9 +156,15 @@ const SignupScreen = ({ navigation }: any) => {
       return;
     }
 
-    setError("");
-
-    createAcctWithEandP();
+    users?.map((user) => {
+      if (user.phone === phone) {
+        setError("Phone Number is already in use");
+        return;
+      } else {
+        setError("");
+        createAcctWithEandP();
+      }
+    });
 
     {
       /*sendEmailVerification(mobOrEmail).then((sent) => {
@@ -187,7 +204,7 @@ const SignupScreen = ({ navigation }: any) => {
       <View style={styles.txtIconCon}>
         <SvgXml
           style={styles.firstIcon}
-          xml={emailIcon(theme ? colors.black : colors.darkTxt)}
+          xml={profileNormalIcon(theme ? colors.black : colors.darkTxt)}
           width="15"
           height="15"
         />
@@ -210,12 +227,33 @@ const SignupScreen = ({ navigation }: any) => {
           height="15"
         />
         <TextInput
-          onChangeText={(newMoA) => setMobOrEmail(newMoA.toLowerCase())}
+          onChangeText={(email) => setEmail(email.toLowerCase())}
           style={[
             styles.inputBox,
             { color: theme ? colors.black : colors.darkTxt },
           ]}
           placeholder="Email"
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholderTextColor={colors.lightGrey}
+        />
+      </View>
+
+      <View style={styles.txtIconCon}>
+        <SvgXml
+          style={styles.firstIcon}
+          xml={callUsIcon(theme ? colors.black : colors.darkTxt)}
+          width="15"
+          height="15"
+        />
+        <TextInput
+          keyboardType="numeric"
+          onChangeText={(phone) => setPhone(phone.toLowerCase())}
+          style={[
+            styles.inputBox,
+            { color: theme ? colors.black : colors.darkTxt },
+          ]}
+          placeholder="Phone Number"
           autoCapitalize="none"
           autoCorrect={false}
           placeholderTextColor={colors.lightGrey}
@@ -279,7 +317,7 @@ const SignupScreen = ({ navigation }: any) => {
         </Text>
       </TouchableOpacity>
 
-      <View style={styles.dividerCon}>
+      {/* <View style={styles.dividerCon}>
         <View style={styles.line} />
         <Text style={styles.or}>OR</Text>
         <View style={styles.line} />
@@ -306,31 +344,6 @@ const SignupScreen = ({ navigation }: any) => {
           ]}
         >
           Continue with Google
-        </Text>
-      </TouchableOpacity>
-
-      {/* <TouchableOpacity
-        style={styles.thirdParty}
-        onPress={() => navigation.navigate("Phone")}
-        disabled
-      >
-        <SvgXml
-          style={{
-            marginRight: 10,
-          }}
-          xml={facebookicon()}
-          width={20}
-          height={20}
-        />
-        <Text
-          style={[
-            styles.thirdPartyTxt,
-            {
-              color: theme ? colors.black : colors.darkTxt,
-            },
-          ]}
-        >
-          Continue with Phone Number
         </Text>
       </TouchableOpacity> */}
 

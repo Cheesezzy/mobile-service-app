@@ -7,19 +7,19 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { auth, db } from "../../firebaseConfig";
-import Navigation from "../components/Navigation";
-import colors from "../config/colors";
+import { auth, db } from "../../../firebaseConfig";
+import Navigation from "../../components/Navigation";
+import colors from "../../config/colors";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { StatusBar } from "expo-status-bar";
-import { getTime } from "../../api/hooks/convertTimestamp";
-import { trimText } from "../../api/hooks/generalHooks";
-import { handleSwitchTheme } from "../../provider/themeSlice";
-import { waiting } from "../../assets/svgs/svgs";
+import { getTime } from "../../../api/hooks/convertTimestamp";
+import { trimText } from "../../../api/hooks/generalHooks";
+import { handleSwitchTheme } from "../../../provider/themeSlice";
+import { waiting } from "../../../assets/svgs/svgs";
 import { SvgXml } from "react-native-svg";
-import { searchIcon } from "../../assets/icons/icons";
+import { searchIcon } from "../../../assets/icons/icons";
 
 const NegoScreen = ({ navigation }: any) => {
   const [user] = useAuthState(auth);
@@ -154,7 +154,7 @@ const NegoScreen = ({ navigation }: any) => {
                                 ? {
                                     uri: checkingPerson(msg)?.pic,
                                   }
-                                : require("../.././assets/blankProfilePic.png")
+                                : require("../../.././assets/blankProfilePic.png")
                             }
                           />
                         </View>
