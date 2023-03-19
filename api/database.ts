@@ -198,6 +198,61 @@ export async function sendMessage(
   });
 }
 
+export async function sendSupportMessage(
+  senderId: any,
+  receiverId: any,
+  text: any,
+  attachment: any,
+  senderName: string,
+  senderPic: any,
+  receiverName: string,
+  receiverPic: any,
+  createdAt: any
+) {
+  // for sending the messages
+  const senderRef = collection(
+    db,
+    "users",
+    senderId,
+    "messages",
+    receiverId,
+    "chats"
+  );
+
+  await addDoc(senderRef, {
+    msgId: "",
+    text,
+    attachment,
+    type: "sent",
+    sentBy: {
+      id: senderId,
+      name: senderName,
+      pic: senderPic,
+    },
+    receivedBy: {
+      id: receiverId,
+      name: receiverName,
+      pic: receiverPic,
+    },
+    createdAt,
+    seen: false,
+  }).then((msg) => {
+    const senderMsgIdRef = doc(
+      db,
+      "users",
+      senderId,
+      "messages",
+      receiverId,
+      "chats",
+      msg.id
+    );
+
+    updateDoc(senderMsgIdRef, {
+      msgId: msg.id,
+    });
+  });
+}
+
 export async function deleteMessages(senderId: any, receiverId: any) {
   // for deleting the present chats
   const senderNegoRef = doc(db, "users", senderId, "negotiating", receiverId);
