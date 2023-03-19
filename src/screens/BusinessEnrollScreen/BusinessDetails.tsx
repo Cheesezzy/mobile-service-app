@@ -75,8 +75,8 @@ const BusinessDetails = ({ navigation }: any) => {
         businessName: "",
         businessDesc: "",
       });
-      //updateBusinessName(user?.bizId, businessInputs.businessName);
-      //updateBusinessDesc(user?.bizId, businessInputs.businessDesc);
+      updateBusinessName(user?.bizId, businessInputs.businessName);
+      updateBusinessDesc(user?.bizId, businessInputs.businessDesc);
       navigation.navigate("BusinessCategory");
     }
 

@@ -21,8 +21,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../firebaseConfig";
 import { updatePassword } from "firebase/auth";
 
-const ChangePassword = () => {
-  const [user] = useAuthState(auth);
+const ChangePassword = ({ route }: any) => {
+  const { id } = route.params;
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -35,9 +35,8 @@ const ChangePassword = () => {
     setLoading(true);
     if (password && confirmPassword) {
       if (password === confirmPassword) {
-        if (user) {
-          updateUserPassword(user.uid, confirmPassword);
-          updatePassword(user, confirmPassword);
+        if (id) {
+          updateUserPassword(id, confirmPassword);
           setLoading(false);
         }
       } else {

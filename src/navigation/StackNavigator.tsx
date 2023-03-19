@@ -3,7 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import HomeScreen from "../screens/HomeScreens/HomeScreen";
 import NotifScreen from "../screens/NotifScreen";
-import NegoScreen from "../screens/NegoScreen";
+import NegoScreen from "../screens/Negotiation/NegoScreen";
 import HustleScreen from "../screens/HustleScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import SupportScreen from "../screens/SupportScreen";
@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { collection, doc, getDocs } from "firebase/firestore";
 import { handleAllUsers } from "../../provider/allUsersSlice";
-import { ChatScreen } from "../components/ChatScreen";
+import { ChatScreen } from "../screens/Negotiation/ChatScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import AnalyticsScreen from "../screens/AnalyticsScreen";
 import PaymentsScreen from "../screens/Payments & Wallets/PaymentsScreen";
@@ -43,13 +43,14 @@ import SearchResults from "../screens/Search/SearchResults";
 import JakeScreen from "../screens/BusinessEnrollScreen";
 import Terms from "../screens/policy-and-terms/Terms";
 import Privacy from "../screens/policy-and-terms/Privacy";
-import BusinessEnrollScreen from "../screens/BusinessEnrollScreen";
+import BusinessEnrollScreen from "../screens/BusinessEnrollScreen/index";
 import BusinessDetails from "../screens/BusinessEnrollScreen/BusinessDetails";
 import BusinessCategory from "../screens/BusinessEnrollScreen/BusinessCategory";
 import BusinessLocation from "../screens/BusinessEnrollScreen/BusinessLocation";
 import BusinessEnrollment from "../screens/BusinessEnrollScreen/BusinessEnrollment";
 import KycVerification from "../screens/BusinessEnrollScreen/KycVerification";
 import ServiceConfirmationScreen from "../screens/ServiceConfirmationScreen";
+import { ChatSupportScreen } from "../screens/ChatSupportScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -61,16 +62,13 @@ const StackNavigator = () => {
   const selector = useSelector(handleAllUsers);
   const usersRef = collection(db, "users");
   const userbizInformedRef = doc(db, "users", user?.uid!);
-  const allUsers = selector.payload.users.value;
 
   const [bizData, loading] = useDocumentData(userbizInformedRef);
 
   useEffect(() => {
     getDocs(usersRef).then((snapshot) => {
       snapshot.forEach((doc) => dispatch(handleAllUsers(doc.data())));
-      console.log(allUsers);
     });
-    console.log(bizData?.bizInformed, "biz stat");
   }, []);
 
   const checkBizInformed = () => {
@@ -427,6 +425,14 @@ const StackNavigator = () => {
         component={SearchResults}
         options={{
           title: "Search Results",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Chat Support"
+        component={ChatSupportScreen}
+        options={{
+          title: "Chat Support",
           headerShown: false,
         }}
       />

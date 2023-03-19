@@ -69,7 +69,7 @@ const SupportScreen = ({ navigation }: any) => {
         <TouchableOpacity
           activeOpacity={0.6}
           // @ts-ignore
-          onPress={() => navigation.navigate("Negotiations")}
+          onPress={() => navigation.navigate("Chat Support")}
         >
           <View style={styles.itemContainer}>
             <View style={styles.iconFlex}>

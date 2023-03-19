@@ -34,6 +34,7 @@ export function createUser(
   role: string | null,
   business: {},
   email: string | null,
+  phone: string | null,
   password: string | null,
   description: string | null,
   joined: any,
@@ -51,6 +52,8 @@ export function createUser(
     role,
     business,
     email,
+    emailVerified: false,
+    phone,
     password,
     description,
     joined,
@@ -78,6 +81,14 @@ export function updateBizInformedStat(userId: any) {
 
   updateDoc(userbizInformedRef, {
     bizInformed: true,
+  });
+}
+
+export function updateEmailVerified(userId: any) {
+  const userRef = doc(db, "users", userId);
+
+  updateDoc(userRef, {
+    emailVerified: true,
   });
 }
 
@@ -228,7 +239,7 @@ export function addBusiness(userId: any) {
     location: "",
     rating: 0,
     manager: "",
-    chargeRate: 0,
+    chargeRate: 100,
     level: "Start-up",
     completedBookings: 0,
     pendingBookings: 0,

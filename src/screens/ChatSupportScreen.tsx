@@ -44,19 +44,17 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
 import { StatusBar } from "expo-status-bar";
 import { uuidv4 } from "@firebase/util";
-import Appointment from "./appointment/Appointment";
-import MessagingOptionsPopup from "./MessagingOptionsPopup";
+import Appointment from "../components/appointment/Appointment";
+import MessagingOptionsPopup from "../components/MessagingOptionsPopup";
 
-export const ChatScreen = ({ navigation, route }: any) => {
+export const ChatSupportScreen = ({ navigation }: any) => {
   const selector = useSelector(handleUser);
-  const { name, personId, personPic } = route.params;
   const [user] = useAuthState(auth);
   const [popupType, setPopupType] = useState("");
   const [typedMessage, setTypedMessage] = useState("");
   const [image, setImage] = useState<any>(null);
   const User = selector.payload.user.value;
   const userRef = doc(db, "users", user?.uid!);
-  const senderRef = doc(db, "users", personId);
   const [messages, setMessages]: any[] = useState([]);
   const [messagesLoading, setMessagesLoading] = useState(true);
   const scrollViewRef = useAnimatedRef<any>();
@@ -65,23 +63,12 @@ export const ChatScreen = ({ navigation, route }: any) => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [showBlockedMsg, setShowBlockedMsg] = useState(false);
   const [iWasBlocked, setIWasBlocked] = useState(false);
+  const personId = "raTnUab6u3bDMqS3CmxuR3J2Sq12";
+  const name = "Support";
+  const personPic = "";
 
   const blocklistRef = collection(db, "users", user?.uid!, "blocklist");
   const [blocklist] = useCollectionData(blocklistRef);
-
-  const senderBlocklistRef = collection(db, "users", personId, "blocklist");
-  const [senderBlocklist] = useCollectionData(senderBlocklistRef);
-
-  useEffect(() => {
-    if (blocklist && senderBlocklist) {
-      setShowBlockedMsg(
-        blocklist.some((user: any) => user?.email === sender?.email)
-      );
-      setIWasBlocked(
-        senderBlocklist.some((user: any) => user?.email === User?.email)
-      );
-    }
-  }, [blocklist, senderBlocklist]);
 
   const handleUnblockUser = () => {
     if (sender && user && user.uid && sender.email)
@@ -122,9 +109,8 @@ export const ChatScreen = ({ navigation, route }: any) => {
   const [sentMessages, sentLoading] = useCollectionData(sentQ);
   const [receivedMessages, receivedLoading] = useCollectionData(receivedQ);
 
+  const senderRef = doc(db, "users", personId);
   const [sender] = useDocumentData(senderRef);
-  const businessRef = sender?.bizId && doc(db, "businesses", sender?.bizId);
-  const [business] = useDocumentData(businessRef);
 
   const updateSeen = (id: any) => {
     if (id) {
@@ -341,63 +327,8 @@ export const ChatScreen = ({ navigation, route }: any) => {
             </Text>
           </View>
         </TouchableOpacity>
-
-        <TouchableOpacity
-          // @ts-ignore
-          onPress={() => setShowDropDown(!showDropDown)}
-        >
-          <SvgXml
-            xml={optionIcon(theme ? colors.black : colors.darkTxt)}
-            width="21"
-            height="21"
-          />
-        </TouchableOpacity>
-        <Appointment
-          isVisible={isVisible}
-          setIsVisible={setIsVisible}
-          business={business}
-          sender={sender}
-        />
       </View>
 
-      {popupType && (
-        <MessagingOptionsPopup
-          business={business}
-          popupType={popupType}
-          clearType={setPopupType}
-          userId={user?.uid}
-          personId={personId}
-          person={sender}
-        />
-      )}
-
-      <Overlay
-        isVisible={showDropDown}
-        overlayStyle={styles.dropdown}
-        onBackdropPress={() => setShowDropDown(false)}
-        statusBarTranslucent
-      >
-        <TouchableOpacity onPress={() => setIsVisible(true)}>
-          <Text style={styles.dropdownItem}>Schedule</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Profile", { business })}
-        >
-          <Text style={styles.dropdownItem}>View Profile</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setPopupType("Report")}>
-          <Text style={styles.dropdownItem}>Report</Text>
-        </TouchableOpacity>
-        {showBlockedMsg ? (
-          <TouchableOpacity onPress={handleUnblockUser}>
-            <Text style={styles.dropdownItem}>Unblock</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity onPress={() => setPopupType("Block")}>
-            <Text style={styles.dropdownItem}>Block</Text>
-          </TouchableOpacity>
-        )}
-      </Overlay>
       <ScrollView
         ref={scrollViewRef}
         style={[
@@ -443,12 +374,12 @@ export const ChatScreen = ({ navigation, route }: any) => {
 
           <View>
             <Text style={styles.desc}>
-              {business ? business.desc : "A business on Rete"}
+              You are chatting with a support representative.
             </Text>
           </View>
 
           <View>
-            <Text style={styles.joined}>Joined March 2022</Text>
+            <Text style={styles.joined}>Joined 0000</Text>
           </View>
         </View>
 
