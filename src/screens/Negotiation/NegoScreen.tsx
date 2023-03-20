@@ -90,7 +90,7 @@ const NegoScreen = ({ navigation }: any) => {
         style={[
           styles.container,
           {
-            backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+            backgroundColor: theme ? colors.secondary : colors.black,
           },
         ]}
       >
@@ -216,7 +216,7 @@ const NegoScreen = ({ navigation }: any) => {
                 <View
                   style={{
                     width: "100%",
-                    height: "100%",
+                    height: "90%",
                     alignItems: "center",
                     justifyContent: "center",
                   }}
@@ -226,6 +226,7 @@ const NegoScreen = ({ navigation }: any) => {
                     style={{
                       fontFamily: "LatoRegular",
                       marginTop: 10,
+                      color: theme ? colors.black : colors.darkTxt,
                     }}
                   >
                     You do not have any message yet

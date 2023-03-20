@@ -101,6 +101,7 @@ const NotifScreen = ({ navigation }: any) => {
                     style={{
                       fontFamily: "LatoRegular",
                       marginTop: 10,
+                      color: theme ? colors.black : colors.darkTxt,
                     }}
                   >
                     You do not have any notification yet
