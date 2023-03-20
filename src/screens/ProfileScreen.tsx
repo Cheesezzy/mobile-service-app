@@ -47,6 +47,10 @@ const ProfileScreen = ({ navigation, route }: any) => {
   const userRef = doc(db, "users", User?.uid!);
   const [user] = useDocumentData(userRef);
   const [businessUser] = useDocumentData(businessUserRef);
+  const ratingsAndReviewsRef =
+    user?.bizId &&
+    collection(db, "businesses", user.bizId, "ratingsAndReviews");
+  const [ratingsAndReviews] = useCollectionData(ratingsAndReviewsRef);
 
   const imageOneRef =
     businessUser?.bizId &&
@@ -193,7 +197,7 @@ const ProfileScreen = ({ navigation, route }: any) => {
         style={[
           styles.container,
           {
-            backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+            backgroundColor: theme ? colors.secondarySmoke : colors.black,
           },
         ]}
       >
@@ -327,19 +331,97 @@ const ProfileScreen = ({ navigation, route }: any) => {
         )}
 
         <View style={styles.stats}>
-          <View style={styles.statsItem}>
-            <Text style={styles.statsItemBigTxt}>2 yrs+</Text>
-            <Text style={styles.statsItemSmTxt}>Experience</Text>
+          <View
+            style={[
+              styles.statsItem,
+              {
+                backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+              },
+            ]}
+          >
+            <Text
+              style={[
+                styles.statsItemBigTxt,
+                ,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              {business?.level}
+            </Text>
+            <Text
+              style={[
+                styles.statsItemSmTxt,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              Level
+            </Text>
           </View>
 
-          <View style={styles.statsItem}>
-            <Text style={styles.statsItemBigTxt}>234</Text>
-            <Text style={styles.statsItemSmTxt}>Completed Orders</Text>
+          <View
+            style={[
+              styles.statsItem,
+              {
+                backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+              },
+            ]}
+          >
+            <Text
+              style={[
+                styles.statsItemBigTxt,
+                ,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              {business?.completedBookings}
+            </Text>
+            <Text
+              style={[
+                styles.statsItemSmTxt,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              Completed Orders
+            </Text>
           </View>
 
-          <View style={styles.statsItem}>
-            <Text style={styles.statsItemBigTxt}>30</Text>
-            <Text style={styles.statsItemSmTxt}>Reviews</Text>
+          <View
+            style={[
+              styles.statsItem,
+              {
+                backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+              },
+            ]}
+          >
+            <Text
+              style={[
+                styles.statsItemBigTxt,
+                ,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              {ratingsAndReviews ? ratingsAndReviews.length : 0}
+            </Text>
+            <Text
+              style={[
+                styles.statsItemSmTxt,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              Reviews
+            </Text>
           </View>
         </View>
 
@@ -356,14 +438,14 @@ const ProfileScreen = ({ navigation, route }: any) => {
               height: 3,
             }}
             containerStyle={{
-              backgroundColor: colors.secondarySmoke,
+              backgroundColor: theme ? colors.secondary : colors.blackSmoke,
             }}
             variant="primary"
           >
             <Tab.Item
               title="About"
               titleStyle={{
-                color: colors.black,
+                color: theme ? colors.black : colors.darkTxt,
                 fontSize: 12,
                 fontFamily: "PrimarySemiBold",
               }}
@@ -371,7 +453,7 @@ const ProfileScreen = ({ navigation, route }: any) => {
             <Tab.Item
               title="Gallery"
               titleStyle={{
-                color: colors.black,
+                color: theme ? colors.black : colors.darkTxt,
                 fontSize: 12,
                 fontFamily: "PrimarySemiBold",
               }}
@@ -379,7 +461,7 @@ const ProfileScreen = ({ navigation, route }: any) => {
             <Tab.Item
               title="Reviews"
               titleStyle={{
-                color: colors.black,
+                color: theme ? colors.black : colors.darkTxt,
                 fontSize: 12,
                 fontFamily: "PrimarySemiBold",
               }}

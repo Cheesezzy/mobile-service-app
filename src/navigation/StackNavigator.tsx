@@ -33,7 +33,7 @@ import MoreScreen from "../screens/MoreScreen";
 import FundScreen from "../screens/Payments & Wallets/FundScreen";
 import PayStatScreen from "../screens/Payments & Wallets/PayStatScreen";
 import TransactionHistory from "../screens/Payments & Wallets/TransactionHistory";
-import RecentOrderScreen from "../screens/RecentOrderScreen";
+import RecentOrdersScreen from "../screens/RecentOrderScreen";
 import TransactionDetailsScreen from "../screens/Payments & Wallets/TransactionDetailsScreen";
 import AddNewCardScreen from "../screens/Payments & Wallets/AddNewCardScreen";
 import AdsComponent from "../screens/Payments & Wallets/components/AdsComponent";
@@ -373,10 +373,10 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="Recent Order"
-        component={RecentOrderScreen}
+        name="Recent Orders"
+        component={RecentOrdersScreen}
         options={{
-          title: "Add New Card",
+          title: "Recent Orders",
           headerShown: false,
         }}
       />

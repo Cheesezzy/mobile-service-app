@@ -6,16 +6,21 @@ import { useSelector } from "react-redux";
 
 interface Props {
   name: string;
-  minutes: string;
+  createdAt: string;
 }
 
-const RecentOrder = ({ name, minutes }: Props) => {
+const RecentOrder = ({ name, createdAt }: Props) => {
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
   return (
-    <View style={[styles.orderContainer, {
-      backgroundColor: theme ? colors.secondarySmoke : colors.black,
-    }]}>
+    <View
+      style={[
+        styles.orderContainer,
+        {
+          backgroundColor: theme ? colors.secondarySmoke : colors.black,
+        },
+      ]}
+    >
       <View style={styles.order}>
         <Avatar
           size={31}
@@ -42,7 +47,7 @@ const RecentOrder = ({ name, minutes }: Props) => {
               },
             ]}
           >
-            {minutes}
+            {createdAt}
           </Text>
         </View>
       </View>

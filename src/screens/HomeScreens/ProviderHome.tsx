@@ -4,14 +4,23 @@ import { SvgXml } from "react-native-svg";
 import RecentOrder from "../../components/RecentOrder";
 import { shieldCheck, shopping } from "../../../assets/svgs/svgs";
 import { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { collection } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { db } from "../../../firebaseConfig";
 
 interface Props {
   navigation: any;
   theme: boolean;
   business: any;
+  user: any;
 }
 
-const ProviderHome = ({ navigation, theme, business }: Props) => {
+const ProviderHome = ({ navigation, theme, business, user }: Props) => {
+  const recentOrdersRef =
+    user?.bizId && collection(db, "businesses", user.bizId, "recentOrders");
+  const [recentOrders, loading] = useCollectionData(recentOrdersRef);
+
   return (
     <>
       <>
@@ -110,22 +119,35 @@ const ProviderHome = ({ navigation, theme, business }: Props) => {
           >
             Recent Orders
           </Text>
-          <TouchableOpacity onPress={() => navigation.navigate("Recent Order")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Recent Orders")}
+          >
             <Text style={styles.viewAll}>View All</Text>
           </TouchableOpacity>
         </View>
       </>
 
       <View style={{ width: "100%" }}>
-        {Array(4)
-          .fill(null)
-          .map((_, i) => (
+        {recentOrders && recentOrders.length > 0 ? (
+          recentOrders.map((_, i) => (
             <RecentOrder
               key={i}
               name="Ayoola Ayolola"
-              minutes="32 minutes ago"
+              createdAt="32 minutes ago"
             />
-          ))}
+          ))
+        ) : (
+          <Text
+            style={[
+              styles.recentOrdersTxt,
+              {
+                color: theme ? colors.black : colors.darkTxt,
+              },
+            ]}
+          >
+            You do not have any orders yet
+          </Text>
+        )}
       </View>
     </>
   );
@@ -247,9 +269,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 28,
   },
-  bigTxt: {
+  recentOrdersTxt: {
     fontSize: 12,
-    fontFamily: "LatoRegular",
-    textAlign: "center",
+    fontFamily: "PrimaryRegular",
+    margin: 5,
+    marginLeft: 20,
   },
 });
