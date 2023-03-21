@@ -12,9 +12,9 @@ import {
   ActivityIndicator,
   Image,
 } from "react-native";
-import colors from "../config/colors";
+import colors from "../../config/colors";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db, store } from "../../firebaseConfig";
+import { auth, db, store } from "../../../firebaseConfig";
 import { SvgXml } from "react-native-svg";
 import {
   attachIcon,
@@ -22,7 +22,7 @@ import {
   closeIcon,
   optionIcon,
   backIcon,
-} from "../../assets/icons/icons";
+} from "../../../assets/icons/icons";
 import {
   collection,
   doc,
@@ -31,21 +31,21 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
-import { sendMessage, unBlockUser } from "../../api/database";
+import { sendMessage, unBlockUser } from "../../../api/database";
 import { useSelector } from "react-redux";
-import { handleUser } from "../../provider/userSlice";
+import { handleUser } from "../../../provider/userSlice";
 import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
-import { getTime } from "../../api/hooks/convertTimestamp";
+import { getTime } from "../../../api/hooks/convertTimestamp";
 import { useAnimatedRef } from "react-native-reanimated";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
 import { StatusBar } from "expo-status-bar";
 import { uuidv4 } from "@firebase/util";
-import Appointment from "./Appointment";
-import MessagingOptionsPopup from "./MessagingOptionsPopup";
+import Appointment from "../../components/appointment/Appointment";
+import MessagingOptionsPopup from "../../components/MessagingOptionsPopup";
 
 export const ChatScreen = ({ navigation, route }: any) => {
   const selector = useSelector(handleUser);
@@ -316,7 +316,7 @@ export const ChatScreen = ({ navigation, route }: any) => {
                   ? {
                       uri: personPic,
                     }
-                  : require("../../assets/blankProfilePic.png")
+                  : require("../../.././assets/blankProfilePic.png")
               }
             />
           </TouchableOpacity>
@@ -424,7 +424,7 @@ export const ChatScreen = ({ navigation, route }: any) => {
                   ? {
                       uri: personPic,
                     }
-                  : require("../../assets/blankProfilePic.png")
+                  : require("../../.././assets/blankProfilePic.png")
               }
             />
           </TouchableOpacity>

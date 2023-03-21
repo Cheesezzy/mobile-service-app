@@ -7,19 +7,19 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { auth, db } from "../../firebaseConfig";
-import Navigation from "../components/Navigation";
-import colors from "../config/colors";
+import { auth, db } from "../../../firebaseConfig";
+import Navigation from "../../components/Navigation";
+import colors from "../../config/colors";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { StatusBar } from "expo-status-bar";
-import { getTime } from "../../api/hooks/convertTimestamp";
-import { trimText } from "../../api/hooks/generalHooks";
-import { handleSwitchTheme } from "../../provider/themeSlice";
-import { waiting } from "../../assets/svgs/svgs";
+import { getTime } from "../../../api/hooks/convertTimestamp";
+import { trimText } from "../../../api/hooks/generalHooks";
+import { handleSwitchTheme } from "../../../provider/themeSlice";
+import { waiting } from "../../../assets/svgs/svgs";
 import { SvgXml } from "react-native-svg";
-import { searchIcon } from "../../assets/icons/icons";
+import { searchIcon } from "../../../assets/icons/icons";
 
 const NegoScreen = ({ navigation }: any) => {
   const [user] = useAuthState(auth);
@@ -90,7 +90,7 @@ const NegoScreen = ({ navigation }: any) => {
         style={[
           styles.container,
           {
-            backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+            backgroundColor: theme ? colors.secondary : colors.black,
           },
         ]}
       >
@@ -154,7 +154,7 @@ const NegoScreen = ({ navigation }: any) => {
                                 ? {
                                     uri: checkingPerson(msg)?.pic,
                                   }
-                                : require("../.././assets/blankProfilePic.png")
+                                : require("../../.././assets/blankProfilePic.png")
                             }
                           />
                         </View>
@@ -216,7 +216,7 @@ const NegoScreen = ({ navigation }: any) => {
                 <View
                   style={{
                     width: "100%",
-                    height: "100%",
+                    height: "90%",
                     alignItems: "center",
                     justifyContent: "center",
                   }}
@@ -226,6 +226,7 @@ const NegoScreen = ({ navigation }: any) => {
                     style={{
                       fontFamily: "LatoRegular",
                       marginTop: 10,
+                      color: theme ? colors.black : colors.darkTxt,
                     }}
                   >
                     You do not have any message yet

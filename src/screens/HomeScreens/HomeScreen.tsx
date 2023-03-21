@@ -103,6 +103,7 @@ const HomeScreen = ({ navigation }: any) => {
               navigation={navigation}
               theme={theme}
               business={business}
+              user={user}
             />
           )}
           <View style={{ height: 100, width: "100%" }} />

@@ -161,7 +161,7 @@ const MainSearch = ({ searchQuery, queryUntouched, navigation }: Props) => {
             style={styles.locationBtn}
             onPress={() =>
               navigation.navigate("GoogleSearch", {
-                locationType: "search",
+                locationType: "Search",
               })
             }
           >
@@ -290,9 +290,9 @@ const MainSearch = ({ searchQuery, queryUntouched, navigation }: Props) => {
                               size={60}
                               rounded={false}
                               source={
-                                business && business.userId && false
+                                business?.businessDP
                                   ? {
-                                      uri: "",
+                                      uri: business?.businessDP,
                                     }
                                   : require("../../../assets/blankProfilePic.png")
                               }

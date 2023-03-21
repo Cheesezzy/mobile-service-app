@@ -19,11 +19,13 @@ import { addCommas, checkRole } from "../../api/hooks/generalHooks";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 import {
+  addRecentOrder,
   transferFunds,
   updateAmountUsedToHire,
   updatePendingBooking,
   updateTotalEarnings,
 } from "../../api/database";
+import date from "date-and-time";
 
 const buttonSize = Dimensions.get("window").width * 0.18;
 
@@ -54,6 +56,9 @@ const TransferScreen = ({ route, navigation }: any) => {
 
   const [senderBusiness] = useDocumentData(senderBusinessRef);
 
+  const now = new Date();
+  const pattern = date.compile("MMM, DD YYYY");
+
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
 
@@ -81,6 +86,13 @@ const TransferScreen = ({ route, navigation }: any) => {
         business.userId,
         +business.pendingBookings,
         +business.pendingBookings,
+        +displayAmount
+      );
+      addRecentOrder(
+        business.userId,
+        user?.name,
+        user?.profilePic,
+        date.format(now, pattern),
         +displayAmount
       );
       if (senderBusiness) {

@@ -2,12 +2,34 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import colors from "../../config/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  addBusiness,
+  updateBizInformedStat,
+  updateUserRole,
+} from "../../../api/database";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { doc } from "firebase/firestore";
+import { auth, db } from "../../../firebaseConfig";
 
 const BusinessEnrollScreen = ({ navigation }: any) => {
+  const [user] = useAuthState(auth);
+
+  const handleNavigation = (role: string) => {
+    user?.uid && updateUserRole(user?.uid, role);
+    if (role === "Provider") {
+      addBusiness(user?.uid);
+      navigation.navigate("BusinessDetails");
+    } else if (role === "Consumer") {
+      updateBizInformedStat(user?.uid);
+      navigation.navigate("Home");
+    }
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={[styles.mainContainer]}>
         <Image
+          style={{ width: 342, height: 256, alignSelf: "center" }}
           source={require("../../../assets/businessEnroll/rete_logo.png")}
         />
         <View>
@@ -17,19 +39,17 @@ const BusinessEnrollScreen = ({ navigation }: any) => {
           </Text>
         </View>
         <View style={styles.btnContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => handleNavigation("Consumer")}>
             <View style={styles.btn1}>
               <Text style={[styles.btnText, { color: "white" }]}>
-                Service consumer
+                Service Consumer
               </Text>
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => navigation.navigate("BusinessDetails")}
-          >
+          <TouchableOpacity onPress={() => handleNavigation("Provider")}>
             <View style={styles.btn}>
-              <Text style={styles.btnText}>Service provider</Text>
+              <Text style={styles.btnText}>Service Provider</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -46,16 +66,14 @@ const styles = StyleSheet.create({
   },
   welcomeText: {
     textAlign: "center",
-    color: "#000000",
-    fontWeight: "700",
+    fontFamily: "PrimarySemiBold",
     fontSize: 24,
   },
   welcomeTextDesc: {
     textAlign: "center",
     marginTop: 4,
-    color: "#000000",
-    fontWeight: "400",
-    fontSize: 16,
+    fontFamily: "PrimaryRegular",
+    fontSize: 14,
   },
   btnContainer: {
     paddingHorizontal: 20,
@@ -69,8 +87,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingVertical: 16,
     marginTop: 24,
-    backgroundColor: "#fff",
-    borderWidth: 1.5,
+    borderWidth: 1,
     borderColor: colors.primary,
     borderRadius: 8,
   },

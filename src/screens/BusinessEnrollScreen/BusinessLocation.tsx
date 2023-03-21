@@ -6,49 +6,53 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SvgXml } from "react-native-svg";
-import {
-  businnessLocationIcon,
-  sendLocationIcon,
-} from "../../../assets/icons/icons";
+import { searchIcon, sendLocationIcon } from "../../../assets/icons/icons";
 import colors from "../../config/colors";
 import BusinessConfirmLocation from "../../components/businessEnroll/BusinessConfirmLocation";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "../../../firebaseConfig";
+import { doc } from "firebase/firestore";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 
 const BusinessLocation = ({ navigation, route }: any) => {
-  const [showLocationPopup, setLocationPopup] = useState(false);
-  const [search, setSearch] = useState("");
+  const [User] = useAuthState(auth);
+  const userRef = doc(db, "users", User?.uid!);
+  const [user] = useDocumentData(userRef);
+  const businessRef = user?.bizId && doc(db, "businesses", user?.bizId);
+  const [business, loading] = useDocumentData(businessRef);
+
+  const handleNavigation = () => {
+    navigation.navigate("GoogleSearch", {
+      locationType: "Business",
+    });
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.mainContainer}>
-        {showLocationPopup ? (
-          <BusinessConfirmLocation navigation={navigation} search={search} />
+        {!business?.location && loading ? null : business?.location ? (
+          <BusinessConfirmLocation
+            navigation={navigation}
+            location={business.location}
+          />
         ) : (
           <>
             <Text style={styles.header}>Find business location.</Text>
             <Text style={styles.headerDesc}>
-              set the location for your business.
+              Set the location for your business.
             </Text>
 
-            <View style={styles.inputContainer}>
-              <View style={styles.searchBox}>
-                <SvgXml xml={businnessLocationIcon()} width="13" height="17" />
-                <TextInput
-                  onChangeText={(enteredText) => setSearch(enteredText)}
-                  style={styles.input}
-                  placeholder="Oha specialist"
-                />
-              </View>
-            </View>
-
             <View style={styles.locationContainer}>
-              <TouchableOpacity onPress={() => setLocationPopup(true)}>
+              <TouchableOpacity onPress={handleNavigation}>
                 <View style={styles.innerItems}>
                   <View style={styles.icon}>
                     <SvgXml xml={sendLocationIcon()} width="13" height="17" />
                   </View>
-                  <Text>Use current location</Text>
+                  <Text style={{ fontFamily: "PrimaryRegular" }}>
+                    Set your location
+                  </Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -67,28 +71,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   header: {
-    fontWeight: "600",
+    fontFamily: "PrimarySemiBold",
     fontSize: 24,
   },
   headerDesc: {
     marginTop: 4,
-    fontWeight: "400",
+    fontFamily: "PrimaryRegular",
     fontSize: 12,
     lineHeight: 20,
   },
 
   inputContainer: {
     marginTop: 36,
-  },
-
-  searchBox: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    borderColor: "rgba(147, 187, 245, 0.24)",
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingLeft: 12,
   },
 
   input: {

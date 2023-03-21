@@ -3,7 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import HomeScreen from "../screens/HomeScreens/HomeScreen";
 import NotifScreen from "../screens/NotifScreen";
-import NegoScreen from "../screens/NegoScreen";
+import NegoScreen from "../screens/Negotiation/NegoScreen";
 import HustleScreen from "../screens/HustleScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import SupportScreen from "../screens/SupportScreen";
@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { collection, doc, getDocs } from "firebase/firestore";
 import { handleAllUsers } from "../../provider/allUsersSlice";
-import { ChatScreen } from "../components/ChatScreen";
+import { ChatScreen } from "../screens/Negotiation/ChatScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import AnalyticsScreen from "../screens/AnalyticsScreen";
 import PaymentsScreen from "../screens/Payments & Wallets/PaymentsScreen";
@@ -33,7 +33,7 @@ import MoreScreen from "../screens/MoreScreen";
 import FundScreen from "../screens/Payments & Wallets/FundScreen";
 import PayStatScreen from "../screens/Payments & Wallets/PayStatScreen";
 import TransactionHistory from "../screens/Payments & Wallets/TransactionHistory";
-import RecentOrderScreen from "../screens/RecentOrderScreen";
+import RecentOrdersScreen from "../screens/RecentOrderScreen";
 import TransactionDetailsScreen from "../screens/Payments & Wallets/TransactionDetailsScreen";
 import AddNewCardScreen from "../screens/Payments & Wallets/AddNewCardScreen";
 import AdsComponent from "../screens/Payments & Wallets/components/AdsComponent";
@@ -45,16 +45,20 @@ import FAQs from "../screens/ContactSupport/FAQs";
 import JakeScreen from "../screens/BusinessEnrollScreen";
 import Terms from "../screens/policy-and-terms/Terms";
 import Privacy from "../screens/policy-and-terms/Privacy";
-// import BusinessEnrollScreen from "../screens/BusinessEnrollScreen";
-// import BusinessDetails from "../screens/BusinessEnrollScreen/BusinessDetails";
-// import BusinessCategory from "../screens/BusinessEnrollScreen/BusinessCategory";
-// import BusinessLocation from "../screens/BusinessEnrollScreen/BusinessLocation";
-// import BusinessEnrollment from "../screens/BusinessEnrollScreen/BusinessEnrollment";
-// import KycVerification from "../screens/BusinessEnrollScreen/KycVerification";
+import BusinessEnrollScreen from "../screens/BusinessEnrollScreen/index";
+import BusinessDetails from "../screens/BusinessEnrollScreen/BusinessDetails";
+import BusinessCategory from "../screens/BusinessEnrollScreen/BusinessCategory";
+import BusinessLocation from "../screens/BusinessEnrollScreen/BusinessLocation";
+import BusinessEnrollment from "../screens/BusinessEnrollScreen/BusinessEnrollment";
+import KycVerification from "../screens/BusinessEnrollScreen/KycVerification";
 import ServiceConfirmationScreen from "../screens/ServiceConfirmationScreen";
+<<<<<<< HEAD
 import ServiceScreen from "../screens/ContactSupport/ServiceScreen";
 import GeneralScreen from "../screens/ContactSupport/GeneralScreen";
 import TransactionScreen from "../screens/ContactSupport/TransactionScreen";
+=======
+import { ChatSupportScreen } from "../screens/ChatSupportScreen";
+>>>>>>> a54231f4edcd23261036fd51d92f8e3c382f9fb7
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -66,16 +70,13 @@ const StackNavigator = () => {
   const selector = useSelector(handleAllUsers);
   const usersRef = collection(db, "users");
   const userbizInformedRef = doc(db, "users", user?.uid!);
-  const allUsers = selector.payload.users.value;
 
   const [bizData, loading] = useDocumentData(userbizInformedRef);
 
   useEffect(() => {
     getDocs(usersRef).then((snapshot) => {
       snapshot.forEach((doc) => dispatch(handleAllUsers(doc.data())));
-      console.log(allUsers);
     });
-    console.log(bizData?.bizInformed, "biz stat");
   }, []);
 
   const checkBizInformed = () => {
@@ -89,9 +90,9 @@ const StackNavigator = () => {
   */
     }
 
-    if (bizData && bizData?.bizInformed && !loading) {
+    if (bizData && !loading) {
       if (bizData?.bizInformed) return HomeScreen;
-      return BusinessEnroll;
+      return BusinessEnrollScreen;
     }
     return HomeScreen;
   };
@@ -124,6 +125,7 @@ const StackNavigator = () => {
       />
 
       <Stack.Screen
+<<<<<<< HEAD
         name="Contact Support"
         component={ContactSupport}
         options={{
@@ -142,6 +144,8 @@ const StackNavigator = () => {
       />
 
       <Stack.Screen
+=======
+>>>>>>> a54231f4edcd23261036fd51d92f8e3c382f9fb7
         name="Phone"
         component={PhoneScreen}
         options={{
@@ -279,7 +283,7 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="BusinessEnrollScreen"
         component={BusinessEnrollScreen}
         options={{
@@ -329,7 +333,7 @@ const StackNavigator = () => {
           title: "KycVerification",
           headerShown: false,
         }}
-      /> */}
+      />
 
       <Stack.Screen
         name="Category"
@@ -428,10 +432,10 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="Recent Order"
-        component={RecentOrderScreen}
+        name="Recent Orders"
+        component={RecentOrdersScreen}
         options={{
-          title: "Add New Card",
+          title: "Recent Orders",
           headerShown: false,
         }}
       />
@@ -480,6 +484,14 @@ const StackNavigator = () => {
         component={SearchResults}
         options={{
           title: "Search Results",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Chat Support"
+        component={ChatSupportScreen}
+        options={{
+          title: "Chat Support",
           headerShown: false,
         }}
       />

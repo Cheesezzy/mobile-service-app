@@ -8,13 +8,22 @@ import {
   FlatList,
   StatusBar,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import colors from "../../config/colors";
 import { ScrollView } from "react-native-gesture-handler";
 import { category } from "../../../utils/businessCategory";
 import BusinessCategoryList from "../../components/businessEnroll/BusinessCategoryList";
+import { updateCategory } from "../../../api/database";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "../../../firebaseConfig";
+import { doc } from "firebase/firestore";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 
-const BusinessCategory = ({ navigation, route }: any) => {
+const BusinessCategory = ({ navigation }: any) => {
+  const [User] = useAuthState(auth);
+  const userRef = User && doc(db, "users", User?.uid);
+  const [user] = useDocumentData(userRef);
+
   const [businessData, setBusinessData] = useState(category);
 
   const handleCheckbox = (id: number) => {
@@ -26,13 +35,23 @@ const BusinessCategory = ({ navigation, route }: any) => {
       )
     );
   };
+
+  const handleNavigation = () => {
+    businessData.map((item) => {
+      if (item.isSelected) {
+        updateCategory(user?.bizId, item.title);
+        navigation.navigate("BusinessLocation");
+      }
+    });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       {/* <ScrollView showsVerticalScrollIndicator={false}> */}
       <View style={styles.mainContainer}>
         <Text style={styles.header}>Pick business category.</Text>
         <Text style={styles.headerDesc}>
-          pick the category that best suits your business.
+          Pick the category that best suits your business.
         </Text>
 
         <FlatList
@@ -50,9 +69,7 @@ const BusinessCategory = ({ navigation, route }: any) => {
           keyExtractor={({ id }) => id.toString()}
         />
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate("BusinessLocation")}
-        >
+        <TouchableOpacity onPress={handleNavigation}>
           <View style={styles.btn}>
             <Text style={styles.btnText}>Proceed</Text>
           </View>
@@ -73,25 +90,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   header: {
-    fontWeight: "600",
+    fontFamily: "PrimarySemiBold",
     fontSize: 24,
   },
   headerDesc: {
     marginTop: 4,
-    fontWeight: "400",
+    fontFamily: "PrimaryRegular",
     fontSize: 12,
     lineHeight: 20,
     marginBottom: 8,
   },
 
   btnText: {
+    fontFamily: "PrimaryRegular",
     textAlign: "center",
     color: "#fff",
     fontSize: 14,
   },
   btn: {
     width: "100%",
-    paddingVertical: 16,
+    paddingVertical: 14,
     marginTop: 56,
     backgroundColor: colors.primary,
     borderWidth: 1.5,

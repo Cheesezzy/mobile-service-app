@@ -16,7 +16,7 @@ const BusinessEnrollment = ({ navigation, route }: any) => {
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.mainContainer}>
-          <Text style={styles.header}>Business enrollment detail .</Text>
+          <Text style={styles.header}>Business enrollment detail.</Text>
           <Text style={styles.headerDesc}>
             Please go through the details and make sure they are correct.
           </Text>
@@ -95,6 +95,7 @@ const BusinessEnrollment = ({ navigation, route }: any) => {
             </View>
           </TouchableOpacity>
         </View>
+        <View style={{ height: 80, width: "100%" }} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -104,16 +105,16 @@ export default BusinessEnrollment;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    marginTop: 100,
+    marginTop: 80,
     paddingHorizontal: 24,
   },
   header: {
-    fontWeight: "600",
+    fontFamily: "PrimarySemiBold",
     fontSize: 24,
   },
   headerDesc: {
     marginTop: 4,
-    fontWeight: "400",
+    fontFamily: "PrimaryRegular",
     fontSize: 12,
     lineHeight: 20,
     marginBottom: 8,
@@ -123,14 +124,14 @@ const styles = StyleSheet.create({
   inputLabel: {
     marginTop: 24,
     flexDirection: "row",
-    fontWeight: "400",
+    fontFamily: "PrimaryRegular",
     fontSize: 16,
   },
   inputs: {
     borderWidth: 1,
     marginTop: 6,
     borderColor: "rgba(147, 187, 245, 0.24)",
-    paddingVertical: 17,
+    paddingVertical: 12,
     paddingHorizontal: 10,
     borderRadius: 8,
   },
@@ -141,26 +142,26 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginTop: 6,
     borderColor: "rgba(147, 187, 245, 0.24)",
-    paddingVertical: 17,
+    paddingVertical: 12,
     paddingHorizontal: 10,
     borderRadius: 8,
   },
 
   btnText: {
+    fontFamily: "PrimaryRegular",
     textAlign: "center",
     color: "#fff",
     fontSize: 14,
   },
   btn: {
     width: "100%",
-    paddingVertical: 16,
+    paddingVertical: 14,
     marginTop: 56,
     backgroundColor: colors.primary,
-    borderWidth: 1.5,
-    borderColor: colors.primary,
     borderRadius: 8,
   },
   edit: {
+    fontFamily: "PrimaryRegular",
     color: colors.primary,
     textDecorationLine: "underline",
   },

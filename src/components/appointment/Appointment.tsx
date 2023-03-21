@@ -8,12 +8,13 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Dialog } from "@rneui/themed";
-import colors from "../config/colors";
+import colors from "../../config/colors";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { frontIcon } from "../../assets/icons/icons";
+import { frontIcon } from "../../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
-import { addAppointment } from "../../api/database";
+import { addAppointment } from "../../../api/database";
 import DateTimePicker from "react-native-modal-datetime-picker";
+import { AppointmentLocation } from "./AppointmentLocation";
 
 export interface AppointmentDate {
   day: number;
@@ -32,8 +33,13 @@ const Appointment = ({ isVisible, setIsVisible, business, sender }: Props) => {
   const [name, setName] = useState<string>();
   const [selectedDate, setSelectedDate] = useState<AppointmentDate>();
   const [selectedTime, setSelectedTime] = useState<number>();
+  const [selectedLocation, setSelectedLocation] = useState<{
+    lng: number;
+    lat: number;
+  }>();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+  const [showLocationSearch, setShowLocationSearch] = useState(false);
 
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
@@ -70,13 +76,26 @@ const Appointment = ({ isVisible, setIsVisible, business, sender }: Props) => {
   };
 
   const handleSubmitAppointment = () => {
-    if (sender && sender.bizId && name && selectedTime && selectedDate)
-      addAppointment(sender.bizId, name, selectedTime, selectedDate, "");
+    if (
+      sender &&
+      sender.bizId &&
+      name &&
+      selectedTime &&
+      selectedDate &&
+      selectedLocation
+    )
+      addAppointment(
+        sender.bizId,
+        name,
+        selectedTime,
+        selectedDate,
+        selectedLocation
+      );
     setIsVisible(false);
   };
 
   const disableButton = () => {
-    if (name && selectedTime && selectedDate) return false;
+    if (name && selectedTime && selectedDate && selectedLocation) return false;
     return true;
   };
 
@@ -86,8 +105,10 @@ const Appointment = ({ isVisible, setIsVisible, business, sender }: Props) => {
         overlayStyle={{
           //backgroundColor: theme ? colors.secondary : colors.blackSmoke,
           width: "90%",
+          zIndex: 1000,
         }}
         isVisible={isVisible}
+        statusBarTranslucent
       >
         <View style={styles.container}>
           <Text style={styles.header}>Appointment Details</Text>
@@ -142,14 +163,18 @@ const Appointment = ({ isVisible, setIsVisible, business, sender }: Props) => {
 
           <View>
             <Text style={styles.label}>Appointment Location</Text>
-
-            <TextInput
-              keyboardType="email-address"
+            <TouchableOpacity
               style={[styles.inputBox]}
-              placeholder="Location"
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholderTextColor={colors.lightGrey}
+              onPress={() => setShowLocationSearch(true)}
+            >
+              <Text style={{ color: colors.lightGrey }}>Location</Text>
+            </TouchableOpacity>
+
+            <AppointmentLocation
+              isVisible={showLocationSearch}
+              setIsVisible={setShowLocationSearch}
+              selectedLocation={selectedLocation}
+              setSelectedLocation={setSelectedLocation}
             />
           </View>
 

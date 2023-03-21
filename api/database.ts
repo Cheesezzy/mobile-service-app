@@ -7,12 +7,13 @@ import {
   getDoc,
   getDocs,
   query,
+  serverTimestamp,
   setDoc,
   updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
-import { AppointmentDate } from "../src/components/Appointment";
+import { AppointmentDate } from "../src/components/appointment/Appointment";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 export function clearAllUsers() {
@@ -33,6 +34,7 @@ export function createUser(
   role: string | null,
   business: {},
   email: string | null,
+  phone: string | null,
   password: string | null,
   description: string | null,
   joined: any,
@@ -50,6 +52,8 @@ export function createUser(
     role,
     business,
     email,
+    emailVerified: false,
+    phone,
     password,
     description,
     joined,
@@ -77,6 +81,14 @@ export function updateBizInformedStat(userId: any) {
 
   updateDoc(userbizInformedRef, {
     bizInformed: true,
+  });
+}
+
+export function updateEmailVerified(userId: any) {
+  const userRef = doc(db, "users", userId);
+
+  updateDoc(userRef, {
+    emailVerified: true,
   });
 }
 
@@ -186,6 +198,61 @@ export async function sendMessage(
   });
 }
 
+export async function sendSupportMessage(
+  senderId: any,
+  receiverId: any,
+  text: any,
+  attachment: any,
+  senderName: string,
+  senderPic: any,
+  receiverName: string,
+  receiverPic: any,
+  createdAt: any
+) {
+  // for sending the messages
+  const senderRef = collection(
+    db,
+    "users",
+    senderId,
+    "messages",
+    receiverId,
+    "chats"
+  );
+
+  await addDoc(senderRef, {
+    msgId: "",
+    text,
+    attachment,
+    type: "sent",
+    sentBy: {
+      id: senderId,
+      name: senderName,
+      pic: senderPic,
+    },
+    receivedBy: {
+      id: receiverId,
+      name: receiverName,
+      pic: receiverPic,
+    },
+    createdAt,
+    seen: false,
+  }).then((msg) => {
+    const senderMsgIdRef = doc(
+      db,
+      "users",
+      senderId,
+      "messages",
+      receiverId,
+      "chats",
+      msg.id
+    );
+
+    updateDoc(senderMsgIdRef, {
+      msgId: msg.id,
+    });
+  });
+}
+
 export async function deleteMessages(senderId: any, receiverId: any) {
   // for deleting the present chats
   const senderNegoRef = doc(db, "users", senderId, "negotiating", receiverId);
@@ -215,17 +282,19 @@ export function updateUserPassword(userId: any, password: string) {
 
 // add business to database
 export function addBusiness(userId: any) {
-  const businessRef = collection(db, "businesses");
+  const businessesRef = collection(db, "businesses");
   const userRef = doc(db, "users", userId);
 
-  addDoc(businessRef, {
+  addDoc(businessesRef, {
+    id: "",
     name: "",
     desc: "",
+    businessDP: "",
     userId: userId,
     location: "",
     rating: 0,
     manager: "",
-    chargeRate: 0,
+    chargeRate: 100,
     level: "Start-up",
     completedBookings: 0,
     pendingBookings: 0,
@@ -244,9 +313,15 @@ export function addBusiness(userId: any) {
       imgThree: null,
       imgFour: null,
     },
-  }).then((doc) => {
+  }).then((data) => {
+    const businessRef = doc(db, "businesses", data.id);
+
     updateDoc(userRef, {
-      bizId: doc.id,
+      id: data.id,
+    });
+
+    updateDoc(userRef, {
+      bizId: data.id,
     });
   });
 }
@@ -322,6 +397,14 @@ export function updateRating(bizId: any, rating: any) {
     rating,
   });
 }
+
+export const updateBusinessDP = (bizId: any, imageUrl: string) => {
+  const businessesRef = doc(db, "businesses", bizId);
+
+  updateDoc(businessesRef, {
+    businessDP: imageUrl,
+  });
+};
 
 export function updateRatingsAndReviews(
   userId: any,
@@ -596,6 +679,70 @@ const updateCompletedBooking = async (
     });
   }
 };
+
+export function addRecentOrder(
+  bizId: any,
+  name: any,
+  profilePic: any,
+  createdAt: any,
+  price: any
+) {
+  const recentOrdersRef = collection(db, "businesses", bizId, "recentOrders");
+
+  addDoc(recentOrdersRef, {
+    name,
+    profilePic,
+    createdAt,
+    price,
+  });
+}
+
+export function addTransaction(
+  senderId: any,
+  receiverId: any,
+  senderName: any,
+  receiverName: any,
+  date: any,
+  amount: any,
+  ref: any
+) {
+  const senderRef = collection(db, "users", senderId, "transactionHistory");
+  const receiverRef = collection(db, "users", receiverId, "transactionHistory");
+
+  addDoc(senderRef, {
+    ref,
+    type: "sent",
+    sentBy: {
+      id: senderId,
+      name: senderName,
+    },
+    receivedBy: {
+      id: receiverId,
+      name: receiverName,
+    },
+    date,
+    createdAt: serverTimestamp(),
+    status: "submitted",
+    amount,
+  });
+
+  addDoc(receiverRef, {
+    ref,
+    type: "sent",
+    sentBy: {
+      id: senderId,
+      name: senderName,
+    },
+    receivedBy: {
+      id: receiverId,
+      name: receiverName,
+    },
+    date,
+    createdAt: serverTimestamp(),
+    status: "submitted",
+    amount,
+  });
+}
 
 const obj = {
   name: "",

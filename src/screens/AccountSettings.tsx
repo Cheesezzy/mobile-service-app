@@ -6,13 +6,14 @@ import {
   View,
 } from "react-native";
 import React, { useState } from "react";
-import { auth, store } from "../../firebaseConfig";
+import { auth, db, store } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
   updateProfilePic,
   updateBusinessName,
   updateUserName,
   updateBusinessDesc,
+  updateBusinessDP,
 } from "../../api/database";
 import { TextInput } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
@@ -24,10 +25,14 @@ import { handleSwitchTheme } from "../../provider/themeSlice";
 import { Avatar } from "@rneui/themed";
 import { cameraIcon } from "../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
+import { doc } from "firebase/firestore";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 
 const AccountSettings = ({ route }: any) => {
   const [User] = useAuthState(auth);
   const { user } = route.params;
+  const businessRef = user?.bizId && doc(db, "businesses", user?.bizId);
+  const [business] = useDocumentData(businessRef);
 
   const [businessName, setBusinessName] = useState("");
   const [profileName, setProfileName] = useState("");
@@ -43,7 +48,6 @@ const AccountSettings = ({ route }: any) => {
 
       const response = await fetch(image);
       const blob = await response.blob();
-      const fileName = image.substring(image.lastIndexOf("/") + 1);
 
       uploadBytesResumable(fileRef, blob)
         .then((snapshot) => {
@@ -51,8 +55,29 @@ const AccountSettings = ({ route }: any) => {
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
           getDownloadURL(snapshot.ref).then((url) => {
-            console.log(url);
             updateProfilePic(User?.uid, url);
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }
+
+  async function changeBusinessDP(user: any) {
+    if (image && user && user.bizId) {
+      const fileRef = ref(store, `businessDP/${user.bizId}`);
+
+      const response = await fetch(image);
+      const blob = await response.blob();
+
+      uploadBytesResumable(fileRef, blob)
+        .then((snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+          getDownloadURL(snapshot.ref).then((url) => {
+            updateBusinessDP(user.bizId, url);
           });
         })
         .catch((error) => {
@@ -70,9 +95,6 @@ const AccountSettings = ({ route }: any) => {
       quality: 1,
     });
 
-    console.log(result);
-    console.log(result?.cancelled);
-
     if (result && !result?.cancelled) {
       setImage(result?.uri);
     }
@@ -81,8 +103,14 @@ const AccountSettings = ({ route }: any) => {
   const handleSave = () => {
     setClicked(true);
 
-    if (image) {
+    if (image && user.role === "Consumer") {
       changeProfilePic(User);
+      setClicked(false);
+      setImage(null);
+    }
+
+    if (image && user.role === "Provider") {
+      changeBusinessDP(user);
       setClicked(false);
       setImage(null);
     }
@@ -129,33 +157,63 @@ const AccountSettings = ({ route }: any) => {
           },
         ]}
       >
-        <TouchableOpacity style={styles.avatar} onPress={pickImage}>
-          <Avatar
-            size={80}
-            rounded
-            source={
-              user?.profilePic
-                ? {
-                    uri: image ? image : user?.profilePic,
-                  }
-                : require("../.././assets/blankProfilePic.png")
-            }
-          />
-          <View
-            style={{
-              position: "absolute",
-              top: 52,
-              alignSelf: "flex-end",
-              backgroundColor: colors.secondarySmoke,
-              borderColor: colors.black,
-              borderWidth: 0.8,
-              padding: 2,
-              borderRadius: 10,
-            }}
-          >
-            <SvgXml xml={cameraIcon()} width="10" height="10" />
-          </View>
-        </TouchableOpacity>
+        {user.role === "Provider" ? (
+          <TouchableOpacity style={styles.avatar} onPress={pickImage}>
+            <Avatar
+              size={80}
+              rounded
+              source={
+                business?.businessDP
+                  ? {
+                      uri: image ? image : business?.businessDP,
+                    }
+                  : require("../.././assets/blankProfilePic.png")
+              }
+            />
+            <View
+              style={{
+                position: "absolute",
+                top: 52,
+                alignSelf: "flex-end",
+                backgroundColor: colors.secondarySmoke,
+                borderColor: colors.black,
+                borderWidth: 0.8,
+                padding: 2,
+                borderRadius: 10,
+              }}
+            >
+              <SvgXml xml={cameraIcon()} width="10" height="10" />
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.avatar} onPress={pickImage}>
+            <Avatar
+              size={80}
+              rounded
+              source={
+                user?.profilePic
+                  ? {
+                      uri: image ? image : user?.profilePic,
+                    }
+                  : require("../.././assets/blankProfilePic.png")
+              }
+            />
+            <View
+              style={{
+                position: "absolute",
+                top: 52,
+                alignSelf: "flex-end",
+                backgroundColor: colors.secondarySmoke,
+                borderColor: colors.black,
+                borderWidth: 0.8,
+                padding: 2,
+                borderRadius: 10,
+              }}
+            >
+              <SvgXml xml={cameraIcon()} width="10" height="10" />
+            </View>
+          </TouchableOpacity>
+        )}
         {user.role === "Provider" && (
           <TextInput
             onChangeText={(newName) => setBusinessName(newName)}
