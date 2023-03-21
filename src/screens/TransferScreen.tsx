@@ -42,10 +42,6 @@ const TransferScreen = ({ route, navigation }: any) => {
     }
   };
 
-  useEffect(() => {
-    console.log(displayAmount);
-  }, [displayAmount]);
-
   const [User] = useAuthState(auth);
 
   const userRef = doc(db, "users", User?.uid!);

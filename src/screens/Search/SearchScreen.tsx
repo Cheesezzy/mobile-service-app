@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 50,
     width: "80%",
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     fontSize: 12,
     color: colors.black,
     backgroundColor: colors.secondary,
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   },
   search: {
     width: "80%",
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     fontSize: 12,
     alignSelf: "center",
     marginLeft: 10,
