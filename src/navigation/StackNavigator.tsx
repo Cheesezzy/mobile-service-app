@@ -51,6 +51,8 @@ import BusinessEnrollment from "../screens/BusinessEnrollScreen/BusinessEnrollme
 import KycVerification from "../screens/BusinessEnrollScreen/KycVerification";
 import ServiceConfirmationScreen from "../screens/ServiceConfirmationScreen";
 import { ChatSupportScreen } from "../screens/ChatSupportScreen";
+import WithdrawScreen from "../screens/Payments & Wallets/WithdrawScreen";
+import BanksScreen from "../screens/Payments & Wallets/components/BanksScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -349,6 +351,14 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
+        name="Withdraw"
+        component={WithdrawScreen}
+        options={{
+          title: "Withdraw",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="PayStatus"
         component={PayStatScreen}
         options={{
@@ -433,6 +443,14 @@ const StackNavigator = () => {
         component={ChatSupportScreen}
         options={{
           title: "Chat Support",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Banks"
+        component={BanksScreen}
+        options={{
+          title: "Banks",
           headerShown: false,
         }}
       />

@@ -16,6 +16,7 @@ import { auth, db } from "../../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { doc } from "firebase/firestore";
+import { generateTransactionRef } from "../../../api/hooks/generalHooks";
 
 interface RedirectParams {
   status: "successful" | "cancelled";
@@ -29,18 +30,6 @@ const PayScreen = () => {
   const userRef = doc(db, "users", User?.uid!);
 
   const [user] = useDocumentData(userRef);
-
-  /* An example function to generate a random transaction reference */
-  const generateTransactionRef = (length: number) => {
-    var result = "";
-    var characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return `flw_tx_ref_${result}`;
-  };
 
   const handleGetAmount = (newQuery: string) => {
     if (

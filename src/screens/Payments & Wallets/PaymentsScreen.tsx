@@ -18,12 +18,9 @@ import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../../provider/themeSlice";
 import { StatusBar } from "expo-status-bar";
 import {
-  bankIcon,
-  cardIcon,
   hidePassIcon,
   receiveMoneyIcon,
   showPassIcon,
-  transferMoneyIcon,
   withdrawMoneyIcon,
 } from "../../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
@@ -95,7 +92,11 @@ const PaymentsScreen = ({ navigation }: any) => {
           <View style={styles.moneyOptions}>
             <TouchableOpacity
               style={[styles.moneyOptionBtnWire, { marginRight: 10 }]}
-              onPress={() => navigation.navigate("PayStatus")}
+              onPress={() =>
+                navigation.navigate("Withdraw", {
+                  selectedBank: null,
+                })
+              }
             >
               <SvgXml
                 xml={withdrawMoneyIcon(colors.darkTxt)}

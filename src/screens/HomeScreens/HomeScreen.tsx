@@ -64,8 +64,6 @@ const HomeScreen = ({ navigation }: any) => {
       });
   };
 
-  //useUpdatePassword(auth)
-
   return (
     <>
       {User?.email === "dos@gmail.com" ||
