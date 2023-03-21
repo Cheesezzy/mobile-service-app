@@ -8,7 +8,11 @@ import { handleSwitchTheme } from '../../../../provider/themeSlice';
 import { useSelector } from 'react-redux';
 import colors from '../../../config/colors';
 
-const HeaderFAQs = () => {
+interface Props {
+  title: string;
+}
+
+const HeaderFAQs = ({ title }: Props) => {
   const navigate = useNavigation();
 
   const selector: any = useSelector(handleSwitchTheme);
@@ -37,7 +41,7 @@ const HeaderFAQs = () => {
           <Text style={[styles.text, {
             color: theme ? colors.black : colors.darkTxt,
           }]}>
-            FAQs
+            {title}
           </Text>
         </View>
 
@@ -55,12 +59,12 @@ export default HeaderFAQs
 
 const styles = StyleSheet.create({
   containerNav: {
-    marginTop: 50,
+    paddingTop: 50,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    margin: 24,
+    padding: 24,
   },
   text: {
     fontWeight: "600",

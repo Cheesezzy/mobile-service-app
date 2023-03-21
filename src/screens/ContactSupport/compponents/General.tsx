@@ -1,37 +1,38 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, ScrollView, Pressable, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { SvgXml } from 'react-native-svg'
-
 import { halfArrow } from '../../../../assets/svgs/svgs'
+import GeneralData from './GeneralData';
+import useTheme from '../../../hooks/useTheme';
 import colors from '../../../config/colors';
 
-interface Props {
-    title: string;
-    info: string;
-}
 
+const General = ({ navigation }: any) => {
 
-const General = ({ title, info }: Props) => {
-
-    const [showInfo, setShowInfo] = useState(false);
-
+    const [data, setData] = useState(GeneralData);
+    const { backgroundColor, color, theme } = useTheme();
 
     return (
         <>
-            <View style={styles.textCon}>
-                <View style={styles.container}>
-                    <Text style={[styles.textQ, { padding: 8 }]}> {title} </Text>
-
-                    <TouchableOpacity onPress={() => setShowInfo(!showInfo)} >
-                        <SvgXml
-                            xml={halfArrow()}
-                            width={9} height={17} />
-                    </TouchableOpacity>
-                </View>
-
-                <View>
-                    {showInfo && <Text style={styles.info}>{info}</Text>}
-                </View>
+            <View style={[{ padding: 10 }, { backgroundColor, flex: 1 }]}>
+                <FlatList
+                    data={data}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('GeneralScreen', item)}>
+                            <View style={[styles.container, { margin: 10 }, {
+                                backgroundColor: theme
+                                    ? colors.secondary
+                                    : colors.blackSmoke,
+                            }]}>
+                                <Text style={[styles.textQ, { color }]}> {item.title} </Text>
+                                <SvgXml
+                                    xml={halfArrow()}
+                                    width={9} height={17} />
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                />
             </View>
         </>
     )
@@ -40,49 +41,23 @@ const General = ({ title, info }: Props) => {
 export default General
 
 const styles = StyleSheet.create({
-    textCon: {
-        margin: 24,
-        backgroundColor: 'white',
-        borderRadius: 4,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-
-    },
     container: {
-        width: 350,
-        height: 70,
+        width: "95%",
         backgroundColor: 'white',
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: 8,
+        paddingHorizontal: 15,
         borderRadius: 4,
+        height: 70,
     },
     textQ: {
         fontFamily: "PrimaryRegular",
         fontSize: 13,
         fontWeight: "400",
         lineHeight: 20,
-        width: 300,
-        height: 70,
-
+        width: "95%",
+        maxWidth: 284,
     },
-    containerScroll: {
-        margin: 24,
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-around",
-        borderBottomWidth: 2,
-        borderBottomColor: "#CED1D5",
-        paddingBottom: 12,
-    },
-    conText: {
-        color: "#CED1D5",
-        fontFamily: "PrimaryRegular",
-    },
-    info: {
-
-    }
 })

@@ -52,6 +52,9 @@ import Privacy from "../screens/policy-and-terms/Privacy";
 // import BusinessEnrollment from "../screens/BusinessEnrollScreen/BusinessEnrollment";
 // import KycVerification from "../screens/BusinessEnrollScreen/KycVerification";
 import ServiceConfirmationScreen from "../screens/ServiceConfirmationScreen";
+import ServiceScreen from "../screens/ContactSupport/ServiceScreen";
+import GeneralScreen from "../screens/ContactSupport/GeneralScreen";
+import TransactionScreen from "../screens/ContactSupport/TransactionScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -231,6 +234,7 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
+
       <Stack.Screen
         name="ChatScreen"
         component={ChatScreen}
@@ -239,6 +243,34 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
+
+      <Stack.Screen
+        name="GeneralScreen"
+        component={GeneralScreen}
+        options={{
+          title: "GeneralScreen",
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="ServiceScreen"
+        component={ServiceScreen}
+        options={{
+          title: "ServiceScreen",
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="TransactionScreen"
+        component={TransactionScreen}
+        options={{
+          title: "TransactionScreen",
+          headerShown: false,
+        }}
+      />
+
       <Stack.Screen
         name="BusinessEnroll"
         component={BusinessEnroll}

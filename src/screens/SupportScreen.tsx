@@ -18,6 +18,7 @@ const SupportScreen = ({ navigation }: any) => {
   const theme = selector.payload.theme.value;
 
   return (
+
     <>
       <HeaderTitle title="Support" profileURL="" user="" />
 
@@ -25,7 +26,7 @@ const SupportScreen = ({ navigation }: any) => {
         style={[
           styles.container,
           {
-            backgroundColor: theme ? colors.secondarySmoke : colors.blackSmoke,
+            backgroundColor: theme ? colors.secondarySmoke : colors.black,
           },
         ]}
       >
@@ -34,7 +35,12 @@ const SupportScreen = ({ navigation }: any) => {
           // @ts-ignore
           onPress={() => Linking.openURL(`tel:09071400408`)}
         >
-          <View style={styles.itemContainer}>
+          <View style={[styles.itemContainer, {
+            backgroundColor: theme
+              ? colors.secondary
+              : colors.blackSmoke,
+          },
+          ]}>
             <View style={styles.iconFlex}>
               <View style={styles.iconCon}>
                 <SvgXml
@@ -44,17 +50,20 @@ const SupportScreen = ({ navigation }: any) => {
                   height="16"
                 />
               </View>
+
               <Text
                 style={[
                   styles.menuItem,
                   {
-                    color: colors.black,
+                    color: theme ? colors.black : colors.darkTxt,
                   },
                 ]}
               >
                 Call us
               </Text>
+
             </View>
+
             <View style={styles.goTo}>
               <SvgXml
                 style={styles.icon}
@@ -71,7 +80,11 @@ const SupportScreen = ({ navigation }: any) => {
           // @ts-ignore
           onPress={() => navigation.navigate("Negotiations")}
         >
-          <View style={styles.itemContainer}>
+          <View style={[styles.itemContainer, {
+            backgroundColor: theme
+              ? colors.secondary
+              : colors.blackSmoke,
+          }]}>
             <View style={styles.iconFlex}>
               <View style={styles.iconCon}>
                 <SvgXml
@@ -85,7 +98,7 @@ const SupportScreen = ({ navigation }: any) => {
                 style={[
                   styles.menuItem,
                   {
-                    color: colors.black,
+                    color: theme ? colors.black : colors.darkTxt,
                   },
                 ]}
               >
@@ -108,7 +121,11 @@ const SupportScreen = ({ navigation }: any) => {
           // @ts-ignore
           onPress={() => Linking.openURL("mailto:support@rete.africa")}
         >
-          <View style={styles.itemContainer}>
+          <View style={[styles.itemContainer, {
+            backgroundColor: theme
+              ? colors.secondary
+              : colors.blackSmoke,
+          }]}>
             <View style={styles.iconFlex}>
               <View style={styles.iconCon}>
                 <SvgXml
@@ -122,7 +139,7 @@ const SupportScreen = ({ navigation }: any) => {
                 style={[
                   styles.menuItem,
                   {
-                    color: colors.black,
+                    color: theme ? colors.black : colors.darkTxt,
                   },
                 ]}
               >
@@ -146,7 +163,11 @@ const SupportScreen = ({ navigation }: any) => {
           // @ts-ignore
           onPress={() => navigation.navigate("Contact Support")}
         >
-          <View style={styles.itemContainer}>
+          <View style={[styles.itemContainer, {
+            backgroundColor: theme
+              ? colors.secondary
+              : colors.blackSmoke,
+          }]}>
             <View style={styles.iconFlex}>
               <View style={styles.iconCon}>
                 <SvgXml
@@ -160,7 +181,7 @@ const SupportScreen = ({ navigation }: any) => {
                 style={[
                   styles.menuItem,
                   {
-                    color: colors.black,
+                    color: theme ? colors.black : colors.darkTxt,
                   },
                 ]}
               >
@@ -189,6 +210,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 15,
+    padding: 10
   },
   itemContainer: {
     flexDirection: "row",

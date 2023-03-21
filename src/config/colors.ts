@@ -8,7 +8,7 @@ export default {
   greyMid: "#CED1D5",
   greyMidDark: "#454647",
   greyDark: "#08182F",
-  secondary: "#fff",
+  secondary: "#FFFFFF",
   secondarySmoke: "#f9f9f9",
   orange: "#FD922E",
   orangeMid: "#FEC896",

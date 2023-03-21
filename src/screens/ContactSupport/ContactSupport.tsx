@@ -20,7 +20,9 @@ const ContactSupport = ({ navigation }: Props) => {
     const navigate = useNavigation();
 
     return (
-        <>
+        <View style={{
+            backgroundColor: theme ? colors.secondarySmoke : colors.black,
+        }}>
             <View
                 style={[styles.containerNav,
                 {
@@ -68,44 +70,62 @@ const ContactSupport = ({ navigation }: Props) => {
                     </View>
                 </View>
 
-                <View style={styles.container}>
-                    <View style={styles.conBody}>
-                        <Text style={styles.frequently}> Frequently Asked Questions </Text>
-                        <TouchableOpacity onPress={() => navigation.navigate("FAQs")}>
-                            <Text style={styles.viewAll}>View All</Text>
-                        </TouchableOpacity>
 
-                    </View>
+                <View style={{ padding: 15, }}>
+                    <View style={[styles.container, {
+                        backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+                    }]}>
+                        <View style={styles.conBody}>
+                            <Text style={[styles.frequently, {
+                                color: theme ? colors.black : colors.darkTxt,
+                            }]}> Frequently Asked Questions </Text>
 
-                    <View style={styles.question}>
-                        <Text style={styles.qText}> How do I sign up as a service provider? </Text>
-                        <SvgXml
-                            xml={halfArrow()}
-                            width={9} height={17} />
-                    </View>
+                            <TouchableOpacity onPress={() => navigation.navigate("FAQs")}>
+                                <Text style={styles.viewAll}>View All</Text>
+                            </TouchableOpacity>
 
-                    <View style={styles.question}>
-                        <Text style={styles.qText}> What is a Rete wallet? </Text>
-                        <SvgXml
-                            xml={halfArrow()}
-                            width={9} height={17} />
-                    </View>
+                        </View>
 
-                    <View style={styles.question}>
-                        <Text style={styles.qText}> Is it possible to have two accounts? </Text>
-                        <SvgXml
-                            xml={halfArrow()}
-                            width={9} height={17} />
-                    </View>
+                        <View style={styles.question}>
+                            <Text style={[styles.qText, {
+                                color: theme ? colors.black : colors.darkTxt,
+                            }]}> How do I sign up as a service provider? </Text>
+                            <SvgXml
+                                xml={halfArrow()}
+                                width={9} height={17} />
+                        </View>
 
-                    <View style={styles.question}>
-                        <Text style={styles.qText}> Is my Rete wallet balance secure? </Text>
-                        <SvgXml
-                            xml={halfArrow()}
-                            width={9} height={17} />
+                        <View style={styles.question}>
+                            <Text style={[styles.qText, {
+                                color: theme ? colors.black : colors.darkTxt,
+                            }]}> What is a Rete wallet? </Text>
+                            <SvgXml
+                                xml={halfArrow()}
+                                width={9} height={17} />
+                        </View>
+
+                        <View style={styles.question}>
+                            <Text style={[styles.qText, {
+                                color: theme ? colors.black : colors.darkTxt,
+                            }]}> Is it possible to have two accounts? </Text>
+                            <SvgXml
+                                xml={halfArrow()}
+                                width={9} height={17} />
+                        </View>
+
+                        <View style={styles.question}>
+                            <Text style={[styles.qText, {
+                                color: theme ? colors.black : colors.darkTxt,
+                            }]}> Is my Rete wallet balance secure? </Text>
+                            <SvgXml
+                                xml={halfArrow()}
+                                width={9} height={17} />
+                        </View>
+
                     </View>
 
                 </View>
+
 
                 <View style={styles.btn}>
                     <Text style={styles.help}> Need more help? </Text>
@@ -119,7 +139,7 @@ const ContactSupport = ({ navigation }: Props) => {
             </ScrollView>
 
 
-        </>
+        </View>
     )
 }
 
@@ -127,12 +147,12 @@ export default ContactSupport
 
 const styles = StyleSheet.create({
     containerNav: {
-        marginTop: 50,
+        paddingTop: 50,
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        margin: 24,
+        padding: 24,
     },
     text: {
         fontWeight: "600",
@@ -176,9 +196,8 @@ const styles = StyleSheet.create({
     container: {
         borderRadius: 8,
         backgroundColor: "white",
-        margin: 24,
         padding: 16,
-        width: 350,
+        width: "100%",
         height: 450,
     },
     conBody: {

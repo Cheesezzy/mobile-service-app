@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet } from 'react-native'
-import ServiceData from './compponents/ServiceData';
-import TransactionData from './compponents/TransactionData';
-import GeneralData from './compponents/GeneralData';
+import { StyleSheet, View } from 'react-native'
 import HeaderFAQs from './compponents/HeaderFAQs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
@@ -10,6 +7,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import General from './compponents/General';
 import Transaction from './compponents/Transaction';
 import Service from './compponents/Service';
+import useTheme from '../../hooks/useTheme';
+import colors from '../../config/colors';
 
 
 
@@ -18,31 +17,49 @@ const Tab = createMaterialTopTabNavigator();
 
 const FAQs = () => {
 
+  const { backgroundColor, color, theme } = useTheme();
+
+
   return (
     <>
-      <HeaderFAQs />
+      <HeaderFAQs title='FAQs' />
 
+      <Tab.Navigator
+        screenOptions={{
+          tabBarStyle: {
+            backgroundColor: theme
+              ? colors.secondary
+              : colors.blackSmoke,
+          },
+          tabBarLabelStyle: {
+            color
+          }
+        }}
+      >
+        <Tab.Screen
+          name="General"
+          component={General}
+          options={{
+            tabBarLabel: 'General',
+          }}
+        />
+        <Tab.Screen
+          name="Transaction"
+          component={Transaction}
+          options={{
+            tabBarLabel: 'Transaction',
+          }}
+        />
+        <Tab.Screen
+          name="Service"
+          component={Service}
+          options={{
+            tabBarLabel: 'Service',
 
-      <Tab.Navigator>
-        <Tab.Screen name="General">
-          {() => GeneralData.map((question) => (
-            <General key={question.id} {...question} />
-          ))}
-        </Tab.Screen>
-
-        <Tab.Screen name="Transaction">
-          {() => TransactionData.map((question) => (
-            <Transaction key={question.id} {...question} />
-          ))}
-        </Tab.Screen>
-
-        <Tab.Screen name="Service">
-          {() => ServiceData.map((question) => (
-            <Service key={question.id} {...question} />
-          ))}
-        </Tab.Screen>
-
+          }}
+        />
       </Tab.Navigator>
+
     </>
   )
 }
@@ -52,5 +69,4 @@ export default FAQs
 const styles = StyleSheet.create({
 
 })
-
 

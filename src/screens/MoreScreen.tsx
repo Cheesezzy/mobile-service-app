@@ -106,7 +106,7 @@ const MoreScreen = ({ navigation }: any) => {
                       styles.itemContainer,
                       {
                         backgroundColor: theme
-                          ? colors.secondarySmoke
+                          ? colors.secondary
                           : colors.blackSmoke,
                       },
                     ]}
@@ -164,7 +164,7 @@ const MoreScreen = ({ navigation }: any) => {
                       styles.itemContainer,
                       {
                         backgroundColor: theme
-                          ? colors.secondarySmoke
+                          ? colors.secondary
                           : colors.blackSmoke,
                       },
                     ]}
@@ -222,7 +222,7 @@ const MoreScreen = ({ navigation }: any) => {
                       styles.itemContainer,
                       {
                         backgroundColor: theme
-                          ? colors.secondarySmoke
+                          ? colors.secondary
                           : colors.blackSmoke,
                       },
                     ]}
@@ -293,7 +293,7 @@ const MoreScreen = ({ navigation }: any) => {
                     styles.itemContainer,
                     {
                       backgroundColor: theme
-                        ? colors.secondarySmoke
+                        ? colors.secondary
                         : colors.blackSmoke,
                     },
                   ]}
@@ -351,7 +351,7 @@ const MoreScreen = ({ navigation }: any) => {
                     styles.itemContainer,
                     {
                       backgroundColor: theme
-                        ? colors.secondarySmoke
+                        ? colors.secondary
                         : colors.blackSmoke,
                     },
                   ]}
@@ -401,14 +401,14 @@ const MoreScreen = ({ navigation }: any) => {
 
               <TouchableOpacity
                 activeOpacity={0.6}
-                // @ts-ignore
+              // @ts-ignore
               >
                 <View
                   style={[
                     styles.itemContainer,
                     {
                       backgroundColor: theme
-                        ? colors.secondarySmoke
+                        ? colors.secondary
                         : colors.blackSmoke,
                     },
                   ]}
@@ -459,7 +459,7 @@ const MoreScreen = ({ navigation }: any) => {
                     styles.itemContainer,
                     {
                       backgroundColor: theme
-                        ? colors.secondarySmoke
+                        ? colors.secondary
                         : colors.blackSmoke,
                     },
                   ]}
@@ -514,7 +514,7 @@ const MoreScreen = ({ navigation }: any) => {
                       styles.itemContainer,
                       {
                         backgroundColor: theme
-                          ? colors.secondarySmoke
+                          ? colors.secondary
                           : colors.blackSmoke,
                       },
                     ]}

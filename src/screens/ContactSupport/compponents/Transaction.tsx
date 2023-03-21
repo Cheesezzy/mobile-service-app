@@ -1,35 +1,37 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
 import { SvgXml } from 'react-native-svg'
 import { halfArrow } from '../../../../assets/svgs/svgs'
-
-interface Props {
-    title: string;
-    info: string;
-}
+import colors from '../../../config/colors'
+import useTheme from '../../../hooks/useTheme'
+import TransactionData from './TransactionData'
 
 
-const Transaction = ({ title, info }: Props) => {
+const Transaction = ({ navigation }: any) => {
 
-    const [showInfo, setShowInfo] = useState(false);
+    const [data, setData] = useState(TransactionData);
+    const { backgroundColor, color, theme } = useTheme();
 
     return (
         <>
-            <View style={styles.textCon}>
-                <View style={styles.container}>
-                    <Text style={[styles.text, { padding: 8 }]}> {title} </Text>
-
-                    <TouchableOpacity onPress={() => setShowInfo(!showInfo)} >
-                        <SvgXml
-                            xml={halfArrow()}
-                            width={9} height={17} />
-                    </TouchableOpacity>
-                </View>
-
-                <View>
-                    {showInfo && <Text style={styles.info}>{info}</Text>}
-                </View>
+            <View style={[{ padding: 10, flex: 1 }, { backgroundColor }]}>
+                <FlatList
+                    data={data}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => navigation.navigate('TransactionScreen', item)} >
+                            <View style={[styles.container, { margin: 10 }, {
+                                backgroundColor: theme
+                                    ? colors.secondary
+                                    : colors.blackSmoke,
+                            }]}>
+                                <Text style={[styles.textQ, { color }]}> {item.title}</Text>
+                                <SvgXml
+                                    xml={halfArrow()}
+                                    width={9} height={17} />
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                />
             </View>
 
         </>
@@ -39,37 +41,23 @@ const Transaction = ({ title, info }: Props) => {
 export default Transaction
 
 const styles = StyleSheet.create({
-    textCon: {
-        margin: 24,
-        backgroundColor: 'white',
-        borderRadius: 4,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center"
-    },
     container: {
-        width: 350,
-        height: 70,
+        width: "95%",
         backgroundColor: 'white',
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+        paddingHorizontal: 15,
         borderRadius: 4,
-        padding: 8,
-
+        height: 70,
     },
-    text: {
+    textQ: {
         fontFamily: "PrimaryRegular",
         fontSize: 13,
         fontWeight: "400",
-        lineHeight: 24,
-        width: 300,
-        height: 70,
-
+        lineHeight: 20,
+        width: "95%",
+        maxWidth: 284,
     },
-
-    info: {
-
-    }
 })
