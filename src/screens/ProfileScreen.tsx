@@ -65,10 +65,10 @@ const ProfileScreen = ({ navigation, route }: any) => {
     businessUser?.bizId &&
     doc(db, "businesses", businessUser.bizId, "gallery", "imgFour");
 
-  const [imageOne] = useDocumentData(imageOneRef);
-  const [imageTwo] = useDocumentData(imageTwoRef);
-  const [imageThree] = useDocumentData(imageThreeRef);
-  const [imageFour] = useDocumentData(imageFourRef);
+  const [imageOne, imageOneLoading] = useDocumentData(imageOneRef);
+  const [imageTwo, imageTwoLoading] = useDocumentData(imageTwoRef);
+  const [imageThree, imageThreeLoading] = useDocumentData(imageThreeRef);
+  const [imageFour, imageFourLoading] = useDocumentData(imageFourRef);
 
   const [userLocation, setUserLocation] = useState<any>(null);
   const [errMsg, setErrorMsg] = useState<any>(null);
@@ -469,26 +469,30 @@ const ProfileScreen = ({ navigation, route }: any) => {
           </Tab>
 
           <TabView value={index} onChange={setIndex} animationType="spring">
-            {business && (
-              <>
-                <TabView.Item style={styles.tabSection}>
-                  {
-                    <View style={styles.bio}>
-                      <Text
-                        style={[
-                          styles.bioTxt,
-                          {
-                            color: theme ? colors.black : colors.darkTxt,
-                          },
-                        ]}
-                      >
-                        {business?.desc}
-                      </Text>
-                    </View>
-                  }
-                </TabView.Item>
-                <TabView.Item style={styles.tabSection}>
-                  {business.userId === User?.uid ? (
+            <>
+              <TabView.Item style={styles.tabSection}>
+                {
+                  <View style={styles.bio}>
+                    <Text
+                      style={[
+                        styles.bioTxt,
+                        {
+                          color: theme ? colors.black : colors.darkTxt,
+                        },
+                      ]}
+                    >
+                      {business?.desc}
+                    </Text>
+                  </View>
+                }
+              </TabView.Item>
+              <TabView.Item style={styles.tabSection}>
+                {business && user ? (
+                  business.userId === User?.uid &&
+                  !imageOneLoading &&
+                  !imageTwoLoading &&
+                  imageThreeLoading &&
+                  imageFourLoading ? (
                     <View style={styles.gallery}>
                       <TouchableOpacity
                         onPress={() => pickImage("imgOne")}
@@ -694,13 +698,13 @@ const ProfileScreen = ({ navigation, route }: any) => {
                         )}
                       </TouchableOpacity>
                     </View>
-                  )}
-                </TabView.Item>
-                <TabView.Item style={styles.tabSection}>
-                  <Text>Cart</Text>
-                </TabView.Item>
-              </>
-            )}
+                  )
+                ) : null}
+              </TabView.Item>
+              <TabView.Item style={styles.tabSection}>
+                <Text>Cart</Text>
+              </TabView.Item>
+            </>
           </TabView>
         </View>
 
