@@ -453,6 +453,44 @@ function HeaderTitle({ title, profileURL }: Props) {
           </View>
         </View>
       )}
+      {route.name === "Notification Settings" && (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            paddingHorizontal: 10,
+          }}
+        >
+          <TouchableOpacity style={{}}>
+            <SvgXml
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
+              width="22"
+              height="22"
+              onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "PrimarySemiBold",
+                fontSize: 20,
+                alignSelf: "center",
+                color: theme ? colors.black : colors.darkTxt,
+              }}
+            >
+              Notification Settings
+            </Text>
+          </View>
+        </View>
+      )}
       {route.name === "Fund" && (
         <View
           style={{

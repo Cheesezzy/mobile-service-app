@@ -121,12 +121,6 @@ const MainSearch = ({ searchQuery, queryUntouched, navigation }: Props) => {
   const businessesRef = collection(db, "businesses");
   const [businesses] = useCollectionData(businessesRef);
 
-  //businesses.map((location) => {});
-
-  const getPerson = (id: any) => {
-    console.log(id);
-  };
-
   let results =
     searchQuery && searchQuery.length > 0
       ? searchAndRank(searchQuery, businesses, {
@@ -275,8 +269,6 @@ const MainSearch = ({ searchQuery, queryUntouched, navigation }: Props) => {
                     })
 
                     .map((business: any, i: number) => {
-                      let userProfilePic;
-                      getPerson(business);
                       return (
                         <TouchableOpacity
                           style={styles.business}

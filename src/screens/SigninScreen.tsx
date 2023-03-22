@@ -38,19 +38,12 @@ const SigninScreen = ({ navigation }: any) => {
   const [authLoading, setAuthLoading] = useState(false);
 
   const usersRef = collection(db, "users");
-  const [Users, loading] = useCollectionData(usersRef);
-  dispatch(handleAllUsers(Users));
-
-  const users = selector.payload.users.value;
+  const [users, loading] = useCollectionData(usersRef);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
-
-  useEffect(() => {
-    //dispatch(refreshAllUsers());
-  }, []);
 
   const loginWithGoogle = async () => {
     signInWithPopup(auth, googleProvider)
@@ -59,10 +52,12 @@ const SigninScreen = ({ navigation }: any) => {
         const token = credential?.accessToken;
         const User = result.user;
 
-        for (const user of users) {
-          if (User.email === user.email) {
-            setError("");
-            dispatch(handleUser(user));
+        if (users) {
+          for (const user of users) {
+            if (User.email === user.email) {
+              setError("");
+              dispatch(handleUser(user));
+            }
           }
         }
       })

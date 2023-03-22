@@ -73,7 +73,6 @@ const SignupScreen = ({ navigation }: any) => {
           date.format(now, pattern),
           "",
           false,
-          false,
           "",
           "",
           0
@@ -110,7 +109,6 @@ const SignupScreen = ({ navigation }: any) => {
         null,
         date.format(now, pattern),
         null,
-        false,
         false,
         "",
         "",
