@@ -32,20 +32,18 @@ const AuthNavigator = () => {
   const selector = useSelector(handleAllUsers);
   const usersRef = collection(db, "users");
 
-  const allUsers = selector.payload.users.value;
+  const onboard = selector.payload.onboarding.value;
 
-  useEffect(() => {
-    getDocs(usersRef).then((snapshot) => {
-      snapshot.forEach((doc) => dispatch(handleAllUsers(doc.data())));
-      console.log(allUsers);
-    });
-  }, []);
+  const checkOnBoard = () => {
+    if (onboard) return SigninScreen;
+    return WelcomeScreen;
+  };
 
   return (
     <Stack.Navigator initialRouteName={"Welcome"}>
       <Stack.Screen
         name="Welcome"
-        component={WelcomeScreen}
+        component={checkOnBoard()}
         options={{
           headerShown: false,
         }}

@@ -39,7 +39,6 @@ export function createUser(
   description: string | null,
   joined: any,
   messages: any,
-  onBoard: boolean,
   bizInformed: boolean,
   bizId: any,
   profilePic: any,
@@ -58,20 +57,10 @@ export function createUser(
     description,
     joined,
     messages,
-    onBoard,
     bizInformed,
     bizId,
     profilePic,
     balance,
-  });
-}
-
-// for changing onBoard status
-export function updateOnBoardStat(userId: any) {
-  const userOnBoardRef = doc(db, "users", userId);
-
-  updateDoc(userOnBoardRef, {
-    onBoard: true,
   });
 }
 
@@ -508,7 +497,8 @@ export function createNotification(
   userId: any,
   name: any,
   notification: any,
-  senderId: any
+  senderId: any,
+  senderDP: any
 ) {
   const notifsRef = collection(db, "users/" + `${userId}/notifications`);
 
@@ -517,7 +507,9 @@ export function createNotification(
     notification,
     name,
     senderId,
+    senderDP,
     seen: false,
+    createdAt: serverTimestamp(),
   }).then((notif) => {
     const notificationRef = doc(db, "users", userId, "notifications", notif.id);
 

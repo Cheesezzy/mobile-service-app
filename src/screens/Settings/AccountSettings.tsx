@@ -6,7 +6,7 @@ import {
   View,
 } from "react-native";
 import React, { useState } from "react";
-import { auth, db, store } from "../../firebaseConfig";
+import { auth, db, store } from "../../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
   updateProfilePic,
@@ -14,16 +14,16 @@ import {
   updateUserName,
   updateBusinessDesc,
   updateBusinessDP,
-} from "../../api/database";
+} from "../../../api/database";
 import { TextInput } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import HeaderTitle from "../components/HeaderTitle";
-import colors from "../config/colors";
+import HeaderTitle from "../../components/HeaderTitle";
+import colors from "../../config/colors";
 import { useSelector } from "react-redux";
-import { handleSwitchTheme } from "../../provider/themeSlice";
+import { handleSwitchTheme } from "../../../provider/themeSlice";
 import { Avatar } from "@rneui/themed";
-import { cameraIcon } from "../../assets/icons/icons";
+import { cameraIcon } from "../../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
 import { doc } from "firebase/firestore";
 import { useDocumentData } from "react-firebase-hooks/firestore";
@@ -167,7 +167,7 @@ const AccountSettings = ({ route }: any) => {
                   ? {
                       uri: image ? image : business?.businessDP,
                     }
-                  : require("../.././assets/blankProfilePic.png")
+                  : require("../../../assets/blankProfilePic.png")
               }
             />
             <View
@@ -195,7 +195,7 @@ const AccountSettings = ({ route }: any) => {
                   ? {
                       uri: image ? image : user?.profilePic,
                     }
-                  : require("../.././assets/blankProfilePic.png")
+                  : require("../../../assets/blankProfilePic.png")
               }
             />
             <View

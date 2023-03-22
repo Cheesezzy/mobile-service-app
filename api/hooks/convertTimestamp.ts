@@ -120,3 +120,34 @@ export function groupMessagesByDay(messages: any) {
 
   return messagesByDay;
 }
+
+export const getTimeAgo = (seconds: number, nanoseconds: number) => {
+  const now = Date.now();
+  const timestampMs = new Timestamp(seconds, nanoseconds).toMillis();
+  const elapsedMs = now - timestampMs;
+
+  const minute = 60 * 1000;
+  const hour = 60 * minute;
+  const day = 24 * hour;
+  const week = 7 * day;
+  const month = 30 * day;
+
+  if (elapsedMs < minute) {
+    return "just now";
+  } else if (elapsedMs < hour) {
+    const minutesAgo = Math.floor(elapsedMs / minute);
+    return `${minutesAgo} ${minutesAgo === 1 ? "minute" : "minutes"} ago`;
+  } else if (elapsedMs < day) {
+    const hoursAgo = Math.floor(elapsedMs / hour);
+    return `${hoursAgo} ${hoursAgo === 1 ? "hour" : "hours"} ago`;
+  } else if (elapsedMs < week) {
+    const daysAgo = Math.floor(elapsedMs / day);
+    return `${daysAgo} ${daysAgo === 1 ? "day" : "days"} ago`;
+  } else if (elapsedMs < month) {
+    const weeksAgo = Math.floor(elapsedMs / week);
+    return `${weeksAgo} ${weeksAgo === 1 ? "week" : "weeks"} ago`;
+  } else {
+    const monthsAgo = Math.floor(elapsedMs / month);
+    return `${monthsAgo} ${monthsAgo === 1 ? "month" : "months"} ago`;
+  }
+};

@@ -1,18 +1,18 @@
 import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import colors from "../config/colors";
+import colors from "../../config/colors";
 import { signOut } from "firebase/auth";
-import { auth, db } from "../../firebaseConfig";
-import HeaderTitle from "../components/HeaderTitle";
+import { auth, db } from "../../../firebaseConfig";
+import HeaderTitle from "../../components/HeaderTitle";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { doc } from "firebase/firestore";
 import { useDocumentData } from "react-firebase-hooks/firestore";
-import { handleSwitchTheme } from "../../provider/themeSlice";
+import { handleSwitchTheme } from "../../../provider/themeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { StatusBar } from "expo-status-bar";
 import { Switch } from "@rneui/themed";
 import { SvgXml } from "react-native-svg";
-import { frontIcon } from "../../assets/icons/icons";
+import { frontIcon } from "../../../assets/icons/icons";
 
 const SettingsScreen = ({ navigation }: any) => {
   const [User] = useAuthState(auth);
@@ -71,7 +71,12 @@ const SettingsScreen = ({ navigation }: any) => {
               />
             </View>
           </TouchableOpacity>
-          <View style={styles.settingsItem}>
+          <TouchableOpacity
+            style={styles.settingsItem}
+            activeOpacity={0.6}
+            // @ts-ignore
+            onPress={() => navigation.navigate("Notification Settings")}
+          >
             <Text
               style={[
                 styles.settingsItemTxt,
@@ -90,7 +95,7 @@ const SettingsScreen = ({ navigation }: any) => {
                 height="14"
               />
             </View>
-          </View>
+          </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate("Terms")}>
             <View style={styles.settingsItem}>

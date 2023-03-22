@@ -134,7 +134,8 @@ const ProfileScreen = ({ navigation, route }: any) => {
         business?.userId,
         user?.name,
         `viewed your profile`,
-        User?.uid
+        User?.uid,
+        user?.profilePic
       );
     }
   }, [user, business?.uid]);

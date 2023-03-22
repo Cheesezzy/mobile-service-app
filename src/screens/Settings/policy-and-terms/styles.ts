@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
-import { handleSwitchTheme } from "../../../provider/themeSlice";
-import colors from "../../config/colors";
+import { handleSwitchTheme } from "../../../../provider/themeSlice";
+import colors from "../../../config/colors";
 
 export default StyleSheet.create({
   container: {

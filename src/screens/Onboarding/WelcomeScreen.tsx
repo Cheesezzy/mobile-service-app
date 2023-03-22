@@ -12,6 +12,9 @@ import colors from "../../config/colors";
 import { useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Paginator from "./Paginator";
+import { seenOnboarding } from "../../../provider/onBoardingSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { handleAllUsers } from "../../../provider/allUsersSlice";
 
 const slides = [
   {
@@ -37,6 +40,10 @@ const slides = [
 const width = Dimensions.get("window").width;
 
 const WelcomeScreen = ({ navigation }: any) => {
+  const dispatch = useDispatch();
+  const selector = useSelector(handleAllUsers);
+  const onboard = selector.payload.onboarding.value;
+
   const [currSlideIndex, setCurrSlideIndex] = useState(0);
   const slidesRef = useRef<any>(null);
   const scrollX = useRef<any>(new Animated.Value(0)).current;
@@ -63,6 +70,11 @@ const WelcomeScreen = ({ navigation }: any) => {
     setCurrSlideIndex(currentIndex);
   };
 
+  const handleNavigation = () => {
+    if (!onboard) dispatch(seenOnboarding());
+    navigation.navigate("Signup");
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -84,10 +96,7 @@ const WelcomeScreen = ({ navigation }: any) => {
 
       {currSlideIndex === slides.length - 1 ? (
         <View style={styles.btnsCon}>
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => navigation.navigate("Signup")}
-          >
+          <TouchableOpacity style={styles.btn} onPress={handleNavigation}>
             <Text style={styles.btnTxt}>Get Started</Text>
           </TouchableOpacity>
         </View>

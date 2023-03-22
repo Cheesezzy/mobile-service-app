@@ -5,7 +5,7 @@ import HomeScreen from "../screens/HomeScreens/HomeScreen";
 import NotifScreen from "../screens/NotifScreen";
 import NegoScreen from "../screens/Negotiation/NegoScreen";
 import HustleScreen from "../screens/HustleScreen";
-import SettingsScreen from "../screens/SettingsScreen";
+import SettingsScreen from "../screens/Settings/SettingsScreen";
 import SupportScreen from "../screens/SupportScreen";
 import SearchScreen from "../screens/Search/SearchScreen";
 import { auth, db } from "../../firebaseConfig";
@@ -27,7 +27,7 @@ import TransferScreen from "../screens/TransferScreen";
 import PayScreen from "../screens/Payments & Wallets/PayScreen";
 import Slider from "../components/Slider";
 import CategoriesScreen from "../screens/CategoriesScreen/CategoriesScreen";
-import AccountSettings from "../screens/AccountSettings";
+import AccountSettings from "../screens/Settings/AccountSettings";
 import ImageScreen from "../components/ShowImage";
 import MoreScreen from "../screens/MoreScreen";
 import FundScreen from "../screens/Payments & Wallets/FundScreen";
@@ -41,8 +41,8 @@ import PhoneScreen from "../screens/PhoneScreen";
 import PromotionScreen from "../screens/PromotionScreen";
 import SearchResults from "../screens/Search/SearchResults";
 import JakeScreen from "../screens/BusinessEnrollScreen";
-import Terms from "../screens/policy-and-terms/Terms";
-import Privacy from "../screens/policy-and-terms/Privacy";
+import Privacy from "../screens/Settings/policy-and-terms/Privacy";
+import Terms from "../screens/Settings/policy-and-terms/Terms";
 import BusinessEnrollScreen from "../screens/BusinessEnrollScreen/index";
 import BusinessDetails from "../screens/BusinessEnrollScreen/BusinessDetails";
 import BusinessCategory from "../screens/BusinessEnrollScreen/BusinessCategory";
@@ -53,6 +53,7 @@ import ServiceConfirmationScreen from "../screens/ServiceConfirmationScreen";
 import { ChatSupportScreen } from "../screens/ChatSupportScreen";
 import WithdrawScreen from "../screens/Payments & Wallets/WithdrawScreen";
 import BanksScreen from "../screens/Payments & Wallets/BanksScreen";
+import NotificationSettings from "../screens/Settings/NotificationSettings";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -451,6 +452,14 @@ const StackNavigator = () => {
         component={BanksScreen}
         options={{
           title: "Banks",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Notification Settings"
+        component={NotificationSettings}
+        options={{
+          title: "Notification Settings",
           headerShown: false,
         }}
       />

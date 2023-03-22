@@ -13,6 +13,7 @@ import { handleSwitchTheme } from "../../provider/themeSlice";
 import { useSelector } from "react-redux";
 import { SvgXml } from "react-native-svg";
 import { waiting } from "../../assets/svgs/svgs";
+import { getTimeAgo } from "../../api/hooks/convertTimestamp";
 
 const NotifScreen = ({ navigation }: any) => {
   const [User] = useAuthState(auth);
@@ -57,33 +58,49 @@ const NotifScreen = ({ navigation }: any) => {
                   >
                     <View style={styles.avatar}>
                       <Avatar
-                        size={25}
+                        size={35}
                         rounded
-                        source={{ uri: "https://picsum.photos/200" }}
+                        source={
+                          notification.senderDP
+                            ? {
+                                uri: notification.senderDP,
+                              }
+                            : require("../.././assets/blankProfilePic.png")
+                        }
                       />
                     </View>
-                    <Text
-                      style={[
-                        styles.name,
-                        {
-                          color: theme ? colors.black : colors.darkTxt,
-                        },
-                      ]}
-                    >
-                      {notification?.name}
+
+                    <View>
                       <Text
                         style={[
-                          styles.msg,
+                          styles.name,
                           {
                             color: theme ? colors.black : colors.darkTxt,
                           },
                         ]}
                       >
-                        {" "}
-                        {notification?.notification}
+                        {notification?.name}
+                        <Text
+                          style={[
+                            styles.msg,
+                            {
+                              color: theme ? colors.black : colors.darkTxt,
+                            },
+                          ]}
+                        >
+                          {" "}
+                          {notification?.notification}
+                        </Text>
                       </Text>
-                    </Text>
-                    <View></View>
+                      <Text style={styles.msgLongAgo}>
+                        {notification.createdAt
+                          ? getTimeAgo(
+                              notification.createdAt.seconds,
+                              notification.createdAt.nanoseconds
+                            )
+                          : ""}
+                      </Text>
+                    </View>
                   </View>
                 );
               })
@@ -129,6 +146,7 @@ const styles = StyleSheet.create({
   notification: {
     width: "90%",
     flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
     padding: 20,
@@ -145,6 +163,11 @@ const styles = StyleSheet.create({
   msg: {
     fontFamily: "PrimaryRegular",
     fontSize: 14,
+  },
+  msgLongAgo: {
+    fontFamily: "PrimaryRegular",
+    fontSize: 12,
+    color: colors.greyMain,
   },
 });
 
