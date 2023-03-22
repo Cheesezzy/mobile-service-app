@@ -1,5 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import colors from "../../config/colors";
 import Navigation from "../../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
@@ -27,7 +33,7 @@ const HomeScreen = ({ navigation }: any) => {
 
   const userRef = doc(db, "users", User?.uid!);
 
-  const [user] = useDocumentData(userRef);
+  const [user, userLoading] = useDocumentData(userRef);
   //const user = selector.payload.user.value;
 
   const businessRef = user?.bizId && doc(db, "businesses", user?.bizId);
@@ -94,15 +100,19 @@ const HomeScreen = ({ navigation }: any) => {
         ) : null}
 
         <ScrollView style={{ padding: 5, paddingBottom: 20 }}>
-          {user?.role === "Consumer" ? (
-            <ClientHome navigation={navigation} theme={theme} />
+          {!userLoading ? (
+            user?.role === "Consumer" ? (
+              <ClientHome navigation={navigation} theme={theme} />
+            ) : (
+              <ProviderHome
+                navigation={navigation}
+                theme={theme}
+                business={business}
+                user={user}
+              />
+            )
           ) : (
-            <ProviderHome
-              navigation={navigation}
-              theme={theme}
-              business={business}
-              user={user}
-            />
+            <ActivityIndicator color={colors.primary} />
           )}
           <View style={{ height: 100, width: "100%" }} />
         </ScrollView>

@@ -65,7 +65,7 @@ const TransactionHistory = () => {
                     color: theme ? colors.black : colors.darkTxt,
                   }}
                 >
-                  You do not have any orders yet
+                  No transactions to show, yet.
                 </Text>
               </View>
             )}

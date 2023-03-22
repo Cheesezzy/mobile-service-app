@@ -52,7 +52,7 @@ import KycVerification from "../screens/BusinessEnrollScreen/KycVerification";
 import ServiceConfirmationScreen from "../screens/ServiceConfirmationScreen";
 import { ChatSupportScreen } from "../screens/ChatSupportScreen";
 import WithdrawScreen from "../screens/Payments & Wallets/WithdrawScreen";
-import BanksScreen from "../screens/Payments & Wallets/components/BanksScreen";
+import BanksScreen from "../screens/Payments & Wallets/BanksScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();

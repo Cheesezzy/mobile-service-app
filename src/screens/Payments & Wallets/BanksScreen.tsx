@@ -8,14 +8,14 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Bank, getBanks } from "../../../../api/getBanks";
-import colors from "../../../config/colors";
-import HeaderTitle from "../../../components/HeaderTitle";
+import { Bank, getBanks } from "../../../api/getBanks";
+import colors from "../../config/colors";
+import HeaderTitle from "../../components/HeaderTitle";
 import { SvgXml } from "react-native-svg";
-import { waiting } from "../../../../assets/svgs/svgs";
-import { searchIcon } from "../../../../assets/icons/icons";
+import { waiting } from "../../../assets/svgs/svgs";
+import { searchIcon } from "../../../assets/icons/icons";
 import { useSelector } from "react-redux";
-import { handleSwitchTheme } from "../../../../provider/themeSlice";
+import { handleSwitchTheme } from "../../../provider/themeSlice";
 
 const BanksScreen = ({ navigation }: any) => {
   const [banks, setBanks] = useState<Bank[] | null>(null);
