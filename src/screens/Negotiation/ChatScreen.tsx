@@ -65,6 +65,7 @@ export const ChatScreen = ({ navigation, route }: any) => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [showBlockedMsg, setShowBlockedMsg] = useState(false);
   const [iWasBlocked, setIWasBlocked] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const blocklistRef = collection(db, "users", user?.uid!, "blocklist");
   const [blocklist] = useCollectionData(blocklistRef);
@@ -136,6 +137,7 @@ export const ChatScreen = ({ navigation, route }: any) => {
   };
 
   const handleSendMessage = () => {
+    setSending(true);
     sendMessage(
       user?.uid,
       personId,
@@ -147,8 +149,8 @@ export const ChatScreen = ({ navigation, route }: any) => {
       personPic ? personPic : null,
       serverTimestamp()
     );
-
     setTypedMessage("");
+    setSending(false);
     scrollViewRef.current?.scrollToEnd({ animated: true });
   };
 
@@ -165,6 +167,8 @@ export const ChatScreen = ({ navigation, route }: any) => {
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
         getDownloadURL(snapshot.ref).then((url: any) => {
+          setSending(true);
+
           sendMessage(
             user?.uid,
             personId,
@@ -184,6 +188,8 @@ export const ChatScreen = ({ navigation, route }: any) => {
 
     setImage(null);
     setTypedMessage("");
+    setSending(false);
+
     scrollViewRef.current?.scrollToEnd({ animated: true });
   };
 
@@ -536,6 +542,8 @@ export const ChatScreen = ({ navigation, route }: any) => {
                               {msg?.sentBy?.id === user?.uid
                                 ? msg?.seen
                                   ? " . Seen"
+                                  : sending
+                                  ? " . Sending"
                                   : " . Sent"
                                 : null}
                             </Text>

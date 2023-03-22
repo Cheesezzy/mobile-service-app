@@ -11,6 +11,35 @@ export const getTime = (seconds: number, nanoseconds: number) => {
   return `${new Date(ms).getHours()}:${minutesString} ${timeExt}`;
 };
 
+export const getDate = (seconds: number, nanoseconds: number) => {
+  const ms = new Timestamp(seconds, nanoseconds).toMillis();
+
+  const date = new Date(ms);
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const monthIndex = date.getMonth();
+  const monthName = months[monthIndex];
+
+  const day = date.getDate();
+
+  const year = date.getFullYear();
+
+  return `${day}, ${monthName} ${year}`;
+};
+
 export const getDay = (seconds: number, nanoseconds: number) => {
   let ms = new Timestamp(seconds, nanoseconds).toMillis();
   let dayOfWeek = new Date(ms).getDay();

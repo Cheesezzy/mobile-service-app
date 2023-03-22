@@ -698,50 +698,83 @@ export function addRecentOrder(
 }
 
 export function addTransaction(
+  title: any,
   senderId: any,
-  receiverId: any,
+  receiverId: any | null,
   senderName: any,
   receiverName: any,
-  date: any,
   amount: any,
+  type: "Transfer" | "Fund" | "Withdraw",
   ref: any
 ) {
   const senderRef = collection(db, "users", senderId, "transactionHistory");
   const receiverRef = collection(db, "users", receiverId, "transactionHistory");
 
-  addDoc(senderRef, {
-    ref,
-    type: "sent",
-    sentBy: {
-      id: senderId,
-      name: senderName,
-    },
-    receivedBy: {
-      id: receiverId,
-      name: receiverName,
-    },
-    date,
-    createdAt: serverTimestamp(),
-    status: "submitted",
-    amount,
-  });
+  if (type === "Fund") {
+    addDoc(senderRef, {
+      title,
+      ref,
+      type,
+      sentBy: {
+        id: senderId,
+        name: senderName,
+      },
+      createdAt: serverTimestamp(),
+      status: "submitted",
+      amount,
+    });
+  }
 
-  addDoc(receiverRef, {
-    ref,
-    type: "sent",
-    sentBy: {
-      id: senderId,
-      name: senderName,
-    },
-    receivedBy: {
-      id: receiverId,
-      name: receiverName,
-    },
-    date,
-    createdAt: serverTimestamp(),
-    status: "submitted",
-    amount,
-  });
+  if (type === "Withdraw") {
+    addDoc(senderRef, {
+      title,
+      ref,
+      type,
+      sentBy: {
+        id: senderId,
+        name: senderName,
+      },
+      createdAt: serverTimestamp(),
+      status: "submitted",
+      amount,
+    });
+  }
+
+  if (type === "Transfer") {
+    addDoc(senderRef, {
+      title,
+      ref,
+      type,
+      sentBy: {
+        id: senderId,
+        name: senderName,
+      },
+      receivedBy: {
+        id: receiverId,
+        name: receiverName,
+      },
+      createdAt: serverTimestamp(),
+      status: "submitted",
+      amount,
+    });
+
+    addDoc(receiverRef, {
+      title,
+      ref,
+      type,
+      sentBy: {
+        id: senderId,
+        name: senderName,
+      },
+      receivedBy: {
+        id: receiverId,
+        name: receiverName,
+      },
+      createdAt: serverTimestamp(),
+      status: "submitted",
+      amount,
+    });
+  }
 }
 
 const obj = {

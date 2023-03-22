@@ -17,6 +17,7 @@ import { auth, db } from "../../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { doc } from "firebase/firestore";
+import { addTransaction } from "../../../api/database";
 
 const WithdrawScreen = ({ navigation, route }: any) => {
   const { selectedBank } = route.params;
@@ -68,6 +69,16 @@ const WithdrawScreen = ({ navigation, route }: any) => {
       accountNumber,
       +amount,
       `${user?.name} is withdrawing ${amount} from their Rete Wallet`,
+      generateTransactionRef(10)
+    );
+    addTransaction(
+      selectedBank.name,
+      User?.uid,
+      null,
+      user?.name,
+      null,
+      +amount,
+      "Withdraw",
       generateTransactionRef(10)
     );
     setLoading(false);

@@ -129,11 +129,11 @@ const ProviderHome = ({ navigation, theme, business, user }: Props) => {
 
       <View style={{ width: "100%" }}>
         {recentOrders && recentOrders.length > 0 ? (
-          recentOrders.map((_, i) => (
+          recentOrders.map((order, i) => (
             <RecentOrder
               key={i}
-              name="Ayoola Ayolola"
-              createdAt="32 minutes ago"
+              name={order.name}
+              createdAt={order.createdAt}
             />
           ))
         ) : (

@@ -6,15 +6,16 @@ import { Thsnip1 } from "../../assets/svgs/svgs";
 import { SvgXml } from "react-native-svg";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 import { useSelector } from "react-redux";
+import { getDate } from "../../api/hooks/convertTimestamp";
 
 interface Props {
   title: string;
-  date: string;
+  type: string;
+  createdAt: any;
   price: string;
-  image: any;
 }
 
-const Transactions = ({ title, date, price, image }: Props) => {
+const Transactions = ({ title, createdAt, price, type }: Props) => {
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
   return (
@@ -22,7 +23,7 @@ const Transactions = ({ title, date, price, image }: Props) => {
       <View style={styles.transactionContainer}>
         <View style={styles.transactionSection}>
           <View style={styles.imageContainer}>
-            <SvgXml xml={image} width={22} height={22} />
+            <SvgXml xml={Thsnip1()} width={22} height={22} />
           </View>
 
           <View style={styles.transactionBody}>
@@ -36,7 +37,9 @@ const Transactions = ({ title, date, price, image }: Props) => {
             >
               {title}
             </Text>
-            <Text style={styles.transactionDate}>{date}</Text>
+            <Text style={styles.transactionDate}>
+              {createdAt && getDate(createdAt?.seconds, createdAt?.nanoseconds)}
+            </Text>
           </View>
         </View>
 
