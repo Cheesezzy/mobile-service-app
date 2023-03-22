@@ -156,7 +156,7 @@ const Navigation = ({ navigation }: any) => {
         underlayColor={theme ? "#ddd" : colors.black}
         style={{ borderRadius: 10 }}
         onPress={() => navigation.navigate("Negotiations")}
-        //onPress={() => navigation.navigate("BusinessEnrollScreen")}
+        //onPress={() => navigation.navigate("KycVerification")}
       >
         <View style={styles.btns}>
           <SvgXml

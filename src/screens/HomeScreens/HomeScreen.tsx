@@ -63,11 +63,7 @@ const HomeScreen = ({ navigation }: any) => {
 
   return (
     <>
-      {User?.email === "dos@gmail.com" ||
-      User?.email === "preyeduke@gmail.com" ||
-      User?.email === "bezzy@gmail.com" ? (
-        <HeaderTitle title="Home" profileURL={user?.profilePic} user={user} />
-      ) : User?.emailVerified ? (
+      {User?.emailVerified ? (
         <HeaderTitle title="Home" profileURL={user?.profilePic} user={user} />
       ) : null}
 
@@ -79,11 +75,7 @@ const HomeScreen = ({ navigation }: any) => {
           },
         ]}
       >
-        {User &&
-        !User?.emailVerified &&
-        User?.email !== "dos@gmail.com" &&
-        User?.email !== "preyeduke@gmail.com" &&
-        User?.email !== "bezzy@gmail.com" ? (
+        {User && !User?.emailVerified ? (
           <EmailNotVerfied
             verify={sendVerification}
             emailSent={emailVerificationSent}
