@@ -64,3 +64,9 @@ export const generateTransactionRef = (length: number) => {
   }
   return `flw_tx_ref_${result}`;
 };
+
+export const deductCommission = (amount: number) => {
+  const deduction = amount * 0.1;
+  const newAmount = amount - deduction;
+  return newAmount;
+};

@@ -3,11 +3,12 @@ import colors from "../../config/colors";
 import { SvgXml } from "react-native-svg";
 import RecentOrder from "../../components/RecentOrder";
 import { shieldCheck, shopping } from "../../../assets/svgs/svgs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { collection } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db } from "../../../firebaseConfig";
+import BasePrice from "./components/BasePrice";
 
 interface Props {
   navigation: any;
@@ -17,6 +18,8 @@ interface Props {
 }
 
 const ProviderHome = ({ navigation, theme, business, user }: Props) => {
+  const [showBasePriceInput, setShowBasePriceInput] = useState(false);
+
   const recentOrdersRef =
     user?.bizId && collection(db, "businesses", user.bizId, "recentOrders");
   const [recentOrders, loading] = useCollectionData(recentOrdersRef);
@@ -30,10 +33,19 @@ const ProviderHome = ({ navigation, theme, business, user }: Props) => {
             {business && business.chargeRate && `₦${business.chargeRate}`}
           </Text>
 
-          <TouchableOpacity style={styles.pricingBtn}>
+          <TouchableOpacity
+            style={styles.pricingBtn}
+            onPress={() => setShowBasePriceInput(true)}
+          >
             <Text style={styles.pricingBtnTxt}>Change price</Text>
           </TouchableOpacity>
         </View>
+
+        <BasePrice
+          id={user?.bizId}
+          isVisible={showBasePriceInput}
+          setIsVisible={setShowBasePriceInput}
+        />
 
         <View style={styles.orderStats}>
           <View
