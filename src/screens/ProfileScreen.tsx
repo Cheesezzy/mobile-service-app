@@ -288,19 +288,21 @@ const ProfileScreen = ({ navigation, route }: any) => {
               {locationName && locationName}
             </Text>
 
-            <View style={styles.rating}>
-              <Rating
-                type="custom"
-                fractions={1}
-                startingValue={business?.rating}
-                readonly
-                imageSize={12}
-                ratingCount={5}
-                ratingColor={colors.primary}
-                tintColor={theme ? colors.secondary : colors.blackSmoke}
-                ratingBackgroundColor="grey"
-              />
-            </View>
+            {business && (
+              <View style={styles.rating}>
+                <Rating
+                  type="custom"
+                  fractions={1}
+                  startingValue={business?.rating}
+                  readonly
+                  imageSize={12}
+                  ratingCount={5}
+                  ratingColor={colors.primary}
+                  tintColor={theme ? colors.secondary : colors.blackSmoke}
+                  ratingBackgroundColor="grey"
+                />
+              </View>
+            )}
           </View>
         </View>
 
@@ -347,383 +349,435 @@ const ProfileScreen = ({ navigation, route }: any) => {
           </TouchableOpacity>
         )}
 
-        <View style={styles.stats}>
-          <View
-            style={[
-              styles.statsItem,
-              {
-                backgroundColor: theme ? colors.secondary : colors.blackSmoke,
-              },
-            ]}
-          >
-            <Text
-              style={[
-                styles.statsItemBigTxt,
-                ,
-                {
-                  color: theme ? colors.black : colors.darkTxt,
-                },
-              ]}
-            >
-              {business?.level}
-            </Text>
-            <Text
-              style={[
-                styles.statsItemSmTxt,
-                {
-                  color: theme ? colors.black : colors.darkTxt,
-                },
-              ]}
-            >
-              Level
-            </Text>
-          </View>
+        {business && (
+          <>
+            <View style={styles.stats}>
+              <View
+                style={[
+                  styles.statsItem,
+                  {
+                    backgroundColor: theme
+                      ? colors.secondary
+                      : colors.blackSmoke,
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.statsItemBigTxt,
+                    ,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  {business?.level}
+                </Text>
+                <Text
+                  style={[
+                    styles.statsItemSmTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Level
+                </Text>
+              </View>
 
-          <View
-            style={[
-              styles.statsItem,
-              {
-                backgroundColor: theme ? colors.secondary : colors.blackSmoke,
-              },
-            ]}
-          >
-            <Text
-              style={[
-                styles.statsItemBigTxt,
-                ,
-                {
-                  color: theme ? colors.black : colors.darkTxt,
-                },
-              ]}
-            >
-              {business?.completedBookings}
-            </Text>
-            <Text
-              style={[
-                styles.statsItemSmTxt,
-                {
-                  color: theme ? colors.black : colors.darkTxt,
-                },
-              ]}
-            >
-              Completed Orders
-            </Text>
-          </View>
+              <View
+                style={[
+                  styles.statsItem,
+                  {
+                    backgroundColor: theme
+                      ? colors.secondary
+                      : colors.blackSmoke,
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.statsItemBigTxt,
+                    ,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  {business?.completedBookings}
+                </Text>
+                <Text
+                  style={[
+                    styles.statsItemSmTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Completed Orders
+                </Text>
+              </View>
 
-          <View
-            style={[
-              styles.statsItem,
-              {
-                backgroundColor: theme ? colors.secondary : colors.blackSmoke,
-              },
-            ]}
-          >
-            <Text
-              style={[
-                styles.statsItemBigTxt,
-                ,
-                {
-                  color: theme ? colors.black : colors.darkTxt,
-                },
-              ]}
-            >
-              {ratingsAndReviews ? ratingsAndReviews.length : 0}
-            </Text>
-            <Text
-              style={[
-                styles.statsItemSmTxt,
-                {
-                  color: theme ? colors.black : colors.darkTxt,
-                },
-              ]}
-            >
-              Reviews
-            </Text>
-          </View>
-        </View>
+              <View
+                style={[
+                  styles.statsItem,
+                  {
+                    backgroundColor: theme
+                      ? colors.secondary
+                      : colors.blackSmoke,
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.statsItemBigTxt,
+                    ,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  {ratingsAndReviews ? ratingsAndReviews.length : 0}
+                </Text>
+                <Text
+                  style={[
+                    styles.statsItemSmTxt,
+                    {
+                      color: theme ? colors.black : colors.darkTxt,
+                    },
+                  ]}
+                >
+                  Reviews
+                </Text>
+              </View>
+            </View>
 
-        <View
-          style={{
-            height: 400,
-          }}
-        >
-          <Tab
-            value={index}
-            onChange={(e) => setIndex(e)}
-            indicatorStyle={{
-              backgroundColor: colors.primary,
-              height: 3,
-            }}
-            containerStyle={{
-              backgroundColor: theme ? colors.secondary : colors.blackSmoke,
-            }}
-            variant="primary"
-          >
-            <Tab.Item
-              title="About"
-              titleStyle={{
-                color: theme ? colors.black : colors.darkTxt,
-                fontSize: 12,
-                fontFamily: "PrimarySemiBold",
+            <View
+              style={{
+                height: 400,
               }}
-            />
-            <Tab.Item
-              title="Gallery"
-              titleStyle={{
-                color: theme ? colors.black : colors.darkTxt,
-                fontSize: 12,
-                fontFamily: "PrimarySemiBold",
-              }}
-            />
-            <Tab.Item
-              title="Reviews"
-              titleStyle={{
-                color: theme ? colors.black : colors.darkTxt,
-                fontSize: 12,
-                fontFamily: "PrimarySemiBold",
-              }}
-            />
-          </Tab>
+            >
+              <Tab
+                value={index}
+                onChange={(e) => setIndex(e)}
+                indicatorStyle={{
+                  backgroundColor: colors.primary,
+                  height: 3,
+                }}
+                containerStyle={{
+                  backgroundColor: theme ? colors.secondary : colors.blackSmoke,
+                }}
+                variant="primary"
+              >
+                <Tab.Item
+                  title="About"
+                  titleStyle={{
+                    color: theme ? colors.black : colors.darkTxt,
+                    fontSize: 12,
+                    fontFamily: "PrimarySemiBold",
+                  }}
+                />
+                <Tab.Item
+                  title="Gallery"
+                  titleStyle={{
+                    color: theme ? colors.black : colors.darkTxt,
+                    fontSize: 12,
+                    fontFamily: "PrimarySemiBold",
+                  }}
+                />
+                <Tab.Item
+                  title="Reviews"
+                  titleStyle={{
+                    color: theme ? colors.black : colors.darkTxt,
+                    fontSize: 12,
+                    fontFamily: "PrimarySemiBold",
+                  }}
+                />
+              </Tab>
 
-          <TabView value={index} onChange={setIndex} animationType="spring">
-            <>
-              <TabView.Item style={styles.tabSection}>
-                {
-                  <View style={styles.bio}>
-                    <Text
-                      style={[
-                        styles.bioTxt,
-                        {
-                          color: theme ? colors.black : colors.darkTxt,
-                        },
-                      ]}
-                    >
-                      {business?.desc}
-                    </Text>
-                  </View>
-                }
-              </TabView.Item>
-              <TabView.Item style={styles.tabSection}>
-                {business && user ? (
-                  business.userId === User?.uid &&
-                  !imageOneLoading &&
-                  !imageTwoLoading &&
-                  imageThreeLoading &&
-                  imageFourLoading ? (
-                    <View style={styles.gallery}>
-                      <TouchableOpacity
-                        onPress={() => pickImage("imgOne")}
-                        style={styles.galleryImgCon}
-                      >
-                        {imageOne && imageOne ? (
-                          <>
-                            <Image
-                              style={styles.galleryImg}
-                              source={{
-                                uri: imageOne.url,
-                              }}
-                              resizeMode="cover"
-                            />
-                          </>
-                        ) : (
-                          <View style={[styles.galleryImg, styles.addPhoto]}>
-                            <SvgXml xml={addIcon()} width={20} height={20} />
-                            <Text style={{ color: "#454647" }}>Add photo</Text>
-                          </View>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => pickImage("imgTwo")}
-                        style={styles.galleryImgCon}
-                      >
-                        {imageTwo && imageTwo ? (
-                          <>
-                            <Image
-                              style={styles.galleryImg}
-                              source={{
-                                uri: imageTwo.url,
-                              }}
-                              resizeMode="cover"
-                            />
-                          </>
-                        ) : (
-                          <View style={[styles.galleryImg, styles.addPhoto]}>
-                            <SvgXml xml={addIcon()} width={20} height={20} />
-                            <Text style={{ color: "#454647" }}>Add photo</Text>
-                          </View>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => pickImage("imgThree")}
-                        style={styles.galleryImgCon}
-                      >
-                        {imageThree && imageThree ? (
-                          <>
-                            <Image
-                              style={styles.galleryImg}
-                              source={{
-                                uri: imageThree.url,
-                              }}
-                              resizeMode="cover"
-                            />
-                          </>
-                        ) : (
-                          <View style={[styles.galleryImg, styles.addPhoto]}>
-                            <SvgXml xml={addIcon()} width={20} height={20} />
-                            <Text style={{ color: "#454647" }}>Add photo</Text>
-                          </View>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => pickImage("imgFour")}
-                        style={[
-                          styles.galleryImgCon,
-                          {
-                            marginRight: 10,
-                          },
-                        ]}
-                      >
-                        {imageFour && imageFour ? (
-                          <>
-                            <Image
-                              style={styles.galleryImg}
-                              source={{
-                                uri: imageFour.url,
-                              }}
-                              resizeMode="center"
-                            />
-                          </>
-                        ) : (
-                          <View style={[styles.galleryImg, styles.addPhoto]}>
-                            <SvgXml xml={addIcon()} width={20} height={20} />
-                            <Text style={{ color: "#454647" }}>Add photo</Text>
-                          </View>
-                        )}
-                      </TouchableOpacity>
-                    </View>
-                  ) : (
-                    <View style={styles.gallery}>
-                      <TouchableOpacity
-                        onPress={
-                          imageOne && imageOne
-                            ? () =>
-                                navigation.navigate("ImageScreen", {
-                                  image: imageOne.url,
-                                })
-                            : () => null
-                        }
-                        style={[
-                          styles.galleryImgCon,
-                          {
-                            backgroundColor: theme
-                              ? colors.greyMain
-                              : colors.black,
-                          },
-                        ]}
-                      >
-                        {imageOne && imageOne && (
-                          <>
-                            <Image
-                              style={styles.galleryImg}
-                              source={{
-                                uri: imageOne.url,
-                              }}
-                              resizeMode="cover"
-                            />
-                          </>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={
-                          imageTwo && imageTwo
-                            ? () =>
-                                navigation.navigate("ImageScreen", {
-                                  image: imageTwo.url,
-                                })
-                            : () => null
-                        }
-                        style={[
-                          styles.galleryImgCon,
-                          { backgroundColor: theme ? "#F0F0F0" : colors.black },
-                        ]}
-                      >
-                        {imageTwo && imageTwo && (
-                          <>
-                            <Image
-                              style={styles.galleryImg}
-                              source={{
-                                uri: imageTwo.url,
-                              }}
-                              resizeMode="cover"
-                            />
-                          </>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={
-                          imageThree && imageThree
-                            ? () =>
-                                navigation.navigate("ImageScreen", {
-                                  image: imageThree.url,
-                                })
-                            : () => null
-                        }
-                        style={[
-                          styles.galleryImgCon,
-                          { backgroundColor: theme ? "#F0F0F0" : colors.black },
-                        ]}
-                      >
-                        {imageThree && imageThree && (
-                          <>
-                            <Image
-                              style={styles.galleryImg}
-                              source={{
-                                uri: imageThree.url,
-                              }}
-                              resizeMode="cover"
-                            />
-                          </>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={
-                          imageFour && imageFour
-                            ? () =>
-                                navigation.navigate("ImageScreen", {
-                                  image: imageFour.url,
-                                })
-                            : () => null
-                        }
-                        style={[
-                          styles.galleryImgCon,
-                          {
-                            backgroundColor: theme ? "#F0F0F0" : colors.black,
-                            marginRight: 10,
-                          },
-                        ]}
-                      >
-                        {imageFour && imageFour && (
-                          <>
-                            <Image
-                              style={styles.galleryImg}
-                              source={{
-                                uri: imageFour.url,
-                              }}
-                              resizeMode="center"
-                            />
-                          </>
-                        )}
-                      </TouchableOpacity>
-                    </View>
-                  )
-                ) : null}
-              </TabView.Item>
-              <TabView.Item style={styles.tabSection}>
-                <Text>Cart</Text>
-              </TabView.Item>
-            </>
-          </TabView>
-        </View>
+              <TabView value={index} onChange={setIndex} animationType="spring">
+                <>
+                  <TabView.Item style={styles.tabSection}>
+                    {
+                      <View style={styles.bio}>
+                        <Text
+                          style={[
+                            styles.bioTxt,
+                            {
+                              color: theme ? colors.black : colors.darkTxt,
+                            },
+                          ]}
+                        >
+                          {business?.desc}
+                        </Text>
+                      </View>
+                    }
+                  </TabView.Item>
+                  <TabView.Item style={styles.tabSection}>
+                    {business && user ? (
+                      business.userId === User?.uid &&
+                      !imageOneLoading &&
+                      !imageTwoLoading &&
+                      imageThreeLoading &&
+                      imageFourLoading ? (
+                        <View style={styles.gallery}>
+                          <TouchableOpacity
+                            onPress={() => pickImage("imgOne")}
+                            style={styles.galleryImgCon}
+                          >
+                            {imageOne && imageOne ? (
+                              <>
+                                <Image
+                                  style={styles.galleryImg}
+                                  source={{
+                                    uri: imageOne.url,
+                                  }}
+                                  resizeMode="cover"
+                                />
+                              </>
+                            ) : (
+                              <View
+                                style={[styles.galleryImg, styles.addPhoto]}
+                              >
+                                <SvgXml
+                                  xml={addIcon()}
+                                  width={20}
+                                  height={20}
+                                />
+                                <Text style={{ color: "#454647" }}>
+                                  Add photo
+                                </Text>
+                              </View>
+                            )}
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            onPress={() => pickImage("imgTwo")}
+                            style={styles.galleryImgCon}
+                          >
+                            {imageTwo && imageTwo ? (
+                              <>
+                                <Image
+                                  style={styles.galleryImg}
+                                  source={{
+                                    uri: imageTwo.url,
+                                  }}
+                                  resizeMode="cover"
+                                />
+                              </>
+                            ) : (
+                              <View
+                                style={[styles.galleryImg, styles.addPhoto]}
+                              >
+                                <SvgXml
+                                  xml={addIcon()}
+                                  width={20}
+                                  height={20}
+                                />
+                                <Text style={{ color: "#454647" }}>
+                                  Add photo
+                                </Text>
+                              </View>
+                            )}
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            onPress={() => pickImage("imgThree")}
+                            style={styles.galleryImgCon}
+                          >
+                            {imageThree && imageThree ? (
+                              <>
+                                <Image
+                                  style={styles.galleryImg}
+                                  source={{
+                                    uri: imageThree.url,
+                                  }}
+                                  resizeMode="cover"
+                                />
+                              </>
+                            ) : (
+                              <View
+                                style={[styles.galleryImg, styles.addPhoto]}
+                              >
+                                <SvgXml
+                                  xml={addIcon()}
+                                  width={20}
+                                  height={20}
+                                />
+                                <Text style={{ color: "#454647" }}>
+                                  Add photo
+                                </Text>
+                              </View>
+                            )}
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            onPress={() => pickImage("imgFour")}
+                            style={[
+                              styles.galleryImgCon,
+                              {
+                                marginRight: 10,
+                              },
+                            ]}
+                          >
+                            {imageFour && imageFour ? (
+                              <>
+                                <Image
+                                  style={styles.galleryImg}
+                                  source={{
+                                    uri: imageFour.url,
+                                  }}
+                                  resizeMode="center"
+                                />
+                              </>
+                            ) : (
+                              <View
+                                style={[styles.galleryImg, styles.addPhoto]}
+                              >
+                                <SvgXml
+                                  xml={addIcon()}
+                                  width={20}
+                                  height={20}
+                                />
+                                <Text style={{ color: "#454647" }}>
+                                  Add photo
+                                </Text>
+                              </View>
+                            )}
+                          </TouchableOpacity>
+                        </View>
+                      ) : (
+                        <View style={styles.gallery}>
+                          <TouchableOpacity
+                            onPress={
+                              imageOne && imageOne
+                                ? () =>
+                                    navigation.navigate("ImageScreen", {
+                                      image: imageOne.url,
+                                    })
+                                : () => null
+                            }
+                            style={[
+                              styles.galleryImgCon,
+                              {
+                                backgroundColor: theme
+                                  ? colors.greyMain
+                                  : colors.black,
+                              },
+                            ]}
+                          >
+                            {imageOne && imageOne && (
+                              <>
+                                <Image
+                                  style={styles.galleryImg}
+                                  source={{
+                                    uri: imageOne.url,
+                                  }}
+                                  resizeMode="cover"
+                                />
+                              </>
+                            )}
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            onPress={
+                              imageTwo && imageTwo
+                                ? () =>
+                                    navigation.navigate("ImageScreen", {
+                                      image: imageTwo.url,
+                                    })
+                                : () => null
+                            }
+                            style={[
+                              styles.galleryImgCon,
+                              {
+                                backgroundColor: theme
+                                  ? "#F0F0F0"
+                                  : colors.black,
+                              },
+                            ]}
+                          >
+                            {imageTwo && imageTwo && (
+                              <>
+                                <Image
+                                  style={styles.galleryImg}
+                                  source={{
+                                    uri: imageTwo.url,
+                                  }}
+                                  resizeMode="cover"
+                                />
+                              </>
+                            )}
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            onPress={
+                              imageThree && imageThree
+                                ? () =>
+                                    navigation.navigate("ImageScreen", {
+                                      image: imageThree.url,
+                                    })
+                                : () => null
+                            }
+                            style={[
+                              styles.galleryImgCon,
+                              {
+                                backgroundColor: theme
+                                  ? "#F0F0F0"
+                                  : colors.black,
+                              },
+                            ]}
+                          >
+                            {imageThree && imageThree && (
+                              <>
+                                <Image
+                                  style={styles.galleryImg}
+                                  source={{
+                                    uri: imageThree.url,
+                                  }}
+                                  resizeMode="cover"
+                                />
+                              </>
+                            )}
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            onPress={
+                              imageFour && imageFour
+                                ? () =>
+                                    navigation.navigate("ImageScreen", {
+                                      image: imageFour.url,
+                                    })
+                                : () => null
+                            }
+                            style={[
+                              styles.galleryImgCon,
+                              {
+                                backgroundColor: theme
+                                  ? "#F0F0F0"
+                                  : colors.black,
+                                marginRight: 10,
+                              },
+                            ]}
+                          >
+                            {imageFour && imageFour && (
+                              <>
+                                <Image
+                                  style={styles.galleryImg}
+                                  source={{
+                                    uri: imageFour.url,
+                                  }}
+                                  resizeMode="center"
+                                />
+                              </>
+                            )}
+                          </TouchableOpacity>
+                        </View>
+                      )
+                    ) : null}
+                  </TabView.Item>
+                  <TabView.Item style={styles.tabSection}>
+                    <Text>Cart</Text>
+                  </TabView.Item>
+                </>
+              </TabView>
+            </View>
+          </>
+        )}
 
         <View
           style={{

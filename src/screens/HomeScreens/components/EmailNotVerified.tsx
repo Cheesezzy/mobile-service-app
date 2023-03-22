@@ -18,11 +18,13 @@ interface Props {
 }
 
 const EmailNotVerfied = ({ verify, emailSent }: Props) => {
+  const [clicked, setClicked] = useState(false);
   const [sending, setSending] = useState<boolean>();
 
   const handleVerify = () => {
+    setClicked(true);
     if (!sending) {
-      verify();
+      //verify();
       setSending(true);
     }
     setTimeout(() => {
@@ -37,7 +39,7 @@ const EmailNotVerfied = ({ verify, emailSent }: Props) => {
       <Text style={styles.subText}>
         {sending
           ? "You can try again in 30 seconds."
-          : "Please verify your email before you can proceed"}
+          : "Please verify your email before you can proceed."}
       </Text>
       <TouchableOpacity
         style={[
@@ -59,6 +61,10 @@ const EmailNotVerfied = ({ verify, emailSent }: Props) => {
           )}
         </Text>
       </TouchableOpacity>
+      <Text style={styles.lastText}>
+        {clicked &&
+          "If you have completed the verification; please close the app and reopen."}
+      </Text>
     </View>
   );
 };
@@ -97,5 +103,12 @@ const styles = StyleSheet.create({
     color: colors.secondary,
     fontSize: 14,
     fontFamily: "PrimaryRegular",
+  },
+  lastText: {
+    width: Dimensions.get("window").width * 0.8,
+    fontFamily: "PrimaryRegular",
+    fontSize: 11,
+    textAlign: "center",
+    marginTop: 10,
   },
 });
