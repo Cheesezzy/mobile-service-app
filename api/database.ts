@@ -359,6 +359,14 @@ export function updateBusinessDesc(bizId: any, desc: any) {
   });
 }
 
+export function updateBusinessBasePrice(bizId: any, chargeRate: number) {
+  const businessRef = doc(db, "businesses", bizId);
+
+  updateDoc(businessRef, {
+    chargeRate,
+  });
+}
+
 export function updateLocation(bizId: any, lat: any, lng: any) {
   const businessRef = doc(db, "businesses", bizId);
 

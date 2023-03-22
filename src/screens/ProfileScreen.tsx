@@ -209,18 +209,34 @@ const ProfileScreen = ({ navigation, route }: any) => {
             },
           ]}
         >
-          <Avatar
-            size={80}
-            rounded
-            source={
-              businessUser?.profilePic
-                ? {
-                    uri: businessUser?.profilePic,
-                  }
-                : require("../.././assets/blankProfilePic.png")
-            }
-            containerStyle={styles.avatar}
-          />
+          {user?.role === "Provider" ? (
+            <Avatar
+              size={80}
+              rounded
+              source={
+                business?.businessDP
+                  ? {
+                      uri: business?.businessDP,
+                    }
+                  : require("../.././assets/blankProfilePic.png")
+              }
+              containerStyle={styles.avatar}
+            />
+          ) : (
+            <Avatar
+              size={80}
+              rounded
+              source={
+                user?.profilePic
+                  ? {
+                      uri: user?.profilePic,
+                    }
+                  : require("../.././assets/blankProfilePic.png")
+              }
+              containerStyle={styles.avatar}
+            />
+          )}
+
           <View>
             <Text
               style={[

@@ -89,17 +89,31 @@ function HeaderTitle({ title, profileURL }: Props) {
             <TouchableOpacity // @ts-ignore
               onPress={() => navigation.navigate("Hustle")}
             >
-              <Avatar
-                size={31}
-                rounded
-                source={
-                  profileURL
-                    ? {
-                        uri: profileURL,
-                      }
-                    : require("../../assets/blankProfilePic.png")
-                }
-              />
+              {user?.role === "Provider" ? (
+                <Avatar
+                  size={31}
+                  rounded
+                  source={
+                    business?.businessDP
+                      ? {
+                          uri: business?.businessDP,
+                        }
+                      : require("../.././assets/blankProfilePic.png")
+                  }
+                />
+              ) : (
+                <Avatar
+                  size={31}
+                  rounded
+                  source={
+                    user?.profilePic
+                      ? {
+                          uri: user?.profilePic,
+                        }
+                      : require("../.././assets/blankProfilePic.png")
+                  }
+                />
+              )}
             </TouchableOpacity>
             {user && (
               <View

@@ -1,23 +1,14 @@
 import { StatusBar } from "expo-status-bar";
-import {
-  ActivityIndicator,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import colors from "../../config/colors";
 import Navigation from "../../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
 import { auth, db } from "../../../firebaseConfig";
-import { useAuthState, useUpdatePassword } from "react-firebase-hooks/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 import HeaderTitle from "../../components/HeaderTitle";
-import { collection, doc } from "firebase/firestore";
-import {
-  useCollectionData,
-  useDocumentData,
-} from "react-firebase-hooks/firestore";
+import { doc } from "firebase/firestore";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 import SetLocationPopup from "../../components/businessEnroll/SetLocationPopup";
 import { handleSwitchTheme } from "../../../provider/themeSlice";
 import ClientHome from "./ClientHome";
@@ -100,7 +91,7 @@ const HomeScreen = ({ navigation }: any) => {
         ) : null}
 
         <ScrollView style={{ padding: 5, paddingBottom: 20 }}>
-          {!userLoading ? (
+          {!userLoading && !loading ? (
             user?.role === "Consumer" ? (
               <ClientHome navigation={navigation} theme={theme} />
             ) : (
