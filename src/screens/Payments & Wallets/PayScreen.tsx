@@ -11,7 +11,7 @@ import { PayWithFlutterwave } from "flutterwave-react-native";
 import colors from "../../config/colors";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../../provider/themeSlice";
-import { fundAccount } from "../../../api/database";
+import { addTransaction, fundAccount } from "../../../api/database";
 import { auth, db } from "../../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
@@ -47,6 +47,16 @@ const PayScreen = () => {
 
     if (data.status === "successful" && User && user && user.balance) {
       fundAccount(User?.uid, +user.balance, +amount);
+      addTransaction(
+        "You funded your account",
+        User?.uid,
+        null,
+        user?.name,
+        null,
+        +amount,
+        "Fund",
+        generateTransactionRef(10)
+      );
     }
   };
 
