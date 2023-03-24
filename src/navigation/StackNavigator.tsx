@@ -59,6 +59,7 @@ import { ChatSupportScreen } from "../screens/ChatSupportScreen";
 import WithdrawScreen from "../screens/Payments & Wallets/WithdrawScreen";
 import BanksScreen from "../screens/Payments & Wallets/BanksScreen";
 import NotificationSettings from "../screens/Settings/NotificationSettings";
+import PendingOrderScreen from "../components/PendingOrder/PendingOrderScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -129,6 +130,15 @@ const StackNavigator = () => {
         component={ContactSupport}
         options={{
           title: "Contact Support",
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="Pending Order"
+        component={PendingOrderScreen}
+        options={{
+          title: "Pending Order",
           headerShown: false,
         }}
       />

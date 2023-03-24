@@ -198,8 +198,6 @@ const SupportScreen = ({ navigation }: any) => {
             </View>
           </View>
         </TouchableOpacity>
-
-
         <StatusBar style={theme ? "dark" : "light"} />
       </View>
     </>
