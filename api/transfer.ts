@@ -2,7 +2,6 @@ export const initiateWithdrawal = (
   account_bank: string,
   account_number: string,
   amount: number,
-  currency: "NGN",
   narration: string,
   reference: string
 ) => {
@@ -10,7 +9,7 @@ export const initiateWithdrawal = (
     account_bank,
     account_number,
     amount,
-    currency,
+    currency: "NGN",
     narration,
     reference,
   };

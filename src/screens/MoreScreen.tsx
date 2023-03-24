@@ -44,7 +44,6 @@ const MoreScreen = ({ navigation }: any) => {
   const businessRef = user?.bizId && doc(db, "businesses", user?.bizId);
   const [business] = useDocumentData(businessRef);
 
-  const dispatch = useDispatch();
   const selector: any = useSelector(handleSwitchTheme);
   const theme = selector.payload.theme.value;
 

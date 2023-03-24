@@ -39,7 +39,6 @@ export function createUser(
   description: string | null,
   joined: any,
   messages: any,
-  onBoard: boolean,
   bizInformed: boolean,
   bizId: any,
   profilePic: any,
@@ -58,20 +57,10 @@ export function createUser(
     description,
     joined,
     messages,
-    onBoard,
     bizInformed,
     bizId,
     profilePic,
     balance,
-  });
-}
-
-// for changing onBoard status
-export function updateOnBoardStat(userId: any) {
-  const userOnBoardRef = doc(db, "users", userId);
-
-  updateDoc(userOnBoardRef, {
-    onBoard: true,
   });
 }
 
@@ -359,6 +348,14 @@ export function updateBusinessDesc(bizId: any, desc: any) {
   });
 }
 
+export function updateBusinessBasePrice(bizId: any, chargeRate: number) {
+  const businessRef = doc(db, "businesses", bizId);
+
+  updateDoc(businessRef, {
+    chargeRate,
+  });
+}
+
 export function updateLocation(bizId: any, lat: any, lng: any) {
   const businessRef = doc(db, "businesses", bizId);
 
@@ -500,7 +497,8 @@ export function createNotification(
   userId: any,
   name: any,
   notification: any,
-  senderId: any
+  senderId: any,
+  senderDP: any
 ) {
   const notifsRef = collection(db, "users/" + `${userId}/notifications`);
 
@@ -509,7 +507,9 @@ export function createNotification(
     notification,
     name,
     senderId,
+    senderDP,
     seen: false,
+    createdAt: serverTimestamp(),
   }).then((notif) => {
     const notificationRef = doc(db, "users", userId, "notifications", notif.id);
 
@@ -698,50 +698,83 @@ export function addRecentOrder(
 }
 
 export function addTransaction(
+  title: any,
   senderId: any,
-  receiverId: any,
+  receiverId: any | null,
   senderName: any,
   receiverName: any,
-  date: any,
   amount: any,
+  type: "Transfer" | "Fund" | "Withdraw",
   ref: any
 ) {
   const senderRef = collection(db, "users", senderId, "transactionHistory");
   const receiverRef = collection(db, "users", receiverId, "transactionHistory");
 
-  addDoc(senderRef, {
-    ref,
-    type: "sent",
-    sentBy: {
-      id: senderId,
-      name: senderName,
-    },
-    receivedBy: {
-      id: receiverId,
-      name: receiverName,
-    },
-    date,
-    createdAt: serverTimestamp(),
-    status: "submitted",
-    amount,
-  });
+  if (type === "Fund") {
+    addDoc(senderRef, {
+      title,
+      ref,
+      type,
+      sentBy: {
+        id: senderId,
+        name: senderName,
+      },
+      createdAt: serverTimestamp(),
+      status: "submitted",
+      amount,
+    });
+  }
 
-  addDoc(receiverRef, {
-    ref,
-    type: "sent",
-    sentBy: {
-      id: senderId,
-      name: senderName,
-    },
-    receivedBy: {
-      id: receiverId,
-      name: receiverName,
-    },
-    date,
-    createdAt: serverTimestamp(),
-    status: "submitted",
-    amount,
-  });
+  if (type === "Withdraw") {
+    addDoc(senderRef, {
+      title,
+      ref,
+      type,
+      sentBy: {
+        id: senderId,
+        name: senderName,
+      },
+      createdAt: serverTimestamp(),
+      status: "submitted",
+      amount,
+    });
+  }
+
+  if (type === "Transfer") {
+    addDoc(senderRef, {
+      title,
+      ref,
+      type,
+      sentBy: {
+        id: senderId,
+        name: senderName,
+      },
+      receivedBy: {
+        id: receiverId,
+        name: receiverName,
+      },
+      createdAt: serverTimestamp(),
+      status: "submitted",
+      amount,
+    });
+
+    addDoc(receiverRef, {
+      title,
+      ref,
+      type,
+      sentBy: {
+        id: senderId,
+        name: senderName,
+      },
+      receivedBy: {
+        id: receiverId,
+        name: receiverName,
+      },
+      createdAt: serverTimestamp(),
+      status: "submitted",
+      amount,
+    });
+  }
 }
 
 const obj = {

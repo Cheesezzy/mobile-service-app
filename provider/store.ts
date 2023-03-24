@@ -6,12 +6,16 @@ import userSlice from "./userSlice";
 import allUsersSlice from "./allUsersSlice";
 import categoriesSlice from "./categoriesSlice";
 import themeSlice from "./themeSlice";
+import pushNotificationSlice from "./pushNotificationSlice";
+import onBoardingSlice from "./onBoardingSlice";
 
 const rootReducer = combineReducers({
   user: userSlice,
   users: allUsersSlice,
   categories: categoriesSlice,
   theme: themeSlice,
+  pushNotification: pushNotificationSlice,
+  onboarding: onBoardingSlice,
 });
 
 const persistedReducer = persistReducer(
@@ -19,7 +23,14 @@ const persistedReducer = persistReducer(
     key: "root",
     storage: AsyncStorage,
     version: 0,
-    whitelist: ["user", "users", "categories", "theme"],
+    whitelist: [
+      "user",
+      "users",
+      "categories",
+      "theme",
+      "pushNotification",
+      "onboarding",
+    ],
   },
   rootReducer
 );

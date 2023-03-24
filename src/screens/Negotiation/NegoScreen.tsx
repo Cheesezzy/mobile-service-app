@@ -20,6 +20,8 @@ import { handleSwitchTheme } from "../../../provider/themeSlice";
 import { waiting } from "../../../assets/svgs/svgs";
 import { SvgXml } from "react-native-svg";
 import { searchIcon } from "../../../assets/icons/icons";
+import { TextInput } from "react-native";
+import { useState } from "react";
 
 const NegoScreen = ({ navigation }: any) => {
   const [user] = useAuthState(auth);
@@ -28,6 +30,8 @@ const NegoScreen = ({ navigation }: any) => {
 
   const negotiatingRef = collection(db, "users", user?.uid!, "negotiating");
   const [negotiating, loading] = useCollectionData(negotiatingRef);
+
+  const [searchQuery, setSearchQuery] = useState("");
 
   const checkingPerson = (msg: any) => {
     if (msg?.type === "sent") {
@@ -94,23 +98,29 @@ const NegoScreen = ({ navigation }: any) => {
           },
         ]}
       >
-        <View style={[styles.searchCon]}>
+        <View style={styles.searchCon}>
           <SvgXml
             style={{
-              marginRight: 10,
+              position: "relative",
+              top: 0,
             }}
-            xml={searchIcon()}
+            xml={searchIcon(theme ? colors.blackSmoke : colors.darkTxt)}
             width="14"
             height="14"
           />
-          <Text
-            style={{
-              fontFamily: "PrimaryRegular",
-              color: colors.greyMain,
-            }}
-          >
-            Search
-          </Text>
+
+          <TextInput
+            style={[
+              styles.search,
+              {
+                color: theme ? colors.black : colors.darkTxt,
+              },
+            ]}
+            placeholderTextColor={colors.lightGrey}
+            placeholder="Search"
+            onChangeText={(newQuery) => setSearchQuery(newQuery)}
+            defaultValue={searchQuery}
+          />
         </View>
 
         <Text
@@ -134,6 +144,14 @@ const NegoScreen = ({ navigation }: any) => {
           {negotiating && negotiating.length > 0
             ? negotiating
                 .sort((a, b) => b.createdAt - a.createdAt)
+                .filter((msg) => {
+                  if (
+                    checkingPerson(msg)
+                      ?.name.toLocaleLowerCase()
+                      .includes(searchQuery.toLowerCase())
+                  )
+                    return msg;
+                })
                 .map((msg: any) => {
                   return (
                     <TouchableOpacity
@@ -224,7 +242,7 @@ const NegoScreen = ({ navigation }: any) => {
                   <SvgXml xml={waiting()} width={"100%"} height={"40%"} />
                   <Text
                     style={{
-                      fontFamily: "LatoRegular",
+                      fontFamily: "PrimaryRegular",
                       marginTop: 10,
                       color: theme ? colors.black : colors.darkTxt,
                     }}
@@ -251,7 +269,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     height: 45,
     width: "90%",
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     fontSize: 12,
     color: colors.black,
     borderWidth: 1,
@@ -262,6 +280,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     marginTop: 50,
+  },
+  search: {
+    width: "80%",
+    fontFamily: "PrimaryRegular",
+    fontSize: 12,
+    alignSelf: "center",
+    marginLeft: 10,
   },
   header: {
     fontFamily: "PrimarySemiBold",
@@ -288,13 +313,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   displayName: {
-    fontSize: 15,
-    fontFamily: "LatoRegular",
-    marginBottom: 2,
+    fontSize: 14,
+    fontFamily: "PrimaryRegular",
   },
   displayTime: {
     fontSize: 10,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     alignSelf: "center",
   },
   msgAndStatus: {
@@ -303,7 +327,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   displayMsg: {
-    fontSize: 13,
+    fontSize: 12,
     color: colors.greyMain,
   },
   displayStatus: {
@@ -315,7 +339,7 @@ const styles = StyleSheet.create({
   },
   displayStatusTxt: {
     fontSize: 10,
-    fontFamily: "LatoRegular",
+    fontFamily: "PrimaryRegular",
     alignSelf: "center",
     color: colors.secondary,
   },

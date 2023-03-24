@@ -11,11 +11,12 @@ import { PayWithFlutterwave } from "flutterwave-react-native";
 import colors from "../../config/colors";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../../provider/themeSlice";
-import { fundAccount } from "../../../api/database";
+import { addTransaction, fundAccount } from "../../../api/database";
 import { auth, db } from "../../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { doc } from "firebase/firestore";
+import { generateTransactionRef } from "../../../api/hooks/generalHooks";
 
 interface RedirectParams {
   status: "successful" | "cancelled";
@@ -29,18 +30,6 @@ const PayScreen = () => {
   const userRef = doc(db, "users", User?.uid!);
 
   const [user] = useDocumentData(userRef);
-
-  /* An example function to generate a random transaction reference */
-  const generateTransactionRef = (length: number) => {
-    var result = "";
-    var characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return `flw_tx_ref_${result}`;
-  };
 
   const handleGetAmount = (newQuery: string) => {
     if (
@@ -58,6 +47,16 @@ const PayScreen = () => {
 
     if (data.status === "successful" && User && user && user.balance) {
       fundAccount(User?.uid, +user.balance, +amount);
+      addTransaction(
+        "You funded your account",
+        User?.uid,
+        null,
+        user?.name,
+        null,
+        +amount,
+        "Fund",
+        generateTransactionRef(10)
+      );
     }
   };
 

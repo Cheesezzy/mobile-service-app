@@ -89,17 +89,31 @@ function HeaderTitle({ title, profileURL }: Props) {
             <TouchableOpacity // @ts-ignore
               onPress={() => navigation.navigate("Hustle")}
             >
-              <Avatar
-                size={31}
-                rounded
-                source={
-                  profileURL
-                    ? {
-                        uri: profileURL,
-                      }
-                    : require("../../assets/blankProfilePic.png")
-                }
-              />
+              {user?.role === "Provider" ? (
+                <Avatar
+                  size={31}
+                  rounded
+                  source={
+                    business?.businessDP
+                      ? {
+                          uri: business?.businessDP,
+                        }
+                      : require("../.././assets/blankProfilePic.png")
+                  }
+                />
+              ) : (
+                <Avatar
+                  size={31}
+                  rounded
+                  source={
+                    user?.profilePic
+                      ? {
+                          uri: user?.profilePic,
+                        }
+                      : require("../.././assets/blankProfilePic.png")
+                  }
+                />
+              )}
             </TouchableOpacity>
             {user && (
               <View
@@ -439,6 +453,44 @@ function HeaderTitle({ title, profileURL }: Props) {
           </View>
         </View>
       )}
+      {route.name === "Notification Settings" && (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            paddingHorizontal: 10,
+          }}
+        >
+          <TouchableOpacity style={{}}>
+            <SvgXml
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
+              width="22"
+              height="22"
+              onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "PrimarySemiBold",
+                fontSize: 20,
+                alignSelf: "center",
+                color: theme ? colors.black : colors.darkTxt,
+              }}
+            >
+              Notification Settings
+            </Text>
+          </View>
+        </View>
+      )}
       {route.name === "Fund" && (
         <View
           style={{
@@ -473,6 +525,66 @@ function HeaderTitle({ title, profileURL }: Props) {
               }}
             >
               Fund
+            </Text>
+          </View>
+          <TouchableOpacity
+            // @ts-ignore
+            onPress={() => navigation.navigate("Notifications")}
+          >
+            <SvgXml
+              xml={notifIcon(theme ? colors.black : colors.darkTxt)}
+              width="21"
+              height="21"
+            />
+            {notifUnread ? (
+              <View
+                style={[
+                  styles.unreadStatus,
+                  {
+                    top: 2,
+                    right: 2,
+                    borderColor: theme ? colors.secondary : colors.blackSmoke,
+                  },
+                ]}
+              />
+            ) : null}
+          </TouchableOpacity>
+        </View>
+      )}
+      {route.name === "Withdraw" && (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            paddingHorizontal: 10,
+          }}
+        >
+          <TouchableOpacity style={{}}>
+            <SvgXml
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
+              width="22"
+              height="22"
+              onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "PrimarySemiBold",
+                fontSize: 20,
+                alignSelf: "center",
+                color: theme ? colors.black : colors.darkTxt,
+              }}
+            >
+              Withdraw
             </Text>
           </View>
           <TouchableOpacity
@@ -968,6 +1080,44 @@ function HeaderTitle({ title, profileURL }: Props) {
               }}
             >
               Service Confirmation
+            </Text>
+          </View>
+        </View>
+      )}
+      {route.name === "Banks" && (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            paddingHorizontal: 10,
+          }}
+        >
+          <TouchableOpacity style={{}}>
+            <SvgXml
+              xml={backIcon(theme ? colors.black : colors.darkTxt)}
+              width="22"
+              height="22"
+              onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "PrimarySemiBold",
+                fontSize: 20,
+                alignSelf: "center",
+                color: theme ? colors.black : colors.darkTxt,
+              }}
+            >
+              Select Bank
             </Text>
           </View>
         </View>

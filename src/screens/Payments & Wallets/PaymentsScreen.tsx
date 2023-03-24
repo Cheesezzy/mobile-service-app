@@ -9,21 +9,21 @@ import {
 import React, { useState } from "react";
 import colors from "../../config/colors";
 import HeaderTitle from "../../components/HeaderTitle";
-import { doc } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import { auth, db } from "../../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useDocumentData } from "react-firebase-hooks/firestore";
+import {
+  useCollectionData,
+  useDocumentData,
+} from "react-firebase-hooks/firestore";
 import { hideString } from "../../../api/hooks/generalHooks";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../../provider/themeSlice";
 import { StatusBar } from "expo-status-bar";
 import {
-  bankIcon,
-  cardIcon,
   hidePassIcon,
   receiveMoneyIcon,
   showPassIcon,
-  transferMoneyIcon,
   withdrawMoneyIcon,
 } from "../../../assets/icons/icons";
 import { SvgXml } from "react-native-svg";
@@ -41,6 +41,10 @@ const PaymentsScreen = ({ navigation }: any) => {
   const businessRef = user?.bizId && doc(db, "businesses", user?.bizId);
 
   const [business, loading] = useDocumentData(businessRef);
+
+  const transactionsRef =
+    User && collection(db, "users", User?.uid, "transactionHistory");
+  const [transactions] = useCollectionData(transactionsRef);
 
   const [balVisible, setBalVisible] = useState(false);
   const selector: any = useSelector(handleSwitchTheme);
@@ -95,7 +99,11 @@ const PaymentsScreen = ({ navigation }: any) => {
           <View style={styles.moneyOptions}>
             <TouchableOpacity
               style={[styles.moneyOptionBtnWire, { marginRight: 10 }]}
-              onPress={() => navigation.navigate("PayStatus")}
+              onPress={() =>
+                navigation.navigate("Withdraw", {
+                  selectedBank: null,
+                })
+              }
             >
               <SvgXml
                 xml={withdrawMoneyIcon(colors.darkTxt)}
@@ -147,30 +155,27 @@ const PaymentsScreen = ({ navigation }: any) => {
           </TouchableOpacity>
         </View>
         <View>
-          <Transactions
-            image={Thsnip1()}
-            title="Beauty’s Hairs And Nails"
-            date="5, feb 2023"
-            price="4500"
-          />
-          <Transactions
-            image={Thsnip2()}
-            title="Wema Bank"
-            date="5, feb 2023"
-            price="10,000"
-          />
-          <Transactions
-            image={Thsnip1()}
-            title="Lucy’s Catering Service"
-            date="5, feb 2023"
-            price="5,500"
-          />
-          <Transactions
-            image={Thsnip1()}
-            title="Lucy’s Catering Service"
-            date="5, feb 2023"
-            price="5,500"
-          />
+          {transactions && transactions.length > 0 ? (
+            transactions.map((transaction, i) => (
+              <Transactions
+                type={transaction.type}
+                title={transaction.title}
+                createdAt={transaction.createdAt}
+                price={transaction.price}
+              />
+            ))
+          ) : (
+            <Text
+              style={[
+                styles.transactionsTxt,
+                {
+                  color: theme ? colors.black : colors.darkTxt,
+                },
+              ]}
+            >
+              No transactions to show, yet.
+            </Text>
+          )}
         </View>
         <View style={{ height: 80, width: "100%" }} />
         <StatusBar style={theme ? "dark" : "light"} />
@@ -277,5 +282,11 @@ const styles = StyleSheet.create({
   },
   pmTxt: {
     fontFamily: "PrimaryRegular",
+  },
+  transactionsTxt: {
+    fontSize: 12,
+    fontFamily: "PrimaryRegular",
+    marginLeft: 2,
+    marginTop: 10,
   },
 });

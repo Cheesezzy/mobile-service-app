@@ -3,10 +3,11 @@ import colors from "../config/colors";
 import { Avatar } from "@rneui/base";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 import { useSelector } from "react-redux";
+import { getTimeAgo } from "../../api/hooks/convertTimestamp";
 
 interface Props {
   name: string;
-  createdAt: string;
+  createdAt: any;
 }
 
 const RecentOrder = ({ name, createdAt }: Props) => {
@@ -47,7 +48,8 @@ const RecentOrder = ({ name, createdAt }: Props) => {
               },
             ]}
           >
-            {createdAt}
+            {createdAt &&
+              getTimeAgo(createdAt?.seconds, createdAt?.nanoseconds)}
           </Text>
         </View>
       </View>

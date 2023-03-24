@@ -65,6 +65,7 @@ export const ChatScreen = ({ navigation, route }: any) => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [showBlockedMsg, setShowBlockedMsg] = useState(false);
   const [iWasBlocked, setIWasBlocked] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const blocklistRef = collection(db, "users", user?.uid!, "blocklist");
   const [blocklist] = useCollectionData(blocklistRef);
@@ -136,6 +137,7 @@ export const ChatScreen = ({ navigation, route }: any) => {
   };
 
   const handleSendMessage = () => {
+    setSending(true);
     sendMessage(
       user?.uid,
       personId,
@@ -147,9 +149,8 @@ export const ChatScreen = ({ navigation, route }: any) => {
       personPic ? personPic : null,
       serverTimestamp()
     );
-
     setTypedMessage("");
-    scrollViewRef.current?.scrollToEnd({ animated: true });
+    setSending(false);
   };
 
   const handleSendAttachment = async () => {
@@ -165,6 +166,8 @@ export const ChatScreen = ({ navigation, route }: any) => {
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
         getDownloadURL(snapshot.ref).then((url: any) => {
+          setSending(true);
+
           sendMessage(
             user?.uid,
             personId,
@@ -184,7 +187,7 @@ export const ChatScreen = ({ navigation, route }: any) => {
 
     setImage(null);
     setTypedMessage("");
-    scrollViewRef.current?.scrollToEnd({ animated: true });
+    setSending(false);
   };
 
   const pickImage = async () => {
@@ -207,6 +210,11 @@ export const ChatScreen = ({ navigation, route }: any) => {
       setMessages(allMessages);
       setMessagesLoading(false);
     }
+    scrollViewRef.current.scrollTo({
+      x: 0,
+      y: height * messages.length,
+      animated: true,
+    });
   }, [sentMessages, receivedMessages]);
 
   const { height } = useWindowDimensions();
@@ -266,6 +274,25 @@ export const ChatScreen = ({ navigation, route }: any) => {
       </View>
     );
   }
+
+  const checkMsgStatus = (msg: any) => {
+    {
+      /*msg?.sentBy?.id === user?.uid
+      ? msg?.seen
+        ? " . Seen"
+        : " . Sent"
+  : null*/
+    }
+    if (msg && msg.sentBy && msg.sentBy.id === user?.uid) {
+      if (msg.seen) {
+        return " . Seen";
+      } else {
+        return " . Sent";
+      }
+    } else {
+      return null;
+    }
+  };
 
   const showSend = () => {
     if (showBlockedMsg || iWasBlocked) return;
@@ -533,11 +560,7 @@ export const ChatScreen = ({ navigation, route }: any) => {
                                   msg?.createdAt?.seconds,
                                   msg?.createdAt?.nanoseconds
                                 )}
-                              {msg?.sentBy?.id === user?.uid
-                                ? msg?.seen
-                                  ? " . Seen"
-                                  : " . Sent"
-                                : null}
+                              {checkMsgStatus(msg)}
                             </Text>
                           </View>
                         </View>
@@ -574,11 +597,7 @@ export const ChatScreen = ({ navigation, route }: any) => {
                                 msg?.createdAt?.seconds,
                                 msg?.createdAt?.nanoseconds
                               )}
-                            {msg?.sentBy?.id === user?.uid
-                              ? msg?.seen
-                                ? " . Seen"
-                                : " . Sent"
-                              : null}
+                            {checkMsgStatus(msg)}
                           </Text>
                         </TouchableOpacity>
                       )
@@ -614,11 +633,7 @@ export const ChatScreen = ({ navigation, route }: any) => {
                                 msg?.createdAt?.seconds,
                                 msg?.createdAt?.nanoseconds
                               )}
-                            {msg?.sentBy?.id === user?.uid
-                              ? msg?.seen
-                                ? " . Seen"
-                                : " . Sent"
-                              : null}
+                            {checkMsgStatus(msg)}
                           </Text>
                         </View>
                       )

@@ -1,17 +1,14 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import colors from "../../config/colors";
 import Navigation from "../../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
 import { auth, db } from "../../../firebaseConfig";
-import { useAuthState, useUpdatePassword } from "react-firebase-hooks/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 import HeaderTitle from "../../components/HeaderTitle";
-import { collection, doc } from "firebase/firestore";
-import {
-  useCollectionData,
-  useDocumentData,
-} from "react-firebase-hooks/firestore";
+import { doc } from "firebase/firestore";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 import SetLocationPopup from "../../components/businessEnroll/SetLocationPopup";
 import { handleSwitchTheme } from "../../../provider/themeSlice";
 import ClientHome from "./ClientHome";
@@ -27,7 +24,7 @@ const HomeScreen = ({ navigation }: any) => {
 
   const userRef = doc(db, "users", User?.uid!);
 
-  const [user] = useDocumentData(userRef);
+  const [user, userLoading] = useDocumentData(userRef);
   //const user = selector.payload.user.value;
 
   const businessRef = user?.bizId && doc(db, "businesses", user?.bizId);
@@ -64,15 +61,9 @@ const HomeScreen = ({ navigation }: any) => {
       });
   };
 
-  //useUpdatePassword(auth)
-
   return (
     <>
-      {User?.email === "dos@gmail.com" ||
-      User?.email === "preyeduke@gmail.com" ||
-      User?.email === "bezzy@gmail.com" ? (
-        <HeaderTitle title="Home" profileURL={user?.profilePic} user={user} />
-      ) : User?.emailVerified ? (
+      {User?.emailVerified ? (
         <HeaderTitle title="Home" profileURL={user?.profilePic} user={user} />
       ) : null}
 
@@ -84,11 +75,7 @@ const HomeScreen = ({ navigation }: any) => {
           },
         ]}
       >
-        {User &&
-        !User?.emailVerified &&
-        User?.email !== "dos@gmail.com" &&
-        User?.email !== "preyeduke@gmail.com" &&
-        User?.email !== "bezzy@gmail.com" ? (
+        {User && !User?.emailVerified ? (
           <EmailNotVerfied
             verify={sendVerification}
             emailSent={emailVerificationSent}
@@ -96,15 +83,19 @@ const HomeScreen = ({ navigation }: any) => {
         ) : null}
 
         <ScrollView style={{ padding: 5, paddingBottom: 20 }}>
-          {user?.role === "Consumer" ? (
-            <ClientHome navigation={navigation} theme={theme} />
+          {!userLoading && !loading ? (
+            user?.role === "Consumer" ? (
+              <ClientHome navigation={navigation} theme={theme} />
+            ) : (
+              <ProviderHome
+                navigation={navigation}
+                theme={theme}
+                business={business}
+                user={user}
+              />
+            )
           ) : (
-            <ProviderHome
-              navigation={navigation}
-              theme={theme}
-              business={business}
-              user={user}
-            />
+            <ActivityIndicator color={colors.primary} />
           )}
           <View style={{ height: 100, width: "100%" }} />
         </ScrollView>

@@ -11,15 +11,20 @@ import { Avatar } from "@rneui/themed";
 import { SvgXml } from "react-native-svg";
 import { backIcon, deleteIcon } from "../../assets/icons/icons";
 import { StatusBar } from "expo-status-bar";
-import { doc } from "firebase/firestore";
+import { doc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
-import { addCommas, checkRole } from "../../api/hooks/generalHooks";
+import {
+  addCommas,
+  checkRole,
+  generateTransactionRef,
+} from "../../api/hooks/generalHooks";
 import { useSelector } from "react-redux";
 import { handleSwitchTheme } from "../../provider/themeSlice";
 import {
   addRecentOrder,
+  addTransaction,
   transferFunds,
   updateAmountUsedToHire,
   updatePendingBooking,
@@ -41,10 +46,6 @@ const TransferScreen = ({ route, navigation }: any) => {
       setDisplayAmount((prev) => prev.slice(0, -1));
     }
   };
-
-  useEffect(() => {
-    console.log(displayAmount);
-  }, [displayAmount]);
 
   const [User] = useAuthState(auth);
 
@@ -92,8 +93,18 @@ const TransferScreen = ({ route, navigation }: any) => {
         business.userId,
         user?.name,
         user?.profilePic,
-        date.format(now, pattern),
+        serverTimestamp(),
         +displayAmount
+      );
+      addTransaction(
+        business.name,
+        User?.uid,
+        business.userId,
+        user?.name,
+        businessUser.name,
+        +displayAmount,
+        "Transfer",
+        generateTransactionRef(10)
       );
       if (senderBusiness) {
         updateAmountUsedToHire(
