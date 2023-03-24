@@ -52,13 +52,10 @@ import BusinessLocation from "../screens/BusinessEnrollScreen/BusinessLocation";
 import BusinessEnrollment from "../screens/BusinessEnrollScreen/BusinessEnrollment";
 import KycVerification from "../screens/BusinessEnrollScreen/KycVerification";
 import ServiceConfirmationScreen from "../screens/ServiceConfirmationScreen";
-<<<<<<< HEAD
 import ServiceScreen from "../screens/ContactSupport/ServiceScreen";
 import GeneralScreen from "../screens/ContactSupport/GeneralScreen";
 import TransactionScreen from "../screens/ContactSupport/TransactionScreen";
-=======
 import { ChatSupportScreen } from "../screens/ChatSupportScreen";
->>>>>>> a54231f4edcd23261036fd51d92f8e3c382f9fb7
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -125,7 +122,6 @@ const StackNavigator = () => {
       />
 
       <Stack.Screen
-<<<<<<< HEAD
         name="Contact Support"
         component={ContactSupport}
         options={{
@@ -144,8 +140,6 @@ const StackNavigator = () => {
       />
 
       <Stack.Screen
-=======
->>>>>>> a54231f4edcd23261036fd51d92f8e3c382f9fb7
         name="Phone"
         component={PhoneScreen}
         options={{
